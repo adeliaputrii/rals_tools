@@ -1,6 +1,10 @@
 part of 'SP_service.dart';
 
 class UserData {
+
+  Dio dio = Dio();
+  RamayanaLogin ramayanaLogin = RamayanaLogin();
+
   static const String logstatus = "_statuslog_str";
   static const String user_id_str = "user_id_str";
   static const String user_name_str = "user_name_str";
@@ -38,6 +42,9 @@ class UserData {
   static late String _userToko= '';
   static late String _userAkses= '';
   static late String _username7= '';
+  var token  = '';
+  var fcmToken;
+  final _firebaseMessaging = FirebaseMessaging.instance;
 
   bool getAdminStatus() {
     return _isAdmin;
@@ -159,6 +166,23 @@ class UserData {
     return;
   }
 
+  Future<void> initNotification() async{
+    await _firebaseMessaging.requestPermission();
+    fcmToken = await _firebaseMessaging.getToken();
+    print('Token kirim api : ${fcmToken}');
+    return fcmToken;
+  }
+  @override
+  void initState() {
+    initNotification();
+  }
+  sendTokenFirebase() async {
+    
+    print(getUserToken());
+    print('${fcmToken}');
+    print('${initNotification()}');
+  }
+
   Future<void> setUser({required Map data}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setBool(UserData.logstatus, true);
@@ -173,14 +197,39 @@ class UserData {
     pref.setString(UserData.user_akses_str, data['data']['akses_menu'].toString());
     pref.setString(UserData.username7_str, data['data']['username7'].toString());
     pref.setString(UserData.listmenu_str, data['data']['list_menu'].toString());
+    // pref.getString('tokenApi', data['access_token'].toString());
     // if (data['akses'] == 'adm') {
     //   pref.setBool(UserData.isAdmin_str, true);
     // } else {
     //   pref.setBool(UserData.isAdmin_str, false);
     // }
+    var token = pref.getString('firebaseToken');
     await getPref();
     print('[LOGIN INFO] : Updated..!');
     printdevinfo();
+    print('adel manis');
+    print(getUserToken());
+    print(token);
+    print('adelia cantik');
+    try{
+          var formData = FormData.fromMap({
+          'device_token': '${token}',
+          });
+          var response = await dio.post(
+          '${tipeurl}api/v1/auth/fcm-token',
+          data: formData,
+          options: Options(
+          headers: {
+           'Authorization': 'Bearer ${getUserToken()}',
+            'Content-Type': 'application/json',
+             },
+             ),
+             );
+            print('send token');
+            print('send token adalah ${token}');
+             }catch(e){
+           print(e.toString()); 
+            }
     return;
   }
 

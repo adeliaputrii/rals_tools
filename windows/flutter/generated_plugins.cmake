@@ -3,9 +3,11 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  awesome_notifications
+  cloud_firestore
   file_selector_windows
+  firebase_core
   permission_handler_windows
-  platform_device_id_windows
   screen_brightness_windows
   url_launcher_windows
 )

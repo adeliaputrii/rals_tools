@@ -1,5 +1,10 @@
 buildscript {
     ext.kotlin_version = '1.7.10'
+    ext {
+        compileSdkVersion = 33
+        targetSdkVersion = 33
+        appCompactVersion = '1.4.2'
+    }
     repositories {
         google()
         mavenCentral()
@@ -8,6 +13,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.15'
     }
 }
 
@@ -15,6 +21,10 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven {
+            // [required] background_fetch
+            url "${project(':background_fetch').projectDir}/libs"
+        }
     }
 }
 
