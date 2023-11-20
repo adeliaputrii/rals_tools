@@ -1,4 +1,4 @@
-import 'package:barcode_flutter/barcode_flutter.dart';
+// import 'package:barcode_flutter/barcode_flutter.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
@@ -367,43 +367,43 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
                                     ),
                                   ]),
                             ),
-                            Container(
-                                child: _barcode
-                                    ? Container(
-                                        margin:
-                                            EdgeInsets.fromLTRB(10, 100, 10, 0),
-                                        child: Center(
-                                            child: BarCodeImage(
-                                          backgroundColor: Colors.white,
-                                          params: Code128BarCodeParams(
-                                            "${data}",
-                                            lineWidth:
-                                                1.5, // width for a single black/white bar (default: 2.0)
-                                            barHeight:
-                                                100, // height for the entire widget (default: 100.0)
-                                            withText:
-                                                false, // Render with text label or not (default: false)
-                                          ),
-                                          padding: EdgeInsets.only(bottom: 7),
-                                          onError: (error) {
-                                            // Error handler
-                                            print('error = $error');
-                                          },
-                                        )))
-                                    : Container(
-                                        margin: EdgeInsets.fromLTRB(
-                                            100, 50, 100, 0),
-                                        child: PrettyQr(
-                                          image: AssetImage(
-                                              'assets/ramayana(C).png'),
-                                          size: 200,
-                                          data: '$data',
-                                          errorCorrectLevel:
-                                              QrErrorCorrectLevel.M,
-                                          typeNumber: 7,
-                                          roundEdges: false,
-                                        ),
-                                      ))
+                            // Container(
+                            //     child: _barcode
+                            //         ? Container(
+                            //             margin:
+                            //                 EdgeInsets.fromLTRB(10, 100, 10, 0),
+                            //             child: Center(
+                            //                 child: BarCodeImage(
+                            //               backgroundColor: Colors.white,
+                            //               params: Code128BarCodeParams(
+                            //                 "${data}",
+                            //                 lineWidth:
+                            //                     1.5, // width for a single black/white bar (default: 2.0)
+                            //                 barHeight:
+                            //                     100, // height for the entire widget (default: 100.0)
+                            //                 withText:
+                            //                     false, // Render with text label or not (default: false)
+                            //               ),
+                            //               padding: EdgeInsets.only(bottom: 7),
+                            //               onError: (error) {
+                            //                 // Error handler
+                            //                 print('error = $error');
+                            //               },
+                            //             )))
+                            //         : Container(
+                            //             margin: EdgeInsets.fromLTRB(
+                            //                 100, 50, 100, 0),
+                            //             child: PrettyQr(
+                            //               image: AssetImage(
+                            //                   'assets/ramayana(C).png'),
+                            //               size: 200,
+                            //               data: '$data',
+                            //               errorCorrectLevel:
+                            //                   QrErrorCorrectLevel.M,
+                            //               typeNumber: 7,
+                            //               roundEdges: false,
+                            //             ),
+                            //           ))
                           ]),
                         )
 

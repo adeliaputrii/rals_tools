@@ -22,7 +22,8 @@ import 'package:myactivity_project/service/SP_service/SP_service.dart';
 import 'package:myactivity_project/settingsralstools.dart';
 import 'package:http/http.dart' as http;
 import 'package:myactivity_project/models/model_list_project.dart';
-import 'package:notification_permissions/notification_permissions.dart' as notifPermission;
+import 'package:notification_permissions/notification_permissions.dart'
+    as notifPermission;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:text_area/text_area.dart';
@@ -469,18 +470,20 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   Future<void> requestPermission() async {
     final permission = Permission.storage;
     print('permission');
-    await notifPermission.NotificationPermissions.requestNotificationPermissions;
-    await notifPermission.NotificationPermissions.getNotificationPermissionStatus();
+    await notifPermission
+        .NotificationPermissions.requestNotificationPermissions;
+    await notifPermission.NotificationPermissions
+        .getNotificationPermissionStatus();
     await Permission.manageExternalStorage.request();
 
     final result = await permission.request();
 
-    if(result == PermissionStatus.denied){
-     final requestStorageAgain= await Permission.storage.request();
-log("result permission $requestStorageAgain");
-     if(requestStorageAgain == PermissionStatus.denied){
-      throw Exception("Permission Storage is need");
-     }
+    if (result == PermissionStatus.denied) {
+      final requestStorageAgain = await Permission.storage.request();
+      log("result permission $requestStorageAgain");
+      if (requestStorageAgain == PermissionStatus.denied) {
+        throw Exception("Permission Storage is need");
+      }
     }
     if (Platform.isIOS) {
       bool storage = await Permission.storage.status.isGranted;
@@ -523,7 +526,7 @@ log("result permission $requestStorageAgain");
       _paths = (await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowMultiple: _multiPick,
-        allowedExtensions:['jpg', 'jpeg', 'png','xlsx', 'pdf'],
+        allowedExtensions: ['jpg', 'jpeg', 'png', 'xlsx', 'pdf'],
       ))
           ?.files;
     } on PlatformException catch (e) {
@@ -652,42 +655,39 @@ log("result permission $requestStorageAgain");
                           Container(
                             width: 350,
                             child: DropdownButton<String>(
-                                    value: selected,
-                                    hint: Text('${selected}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-
-                                      fontSize: 17, fontWeight: FontWeight.w500
-                                    ),
-                                    ),
-                                    onChanged: (value) {
-                                      print(value);
-                                      setState(() {
-                                         selected = value!;
-                                      });
-
-                                    },
-                                    items: resultProject.map((e) => DropdownMenuItem(
-                                      onTap: () {
-                                        MyactivityModel.myactivitymodel.forEach((element) {
-
-                                          if(e == element.project_desc) {
-                                            setState(() {
-
-                                              projectId = '${element.project_id}';
-                                              selected = projectId;
-
-                                            });
-                                          }
-                                        });
-                                      },
-                                      value: e,
-                                      child:
-                                     Text('${e}'),
-                                      )
-                                      ).toList(),
-
-                                  ),
+                              value: selected,
+                              hint: Text(
+                                '${selected}',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              onChanged: (value) {
+                                print(value);
+                                setState(() {
+                                  selected = value!;
+                                });
+                              },
+                              items: resultProject
+                                  .map((e) => DropdownMenuItem(
+                                        onTap: () {
+                                          MyactivityModel.myactivitymodel
+                                              .forEach((element) {
+                                            if (e == element.project_desc) {
+                                              setState(() {
+                                                projectId =
+                                                    '${element.project_id}';
+                                                selected = projectId;
+                                              });
+                                            }
+                                          });
+                                        },
+                                        value: e,
+                                        child: Text('${e}'),
+                                      ))
+                                  .toList(),
+                            ),
                           ),
                         ],
                       ),
@@ -720,43 +720,38 @@ log("result permission $requestStorageAgain");
                             // margin: EdgeInsets.only(right: 30),
                             width: 350,
                             child: DropdownButton<String>(
-
-                                    value: selectedTask,
-                                    hint: Text('${selectedTask}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-
-                                      fontSize: 17, fontWeight: FontWeight.w500
-                                    ),
-                                    ),
-                                    onChanged: (value) {
-                                      print(value);
-                                      setState(() {
-                                          selectedTask = value!;
-                                      });
-
-                                    },
-                                    items: result.map((e) => DropdownMenuItem(
-                                       onTap: () {
-                                        MyactivityModelTask.myactivitytask.forEach((element) {
-
-                                            if(e == element.task_desc) {
-                                            setState(() {
-
-                                              taskId = '${element.task_id}';
-                                              selectedTask = taskId;
-                                            });
-                                          }
-
-                                        });
-                                      },
-                                      value: e,
-                                      child:
-                                     Text('${e}'),
-                                      )
-                                      ).toList(),
-
-                                  ),
+                              value: selectedTask,
+                              hint: Text(
+                                '${selectedTask}',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              onChanged: (value) {
+                                print(value);
+                                setState(() {
+                                  selectedTask = value!;
+                                });
+                              },
+                              items: result
+                                  .map((e) => DropdownMenuItem(
+                                        onTap: () {
+                                          MyactivityModelTask.myactivitytask
+                                              .forEach((element) {
+                                            if (e == element.task_desc) {
+                                              setState(() {
+                                                taskId = '${element.task_id}';
+                                                selectedTask = taskId;
+                                              });
+                                            }
+                                          });
+                                        },
+                                        value: e,
+                                        child: Text('${e}'),
+                                      ))
+                                  .toList(),
+                            ),
                           ),
                         ],
                       ),
@@ -825,7 +820,7 @@ log("result permission $requestStorageAgain");
                                                 button: TextStyle(
                                                     color: Colors.black),
                                               ),
-                                              accentColor: Colors.black,
+                                              hintColor: Colors.black,
                                               colorScheme: ColorScheme.light(
                                                   primary: Color.fromARGB(
                                                       255, 255, 17, 17),
@@ -928,7 +923,7 @@ log("result permission $requestStorageAgain");
                                                     button: TextStyle(
                                                         color: Colors.black),
                                                   ),
-                                                  accentColor: Colors.black,
+                                                  hintColor: Colors.black,
                                                   colorScheme:
                                                       ColorScheme.light(
                                                           primary:
@@ -1139,7 +1134,6 @@ log("result permission $requestStorageAgain");
                           height: 50,
                           color: Color.fromARGB(255, 255, 17, 17),
                           onPressed: () async {
-                            
                             _loadingPath = false;
                             print(edit);
                             popupEdit();
@@ -1164,208 +1158,213 @@ log("result permission $requestStorageAgain");
                           height: 50,
                           color: Color.fromARGB(255, 255, 17, 17),
                           onPressed: () async {
-                            
                             print(edit);
                             if (_formKey.currentState!.validate()) {
-                              
                               MyActivity apiMyactivity = MyActivity();
 
                               print('edit : ${edit}');
                               print('loading : ${up}');
                               //1x save
-                              if(sendDataApi == false) {
+                              if (sendDataApi == false) {
                                 sendDataApi = true;
-                                
-                              if (edit == true) {
-                                if (_paths != null) {
-                                  var formData = FormData.fromMap({
-                                    'user_create': '${userData.getUsername7()}',
-                                    'time_start': timeStart.text,
-                                    'time_end': timeEnd.text,
-                                    'task_id': taskId == ''
-                                        ? 'P202300001-001'
-                                        : taskId,
-                                    'projek_id': projectId == ''
-                                        ? 'P202300001'
-                                        : projectId,
-                                    'myactivity_id': idEdit,
-                                    'myactivity_desc': desc.text,
-                                    'date_create': dateInput,
-                                    'dokumen':   await MultipartFile.fromFile(
-                                      file!.path,
-                                      filename: '${nameFile}'
-                                    ) ,
-                                    'beforedokumen': '${dokumen}'
-                                  });
 
-                                  var response = await dio.post(
-                                      '${tipeurl}v1/activity/updateDailyActivity',
-                                      data: formData);
+                                if (edit == true) {
+                                  if (_paths != null) {
+                                    var formData = FormData.fromMap({
+                                      'user_create':
+                                          '${userData.getUsername7()}',
+                                      'time_start': timeStart.text,
+                                      'time_end': timeEnd.text,
+                                      'task_id': taskId == ''
+                                          ? 'P202300001-001'
+                                          : taskId,
+                                      'projek_id': projectId == ''
+                                          ? 'P202300001'
+                                          : projectId,
+                                      'myactivity_id': idEdit,
+                                      'myactivity_desc': desc.text,
+                                      'date_create': dateInput,
+                                      'dokumen': await MultipartFile.fromFile(
+                                          file!.path,
+                                          filename: '${nameFile}'),
+                                      'beforedokumen': '${dokumen}'
+                                    });
 
-                                      AndroidDeviceInfo info =
-                                  await deviceInfo.androidInfo;
-                              var formDataLog = FormData.fromMap({
-                                'progname': 'RALS_TOOLS ',
-                                'versi': '${versi}',
-                                'date_run': '${DateTime.now()}',
-                                'info1': 'My Activity - Edit My Activity',
-                                ' info2': '${_udid} ',
-                                'userid': '${userData.getUsernameID()}',
-                                ' toko': '${userData.getUserToko()}',
-                                ' devicename': '${info.device}',
-                                'TOKEN': 'R4M4Y4N4'
-                              });
-                              print('berhasil $_udid');
-                               var responseLog =
-                                await dio.post('${tipeurl}v1/activity/createmylog', data: formDataLog);
-                            print('berhasil $_udid');
+                                    var response = await dio.post(
+                                        '${tipeurl}v1/activity/updateDailyActivity',
+                                        data: formData);
+
+                                    AndroidDeviceInfo info =
+                                        await deviceInfo.androidInfo;
+                                    var formDataLog = FormData.fromMap({
+                                      'progname': 'RALS_TOOLS ',
+                                      'versi': '${versi}',
+                                      'date_run': '${DateTime.now()}',
+                                      'info1': 'My Activity - Edit My Activity',
+                                      ' info2': '${_udid} ',
+                                      'userid': '${userData.getUsernameID()}',
+                                      ' toko': '${userData.getUserToko()}',
+                                      ' devicename': '${info.device}',
+                                      'TOKEN': 'R4M4Y4N4'
+                                    });
+                                    print('berhasil $_udid');
+                                    var responseLog = await dio.post(
+                                        '${tipeurl}v1/activity/createmylog',
+                                        data: formDataLog);
+                                    print('berhasil $_udid');
+                                  } else {
+                                    var formData = FormData.fromMap({
+                                      'user_create':
+                                          '${userData.getUsername7()}',
+                                      'time_start': timeStart.text,
+                                      'time_end': timeEnd.text,
+                                      'task_id': taskId == ''
+                                          ? 'P202300001-001'
+                                          : taskId,
+                                      'projek_id': projectId == ''
+                                          ? 'P202300001'
+                                          : projectId,
+                                      'myactivity_id': idEdit,
+                                      'myactivity_desc': desc.text,
+                                      'date_create': dateInput,
+                                      'dokumen': '${dokumenEdit}',
+                                      'beforedokumen': '${dokumen}'
+                                    });
+
+                                    var response = await dio.post(
+                                        '${tipeurl}v1/activity/updateDailyActivity',
+                                        data: formData);
+
+                                    AndroidDeviceInfo info =
+                                        await deviceInfo.androidInfo;
+                                    var formDataLog = FormData.fromMap({
+                                      'progname': 'RALS_TOOLS ',
+                                      'versi': '${versi}',
+                                      'date_run': '${DateTime.now()}',
+                                      'info1': 'My Activity - Edit My Activity',
+                                      ' info2': '${_udid} ',
+                                      'userid': '${userData.getUsernameID()}',
+                                      ' toko': '${userData.getUserToko()}',
+                                      ' devicename': '${info.device}',
+                                      'TOKEN': 'R4M4Y4N4'
+                                    });
+                                    print('berhasil $_udid');
+                                    var responseLog = await dio.post(
+                                        '${tipeurl}v1/activity/createmylog',
+                                        data: formDataLog);
+                                    print('berhasil $_udid');
+                                  }
+
+                                  print('file : ${file}');
+                                  print('DATA EDIT');
+
+                                  print('DATA Input');
                                 } else {
-                                  var formData = FormData.fromMap({
-                                    'user_create': '${userData.getUsername7()}',
-                                    'time_start': timeStart.text,
-                                    'time_end': timeEnd.text,
-                                    'task_id': taskId == ''
-                                        ? 'P202300001-001'
-                                        : taskId,
-                                    'projek_id': projectId == ''
-                                        ? 'P202300001'
-                                        : projectId,
-                                    'myactivity_id': idEdit,
-                                    'myactivity_desc': desc.text,
-                                    'date_create': dateInput,
-                                    'dokumen': '${dokumenEdit}',
-                                    'beforedokumen': '${dokumen}'
-                                  });
+                                  if (_paths != null) {
+                                    var formData = FormData.fromMap({
+                                      'user_create':
+                                          '${userData.getUsername7()}',
+                                      'time_start': timeStart.text,
+                                      'time_end': timeEnd.text,
+                                      'task_id': taskId == ''
+                                          ? 'P202300001-001'
+                                          : taskId,
+                                      'projek_id': projectId == ''
+                                          ? 'P202300001'
+                                          : projectId,
+                                      'myactivity_status': null,
+                                      'myactivity_desc': desc.text,
+                                      'date_create': dateInput,
+                                      'dokumen': await MultipartFile.fromFile(
+                                          file!.path,
+                                          filename: '${nameFile}')
+                                    });
 
-                                  var response = await dio.post(
-                                      '${tipeurl}v1/activity/updateDailyActivity',
-                                      data: formData);
+                                    var response = await dio.post(
+                                        '${tipeurl}v1/activity/create_daily_activity',
+                                        data: formData);
 
-                                       AndroidDeviceInfo info =
-                                  await deviceInfo.androidInfo;
-                              var formDataLog = FormData.fromMap({
-                                'progname': 'RALS_TOOLS ',
-                                'versi': '${versi}',
-                                'date_run': '${DateTime.now()}',
-                                'info1': 'My Activity - Edit My Activity',
-                                ' info2': '${_udid} ',
-                                'userid': '${userData.getUsernameID()}',
-                                ' toko': '${userData.getUserToko()}',
-                                ' devicename': '${info.device}',
-                                'TOKEN': 'R4M4Y4N4'
-                              });
-                              print('berhasil $_udid');
-                              var responseLog =
-                                await dio.post('${tipeurl}v1/activity/createmylog', data: formDataLog);
-                            print('berhasil $_udid');
+                                    AndroidDeviceInfo info =
+                                        await deviceInfo.androidInfo;
+                                    var formDataLog = FormData.fromMap({
+                                      'progname': 'RALS_TOOLS ',
+                                      'versi': '${versi}',
+                                      'date_run': '${DateTime.now()}',
+                                      'info1':
+                                          'My Activity - Input My Activity',
+                                      ' info2': '${_udid} ',
+                                      'userid': '${userData.getUsernameID()}',
+                                      ' toko': '${userData.getUserToko()}',
+                                      ' devicename': '${info.device}',
+                                      'TOKEN': 'R4M4Y4N4'
+                                    });
+                                    print('berhasil $_udid');
+                                    var responseLog = await dio.post(
+                                        '${tipeurl}v1/activity/createmylog',
+                                        data: formDataLog);
+                                    print('berhasil $_udid');
+                                  } else {
+                                    var formData = FormData.fromMap({
+                                      'user_create':
+                                          '${userData.getUsername7()}',
+                                      'time_start': timeStart.text,
+                                      'time_end': timeEnd.text,
+                                      'task_id': taskId == ''
+                                          ? 'P202300001-001'
+                                          : taskId,
+                                      'projek_id': projectId == ''
+                                          ? 'P202300001'
+                                          : projectId,
+                                      'myactivity_status': null,
+                                      'myactivity_desc': desc.text,
+                                      'date_create': dateInput,
+                                    });
+
+                                    var response = await dio.post(
+                                        '${tipeurl}v1/activity/create_daily_activity',
+                                        data: formData);
+
+                                    AndroidDeviceInfo info =
+                                        await deviceInfo.androidInfo;
+                                    var formDataLog = FormData.fromMap({
+                                      'progname': 'RALS_TOOLS ',
+                                      'versi': '${versi}',
+                                      'date_run': '${DateTime.now()}',
+                                      'info1':
+                                          'My Activity - Input My Activity',
+                                      ' info2': '${_udid} ',
+                                      'userid': '${userData.getUsernameID()}',
+                                      ' toko': '${userData.getUserToko()}',
+                                      ' devicename': '${info.device}',
+                                      'TOKEN': 'R4M4Y4N4'
+                                    });
+                                    print('berhasil $_udid');
+                                    var responseLog = await dio.post(
+                                        '${tipeurl}v1/activity/createmylog',
+                                        data: formDataLog);
+                                    print('berhasil $_udid');
+                                  }
                                 }
 
-                                print('file : ${file}');
-                                print('DATA EDIT');
-
-                                print('DATA Input');
-                              } else {
-                                if (_paths != null) {
-                                  var formData = FormData.fromMap({
-                                    'user_create': '${userData.getUsername7()}',
-                                    'time_start': timeStart.text,
-                                    'time_end': timeEnd.text,
-                                    'task_id': taskId == ''
-                                        ? 'P202300001-001'
-                                        : taskId,
-                                    'projek_id': projectId == ''
-                                        ? 'P202300001'
-                                        : projectId,
-                                    'myactivity_status': null,
-                                    'myactivity_desc': desc.text,
-                                    'date_create': dateInput,
-                                    'dokumen':   await MultipartFile.fromFile(
-                                      file!.path,
-                                      filename: '${nameFile}'
-                                    )
-                                  });
-
-                                  var response = await dio.post(
-                                      '${tipeurl}v1/activity/create_daily_activity',
-                                      data: formData);
-
-                                       AndroidDeviceInfo info =
-                                  await deviceInfo.androidInfo;
-                              var formDataLog = FormData.fromMap({
-                                'progname': 'RALS_TOOLS ',
-                                'versi': '${versi}',
-                                'date_run': '${DateTime.now()}',
-                                'info1': 'My Activity - Input My Activity',
-                                ' info2': '${_udid} ',
-                                'userid': '${userData.getUsernameID()}',
-                                ' toko': '${userData.getUserToko()}',
-                                ' devicename': '${info.device}',
-                                'TOKEN': 'R4M4Y4N4'
-                              });
-                              print('berhasil $_udid');
-                              var responseLog =
-                                await dio.post('${tipeurl}v1/activity/createmylog', data: formDataLog);
-                            print('berhasil $_udid');
-                                } else {
-                                  var formData = FormData.fromMap({
-                                    'user_create': '${userData.getUsername7()}',
-                                    'time_start': timeStart.text,
-                                    'time_end': timeEnd.text,
-                                    'task_id': taskId == ''
-                                        ? 'P202300001-001'
-                                        : taskId,
-                                    'projek_id': projectId == ''
-                                        ? 'P202300001'
-                                        : projectId,
-                                    'myactivity_status': null,
-                                    'myactivity_desc': desc.text,
-                                    'date_create': dateInput,
-                                  });
-
-                                  var response = await dio.post(
-                                      '${tipeurl}v1/activity/create_daily_activity',
-                                      data: formData);
-
-                                      AndroidDeviceInfo info =
-                                  await deviceInfo.androidInfo;
-                              var formDataLog = FormData.fromMap({
-                                'progname': 'RALS_TOOLS ',
-                                'versi': '${versi}',
-                                'date_run': '${DateTime.now()}',
-                                'info1': 'My Activity - Input My Activity',
-                                ' info2': '${_udid} ',
-                                'userid': '${userData.getUsernameID()}',
-                                ' toko': '${userData.getUserToko()}',
-                                ' devicename': '${info.device}',
-                                'TOKEN': 'R4M4Y4N4'
-                              });
-                              print('berhasil $_udid');
-                              var responseLog =
-                                await dio.post('${tipeurl}v1/activity/createmylog', data: formDataLog);
-                            print('berhasil $_udid');
-                                }
+                                print(
+                                    'Berhasil ${dokumen} ${dokumenEdit}, ${selectedTask}, ${timeStart.text}, ${timeStart.text}, ${timeStart.text},');
+                                popup();
+                                uploadEdit = false;
+                                timeStart.clear();
+                                timeEnd.clear();
+                                desc.clear();
+                                selected = 'Reguler';
+                                selectedTask = 'My Task';
+                                _paths = null;
+                                up = false;
+                                setState(() {
+                                  fetchEdit(
+                                      user_create:
+                                          '${userData.getUsername7()}');
+                                  edit = false;
+                                });
                               }
-
-                              
-                              print(
-                                  'Berhasil ${dokumen} ${dokumenEdit}, ${selectedTask}, ${timeStart.text}, ${timeStart.text}, ${timeStart.text},');
-                              popup();
-                              uploadEdit = false;
-                              timeStart.clear();
-                              timeEnd.clear();
-                              desc.clear();
-                              selected = 'Reguler';
-                              selectedTask = 'My Task';
-                              _paths = null;
-                              up = false;
-                              setState(() {
-                                fetchEdit(
-                                    user_create: '${userData.getUsername7()}');
-                                edit = false;
-                              });
-                            }
-                            }
-                            else {
+                            } else {
                               print('sudah input/edit');
                             }
                             //save data 1x
@@ -1385,12 +1384,15 @@ log("result permission $requestStorageAgain");
           )
         ]));
   }
-  DropdownMenuItem<String> buildMenuItem(String item) =>
-  DropdownMenuItem(
-    value: item,
-    child: Text(
-      item,
-      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 13, color: Color.fromARGB(255, 255, 17, 17)),
-    ),
-  );
+
+  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
+        value: item,
+        child: Text(
+          item,
+          style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 13,
+              color: Color.fromARGB(255, 255, 17, 17)),
+        ),
+      );
 }

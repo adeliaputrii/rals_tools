@@ -49,7 +49,7 @@ import 'package:tbib_splash_screen/splash_screen_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:barcode_flutter/barcode_flutter.dart';
+// import 'package:barcode_flutter/barcode_flutter.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -58,10 +58,8 @@ import 'package:launch_review/launch_review.dart';
 import 'package:myactivity_project/settingsralstools.dart';
 import 'package:flutter/src/foundation/key.dart';
 
-
 class Ramayana extends StatefulWidget {
   const Ramayana({super.key});
-
 
   @override
   State<Ramayana> createState() => _RamayanaState();
@@ -100,8 +98,6 @@ class _RamayanaState extends State<Ramayana> {
 
   @override
   void initState() {
-    
-    
     UserData userData = UserData();
     super.initState();
     initPlatformState();
@@ -117,40 +113,34 @@ class _RamayanaState extends State<Ramayana> {
     dapetinData();
     print('tes 555');
     print('uutt66');
-
-
-
-
-
   }
 
   Future<void> requestPermission() async {
-  // DeviceInfoPlugin plugin = DeviceInfoPlugin();
-  // bool permissionGranted;
-  // AndroidDeviceInfo android = await plugin.androidInfo;
-  final permission = Permission.phone;
-  final result = await permission.request();
-  String phoneNumber = await GetPhoneNumber().get();
+    // DeviceInfoPlugin plugin = DeviceInfoPlugin();
+    // bool permissionGranted;
+    // AndroidDeviceInfo android = await plugin.androidInfo;
+    final permission = Permission.phone;
+    final result = await permission.request();
+    String phoneNumber = await GetPhoneNumber().get();
     print('getPhoneNumber result: $phoneNumber');
 
-  // if(android.version.sdkInt < 33) {
-  //   if(await Permission.storage.request().isGranted) {
-  //     setState(() {
-  //       permissionGranted = true;
-  //     });
-  //   } else if (await Permission.storage.request().isPermanentlyDenied) {
-  //     await openAppSettings();
-  //   } else if (await Permission.storage.request().isDenied) {
-  //     setState(() {
-  //       permissionGranted = false;
-  //     });
-  //   } else {
-  //     setState(() {
-  //       permissionGranted = true;
-  //     });
-  //   }
-  // }
-
+    // if(android.version.sdkInt < 33) {
+    //   if(await Permission.storage.request().isGranted) {
+    //     setState(() {
+    //       permissionGranted = true;
+    //     });
+    //   } else if (await Permission.storage.request().isPermanentlyDenied) {
+    //     await openAppSettings();
+    //   } else if (await Permission.storage.request().isDenied) {
+    //     setState(() {
+    //       permissionGranted = false;
+    //     });
+    //   } else {
+    //     setState(() {
+    //       permissionGranted = true;
+    //     });
+    //   }
+    // }
 
 //   final permission = Permission.storage;
 //   print('permission');
@@ -194,61 +184,52 @@ class _RamayanaState extends State<Ramayana> {
 // }
 
     if (result.isGranted) {
-     print('diijinkan');
-     
+      print('diijinkan');
     } else if (result.isDenied) {
       print('ditolak');
-    
-    Permission.photos.request();
-    Permission.videos.request();
-    Permission.audio.request();
-    openAppSettings();
+
+      Permission.photos.request();
+      Permission.videos.request();
+      Permission.audio.request();
+      openAppSettings();
     } else if (result.isLimited) {
       print('limit');
-    await NotificationPermissions.requestNotificationPermissions;
-    await NotificationPermissions.getNotificationPermissionStatus();
-    await Permission.storage.request();
-    await Permission.manageExternalStorage.request();
+      await NotificationPermissions.requestNotificationPermissions;
+      await NotificationPermissions.getNotificationPermissionStatus();
+      await Permission.storage.request();
+      await Permission.manageExternalStorage.request();
     } else if (result.isRestricted) {
       print('restricted');
-    await NotificationPermissions.requestNotificationPermissions;
-    await NotificationPermissions.getNotificationPermissionStatus();
-    await Permission.storage.request();
-    await Permission.manageExternalStorage.request();
-    }else if (result.isPermanentlyDenied) {
+      await NotificationPermissions.requestNotificationPermissions;
+      await NotificationPermissions.getNotificationPermissionStatus();
+      await Permission.storage.request();
+      await Permission.manageExternalStorage.request();
+    } else if (result.isPermanentlyDenied) {
       print('permanen');
       await NotificationPermissions.requestNotificationPermissions;
-    await NotificationPermissions.getNotificationPermissionStatus();
-    await Permission.storage.request();
-    await Permission.manageExternalStorage.request();
-    Permission.photos.request();
-    Permission.videos.request();
-    Permission.audio.request();
+      await NotificationPermissions.getNotificationPermissionStatus();
+      await Permission.storage.request();
+      await Permission.manageExternalStorage.request();
+      Permission.photos.request();
+      Permission.videos.request();
+      Permission.audio.request();
       openAppSettings();
     } else {
       print('else');
       await NotificationPermissions.requestNotificationPermissions;
-    await NotificationPermissions.getNotificationPermissionStatus();
-    await Permission.storage.request();
-    await Permission.manageExternalStorage.request();
+      await NotificationPermissions.getNotificationPermissionStatus();
+      await Permission.storage.request();
+      await Permission.manageExternalStorage.request();
       openAppSettings();
       print('else');
     }
     print('number');
-  print(Permission.phone);
-}
-
-
+    print(Permission.phone);
+  }
 
   //  requestPermission() async {
 
-
-
-
   // }
-
-
-  
 
   Future<void> deleteToko() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -266,19 +247,18 @@ class _RamayanaState extends State<Ramayana> {
   }
 
   imei() async {
-     AndroidDeviceInfo info = await deviceInfo.androidInfo;
+    AndroidDeviceInfo info = await deviceInfo.androidInfo;
     var code = "${userData.getUsername7()}+${info.id}+${info.device}";
     var ascAdel = AsciiEncoder().convert(code);
     var str = ascAdel.join("");
     String message = '';
-  for (int code in ascAdel) {
-    message += String.fromCharCode(code);
-  }
-  print('encode : ${message}');
-  print(str);
+    for (int code in ascAdel) {
+      message += String.fromCharCode(code);
+    }
+    print('encode : ${message}');
+    print(str);
     print('asqi : ${ascAdel}');
   }
-  
 
   Future<void> initPlatformState() async {
     String udid;
@@ -294,8 +274,6 @@ class _RamayanaState extends State<Ramayana> {
       _udid = udid;
     });
   }
-
-
 
   logoutPressed() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -332,7 +310,8 @@ class _RamayanaState extends State<Ramayana> {
               'versi': '${versi}',
               'date_run': '${DateTime.now()}',
               'info1': 'Logout Aplikasi RALS',
-              ' info2': '${_udid} ', //ini disini yang imei ya del? iya pak. ini lari nya kemana ya del isi nya? -reza sebentar pak, saya ijin ke belakang
+              ' info2':
+                  '${_udid} ', //ini disini yang imei ya del? iya pak. ini lari nya kemana ya del isi nya? -reza sebentar pak, saya ijin ke belakang
 
               'userid': '${userData.getUsernameID()}',
               ' toko': '${userData.getUserToko()}',
@@ -365,15 +344,17 @@ class _RamayanaState extends State<Ramayana> {
     for (var element in split) {
       if (element == 'masteridcash.idcash') {
         data.add(element);
-      } if (element == 'mastervoid.void') {
+      }
+      if (element == 'mastervoid.void') {
         data.add(element);
-      //    } if (element == 'approvalreturn.approvalreturn') {
-      //   data.add(element);
-      // } if (element == 'cekprice.cekprice') {
-      //   data.add(element);
-      //    } if (element == 'tukarpoin.tukarpoin') {
-      //   data.add(element);
-       } if (element == 'myactivity.activity') {
+        //    } if (element == 'approvalreturn.approvalreturn') {
+        //   data.add(element);
+        // } if (element == 'cekprice.cekprice') {
+        //   data.add(element);
+        //    } if (element == 'tukarpoin.tukarpoin') {
+        //   data.add(element);
+      }
+      if (element == 'myactivity.activity') {
         data.add(element);
         // } if (element == 'comchek.approvedcomchek') {
         // data.add(element);
@@ -382,7 +363,6 @@ class _RamayanaState extends State<Ramayana> {
       // if (element == 'comchek.historycomchek') {
       //   HakAkses.hakaksesSubmenuComcek.add(element);
       //   }
-      
     }
     print('data : $data');
     // split.forEach((element) {
@@ -394,7 +374,6 @@ class _RamayanaState extends State<Ramayana> {
     // },);
     return RelativeBuilder(builder: (context, height, width, sy, sx) {
       return Scaffold(
-        
           backgroundColor: Theme.of(context).canvasColor,
           extendBody: true,
           appBar: AppBar(
@@ -474,7 +453,7 @@ class _RamayanaState extends State<Ramayana> {
                 //     margin: EdgeInsets.fromLTRB(50, 40, 50, 30),
                 //     child:
                 //     Center(
-                //       child: 
+                //       child:
                 //       Column(
                 //         children: [
                 //           Row(
@@ -499,7 +478,7 @@ class _RamayanaState extends State<Ramayana> {
                 //                             MaterialPageRoute(builder: (_) {
                 //                           return RamayanaMyActivity();
                 //                         }));
-                                        
+
                 //                       },
                 //                       child: Icon(
                 //                         Icons.add_circle,
@@ -532,7 +511,7 @@ class _RamayanaState extends State<Ramayana> {
                 //                               BorderRadius.circular(50)),
                 //                       color: Color.fromARGB(255, 255, 17, 17),
                 //                       onPressed: () async {
-                                      
+
                 //                       },
                 //                       child: Icon(
                 //                         Icons.edit_document,
@@ -740,7 +719,7 @@ class _RamayanaState extends State<Ramayana> {
                 //                         fontSize: 16,
                 //                         fontWeight: FontWeight.bold),
                 //                   )
-                                 
+
                 //                 ],
                 //               ),
                 //            Column(
@@ -811,403 +790,392 @@ class _RamayanaState extends State<Ramayana> {
                 //             ),
                 //         ],
                 //       ),
-             
+
                 //     )
-           
-                    //   Wrap(
-                    //  spacing: 10.0, // spacing between adjacent children
-                    //   runSpacing: 7.0, // spacing between rows of children
-                    //   alignment: WrapAlignment.spaceAround, // horizontal alignment
-                    //   runAlignment: WrapAlignment.spaceEvenly,
-                    // // sadadsadasdas ngelek
-                    // //kalo sebelumnya saya kasi sini pak
-                    //    children:
-                    //    split.map((e) {
-                    //     //sinii
-                    //       print('hihi 555');
-                    //       var namaAkses = e;
 
-                    //             getNameLog() {
-                    //               var namaAkses = '${e}';
-                    //               List menu1 = namaAkses.split(':');
-                    //               print('menu0 = ${menu1[0]}');
-                    //               if (menu1[0] == ' idcash') {
-                    //                 return 'ID CASH';
-                    //               } else if (menu1[0] == 'idcash') {
-                    //                 return 'IDCASH';
-                    //               } else if (menu1[0] == 'approval') {
-                    //                 return 'Approval Return';
-                    //               } else if (menu1[0] == ' approval') {
-                    //                 return 'Approval Return';
-                    //               } else if (menu1[0] == 'void') {
-                    //                 return 'VOID';
-                    //               }  else if (menu1[0] == ' void') {
-                    //                 return 'VOID';
-                    //               }else 'yuhu';
-                    //               return namaAkses;
-                    //             }
+                //   Wrap(
+                //  spacing: 10.0, // spacing between adjacent children
+                //   runSpacing: 7.0, // spacing between rows of children
+                //   alignment: WrapAlignment.spaceAround, // horizontal alignment
+                //   runAlignment: WrapAlignment.spaceEvenly,
+                // // sadadsadasdas ngelek
+                // //kalo sebelumnya saya kasi sini pak
+                //    children:
+                //    split.map((e) {
+                //     //sinii
+                //       print('hihi 555');
+                //       var namaAkses = e;
 
-                    //              getIcon() {
-                    //                var namaAkses = '${e}';
-                    //               List menu1 = namaAkses.split(':');
-                    //               print(menu1);
-                    //               if (menu1[0] == ' idcash') {
-                    //                 return
-                    //                 Icon(Icons.credit_score_rounded,
-                    //                   size: 35,
-                    //                   color: Colors.white,
-                    //                   );
-                    //               } else if (menu1[0] == 'idcash') {
-                    //                 return
-                    //                 Icon(Icons.credit_score_rounded,
-                    //                   size: 35,
-                    //                   color: Colors.white,
-                    //                   );
-                    //               } else if (menu1[0] == 'approval') {
-                    //                 return
-                    //                 Icon(Icons.edit_document,
-                    //                   size: 35,
-                    //                   color: Colors.white,
-                    //                   );
-                    //               }  else if (menu1[0] == ' approval') {
-                    //                 return
-                    //                 Icon(Icons.edit_document,
-                    //                   size: 35,
-                    //                   color: Colors.white,
-                    //                   );
-                    //               }else if (menu1[0] == ' void') {
-                    //                 return
-                    //                  Icon(Icons.document_scanner_rounded,
-                    //                   size: 35,
-                    //                   color: Colors.white,
-                    //                   );
+                //             getNameLog() {
+                //               var namaAkses = '${e}';
+                //               List menu1 = namaAkses.split(':');
+                //               print('menu0 = ${menu1[0]}');
+                //               if (menu1[0] == ' idcash') {
+                //                 return 'ID CASH';
+                //               } else if (menu1[0] == 'idcash') {
+                //                 return 'IDCASH';
+                //               } else if (menu1[0] == 'approval') {
+                //                 return 'Approval Return';
+                //               } else if (menu1[0] == ' approval') {
+                //                 return 'Approval Return';
+                //               } else if (menu1[0] == 'void') {
+                //                 return 'VOID';
+                //               }  else if (menu1[0] == ' void') {
+                //                 return 'VOID';
+                //               }else 'yuhu';
+                //               return namaAkses;
+                //             }
 
-                    //               }else if (menu1[0] == 'void') {
-                    //                 return
-                    //                  Icon(Icons.document_scanner_rounded,
-                    //                   size: 35,
-                    //                   color: Colors.white,
-                    //                   );
+                //              getIcon() {
+                //                var namaAkses = '${e}';
+                //               List menu1 = namaAkses.split(':');
+                //               print(menu1);
+                //               if (menu1[0] == ' idcash') {
+                //                 return
+                //                 Icon(Icons.credit_score_rounded,
+                //                   size: 35,
+                //                   color: Colors.white,
+                //                   );
+                //               } else if (menu1[0] == 'idcash') {
+                //                 return
+                //                 Icon(Icons.credit_score_rounded,
+                //                   size: 35,
+                //                   color: Colors.white,
+                //                   );
+                //               } else if (menu1[0] == 'approval') {
+                //                 return
+                //                 Icon(Icons.edit_document,
+                //                   size: 35,
+                //                   color: Colors.white,
+                //                   );
+                //               }  else if (menu1[0] == ' approval') {
+                //                 return
+                //                 Icon(Icons.edit_document,
+                //                   size: 35,
+                //                   color: Colors.white,
+                //                   );
+                //               }else if (menu1[0] == ' void') {
+                //                 return
+                //                  Icon(Icons.document_scanner_rounded,
+                //                   size: 35,
+                //                   color: Colors.white,
+                //                   );
 
-                    //               } else return
-                    //                Icon(Icons.menu,
-                    //                   size: 35,
-                    //                   color: Colors.white,
-                    //                   );
-                    //             }
+                //               }else if (menu1[0] == 'void') {
+                //                 return
+                //                  Icon(Icons.document_scanner_rounded,
+                //                   size: 35,
+                //                   color: Colors.white,
+                //                   );
 
-                    //       return
-                    //     Column(
-                    //       children: [
-                    //         MaterialButton(
-                    //                               minWidth:  MediaQuery.of(context).size.width/6,
-                    //                               height:  MediaQuery.of(context).size.height/13,
-                    //                               shape: RoundedRectangleBorder(
-                    //                               borderRadius: BorderRadius.circular(50)
-                    //                               ),
-                    //                               color: Color.fromARGB(255, 255, 17, 17),
-                    //                               onPressed: ()async {
-                    //                                  AndroidDeviceInfo info = await deviceInfo.androidInfo;
-                    //                                  var formData = FormData.fromMap({
-                    //                             'progname': 'RALS_TOOLS ',
-                    //                             'versi': '2.12 v.2',
-                    //                             'date_run': '${DateTime.now()}',
-                    //                             'info1': '${getNameLog()}',
-                    //                             ' info2': '${_udid} ',
-                    //                             'userid': '${userData.getUsernameID()}',
-                    //                             ' toko': '${userData.getUserToko()}',
-                    //                             ' devicename': '${info.device}',
-                    //                             'TOKEN': 'R4M4Y4N4'
-                    //                           });
-                    //
-                    //
-                    //                           var tipeurl = '${prod}';
-                    //                           var response = await dio.post(
-                    //                               '${tipeurl}v1/activity/createmylog',
-                    //                               data: formData);
-                    //                               print('berhasil $_udid');
-                    //                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_){
-                    //                                   var namaAkses = '${e}';
-                    //                                   List menu1 = namaAkses.split(':');
-                    //                                 if (menu1[0] == ' idcash') {
-                    //                                     ApprovalReturnMenu.idcashmenu.add(menu1[1]);
-                    //                                     print(ApprovalReturnMenu.idcashmenu);
-                    //                                     if (ApprovalReturnMenu.idcashmenu.isNotEmpty) {
-                    //                                       ApprovalReturnMenu.idcashmenu.removeWhere((element) => element == menu1[1]);
-                    //                                       ApprovalReturnMenu.idcashmenu.add(menu1[1]);
-                    //                                     }
-                    //                                   return RamayanaIDCash();
-                    //                                 } else  if (menu1[0] == 'idcash') {
-                    //                                     ApprovalReturnMenu.idcashmenu.add(menu1[1]);
-                    //                                     print(ApprovalReturnMenu.idcashmenu);
-                    //                                      if (ApprovalReturnMenu.idcashmenu.isNotEmpty) {
-                    //                                       ApprovalReturnMenu.idcashmenu.removeWhere((element) => element == menu1[1]);
-                    //                                       ApprovalReturnMenu.idcashmenu.add(menu1[1]);
-                    //                                     }
-                    //                                   return RamayanaIDCash();
-                    //                                 } else if (menu1[0] == 'approval') {
-                    //                                   ApprovalReturnMenu.approvalmenu.add(menu1[1]);
-                    //                                     print(ApprovalReturnMenu.approvalmenu);
-                    //                                      if (ApprovalReturnMenu.approvalmenu.isNotEmpty) {
-                    //                                       ApprovalReturnMenu.approvalmenu.removeWhere((element) => element == menu1[1]);
-                    //                                       ApprovalReturnMenu.approvalmenu.add(menu1[1]);
-                    //                                     }
-                    //                                   return RamayanaApprovalSubmenu();
-                    //                                  } else if (menu1[0] == ' approval') {
-                    //                                   ApprovalReturnMenu.approvalmenu.add(menu1[1]);
-                    //                                     print(ApprovalReturnMenu.approvalmenu);
-                    //                                      if (ApprovalReturnMenu.approvalmenu.isNotEmpty) {
-                    //                                       ApprovalReturnMenu.approvalmenu.removeWhere((element) => element == menu1[1]);
-                    //                                       ApprovalReturnMenu.approvalmenu.add(menu1[1]);
-                    //                                     }
-                    //                                   return RamayanaApprovalSubmenu();
-                    //                                  } else if (menu1[0] == ' void') {
-                    //                                    return Blank();
-                    //                                 } else if (menu1[0] == 'void') {
-                    //                                    return Blank();
-                    //                                 } else return Ramayana();
-                    //                                   }));
-                    //                               },
-                    //                               child:
-                    //                              getIcon()
-                    //                               ),
+                //               } else return
+                //                Icon(Icons.menu,
+                //                   size: 35,
+                //                   color: Colors.white,
+                //                   );
+                //             }
 
-                    //                           SizedBox(
-                    //                           height: 10,
-                    //                           ),
+                //       return
+                //     Column(
+                //       children: [
+                //         MaterialButton(
+                //                               minWidth:  MediaQuery.of(context).size.width/6,
+                //                               height:  MediaQuery.of(context).size.height/13,
+                //                               shape: RoundedRectangleBorder(
+                //                               borderRadius: BorderRadius.circular(50)
+                //                               ),
+                //                               color: Color.fromARGB(255, 255, 17, 17),
+                //                               onPressed: ()async {
+                //                                  AndroidDeviceInfo info = await deviceInfo.androidInfo;
+                //                                  var formData = FormData.fromMap({
+                //                             'progname': 'RALS_TOOLS ',
+                //                             'versi': '2.12 v.2',
+                //                             'date_run': '${DateTime.now()}',
+                //                             'info1': '${getNameLog()}',
+                //                             ' info2': '${_udid} ',
+                //                             'userid': '${userData.getUsernameID()}',
+                //                             ' toko': '${userData.getUserToko()}',
+                //                             ' devicename': '${info.device}',
+                //                             'TOKEN': 'R4M4Y4N4'
+                //                           });
+                //
+                //
+                //                           var tipeurl = '${prod}';
+                //                           var response = await dio.post(
+                //                               '${tipeurl}v1/activity/createmylog',
+                //                               data: formData);
+                //                               print('berhasil $_udid');
+                //                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_){
+                //                                   var namaAkses = '${e}';
+                //                                   List menu1 = namaAkses.split(':');
+                //                                 if (menu1[0] == ' idcash') {
+                //                                     ApprovalReturnMenu.idcashmenu.add(menu1[1]);
+                //                                     print(ApprovalReturnMenu.idcashmenu);
+                //                                     if (ApprovalReturnMenu.idcashmenu.isNotEmpty) {
+                //                                       ApprovalReturnMenu.idcashmenu.removeWhere((element) => element == menu1[1]);
+                //                                       ApprovalReturnMenu.idcashmenu.add(menu1[1]);
+                //                                     }
+                //                                   return RamayanaIDCash();
+                //                                 } else  if (menu1[0] == 'idcash') {
+                //                                     ApprovalReturnMenu.idcashmenu.add(menu1[1]);
+                //                                     print(ApprovalReturnMenu.idcashmenu);
+                //                                      if (ApprovalReturnMenu.idcashmenu.isNotEmpty) {
+                //                                       ApprovalReturnMenu.idcashmenu.removeWhere((element) => element == menu1[1]);
+                //                                       ApprovalReturnMenu.idcashmenu.add(menu1[1]);
+                //                                     }
+                //                                   return RamayanaIDCash();
+                //                                 } else if (menu1[0] == 'approval') {
+                //                                   ApprovalReturnMenu.approvalmenu.add(menu1[1]);
+                //                                     print(ApprovalReturnMenu.approvalmenu);
+                //                                      if (ApprovalReturnMenu.approvalmenu.isNotEmpty) {
+                //                                       ApprovalReturnMenu.approvalmenu.removeWhere((element) => element == menu1[1]);
+                //                                       ApprovalReturnMenu.approvalmenu.add(menu1[1]);
+                //                                     }
+                //                                   return RamayanaApprovalSubmenu();
+                //                                  } else if (menu1[0] == ' approval') {
+                //                                   ApprovalReturnMenu.approvalmenu.add(menu1[1]);
+                //                                     print(ApprovalReturnMenu.approvalmenu);
+                //                                      if (ApprovalReturnMenu.approvalmenu.isNotEmpty) {
+                //                                       ApprovalReturnMenu.approvalmenu.removeWhere((element) => element == menu1[1]);
+                //                                       ApprovalReturnMenu.approvalmenu.add(menu1[1]);
+                //                                     }
+                //                                   return RamayanaApprovalSubmenu();
+                //                                  } else if (menu1[0] == ' void') {
+                //                                    return Blank();
+                //                                 } else if (menu1[0] == 'void') {
+                //                                    return Blank();
+                //                                 } else return Ramayana();
+                //                                   }));
+                //                               },
+                //                               child:
+                //                              getIcon()
+                //                               ),
 
-                    //                           Text('${getNameLog()}',
-                    //                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    //                           )
-                    //                            ],
-                    //     );
-                    //     }).toList(),
+                //                           SizedBox(
+                //                           height: 10,
+                //                           ),
 
-                    //   ),
-                    //   )
+                //                           Text('${getNameLog()}',
+                //                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                //                           )
+                //                            ],
+                //     );
+                //     }).toList(),
 
-                    //HAK ASES JULI 2023
+                //   ),
+                //   )
 
-                    Container(
-                      margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
-                      child: Wrap(
-                        spacing: 10.0,
-                        runSpacing: 7.0,
-                        alignment: WrapAlignment.spaceAround,
-                        runAlignment: WrapAlignment.spaceEvenly,
-                        //adel ini gausah di masukin ke model bisa gaa? langsung aja dia pake api nya nembak langsung
-                        children: data.map((e) {
-                          // ${e.nsadssaame_menu}
+                //HAK ASES JULI 2023
+
+                Container(
+                  margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
+                  child: Wrap(
+                    spacing: 10.0,
+                    runSpacing: 7.0,
+                    alignment: WrapAlignment.spaceAround,
+                    runAlignment: WrapAlignment.spaceEvenly,
+                    //adel ini gausah di masukin ke model bisa gaa? langsung aja dia pake api nya nembak langsung
+                    children: data.map((e) {
+                      // ${e.nsadssaame_menu}
+                      print(e);
+
+                      getIcon() {
+                        var icon = '${e}';
+                        if (icon == 'mastervoid.void') {
+                          return Visibility(
+                            child: Icon(
+                              Icons.document_scanner_rounded,
+                              size: 35,
+                              color: Colors.white,
+                            ),
+                            visible: true,
+                          );
+                        } else if (icon == "masteridcash.idcash") {
+                          return Visibility(
+                            child: Icon(
+                              Icons.credit_score_outlined,
+                              size: 35,
+                              color: Colors.white,
+                            ),
+                            visible: true,
+                          );
+
+                          //  } else if (icon == "approvalreturn.approvalreturn") {
+                          //    return Visibility(
+                          //             child:
+                          //              Icon(Icons.done_outline_outlined,
+                          //           size: 35,
+                          //           color: Colors.white,
+                          //         ),
+                          //             visible: true,
+                          //   );
+
+                          //    } else if (icon == "approvalreturn.approvalreturn") {
+                          //    return Visibility(
+                          //             child:
+                          //              Icon(Icons.edit_document,
+                          //           size: 35,
+                          //           color: Colors.white,
+                          //         ),
+                          //             visible: true,
+                          //   );
+
+                          //   } else if (icon == "cekprice.cekprice") {
+                          //    return Visibility(
+                          //             child:
+                          //              Icon(Icons.search_outlined,
+                          //           size: 35,
+                          //           color: Colors.white,
+                          //         ),
+                          //             visible: true,
+                          //   );
+
+                          //    } else if (icon == "tukarpoin.tukarpoin") {
+                          //    return Visibility(
+                          //             child:
+                          //              Icon(Icons.keyboard,
+                          //           size: 35,
+                          //           color: Colors.white,
+                          //         ),
+                          //             visible: true,
+                          //   );
+                        } else if (icon == "myactivity.activity") {
+                          return Visibility(
+                            child: Icon(
+                              Icons.add_circle_outlined,
+                              size: 35,
+                              color: Colors.white,
+                            ),
+                            visible: true,
+                          );
+                          //  } else if (icon == "comchek.approvedcomchek") {
+                          //  return Visibility(
+                          //           child:
+                          //            Icon(Icons.edit_document,
+                          //         size: 35,
+                          //         color: Colors.white,
+                          //       ),
+                          //           visible: true,
+                          // );
+                        } else {
+                          Visibility(
+                            child: Icon(
+                              Icons.menu,
+                              size: 35,
+                              color: Colors.white,
+                            ),
+                            visible: true,
+                          );
+                        }
+                      }
+
+                      getName() {
+                        var icon = '${e}';
+                        if (icon == 'mastervoid.void') {
+                          return 'VOID';
+                        } else if (icon == "masteridcash.idcash") {
+                          return 'ID CASH';
+                          // } else if (icon == "cekprice.cekprice") {
+                          //   return 'Cek Harga';
+                          //    } else if (icon == "approvalreturn.approvalreturn") {
+                          //   return 'Approval Return';
+                          // } else if (icon == "tukarpoin.tukarpoin") {
+                          //   return 'Tukar Poin';
+                        } else if (icon == "myactivity.activity") {
+                          return 'My Activity';
+                          //  } else if (icon == "comchek.approvedcomchek") {
+                          // return 'Com. Checking';
+                        } else {
                           print(e);
+                          print('no menu');
+                        }
+                      }
 
-                          getIcon() {
-                            var icon = '${e}';
-                            if(icon == 'mastervoid.void') {
-                              return Visibility(
-                                        child: 
-                                         Icon(Icons.document_scanner_rounded,
-                                      size: 35,
-                                      color: Colors.white,
-                                    ),
-                                        visible: true, 
-                              );
-                              
-                             
-                            } else if (icon == "masteridcash.idcash") {
-                               return Visibility(
-                                        child: 
-                                         Icon(Icons.credit_score_outlined,
-                                      size: 35,
-                                      color: Colors.white,
-                                    ),
-                                        visible: true, 
-                              );
+                      return Column(children: [
+                        MaterialButton(
+                            color: Color.fromARGB(255, 255, 17, 17),
+                            minWidth: MediaQuery.of(context).size.width / 6,
+                            height: MediaQuery.of(context).size.height / 13,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                            child: getIcon(),
+                            onPressed: () async {
+                              print('haiiioooo');
+                              if (e == 'mastervoid.void') {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return RamayanaVoid();
+                                }));
+                              } else if (e == 'masteridcash.idcash') {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return RamayanaIDCash();
+                                }));
+                                //   }else if(e == 'approvalreturn.approvalreturn'){
+                                // Navigator.push(context, MaterialPageRoute(builder: (context){
+                                //   return RamayanaApprovalReturn(); }));
+                                // }else if(e == 'cekprice.cekprice'){
+                                // Navigator.push(context, MaterialPageRoute(builder: (context){
+                                //   return RamayanaCariToko(); }));
+                                // }else if(e == 'tukarpoin.tukarpoin'){
+                                // Navigator.push(context, MaterialPageRoute(builder: (context){
+                                //   return RamayanaTukarPoin(); }));
+                              } else if (e == 'myactivity.activity') {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return RamayanaMyActivity();
+                                }));
+                                //  }else if(e == 'comchek.approvedcomchek'){
+                                // Navigator.push(context, MaterialPageRoute(builder: (context){
+                                //   return RamayanaCompetitorCek(); }));
+                                //   print(HakAkses.hakaksesSubmenuComcek);
 
-                            //  } else if (icon == "approvalreturn.approvalreturn") {
-                            //    return Visibility(
-                            //             child: 
-                            //              Icon(Icons.done_outline_outlined,
-                            //           size: 35,
-                            //           color: Colors.white,
-                            //         ),
-                            //             visible: true, 
-                            //   );
+                                // } else if(e == 'idcash.ramayanariwayattransaksi'){
+                                // Navigator.push(context, MaterialPageRoute(builder: (context){
+                                //   return Anakan(); }));
+                                //   SharedPreferences pref = await SharedPreferences.getInstance();
+                                //   var hakAkses = pref.setString('hakAkses', '${e}');
+                                //   print('hak akses : ${e}}');
+                                //   print('hak akses : ${hakAkses}');
+                              } else {
+                                print('e');
+                              }
+                              AndroidDeviceInfo info =
+                                  await deviceInfo.androidInfo;
 
-                            //    } else if (icon == "approvalreturn.approvalreturn") {
-                            //    return Visibility(
-                            //             child: 
-                            //              Icon(Icons.edit_document,
-                            //           size: 35,
-                            //           color: Colors.white,
-                            //         ),
-                            //             visible: true, 
-                            //   );
-
-                            //   } else if (icon == "cekprice.cekprice") {
-                            //    return Visibility(
-                            //             child: 
-                            //              Icon(Icons.search_outlined,
-                            //           size: 35,
-                            //           color: Colors.white,
-                            //         ),
-                            //             visible: true, 
-                            //   );
-
-                            //    } else if (icon == "tukarpoin.tukarpoin") {
-                            //    return Visibility(
-                            //             child: 
-                            //              Icon(Icons.keyboard,
-                            //           size: 35,
-                            //           color: Colors.white,
-                            //         ),
-                            //             visible: true, 
-                            //   );
-                            
-                             } else if (icon == "myactivity.activity") {
-                               return Visibility(
-                                        child: 
-                                         Icon(Icons.add_circle_outlined,
-                                      size: 35,
-                                      color: Colors.white,
-                                    ),
-                                        visible: true, 
-                              );
-                              //  } else if (icon == "comchek.approvedcomchek") {
-                              //  return Visibility(
-                              //           child: 
-                              //            Icon(Icons.edit_document,
-                              //         size: 35,
-                              //         color: Colors.white,
-                              //       ),
-                              //           visible: true, 
-                              // );
-                                     
-                            }else {
-                              Visibility(
-                                        child: 
-                                         Icon(Icons.menu,
-                                      size: 35,
-                                      color: Colors.white,
-                                    ),
-                                        visible: true, 
-                              );
-                            }
-                          }
-
-                          getName() {
-                            var icon = '${e}';
-                            if(icon == 'mastervoid.void') {
-                              return 'VOID';
-                            } else if (icon == "masteridcash.idcash") {
-                              return 'ID CASH';
-                            // } else if (icon == "cekprice.cekprice") {
-                            //   return 'Cek Harga';
-                            //    } else if (icon == "approvalreturn.approvalreturn") {
-                            //   return 'Approval Return';
-                            // } else if (icon == "tukarpoin.tukarpoin") {
-                            //   return 'Tukar Poin';
-                            } else if (icon == "myactivity.activity") {
-                              return 'My Activity';
-                              //  } else if (icon == "comchek.approvedcomchek") {
-                              // return 'Com. Checking';
-                            }else {
-                              print(e);
-                              print('no menu');
-                            }
-                          }
-
-                          return
-                           Column(
-                              children: [
-                                MaterialButton(
-                                  color: Color.fromARGB(255, 255, 17, 17),
-                                                      minWidth:  MediaQuery.of(context).size.width/6,
-                                                      height:  MediaQuery.of(context).size.height/13,
-                                                      shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(50)
-
-                                                      ),
-                                                      child:
-
-                                                      getIcon(),
-
-                                                      onPressed: ()async {
-                                                        print('haiiioooo');
-                                                        if(e == 'mastervoid.void'){
-                                                        Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                          return RamayanaVoid();
-                                                        }));
-                                                        }else if(e == 'masteridcash.idcash'){
-                                                        Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                          return RamayanaIDCash(); }));
-                                                        //   }else if(e == 'approvalreturn.approvalreturn'){
-                                                        // Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                        //   return RamayanaApprovalReturn(); }));
-                                                        // }else if(e == 'cekprice.cekprice'){
-                                                        // Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                        //   return RamayanaCariToko(); }));
-                                                        // }else if(e == 'tukarpoin.tukarpoin'){
-                                                        // Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                        //   return RamayanaTukarPoin(); }));
-                                                        }else if(e == 'myactivity.activity'){
-                                                        Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                          return RamayanaMyActivity(); }));
-                                                        //  }else if(e == 'comchek.approvedcomchek'){
-                                                        // Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                        //   return RamayanaCompetitorCek(); }));
-                                                        //   print(HakAkses.hakaksesSubmenuComcek);
-                                                        
-                                                        // } else if(e == 'idcash.ramayanariwayattransaksi'){
-                                                        // Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                        //   return Anakan(); }));
-                                                        //   SharedPreferences pref = await SharedPreferences.getInstance();
-                                                        //   var hakAkses = pref.setString('hakAkses', '${e}');
-                                                        //   print('hak akses : ${e}}');
-                                                        //   print('hak akses : ${hakAkses}');
-                                                        } 
-                                                        else{
-                                                          print('e');
-                                                        }
-                                                         AndroidDeviceInfo info = await deviceInfo.androidInfo;
-                                                         
-                                                         var formData = FormData.fromMap({
-                                                    'progname': 'RALS_TOOLS ',
-                                                    'versi': '${versi}',
-                                                    'date_run': '${DateTime.now()}',
-                                                    'info1': '${getName()}',
-                                                    ' info2': '${_udid} ',
-                                                    'userid': '${userData.getUsernameID()}',
-                                                    ' toko': '${userData.getUserToko()}',
-                                                    ' devicename': '${info.device}',
-                                                    'TOKEN': 'R4M4Y4N4'
-                                                  });
-                                        var response = await dio.post(
-                                            '${tipeurl}v1/activity/createmylog',
-                                            data: formData);
-                                            print('berhasil $_udid');
-                                                      }
-
-                                ),
-
-                                                SizedBox(
-                                                  height: 10,
-                                                  ),
-
-                                                  Text('${getName()}',
-                                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                                  )
-
-                              ]
-                           );
-
-                        }).toList(),
+                              var formData = FormData.fromMap({
+                                'progname': 'RALS_TOOLS ',
+                                'versi': '${versi}',
+                                'date_run': '${DateTime.now()}',
+                                'info1': '${getName()}',
+                                ' info2': '${_udid} ',
+                                'userid': '${userData.getUsernameID()}',
+                                ' toko': '${userData.getUserToko()}',
+                                ' devicename': '${info.device}',
+                                'TOKEN': 'R4M4Y4N4'
+                              });
+                              var response = await dio.post(
+                                  '${tipeurl}v1/activity/createmylog',
+                                  data: formData);
+                              print('berhasil $_udid');
+                            }),
+                        SizedBox(
+                          height: 10,
                         ),
-                    )
-                    // )
+                        Text(
+                          '${getName()}',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        )
+                      ]);
+                    }).toList(),
+                  ),
+                )
+                // )
               ],
             ),
           ),
-          body: ListView( 
+          body: ListView(
             children: [
               Stack(
                 fit: StackFit.loose,
@@ -1259,7 +1227,7 @@ class _RamayanaState extends State<Ramayana> {
                               ],
                             ),
                           ])),
-                          //adel ini mana ya yang menu anakan
+                  //adel ini mana ya yang menu anakan
                   Container(
                     margin: EdgeInsets.only(top: 100, left: 20, right: 20),
                     child: AnimatedTextKit(

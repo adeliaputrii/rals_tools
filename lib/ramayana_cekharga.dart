@@ -96,7 +96,7 @@ class _RamayanaCekHargaState extends State<RamayanaCekHarga> {
                 subtitle1: TextStyle(color: Colors.black),
                 button: TextStyle(color: Colors.black),
               ),
-              accentColor: Colors.black,
+              hintColor: Colors.black,
               colorScheme: ColorScheme.light(
                   primary: Color.fromARGB(255, 255, 17, 17),
                   primaryVariant: Colors.black,
@@ -139,7 +139,7 @@ class _RamayanaCekHargaState extends State<RamayanaCekHarga> {
                 subtitle1: TextStyle(color: Colors.black),
                 button: TextStyle(color: Colors.black),
               ),
-              accentColor: Colors.black,
+              hintColor: Colors.black,
               colorScheme: ColorScheme.light(
                   primary: Color.fromARGB(255, 255, 17, 17),
                   primaryVariant: Colors.black,
