@@ -823,6 +823,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                     onChanged: (value) {
                                       print(value);
                                       setState(() {
+                                        iniApiEdit;
                                         print('tes range 1 : ${result.elementAt(0)}');
                                         selectedTask = value as String;
                                       });
@@ -1477,8 +1478,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                             print('berhasil $_udid');
                                 }
                               }
-
-                              
                               print(
                                   'Berhasil ${dokumen} ${dokumenEdit}, ${selectedTask}, ${timeStart.text}, ${timeStart.text}, ${timeStart.text},');
                               popup();
