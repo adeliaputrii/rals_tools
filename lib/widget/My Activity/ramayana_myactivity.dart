@@ -63,6 +63,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   @override
   void initState() {
     super.initState();
+    iniApiEdit;
     _loadToken();
     fetchProject();
     apiTask;
@@ -250,7 +251,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
               child: ListView(
                 children: MyactivityEditModel.myactivityedit.map((e) {
                   var iniIdnya = '${e.task_id}';
-                 
+                  fetchTask(apiProject: '${e.projek_id}');
                   deskripsi() {
                     final text = '${e.myactivity_desc}';
                     print(text.length);
@@ -303,7 +304,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                       if (e.task_id == element.task_id) {
                         selectedTask = '';
                         result.clear();
-                        fetchTask(apiProject: '${projectIdd()}');
                         selectedTask = '${element.task_desc}';
                         taskDesc = '${element.task_desc}';
                       }
@@ -319,11 +319,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                       
                       
                       setState(() {
-    
-                      project();
-                        taskIdd();
-                        projectIdd();
-                        task();
+                      taskId2 = '${e.task_id}';
                         infoTask = taskIdd();
                         sendDataApi = false;
                         iniApiEdit = true;
@@ -354,6 +350,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         print('file : ${file}');
                         print('tolong bgt: ${taskId2}');
                         print('tolong bgtt: ${taskId3}');
+                        print('tolong bgtt: ${iniApiEdit}');
                       Navigator.pop(context);
                     },
                     leading: Icon(
@@ -488,11 +485,13 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
           print(MyactivityModelTask.addselectTask);
         
           resultEdit = LinkedHashSet<String>.from(MyactivityModelTask.addselectTaskEdit).toList();
-          if (taskId2 == element.task_id) {
+            if (taskId2 == element.task_id) {
             taskId3 = element.task_desc;
+            selectedTask = '${taskId3}';
             }
-          print('resulttttttttttt : ${iniApiEdit}');
-          selectedTask = '${resultEdit.elementAt(0)}';
+          print('resulttttttttttt : ${taskId2}');
+          print('resulttttttttttt : ${taskId3}');
+          
          }else{
           MyactivityModelTask.addselectTask.add('${element.task_desc}');
           print('MyactivityModelTask.addselectTask');
@@ -738,24 +737,27 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                     hint: Text('${selected}',
                                     style: TextStyle(
                                       color: Colors.black,
-
+                            
                                       fontSize: 17, fontWeight: FontWeight.w500
                                     ),
                                     ),
                                     onChanged: (value) {
                                       print(value);
                                       setState(() {
+                                        iniApiEdit = false;
+                                        print('tes iniApiEdit :${iniApiEdit}');
                                          selected = value as String;
                                       });
-
+                            
                                     },
                                     items: resultProject.map((e) => DropdownMenuItem(
                                       onTap: () {
                                         MyactivityModelTask.myactivitytask.clear();
                                         MyactivityModel.myactivitymodel.forEach((element) {
-
+                            
                                           if(e == element.project_desc) {
                                             setState(() {
+                                              
                                               
                                               apiTask = '${element.project_id}';
                                               projectId = '${element.project_id}';
@@ -764,7 +766,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                               print(apiTask);
                                               result.clear;
                                               fetchTask(apiProject: '${apiTask}');
-                                              print('tes range 1 : ${result.elementAt(0)}');
+                                              print('tes range 1 : ${iniApiEdit}');
                                               // selectedTask = MyactivityModelTask.addselectTask[0];
                                             });
                                           }
@@ -775,7 +777,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                      Text('${e}'),
                                       )
                                       ).toList(),
-
+                            
                                   ),
                           ),
                         ],
@@ -852,6 +854,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                     : result
                                     .map((e) => DropdownMenuItem(
                                        onTap: () {
+                                        MyactivityModelTask.addselectTaskEdit.clear();
                                         MyactivityModelTask.addselectTask.clear();
                                         MyactivityModelTask.myactivitytask.forEach((element) {
                                             
@@ -1491,7 +1494,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               _paths = null;
                               up = false;
                               setState(() {
-                                
                                 fetchEdit(
                                     user_create: '${userData.getUsername7()}');
                                 edit = false;
