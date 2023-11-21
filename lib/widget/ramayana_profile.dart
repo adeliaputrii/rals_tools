@@ -157,7 +157,7 @@ class _ProfileeState extends State<Profilee> {
     Alert(
       style: alertStyle,
       context: context,
-      image: FadeInImageWidget(imageUrl: "assets/menu/logout.png"),
+      image: FadeInImageWidget(imageUrl: "assets/logout.png"),
       title: 'Log Out',
       desc: "Are you sure you want to log out?",
       buttons: [
@@ -327,7 +327,7 @@ class _ProfileeState extends State<Profilee> {
                                 child: CircleAvatar(
                                 backgroundColor: Color.fromARGB(255, 210, 14, 0),
                                 radius: 30,
-                                backgroundImage: AssetImage('assets/profile/fullname.png')),
+                                backgroundImage: AssetImage('assets/fullname.png')),
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 12),
@@ -378,7 +378,7 @@ class _ProfileeState extends State<Profilee> {
                                 child: CircleAvatar(
                                 backgroundColor: Color.fromARGB(255, 210, 14, 0),
                                 radius: 30,
-                                backgroundImage: AssetImage('assets/profile/email.png')),
+                                backgroundImage: AssetImage('assets/email.png')),
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 12),
@@ -429,7 +429,7 @@ class _ProfileeState extends State<Profilee> {
                                 child: CircleAvatar(
                                 backgroundColor: Color.fromARGB(255, 210, 14, 0),
                                 radius: 30,
-                                backgroundImage: AssetImage('assets/profile/telp.png')),
+                                backgroundImage: AssetImage('assets/telp.png')),
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 12),
@@ -480,7 +480,7 @@ class _ProfileeState extends State<Profilee> {
                                 child: CircleAvatar(
                                 backgroundColor: Color.fromARGB(255, 210, 14, 0),
                                 radius: 30,
-                                backgroundImage: AssetImage('assets/profile/id.png')),
+                                backgroundImage: AssetImage('assets/id.png')),
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 12),
@@ -605,19 +605,19 @@ class _ProfileeState extends State<Profilee> {
                                 size: 70.0,
                                 ),
 
-                                 BarCodeImage(
-                                  backgroundColor: Colors.white,
-                                  params: Code128BarCodeParams(
-                                  "${userData.getUsernameID()}",
-                                  lineWidth: 2.65,             
-                                  barHeight: 45,              
-                                  withText: true,               
-                                  ),
-                                  padding: EdgeInsets.only(bottom: 7),
-                                  onError: (error) {               // Error handler
-                                  print('error = $error'); 
-                                  },
-                                  ),
+                                //  BarCodeImage(
+                                //   backgroundColor: Colors.white,
+                                //   params: Code128BarCodeParams(
+                                //   "${userData.getUsernameID()}",
+                                //   lineWidth: 2.65,             
+                                //   barHeight: 45,              
+                                //   withText: true,               
+                                //   ),
+                                //   padding: EdgeInsets.only(bottom: 7),
+                                //   onError: (error) {               // Error handler
+                                //   print('error = $error'); 
+                                //   },
+                                //   ),
                                         
                             ])
                                         )

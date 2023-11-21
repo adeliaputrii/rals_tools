@@ -359,26 +359,26 @@ String stepThree({required String angkaPertama, required String angkaKedua}) {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
           
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(10, 0,10, 0),
-                                     child: 
-                                      Center(
-                                        child: 
-                                        BarCodeImage(
-                                          backgroundColor: Colors.white,
-                                          params: Code128BarCodeParams(
-                                          "${data}",
-                                          lineWidth: 1.5,                // width for a single black/white bar (default: 2.0)
-                                          barHeight: 100,               // height for the entire widget (default: 100.0)
-                                          withText: false,                // Render with text label or not (default: false)
-                                         ),
-                                        padding: EdgeInsets.only(bottom: 7),
-                                        onError: (error) {               // Error handler
-                                          print('error = $error');
-                                        },
-                                    ),
-                                   )
-                                ),
+                                // Container(
+                                //   margin: EdgeInsets.fromLTRB(10, 0,10, 0),
+                                //      child: 
+                                //   //     Center(
+                                //   //       child: 
+                                //   //       BarCodeImage(
+                                //   //         backgroundColor: Colors.white,
+                                //   //         params: Code128BarCodeParams(
+                                //   //         "${data}",
+                                //   //         lineWidth: 1.5,                // width for a single black/white bar (default: 2.0)
+                                //   //         barHeight: 100,               // height for the entire widget (default: 100.0)
+                                //   //         withText: false,                // Render with text label or not (default: false)
+                                //   //        ),
+                                //   //       padding: EdgeInsets.only(bottom: 7),
+                                //   //       onError: (error) {               // Error handler
+                                //   //         print('error = $error');
+                                //   //       },
+                                //   //   ),
+                                //   //  )
+                                // ),
                              
                     Container(
                       margin: EdgeInsets.fromLTRB(100,30, 100, 0),

@@ -1,4 +1,3 @@
-
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,7 @@ class NotificationService {
       ],
       channelGroups: [
         NotificationChannelGroup(
-          channelGroupKey: 'high_importance_channel_group',
+          channelGroupkey: 'high_importance_channel_group',
           channelGroupName: 'Group 1',
         )
       ],
@@ -41,12 +40,12 @@ class NotificationService {
       },
     );
 
-    await AwesomeNotifications().setListeners(
-      onActionReceivedMethod: onActionReceivedMethod,
-      onNotificationCreatedMethod: onNotificationCreatedMethod,
-      onNotificationDisplayedMethod: onNotificationDisplayedMethod,
-      onDismissActionReceivedMethod: onDismissActionReceivedMethod,
-    );
+    // await AwesomeNotifications().s(
+    //   onActionReceivedMethod: onActionReceivedMethod,
+    //   onNotificationCreatedMethod: onNotificationCreatedMethod,
+    //   onNotificationDisplayedMethod: onNotificationDisplayedMethod,
+    //   onDismissActionReceivedMethod: onDismissActionReceivedMethod,
+    // );
   }
 
   /// Use this method to detect when a new notification or a schedule is created
@@ -86,7 +85,6 @@ class NotificationService {
     required final String body,
     final String? summary,
     final Map<String, String>? payload,
-    final ActionType actionType = ActionType.Default,
     final NotificationLayout notificationLayout = NotificationLayout.Default,
     final NotificationCategory? category,
     final String? bigPicture,
@@ -102,7 +100,6 @@ class NotificationService {
         channelKey: 'high_importance_channel',
         title: title,
         body: body,
-        actionType: actionType,
         notificationLayout: notificationLayout,
         summary: summary,
         category: category,
@@ -112,7 +109,7 @@ class NotificationService {
       actionButtons: actionButtons,
       schedule: scheduled
           ? NotificationInterval(
-              interval: interval,
+              interval: interval!,
               timeZone:
                   await AwesomeNotifications().getLocalTimeZoneIdentifier(),
               preciseAlarm: true,

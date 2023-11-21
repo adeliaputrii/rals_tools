@@ -1,4 +1,5 @@
-part of'import.dart';
+part of 'import.dart';
+
 class RamayanaMyActivity extends StatefulWidget {
   const RamayanaMyActivity({super.key});
 
@@ -36,13 +37,14 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   File? file;
   int intJoinStart = 0;
   String? nameFile;
-  var token  = '';
+  var token = '';
   String paths = '';
   String dokumenEdit = '';
   var projectId = '';
   var taskId = '';
   var taskId2 = '';
   var taskId3 = '';
+  var taskIdEdit = '';
   List<String> result = [];
   List<String> resultEdit = [];
   List<String> resultProject = [];
@@ -55,7 +57,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   TimeOfDay selectedTime = TimeOfDay.now();
   String? _setDate;
   Dio dio = Dio();
-  
+
   String formattedDate = DateFormat('d MMMM yyyy').format(DateTime.now());
   String dateInput = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
   String formattedTime = DateFormat('HH:mm').format(DateTime.now());
@@ -250,7 +252,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
               child: ListView(
                 children: MyactivityEditModel.myactivityedit.map((e) {
                   var iniIdnya = '${e.task_id}';
-                 
+
                   deskripsi() {
                     final text = '${e.myactivity_desc}';
                     print(text.length);
@@ -260,13 +262,12 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                       return text;
                     }
                   }
-                  taskIdd() {
 
+                  taskIdd() {
                     var taskDescId = '';
                     MyactivityModelTask.myactivitytask.forEach((element) {
                       if (e.task_id == element.task_id) {
                         taskDescId = '${element.task_id}';
-                        
                       }
                     });
                     print(taskDescId);
@@ -307,20 +308,17 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         selectedTask = '${element.task_desc}';
                         taskDesc = '${element.task_desc}';
                       }
+                      print('selected task id' + element.task_id);
+                      print('selected task desc' + element.task_desc);
                     });
-                    print(taskDesc);
+
                     return taskDesc;
                   }
 
                   return ListTile(
-                    
                     onTap: () async {
-                     
-                      
-                      
                       setState(() {
-    
-                      project();
+                        project();
                         taskIdd();
                         projectIdd();
                         task();
@@ -342,18 +340,19 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         dokumenEdit = '${e.dokumen != null ? e.dokumen : ''}';
                         // file = File('${e.dokumen}');
                         idEdit = e.myactivity_id;
+                        taskIdEdit = taskIdd();
                       });
                       print('sendDataApi :${sendDataApi}');
-                        print('paths : ${_paths}');
-                        print('up : ${dokumen}');
-                        print('edit : ${edit}');
-                        
-                        print('selected : ${selected}');
-                        print('selectedTask : ${selectedTask}');
-                        print('Task : ${task()}');
-                        print('file : ${file}');
-                        print('tolong bgt: ${taskId2}');
-                        print('tolong bgtt: ${taskId3}');
+                      print('paths : ${_paths}');
+                      print('up : ${dokumen}');
+                      print('edit : ${edit}');
+
+                      print('selected : ${selected}');
+                      print('selectedTask : ${selectedTask}');
+                      print('Task : ${task()}');
+                      print('file : ${file}');
+                      print('tolong bgt: ${taskId2}');
+                      print('tolong bgtt: ${taskId3}');
                       Navigator.pop(context);
                     },
                     leading: Icon(
@@ -393,25 +392,19 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     _loadToken();
     print('ini token1111 : $token');
     MyactivityModel.myactivitymodel.clear();
-    final responseku = await http.get(
-        Uri.parse('${tipeurl}v1/activity/list-project'),
-        headers: 
-          {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      }
-        );
+    final responseku = await http
+        .get(Uri.parse('${tipeurl}v1/activity/list-project'), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
     print('ini token2222 : $token');
-    final responseku2 = await http.get(
-        Uri.parse('${tipeurl}v1/activity/list-project'),
-        headers: 
-          {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      }
-        );
+    final responseku2 = await http
+        .get(Uri.parse('${tipeurl}v1/activity/list-project'), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
     var data = jsonDecode(responseku2.body);
     print('respone : ${responseku2}');
     print('data : ${data}');
@@ -424,22 +417,21 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
         MyactivityModel.myactivitymodel
             .add(MyactivityModel.fromjson(data['data'][i]));
         MyactivityModel.myactivitymodel.forEach((element) {
-          
           MyactivityModel.addSelect.add('${element.project_desc}');
           print(MyactivityModel.addSelect);
           resultProject =
-        LinkedHashSet<String>.from(MyactivityModel.addSelect).toList();
+              LinkedHashSet<String>.from(MyactivityModel.addSelect).toList();
         });
       }
 
       print('check length ${MyactivityModel.myactivitymodel.length}');
       print(data['data'].toString());
-      if(data['status'] != 200) {
+      if (data['status'] != 200) {
         print('data[status] ${data['status']}');
       }
     } else {
       print('NO DATA');
-       print('data[status] ${data['status']}');
+      print('data[status] ${data['status']}');
     }
     setState(() {});
   }
@@ -452,57 +444,70 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     MyactivityModelTask.addselectTask.clear();
     print('coba disini');
     final responseku = await http.get(
-        Uri.parse('${tipeurl}v1/activity/list-task?project_id=${apiTask}'),
-        headers: 
-        {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    },);
+      Uri.parse('${tipeurl}v1/activity/list-task?project_id=${apiTask}'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
     print('ini token : $token');
     final responseku2 = await http.get(
-        Uri.parse('${tipeurl}v1/activity/list-task?project_id=${apiTask}'),
-        headers: 
-        {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    },);
-    
+      Uri.parse('${tipeurl}v1/activity/list-task?project_id=${apiTask}'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
     var data = jsonDecode(responseku2.body);
     print('respone : ${responseku2}');
     print('data : ${data}');
     if (data['status'] == 200) {
-      print("API Success");
-      print(data);
+      print("API Success Task");
+      print("response task" + data.toString());
       int count = data['data'].length;
       for (int i = 0; i < count; i++) {
-        
-         
         MyactivityModelTask.myactivitytask
             .add(MyactivityModelTask.fromjson(data['data'][i]));
         MyactivityModelTask.myactivitytask.forEach((element) {
-         if (iniApiEdit == true) {
-           MyactivityModelTask.addselectTaskEdit.add('${element.task_desc}');
-          print('MyactivityModelTask.addselectTask');
-          print(MyactivityModelTask.addselectTask);
-        
-          resultEdit = LinkedHashSet<String>.from(MyactivityModelTask.addselectTaskEdit).toList();
-          if (taskId2 == element.task_id) {
-            taskId3 = element.task_desc;
-            }
-          print('resulttttttttttt : ${iniApiEdit}');
-          selectedTask = '${resultEdit.elementAt(0)}';
-         }else{
-          MyactivityModelTask.addselectTask.add('${element.task_desc}');
-          print('MyactivityModelTask.addselectTask');
-          print(MyactivityModelTask.addselectTask);
-          result = LinkedHashSet<String>.from(MyactivityModelTask.addselectTask).toList();
-          print('result : ${result}');
-          selectedTask = '${result.elementAt(0)}';}
-        });
-       
+          if (iniApiEdit == true) {
+            MyactivityModelTask.addselectTaskEdit.add('${element.task_desc}');
+            print('MyactivityModelTask.addselectTask');
+            print(MyactivityModelTask.addselectTask);
 
+            resultEdit = LinkedHashSet<String>.from(
+                    MyactivityModelTask.addselectTaskEdit)
+                .toList();
+            if (taskId2 == element.task_id) {
+              taskId3 = element.task_desc;
+            }
+            print('resulttttttttttt : ${iniApiEdit}');
+
+            if (edit) {
+              if (taskIdEdit == element.task_id) {
+                selectedTask = resultEdit.elementAt(i);
+                print("result edit selected" + selectedTask);
+              }
+              print('taskidedit' + taskIdEdit);
+              print('element id' + element.task_id);
+              print("result edit true" + selectedTask);
+            } else {
+              selectedTask = '${resultEdit.elementAt(0)}';
+              print("result edit false");
+            }
+          } else {
+            MyactivityModelTask.addselectTask.add('${element.task_desc}');
+            print('MyactivityModelTask.addselectTask');
+            print(MyactivityModelTask.addselectTask);
+            result =
+                LinkedHashSet<String>.from(MyactivityModelTask.addselectTask)
+                    .toList();
+            print('result : ${result}');
+            selectedTask = '${result.elementAt(0)}';
+          }
+        });
       }
       print('check length ${MyactivityModelTask.myactivitytask.length}');
       print(data['data'].toString());
@@ -533,11 +538,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
         profileMap[element.myactivity_desc] = element;
         MyactivityEditModel.myactivityedit = profileMap.values.toList();
         print(MyactivityEditModel.myactivityedit);
-        
       });
       print('check length ${MyactivityEditModel.myactivityedit.length}');
-      print(data['data'].toString());
-      
+      print('task data ' + data['data'].toString());
     } else {
       print('NO DATA');
     }
@@ -553,18 +556,20 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   Future<void> requestPermission() async {
     final permission = Permission.storage;
     print('permission');
-    await notifPermission.NotificationPermissions.requestNotificationPermissions;
-    await notifPermission.NotificationPermissions.getNotificationPermissionStatus();
+    await notifPermission
+        .NotificationPermissions.requestNotificationPermissions;
+    await notifPermission.NotificationPermissions
+        .getNotificationPermissionStatus();
     await Permission.manageExternalStorage.request();
 
     final result = await permission.request();
 
-    if(result == PermissionStatus.denied){
-     final requestStorageAgain= await Permission.storage.request();
-("result permission $requestStorageAgain");
-     if(requestStorageAgain == PermissionStatus.denied){
-      throw Exception("Permission Storage is need");
-     }
+    if (result == PermissionStatus.denied) {
+      final requestStorageAgain = await Permission.storage.request();
+      ("result permission $requestStorageAgain");
+      if (requestStorageAgain == PermissionStatus.denied) {
+        throw Exception("Permission Storage is need");
+      }
     }
     if (Platform.isIOS) {
       bool storage = await Permission.storage.status.isGranted;
@@ -607,7 +612,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
       _paths = (await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowMultiple: _multiPick,
-        allowedExtensions:['jpg', 'jpeg', 'png','xlsx', 'pdf'],
+        allowedExtensions: ['jpg', 'jpeg', 'png', 'xlsx', 'pdf'],
       ))
           ?.files;
     } on PlatformException catch (e) {
@@ -626,10 +631,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   }
 
   Widget build(BuildContext context) {
-    
-    
-        
-
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -734,49 +735,53 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                           Container(
                             width: 350,
                             child: DropdownButton(
-                                    value: selected,
-                                    hint: Text('${selected}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-
-                                      fontSize: 17, fontWeight: FontWeight.w500
-                                    ),
-                                    ),
-                                    onChanged: (value) {
-                                      print(value);
-                                      setState(() {
-                                         selected = value as String;
-                                      });
-
-                                    },
-                                    items: resultProject.map((e) => DropdownMenuItem(
-                                      onTap: () {
-                                        MyactivityModelTask.myactivitytask.clear();
-                                        MyactivityModel.myactivitymodel.forEach((element) {
-
-                                          if(e == element.project_desc) {
-                                            setState(() {
-                                              
-                                              apiTask = '${element.project_id}';
-                                              projectId = '${element.project_id}';
-                                              selected = projectId;
-                                              MyactivityModelTask.addselectTask.clear();
-                                              print(apiTask);
-                                              result.clear;
-                                              fetchTask(apiProject: '${apiTask}');
-                                              print('tes range 1 : ${result.elementAt(0)}');
-                                              // selectedTask = MyactivityModelTask.addselectTask[0];
-                                            });
-                                          }
-                                        });
-                                      },
-                                      value: e,
-                                      child:
-                                     Text('${e}'),
-                                      )
-                                      ).toList(),
-
-                                  ),
+                              value: selected,
+                              hint: Text(
+                                '${selected}',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              onChanged: (value) {
+                                print(value);
+                                setState(() {
+                                  selected = value as String;
+                                });
+                              },
+                              items: resultProject
+                                  .map((e) => DropdownMenuItem(
+                                        onTap: () {
+                                          MyactivityModelTask.myactivitytask
+                                              .clear();
+                                          MyactivityModel.myactivitymodel
+                                              .forEach((element) {
+                                            if (e == element.project_desc) {
+                                              setState(() {
+                                                apiTask =
+                                                    '${element.project_id}';
+                                                projectId =
+                                                    '${element.project_id}';
+                                                selected = projectId;
+                                                MyactivityModelTask
+                                                    .addselectTask
+                                                    .clear();
+                                                print(apiTask);
+                                                result.clear;
+                                                fetchTask(
+                                                    apiProject: '${apiTask}');
+                                                print(
+                                                    'tes range 1 : ${result.elementAt(0)}');
+                                                // selectedTask = MyactivityModelTask.addselectTask[0];
+                                              });
+                                            }
+                                          });
+                                        },
+                                        value: e,
+                                        child: Text('${e}'),
+                                      ))
+                                  .toList(),
+                            ),
                           ),
                         ],
                       ),
@@ -809,68 +814,63 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                             // margin: EdgeInsets.only(right: 30),
                             width: 350,
                             child: DropdownButton(
-
-                                    value: selectedTask,
-                                    hint: Text('${selectedTask}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-
-                                      fontSize: 17, fontWeight: FontWeight.w500
-                                    ),
-                                    ),
-                                    onChanged: (value) {
-                                      print(value);
-                                      setState(() {
-                                        print('tes range 1 : ${result.elementAt(0)}');
-                                        selectedTask = value as String;
-                                      });
-
-                                    },
-                                    items: 
-                                    iniApiEdit
-                                    ?
-                                    resultEdit
-                                    .map((e) => DropdownMenuItem(
-                                       onTap: () {
-                                        MyactivityModelTask.addselectTask.clear();
-                                        MyactivityModelTask.myactivitytask.forEach((element) {
-                                            
-                                            if(e == element.task_desc) {
-                                            setState(() {
-                                              taskId = '${element.task_id}';
-                                              selectedTask = taskId;
-                                            });
-                                          }
-
-                                        });
-                                      },
-                                      value: e,
-                                      child:
-                                     Text('${e}'),
-                                      )
-                                      ).toList()
-                                    : result
-                                    .map((e) => DropdownMenuItem(
-                                       onTap: () {
-                                        MyactivityModelTask.addselectTask.clear();
-                                        MyactivityModelTask.myactivitytask.forEach((element) {
-                                            
-                                            if(e == element.task_desc) {
-                                            setState(() {
-                                              taskId = '${element.task_id}';
-                                              selectedTask = taskId;
-                                            });
-                                          }
-
-                                        });
-                                      },
-                                      value: e,
-                                      child:
-                                     Text('${e}'),
-                                      )
-                                      ).toList(),
-
-                                  ),
+                              value: selectedTask,
+                              hint: Text(
+                                '${selectedTask}',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              onChanged: (value) {
+                                print(value);
+                                setState(() {
+                                  print('tes range 1 : ${result.elementAt(0)}');
+                                  selectedTask = value as String;
+                                });
+                              },
+                              items: iniApiEdit
+                                  ? resultEdit
+                                      .map((e) => DropdownMenuItem(
+                                            onTap: () {
+                                              MyactivityModelTask.addselectTask
+                                                  .clear();
+                                              MyactivityModelTask.myactivitytask
+                                                  .forEach((element) {
+                                                if (e == element.task_desc) {
+                                                  setState(() {
+                                                    taskId =
+                                                        '${element.task_id}';
+                                                    selectedTask = taskId;
+                                                  });
+                                                }
+                                              });
+                                            },
+                                            value: e,
+                                            child: Text('${e}'),
+                                          ))
+                                      .toList()
+                                  : result
+                                      .map((e) => DropdownMenuItem(
+                                            onTap: () {
+                                              MyactivityModelTask.addselectTask
+                                                  .clear();
+                                              MyactivityModelTask.myactivitytask
+                                                  .forEach((element) {
+                                                if (e == element.task_desc) {
+                                                  setState(() {
+                                                    taskId =
+                                                        '${element.task_id}';
+                                                    selectedTask = taskId;
+                                                  });
+                                                }
+                                              });
+                                            },
+                                            value: e,
+                                            child: Text('${e}'),
+                                          ))
+                                      .toList(),
+                            ),
                           ),
                         ],
                       ),
@@ -939,7 +939,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                                 button: TextStyle(
                                                     color: Colors.black),
                                               ),
-                                              accentColor: Colors.black,
+                                              hintColor: Colors.black,
                                               colorScheme: ColorScheme.light(
                                                   primary: Color.fromARGB(
                                                       255, 255, 17, 17),
@@ -1042,7 +1042,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                                     button: TextStyle(
                                                         color: Colors.black),
                                                   ),
-                                                  accentColor: Colors.black,
+                                                  hintColor: Colors.black,
                                                   colorScheme:
                                                       ColorScheme.light(
                                                           primary:
@@ -1264,16 +1264,16 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                             fetchProject();
                             fetchTask(apiProject: '${apiTask}');
                             print('HasilTask : ${result}');
-                            print('HasilTask2 : ${MyactivityModelTask.addselectTask}');
+                            print(
+                                'HasilTask2 : ${MyactivityModelTask.addselectTask}');
                             popupEdit();
-                            
+
                             setState(() {
                               MyactivityModelTask.myactivitytask.clear();
                               result.clear();
                               fetchEdit(
                                   user_create: '${userData.getUsername7()}');
-                                  fetchProject();
-                                  
+                              fetchProject();
                             });
                             ;
                           },
@@ -1292,213 +1292,217 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                           height: 50,
                           color: Color.fromARGB(255, 255, 17, 17),
                           onPressed: () async {
-                            
                             print(edit);
                             if (_formKey.currentState!.validate()) {
-                              
                               MyActivity apiMyactivity = MyActivity();
                               iniApiEdit = false;
                               print('edit : ${edit}');
                               print('iniApiEdit : ${iniApiEdit}');
                               print('loading : ${up}');
                               //1x save
-                              if(sendDataApi == false) {
+                              if (sendDataApi == false) {
                                 sendDataApi = true;
-                                
-                              if (edit == true) {
-                                if (_paths != null) {
-                                  var formData = FormData.fromMap({
-                                    'user_create': '${userData.getUsername7()}',
-                                    'time_start': timeStart.text,
-                                    'time_end': timeEnd.text,
-                                    'task_id': taskId == ''
-                                        ? 'P202300001-001'
-                                        : taskId,
-                                    'projek_id': projectId == ''
-                                        ? 'P202300001'
-                                        : projectId,
-                                    'myactivity_id': idEdit,
-                                    'myactivity_desc': desc.text,
-                                    'date_create': dateInput,
-                                    'dokumen':   await MultipartFile.fromFile(
-                                      file!.path,
-                                      filename: '${nameFile}'
-                                    ) ,
-                                    'beforedokumen': '${dokumen}'
-                                  });
 
-                                  var response = await dio.post(
-                                      '${tipeurl}v1/activity/updateDailyActivity',
-                                      data: formData);
+                                if (edit == true) {
+                                  if (_paths != null) {
+                                    var formData = FormData.fromMap({
+                                      'user_create':
+                                          '${userData.getUsername7()}',
+                                      'time_start': timeStart.text,
+                                      'time_end': timeEnd.text,
+                                      'task_id': taskId == ''
+                                          ? 'P202300001-001'
+                                          : taskId,
+                                      'projek_id': projectId == ''
+                                          ? 'P202300001'
+                                          : projectId,
+                                      'myactivity_id': idEdit,
+                                      'myactivity_desc': desc.text,
+                                      'date_create': dateInput,
+                                      'dokumen': await MultipartFile.fromFile(
+                                          file!.path,
+                                          filename: '${nameFile}'),
+                                      'beforedokumen': '${dokumen}'
+                                    });
 
-                                      AndroidDeviceInfo info =
-                                  await deviceInfo.androidInfo;
-                              var formDataLog = FormData.fromMap({
-                                'progname': 'RALS_TOOLS ',
-                                'versi': '${versi}',
-                                'date_run': '${DateTime.now()}',
-                                'info1': 'My Activity - Edit My Activity',
-                                ' info2': '${_udid} ',
-                                'userid': '${userData.getUsernameID()}',
-                                ' toko': '${userData.getUserToko()}',
-                                ' devicename': '${info.device}',
-                                'TOKEN': 'R4M4Y4N4'
-                              });
-                              print('berhasil $_udid');
-                               var responseLog =
-                                await dio.post('${tipeurl}v1/activity/createmylog', data: formDataLog);
-                            print('berhasil $_udid');
+                                    var response = await dio.post(
+                                        '${tipeurl}v1/activity/updateDailyActivity',
+                                        data: formData);
+
+                                    AndroidDeviceInfo info =
+                                        await deviceInfo.androidInfo;
+                                    var formDataLog = FormData.fromMap({
+                                      'progname': 'RALS_TOOLS ',
+                                      'versi': '${versi}',
+                                      'date_run': '${DateTime.now()}',
+                                      'info1': 'My Activity - Edit My Activity',
+                                      ' info2': '${_udid} ',
+                                      'userid': '${userData.getUsernameID()}',
+                                      ' toko': '${userData.getUserToko()}',
+                                      ' devicename': '${info.device}',
+                                      'TOKEN': 'R4M4Y4N4'
+                                    });
+                                    print('berhasil $_udid');
+                                    var responseLog = await dio.post(
+                                        '${tipeurl}v1/activity/createmylog',
+                                        data: formDataLog);
+                                    print('berhasil $_udid');
+                                  } else {
+                                    var formData = FormData.fromMap({
+                                      'user_create':
+                                          '${userData.getUsername7()}',
+                                      'time_start': timeStart.text,
+                                      'time_end': timeEnd.text,
+                                      'task_id': taskId == ''
+                                          ? 'P202300001-001'
+                                          : taskId,
+                                      'projek_id': projectId == ''
+                                          ? 'P202300001'
+                                          : projectId,
+                                      'myactivity_id': idEdit,
+                                      'myactivity_desc': desc.text,
+                                      'date_create': dateInput,
+                                      'dokumen': '${dokumenEdit}',
+                                      'beforedokumen': '${dokumen}'
+                                    });
+
+                                    var response = await dio.post(
+                                        '${tipeurl}v1/activity/updateDailyActivity',
+                                        data: formData);
+
+                                    AndroidDeviceInfo info =
+                                        await deviceInfo.androidInfo;
+                                    var formDataLog = FormData.fromMap({
+                                      'progname': 'RALS_TOOLS ',
+                                      'versi': '${versi}',
+                                      'date_run': '${DateTime.now()}',
+                                      'info1': 'My Activity - Edit My Activity',
+                                      ' info2': '${_udid} ',
+                                      'userid': '${userData.getUsernameID()}',
+                                      ' toko': '${userData.getUserToko()}',
+                                      ' devicename': '${info.device}',
+                                      'TOKEN': 'R4M4Y4N4'
+                                    });
+                                    print('berhasil $_udid');
+                                    var responseLog = await dio.post(
+                                        '${tipeurl}v1/activity/createmylog',
+                                        data: formDataLog);
+                                    print('berhasil $_udid');
+                                  }
+
+                                  print('file : ${file}');
+                                  print('DATA EDIT');
+
+                                  print('DATA Input');
                                 } else {
-                                  var formData = FormData.fromMap({
-                                    'user_create': '${userData.getUsername7()}',
-                                    'time_start': timeStart.text,
-                                    'time_end': timeEnd.text,
-                                    'task_id': taskId == ''
-                                        ? 'P202300001-001'
-                                        : taskId,
-                                    'projek_id': projectId == ''
-                                        ? 'P202300001'
-                                        : projectId,
-                                    'myactivity_id': idEdit,
-                                    'myactivity_desc': desc.text,
-                                    'date_create': dateInput,
-                                    'dokumen': '${dokumenEdit}',
-                                    'beforedokumen': '${dokumen}'
-                                  });
+                                  if (_paths != null) {
+                                    var formData = FormData.fromMap({
+                                      'user_create':
+                                          '${userData.getUsername7()}',
+                                      'time_start': timeStart.text,
+                                      'time_end': timeEnd.text,
+                                      'task_id': taskId == ''
+                                          ? 'P202300001-001'
+                                          : taskId,
+                                      'projek_id': projectId == ''
+                                          ? 'P202300001'
+                                          : projectId,
+                                      'myactivity_status': null,
+                                      'myactivity_desc': desc.text,
+                                      'date_create': dateInput,
+                                      'dokumen': await MultipartFile.fromFile(
+                                          file!.path,
+                                          filename: '${nameFile}')
+                                    });
 
-                                  var response = await dio.post(
-                                      '${tipeurl}v1/activity/updateDailyActivity',
-                                      data: formData);
+                                    var response = await dio.post(
+                                        '${tipeurl}v1/activity/create_daily_activity',
+                                        data: formData);
 
-                                       AndroidDeviceInfo info =
-                                  await deviceInfo.androidInfo;
-                              var formDataLog = FormData.fromMap({
-                                'progname': 'RALS_TOOLS ',
-                                'versi': '${versi}',
-                                'date_run': '${DateTime.now()}',
-                                'info1': 'My Activity - Edit My Activity',
-                                ' info2': '${_udid} ',
-                                'userid': '${userData.getUsernameID()}',
-                                ' toko': '${userData.getUserToko()}',
-                                ' devicename': '${info.device}',
-                                'TOKEN': 'R4M4Y4N4'
-                              });
-                              print('berhasil $_udid');
-                              var responseLog =
-                                await dio.post('${tipeurl}v1/activity/createmylog', data: formDataLog);
-                            print('berhasil $_udid');
+                                    AndroidDeviceInfo info =
+                                        await deviceInfo.androidInfo;
+                                    var formDataLog = FormData.fromMap({
+                                      'progname': 'RALS_TOOLS ',
+                                      'versi': '${versi}',
+                                      'date_run': '${DateTime.now()}',
+                                      'info1':
+                                          'My Activity - Input My Activity',
+                                      ' info2': '${_udid} ',
+                                      'userid': '${userData.getUsernameID()}',
+                                      ' toko': '${userData.getUserToko()}',
+                                      ' devicename': '${info.device}',
+                                      'TOKEN': 'R4M4Y4N4'
+                                    });
+                                    print('berhasil $_udid');
+                                    var responseLog = await dio.post(
+                                        '${tipeurl}v1/activity/createmylog',
+                                        data: formDataLog);
+                                    print('berhasil $_udid');
+                                  } else {
+                                    var formData = FormData.fromMap({
+                                      'user_create':
+                                          '${userData.getUsername7()}',
+                                      'time_start': timeStart.text,
+                                      'time_end': timeEnd.text,
+                                      'task_id': taskId == ''
+                                          ? 'P202300001-001'
+                                          : taskId,
+                                      'projek_id': projectId == ''
+                                          ? 'P202300001'
+                                          : projectId,
+                                      'myactivity_status': null,
+                                      'myactivity_desc': desc.text,
+                                      'date_create': dateInput,
+                                    });
+
+                                    var response = await dio.post(
+                                        '${tipeurl}v1/activity/create_daily_activity',
+                                        data: formData);
+
+                                    AndroidDeviceInfo info =
+                                        await deviceInfo.androidInfo;
+                                    var formDataLog = FormData.fromMap({
+                                      'progname': 'RALS_TOOLS ',
+                                      'versi': '${versi}',
+                                      'date_run': '${DateTime.now()}',
+                                      'info1':
+                                          'My Activity - Input My Activity',
+                                      ' info2': '${_udid} ',
+                                      'userid': '${userData.getUsernameID()}',
+                                      ' toko': '${userData.getUserToko()}',
+                                      ' devicename': '${info.device}',
+                                      'TOKEN': 'R4M4Y4N4'
+                                    });
+                                    print('berhasil $_udid');
+                                    var responseLog = await dio.post(
+                                        '${tipeurl}v1/activity/createmylog',
+                                        data: formDataLog);
+                                    print('berhasil $_udid');
+                                  }
                                 }
 
-                                print('file : ${file}');
-                                print('DATA EDIT');
-
-                                print('DATA Input');
-                              } else {
-                                if (_paths != null) {
-                                  var formData = FormData.fromMap({
-                                    'user_create': '${userData.getUsername7()}',
-                                    'time_start': timeStart.text,
-                                    'time_end': timeEnd.text,
-                                    'task_id': taskId == ''
-                                        ? 'P202300001-001'
-                                        : taskId,
-                                    'projek_id': projectId == ''
-                                        ? 'P202300001'
-                                        : projectId,
-                                    'myactivity_status': null,
-                                    'myactivity_desc': desc.text,
-                                    'date_create': dateInput,
-                                    'dokumen':   await MultipartFile.fromFile(
-                                      file!.path,
-                                      filename: '${nameFile}'
-                                    )
-                                  });
-
-                                  var response = await dio.post(
-                                      '${tipeurl}v1/activity/create_daily_activity',
-                                      data: formData);
-
-                                       AndroidDeviceInfo info =
-                                  await deviceInfo.androidInfo;
-                              var formDataLog = FormData.fromMap({
-                                'progname': 'RALS_TOOLS ',
-                                'versi': '${versi}',
-                                'date_run': '${DateTime.now()}',
-                                'info1': 'My Activity - Input My Activity',
-                                ' info2': '${_udid} ',
-                                'userid': '${userData.getUsernameID()}',
-                                ' toko': '${userData.getUserToko()}',
-                                ' devicename': '${info.device}',
-                                'TOKEN': 'R4M4Y4N4'
-                              });
-                              print('berhasil $_udid');
-                              var responseLog =
-                                await dio.post('${tipeurl}v1/activity/createmylog', data: formDataLog);
-                            print('berhasil $_udid');
-                                } else {
-                                  var formData = FormData.fromMap({
-                                    'user_create': '${userData.getUsername7()}',
-                                    'time_start': timeStart.text,
-                                    'time_end': timeEnd.text,
-                                    'task_id': taskId == ''
-                                        ? 'P202300001-001'
-                                        : taskId,
-                                    'projek_id': projectId == ''
-                                        ? 'P202300001'
-                                        : projectId,
-                                    'myactivity_status': null,
-                                    'myactivity_desc': desc.text,
-                                    'date_create': dateInput,
-                                  });
-
-                                  var response = await dio.post(
-                                      '${tipeurl}v1/activity/create_daily_activity',
-                                      data: formData);
-
-                                      AndroidDeviceInfo info =
-                                  await deviceInfo.androidInfo;
-                              var formDataLog = FormData.fromMap({
-                                'progname': 'RALS_TOOLS ',
-                                'versi': '${versi}',
-                                'date_run': '${DateTime.now()}',
-                                'info1': 'My Activity - Input My Activity',
-                                ' info2': '${_udid} ',
-                                'userid': '${userData.getUsernameID()}',
-                                ' toko': '${userData.getUserToko()}',
-                                ' devicename': '${info.device}',
-                                'TOKEN': 'R4M4Y4N4'
-                              });
-                              print('berhasil $_udid');
-                              var responseLog =
-                                await dio.post('${tipeurl}v1/activity/createmylog', data: formDataLog);
-                            print('berhasil $_udid');
-                                }
+                                print(
+                                    'Berhasil ${dokumen} ${dokumenEdit}, ${selectedTask}, ${timeStart.text}, ${timeStart.text}, ${timeStart.text},');
+                                popup();
+                                apiTask = 'P202300001';
+                                fetchProject();
+                                fetchTask(apiProject: '${apiTask}');
+                                result.clear();
+                                resultProject.clear();
+                                uploadEdit = false;
+                                timeStart.clear();
+                                timeEnd.clear();
+                                desc.clear();
+                                _paths = null;
+                                up = false;
+                                setState(() {
+                                  fetchEdit(
+                                      user_create:
+                                          '${userData.getUsername7()}');
+                                  edit = false;
+                                });
                               }
-
-                              
-                              print(
-                                  'Berhasil ${dokumen} ${dokumenEdit}, ${selectedTask}, ${timeStart.text}, ${timeStart.text}, ${timeStart.text},');
-                              popup();
-                              apiTask = 'P202300001';
-                              fetchProject();
-                              fetchTask(apiProject: '${apiTask}');
-                              result.clear();
-                              resultProject.clear();
-                              uploadEdit = false;
-                              timeStart.clear();
-                              timeEnd.clear();
-                              desc.clear();
-                              _paths = null;
-                              up = false;
-                              setState(() {
-                                
-                                fetchEdit(
-                                    user_create: '${userData.getUsername7()}');
-                                edit = false;
-                              });
-                            }
-                            }
-                            else {
+                            } else {
                               print('sudah input/edit');
                             }
                             //save data 1x

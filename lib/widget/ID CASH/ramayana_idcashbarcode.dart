@@ -17,9 +17,9 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
   void initState() {
     super.initState();
     initPlatformState();
-    _secureScreen(); 
+    _secureScreen();
     didPush();
-    didPopNext();                                                                                                                                                               
+    didPopNext();
   }
 
   @override
@@ -32,11 +32,14 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
     ScreenBrightness().setScreenBrightness(1.0);
   }
 
-   _secureScreen() async {
-    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE); // Menonaktifkan tangkapan layar
+  _secureScreen() async {
+    await FlutterWindowManager.addFlags(
+        FlutterWindowManager.FLAG_SECURE); // Menonaktifkan tangkapan layar
   }
+
   _unsecureScreen() async {
-    await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE); // Mengaktifkan kembali tangkapan layar
+    await FlutterWindowManager.clearFlags(FlutterWindowManager
+        .FLAG_SECURE); // Mengaktifkan kembali tangkapan layar
   }
 
   Future<void> initPlatformState() async {
@@ -86,10 +89,12 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
         ),
         title: Container(
             margin: EdgeInsets.only(left: 100, right: 115),
-            child: Text(
-              'Kode ID Cash',
-              style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 23, color: Colors.white,fontWeight: FontWeight.w500 ))
-            )),
+            child: Text('Kode ID Cash',
+                style: GoogleFonts.plusJakartaSans(
+                    textStyle: TextStyle(
+                        fontSize: 23,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500)))),
         backgroundColor: Color.fromARGB(255, 255, 0, 0),
         elevation: 0,
         toolbarHeight: 80,
@@ -219,14 +224,29 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
                                               margin: EdgeInsets.fromLTRB(
                                                   20, 20, 0, 0),
                                               child: Text('Max Pembayaran',
-                                                  style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 20, color: Colors.black,fontWeight: FontWeight.w500 ))
-                                                      )),
+                                                  style: GoogleFonts
+                                                      .plusJakartaSans(
+                                                          textStyle: TextStyle(
+                                                              fontSize: 20,
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500)))),
                                           Container(
                                               margin: EdgeInsets.fromLTRB(
                                                   0, 20, 20, 0),
                                               child: Text(
                                                   'Rp. ${kondisiSelisih()}',
-                                                  style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 20, color: Colors.black,fontWeight: FontWeight.w500 )))),
+                                                  style: GoogleFonts
+                                                      .plusJakartaSans(
+                                                          textStyle: TextStyle(
+                                                              fontSize: 20,
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500)))),
                                         ],
                                       ),
                                       Container(
@@ -248,30 +268,30 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
                                 ),
                                 Column(
                                   children: [
-                                    Container(
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                10,
-                                        color: Colors.deepOrange,
-                                        margin:
-                                            EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                        child: BarCodeImage(
-                                          backgroundColor: Colors.white,
-                                          params: Code128BarCodeParams(
-                                            "${e.nokartu}",
-                                            lineWidth:
-                                                1.5, // width for a single black/white bar (default: 2.0)
-                                            barHeight: 10,
-                                            // barHeight: 30.0,               // height for the entire widget (default: 100.0)
-                                            withText:
-                                                false, // Render with text label or not (default: false)
-                                          ),
-                                          padding: EdgeInsets.only(bottom: 7),
-                                          onError: (error) {
-                                            // Error handler
-                                            print('error = $error');
-                                          },
-                                        )),
+                                    // Container(
+                                    //     height:
+                                    //         MediaQuery.of(context).size.height /
+                                    //             10,
+                                    //     color: Colors.deepOrange,
+                                    //     margin:
+                                    //         EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    //     child: BarCodeImage(
+                                    //       backgroundColor: Colors.white,
+                                    //       params: Code128BarCodeParams(
+                                    //         "${e.nokartu}",
+                                    //         lineWidth:
+                                    //             1.5, // width for a single black/white bar (default: 2.0)
+                                    //         barHeight: 10,
+                                    //         // barHeight: 30.0,               // height for the entire widget (default: 100.0)
+                                    //         withText:
+                                    //             false, // Render with text label or not (default: false)
+                                    //       ),
+                                    //       padding: EdgeInsets.only(bottom: 7),
+                                    //       onError: (error) {
+                                    //         // Error handler
+                                    //         print('error = $error');
+                                    //       },
+                                    //     )),
                                     Container(
                                       height:
                                           MediaQuery.of(context).size.height /
@@ -283,19 +303,26 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Text(
-                                            'Copyright RALS',
-                                           style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 17, color: Colors.black))
-                                          ),
+                                          Text('Copyright RALS',
+                                              style:
+                                                  GoogleFonts.plusJakartaSans(
+                                                      textStyle: TextStyle(
+                                                          fontSize: 17,
+                                                          color:
+                                                              Colors.black))),
                                           Icon(
                                             Icons.copyright,
                                             color: Colors.black,
                                             size: 21,
                                           ),
-                                          Text(
-                                            '${copyright}',
-                                           style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 17, color: Colors.black,fontWeight: FontWeight.w500 ))
-                                          )
+                                          Text('${copyright}',
+                                              style:
+                                                  GoogleFonts.plusJakartaSans(
+                                                      textStyle: TextStyle(
+                                                          fontSize: 17,
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.w500)))
                                         ],
                                       ),
                                     ),
@@ -315,10 +342,10 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Text(
-                          'OK',
-                         style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 20, color: Colors.white ))
-                        ),
+                        child: Text('OK',
+                            style: GoogleFonts.plusJakartaSans(
+                                textStyle: TextStyle(
+                                    fontSize: 20, color: Colors.white))),
                         color: Color.fromARGB(255, 255, 17, 17),
                         onPressed: () async {
                           _unsecureScreen();
