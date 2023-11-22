@@ -930,9 +930,9 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                                           seconds: 3));
                                                   // await init();
                                                   await loginPressed();
-                                                  await fetchDataNoKartu(
-                                                      id_user:
-                                                          '${userData.getUsername7()}');
+                                                  // await fetchDataNoKartu(
+                                                  //     id_user:
+                                                  //         '${userData.getUsername7()}');
                                                   setState(() {
                                                     isLoading = false;
                                                   });
