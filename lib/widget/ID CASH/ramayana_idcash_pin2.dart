@@ -168,7 +168,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                 margin: EdgeInsets.only(left: 20, top: 50, right: 20),
                 // color: Colors.green,
                 height: 320,
-                child: Center(child: Image.asset('assets/menu/idcash/password_enter.png',
+                child: Center(child: Image.asset('assets/idcashpin_password_enter.png',
                 )),
               ),
             ),

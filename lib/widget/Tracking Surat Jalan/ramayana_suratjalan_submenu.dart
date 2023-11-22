@@ -36,7 +36,7 @@ class _RamayanaSuratJalanState extends State<RamayanaSuratJalan> {
         Container(
           height: 480,
           child: Image.asset(
-            'assets/menu/surat_jalan/background.png',
+            'assets/sj_submenu_background.png',
             fit: BoxFit.fill,
           ),
         ),
@@ -66,7 +66,7 @@ class _RamayanaSuratJalanState extends State<RamayanaSuratJalan> {
                              Container(
                               height: 40,
                               width: 40,
-                              child: Image.asset('assets/menu/surat_jalan/scann.png')),
+                              child: Image.asset('assets/sj_submenu_lacakscann.png')),
                              SizedBox(
                               width: 20,
                             ),
@@ -98,7 +98,7 @@ class _RamayanaSuratJalanState extends State<RamayanaSuratJalan> {
                              Container(
                               height: 50,
                               width: 50,
-                              child: Image.asset('assets/menu/surat_jalan/lacak.png')),
+                              child: Image.asset('assets/sj_submenu_lacak.png')),
                              SizedBox(
                               width: 20,
                             ),

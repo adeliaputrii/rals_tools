@@ -34,7 +34,7 @@ class _RamayanaInformasiState extends State<RamayanaInformasi> {
           Container(
             child: 
             Image.asset(
-              'assets/berita/background.png',
+              'assets/background.png',
               fit: BoxFit.cover,
               height: double.infinity,
               width: double.infinity,
