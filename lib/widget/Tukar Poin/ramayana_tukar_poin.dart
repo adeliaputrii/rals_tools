@@ -1,555 +1,526 @@
-// import 'dart:collection';
-// import 'dart:convert';
-// import 'dart:io';
-// import 'package:flutter_windowmanager/flutter_windowmanager.dart';
-// import 'package:intl/intl.dart';
-// import 'package:collection/collection.dart';
-// import 'package:barcode_flutter/barcode_flutter.dart';
-// import 'package:device_info_plus/device_info_plus.dart';
-// import 'package:dio/dio.dart';
-// import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
-// import 'package:flutter/foundation.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:flutter_udid/flutter_udid.dart';
-// import 'package:myactivity_project_dev/database/db_log.dart';
-// import 'package:myactivity_project_dev/models/model_idacash_cust.dart';
-// import 'package:myactivity_project_dev/models/model_log.dart';
-// import 'package:myactivity_project_dev/ramayana_home.dart';
-// import 'package:myactivity_project_dev/ramayana_home_new.dart';
-// import 'package:myactivity_project_dev/service/SP_service/SP_service.dart';
-// import 'package:qr_flutter/qr_flutter.dart';
-// import 'package:form_field_validator/form_field_validator.dart';
-// import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-// import 'package:pretty_qr_code/pretty_qr_code.dart';
-// import 'package:relative_scale/relative_scale.dart';
-// import 'package:responsive_framework/responsive_framework.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:tbib_splash_screen/splash_screen_view.dart';
-// import 'package:form_field_validator/form_field_validator.dart';
-// import 'package:screen_brightness/screen_brightness.dart';
-// import 'package:myactivity_project_dev/settingsralstools.dart';
-// import 'package:http/http.dart' as http;
 
-// class RamayanaTukarPoin extends StatefulWidget {
-//   static const routeName = '/RamayanaVoid';
-//   const RamayanaTukarPoin({super.key});
+part of'import.dart';
 
-//   @override
-//   State<RamayanaTukarPoin> createState() => _RamayanaTukarPoinState();
-// }
+class RamayanaTukarPoin extends StatefulWidget {
+  static const routeName = '/RamayanaVoid';
+  const RamayanaTukarPoin({super.key});
 
-// class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
-//   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-//   DbHelper db = DbHelper();
-//   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-//   String _udid = 'Unknown';
-//   var dio = Dio();
-//   UserData userData = UserData();
-//   bool _isKeptOn = true;
-//   double _brightness = 1.0;
-//   bool _barcode = true;
+  @override
+  State<RamayanaTukarPoin> createState() => _RamayanaTukarPoinState();
+}
 
-//   @override
-//   void didPush() {
-//     ScreenBrightness().setScreenBrightness(1.0);
-//   }
+class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  DbHelper db = DbHelper();
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  String _udid = 'Unknown';
+  var dio = Dio();
+  UserData userData = UserData();
+  bool _isKeptOn = true;
+  double _brightness = 1.0;
+  bool _barcode = true;
 
-//   @override
-//   void didPopNext() {
-//     ScreenBrightness().setScreenBrightness(1.0);
-//   }
+  @override
+  void didPush() {
+    ScreenBrightness().setScreenBrightness(1.0);
+  }
 
-//    @override
-//   void initState() {
-//     super.initState();
-//     initPlatformState();
-//   }
+  @override
+  void didPopNext() {
+    ScreenBrightness().setScreenBrightness(1.0);
+  }
 
-//   Future<void> initPlatformState() async {
-//     String udid;
-//     try {
-//       udid = await FlutterUdid.consistentUdid;
-//     } on PlatformException {
-//       udid = 'Failed to get UDID.';
-//     }
+   @override
+  void initState() {
+    super.initState();
+    initPlatformState();
+  }
 
-//     if (!mounted) return;
+  Future<void> initPlatformState() async {
+    String udid;
+    try {
+      udid = await FlutterUdid.consistentUdid;
+    } on PlatformException {
+      udid = 'Failed to get UDID.';
+    }
 
-//     setState(() {
-//       _udid = udid;
-//     });
-//   }
+    if (!mounted) return;
 
-//   TextEditingController myController = TextEditingController();
+    setState(() {
+      _udid = udid;
+    });
+  }
 
-//   String _scanBarcode = '';
-//   bool _visible = false;
+  TextEditingController myController = TextEditingController();
 
-//     List length = [];
-//     List ganjil = [];
-//     List genap = [];
-//     // String nokartu = '${ApprovalIdcashCustomer.noMember[0]}';
-//     String hasilAkhir = '';
-//     bool? _isConnected;
+  String _scanBarcode = '';
+  bool _visible = false;
 
-//   _checkInternetConnection() async {
-//     try {
-//       final response = await InternetAddress.lookup('www.kindacode.com');
-//       if (response.isNotEmpty) {
-//         setState(() {
-//           _isConnected = true;
-//           print(_isConnected);
-//         });
-//       }
-//     } on Exception catch (err) {
-//       setState(() {
-//         _isConnected = false;
-//         print(_isConnected);
-//       });
-//       if (kDebugMode) {
-//         print(err);
-//       }
-//     }
-//     print(_isConnected);
-//   }
+    List length = [];
+    List ganjil = [];
+    List genap = [];
+    // String nokartu = '${ApprovalIdcashCustomer.noMember[0]}';
+    String hasilAkhir = '';
+    bool? _isConnected;
 
-//    Future<String>step1() async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     // user id
-//     UserData userData = UserData();
-//     await userData.getPref();
-//     var member = prefs.getString('noMember');
-//     String userId = '${member}';
-//     String? randomAngka = myController.text;
-//     print('grgr 123');
-//     print(member);
-//     print(userId);
-//     List noMember = userId.split('');
-//     print(noMember);
-//     print(noMember);
-//     print(noMember[0]);
-//     print(noMember[15]);
-//     int current = 1;
+  _checkInternetConnection() async {
+    try {
+      final response = await InternetAddress.lookup('www.kindacode.com');
+      if (response.isNotEmpty) {
+        setState(() {
+          _isConnected = true;
+          print(_isConnected);
+        });
+      }
+    } on Exception catch (err) {
+      setState(() {
+        _isConnected = false;
+        print(_isConnected);
+      });
+      if (kDebugMode) {
+        print(err);
+      }
+    }
+    print(_isConnected);
+  }
 
-//       for (int i = 0; i < noMember.length; i++) {
-//         current = i + 1;
-//         print(current);
-//         if(current.isEven){
-//           genap.add(noMember[i]);
-//         print('valuegenap : ${noMember[i]}');
-//       } else if (current.isOdd) {
-//         ganjil.add(noMember[i]);
-//         print('valueganjil : ${noMember[i]}');
-//       }  
-//     }
+   Future<String>step1() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // user id
+    UserData userData = UserData();
+    await userData.getPref();
+    var member = prefs.getString('noMember');
+    String userId = '${member}';
+    String? randomAngka = myController.text;
+    print('grgr 123');
+    print(member);
+    print(userId);
+    List noMember = userId.split('');
+    print(noMember);
+    print(noMember);
+    print(noMember[0]);
+    print(noMember[15]);
+    int current = 1;
 
-//   print('ganjil : $ganjil');
-//   print('genap : $genap');
+      for (int i = 0; i < noMember.length; i++) {
+        current = i + 1;
+        print(current);
+        if(current.isEven){
+          genap.add(noMember[i]);
+        print('valuegenap : ${noMember[i]}');
+      } else if (current.isOdd) {
+        ganjil.add(noMember[i]);
+        print('valueganjil : ${noMember[i]}');
+      }  
+    }
 
-//   var sum = 0;
-//   ganjil.forEach((val) {
-//     sum += int.parse(val);
-//   });
-//   print('jumlah ganjil $sum');
+  print('ganjil : $ganjil');
+  print('genap : $genap');
 
-//   var sum2 = 0;
-//   genap.forEach((val2) {
-//     sum2 += int.parse(val2);
-//   });
-//   print('jumlah genap $sum2');
+  var sum = 0;
+  ganjil.forEach((val) {
+    sum += int.parse(val);
+  });
+  print('jumlah ganjil $sum');
 
-//   var perhitunganGanjil = (sum + 5) * int.parse(myController.text);
-//   var perhitunganGenap = (sum2 - 5) * int.parse(myController.text);
-//   // var perhitunganGenap = -32;
+  var sum2 = 0;
+  genap.forEach((val2) {
+    sum2 += int.parse(val2);
+  });
+  print('jumlah genap $sum2');
 
-//   if(perhitunganGanjil < 0) {
-//     perhitunganGanjil = perhitunganGanjil * -1;
-//   } 
+  var perhitunganGanjil = (sum + 5) * int.parse(myController.text);
+  var perhitunganGenap = (sum2 - 5) * int.parse(myController.text);
+  // var perhitunganGenap = -32;
 
-//   if(perhitunganGenap < 0) {
-//     perhitunganGenap = perhitunganGenap * -1;
-//   }
+  if(perhitunganGanjil < 0) {
+    perhitunganGanjil = perhitunganGanjil * -1;
+  } 
 
-//   print('Plus 5 Ganjil $perhitunganGanjil');
-//   print('Minus 5 Genap $perhitunganGenap');
+  if(perhitunganGenap < 0) {
+    perhitunganGenap = perhitunganGenap * -1;
+  }
 
-//   var hasilGanjil = perhitunganGanjil.toString();
-//   var hasilGenap = perhitunganGenap.toString();
+  print('Plus 5 Ganjil $perhitunganGanjil');
+  print('Minus 5 Genap $perhitunganGenap');
 
-//   hasilAkhir = hasilGanjil+hasilGenap;
-//   print(hasilAkhir);
-//   return hasilAkhir;
+  var hasilGanjil = perhitunganGanjil.toString();
+  var hasilGenap = perhitunganGenap.toString();
 
-// }
+  hasilAkhir = hasilGanjil+hasilGenap;
+  print(hasilAkhir);
+  return hasilAkhir;
+
+}
   
-//   String data = '';
+  String data = '';
   
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return WillPopScope(
-//       child: RelativeBuilder(builder: (context, height, width, sy, sx) {
-//         return Scaffold(
-//           appBar: AppBar(
-//             leading: IconButton(
-//               onPressed: () async {
-//                 await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
-//                 Navigator.pushAndRemoveUntil(
-//                     context,
-//                     MaterialPageRoute(
-//                       builder: (context) =>
-//                           DefaultBottomBarController(child: Ramayana()),
-//                     ),
-//                     (Route<dynamic> route) => false);
-//               },
-//               icon: Icon(
-//                 Icons.arrow_back_ios,
-//                 size: 20,
-//               ),
-//             ),
-//             title: Text('Tukar Poin', style: TextStyle(fontSize: 23)),
-//             backgroundColor: Color.fromARGB(255, 255, 17, 17),
-//             elevation: 7.20,
-//             toolbarHeight: 90,
-//           ),
-//           body: ListView(
-//             children: [
-//               Stack(children: <Widget>[
-//                 Container(
-//                     margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-//                     color: Color.fromARGB(255, 253, 249, 249)),
-//                 Container(
-//                   width: MediaQuery.of(context).size.width / 1,
-//                   height: 170,
-//                   color: Color.fromARGB(255, 255, 17, 17),
-//                 ),
-//                 Container(
-//                   margin: EdgeInsets.fromLTRB(30, 30, 30, 0),
-//                   child: Text(
-//                     'Tukar Poin',
-//                     style: TextStyle(
-//                         fontWeight: FontWeight.w800,
-//                         fontSize: 23,
-//                         color: Colors.white),
-//                   ),
-//                 ),
-//                 Container(
-//                   margin: EdgeInsets.fromLTRB(10, 100, 10, 0),
-//                   height: 200,
-//                   decoration: BoxDecoration(
-//                       borderRadius: BorderRadius.circular(20),
-//                       color: Color.fromARGB(255, 255, 255, 255),
-//                       boxShadow: [BoxShadow(blurRadius: 5)]),
-//                 ),
-//                 SizedBox(
-//                   height: 30,
-//                   width: 30,
-//                 ),
-//                 Container(
-//                     margin: EdgeInsets.fromLTRB(30, 130, 30, 0),
-//                     child: Form(
-//                         key: _formKey,
-//                         child: TextFormField(
-//                             controller: myController,
-//                             style: TextStyle(fontSize: 20, color: Colors.black),
-//                             validator: (value) {
-//                               if (value!.isEmpty) {
-//                                 return "Required";
-//                               }
-//                               if (value.length != 4) {
-//                                 return "Password length must be 4 characters";
-//                               }
-//                             },
-//                             keyboardType: TextInputType.number,
-//                             inputFormatters: [
-//                               FilteringTextInputFormatter.digitsOnly
-//                             ],
-//                             decoration: InputDecoration(
-//                                 border: OutlineInputBorder(
-//                                     borderSide: BorderSide(
-//                                         color: Colors.black, width: 5.0),
-//                                     borderRadius: BorderRadius.circular(25)),
-//                                 errorBorder: OutlineInputBorder(
-//                                     borderSide: BorderSide(
-//                                       color: Color.fromARGB(255, 255, 17, 17),
-//                                     ),
-//                                     borderRadius: BorderRadius.circular(25)),
-//                                 errorStyle: TextStyle(
-//                                     color: Color.fromARGB(255, 255, 17, 17),
-//                                     fontSize: 14,
-//                                     fontWeight: FontWeight.w400),
-//                                 labelStyle: TextStyle(color: Colors.black87),
-//                                 prefixIcon: Icon(
-//                                   Icons.keyboard,
-//                                   color: Color.fromARGB(255, 255, 17, 17),
-//                                   size: 30,
-//                                 ),
-//                                 hintStyle: TextStyle(
-//                                     color: Colors.black, fontSize: 20),
-//                                 enabledBorder: OutlineInputBorder(
-//                                     borderSide:
-//                                         new BorderSide(color: Colors.black),
-//                                     borderRadius: BorderRadius.circular(25)),
-//                                 focusedBorder: OutlineInputBorder(
-//                                   borderRadius: BorderRadius.circular(25),
-//                                   borderSide:
-//                                       new BorderSide(color: Colors.black),
-//                                 ))))),
-//                 Container(
-//                   margin: EdgeInsets.fromLTRB(160, 230, 160, 0),
-//                   width: 150,
-//                   decoration: BoxDecoration(
-//                       color: Color.fromARGB(255, 255, 17, 17),
-//                       borderRadius: BorderRadius.circular(30)),
-//                   height: 40,
-//                   child: TextButton(
-//                     child: Text(
-//                       'GENERATE',
-//                       style: TextStyle(
-//                           fontWeight: FontWeight.w700,
-//                           fontSize: 20,
-//                           color: Colors.white),
-//                     ),
-//                     onPressed: () async {
-//                       if (_formKey.currentState!.validate()) {
-//                       didPush();
-//                       didPopNext();
-//                         await _checkInternetConnection();
-//                                 if (_isConnected == true) {
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      child: RelativeBuilder(builder: (context, height, width, sy, sx) {
+        return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () async {
+                await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          DefaultBottomBarController(child: Ramayana()),
+                    ),
+                    (Route<dynamic> route) => false);
+              },
+              icon: Icon(
+                Icons.arrow_back_ios,
+                size: 20,
+              ),
+            ),
+            title: Text('Tukar Poin', style: TextStyle(fontSize: 23)),
+            backgroundColor: Color.fromARGB(255, 255, 17, 17),
+            elevation: 7.20,
+            toolbarHeight: 90,
+          ),
+          body: ListView(
+            children: [
+              Stack(children: <Widget>[
+                Container(
+                    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    color: Color.fromARGB(255, 253, 249, 249)),
+                Container(
+                  width: MediaQuery.of(context).size.width / 1,
+                  height: 170,
+                  color: Color.fromARGB(255, 255, 17, 17),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(30, 30, 30, 0),
+                  child: Text(
+                    'Tukar Poin',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 23,
+                        color: Colors.white),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(10, 100, 10, 0),
+                  height: 200,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      boxShadow: [BoxShadow(blurRadius: 5)]),
+                ),
+                SizedBox(
+                  height: 30,
+                  width: 30,
+                ),
+                Container(
+                    margin: EdgeInsets.fromLTRB(30, 130, 30, 0),
+                    child: Form(
+                        key: _formKey,
+                        child: TextFormField(
+                            controller: myController,
+                            style: TextStyle(fontSize: 20, color: Colors.black),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Required";
+                              }
+                              if (value.length != 4) {
+                                return "Password length must be 4 characters";
+                              }
+                            },
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.black, width: 5.0),
+                                    borderRadius: BorderRadius.circular(25)),
+                                errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromARGB(255, 255, 17, 17),
+                                    ),
+                                    borderRadius: BorderRadius.circular(25)),
+                                errorStyle: TextStyle(
+                                    color: Color.fromARGB(255, 255, 17, 17),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
+                                labelStyle: TextStyle(color: Colors.black87),
+                                prefixIcon: Icon(
+                                  Icons.keyboard,
+                                  color: Color.fromARGB(255, 255, 17, 17),
+                                  size: 30,
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.black, fontSize: 20),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        new BorderSide(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(25)),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                  borderSide:
+                                      new BorderSide(color: Colors.black),
+                                ))))),
+                Container(
+                  margin: EdgeInsets.fromLTRB(160, 230, 160, 0),
+                  width: 150,
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 255, 17, 17),
+                      borderRadius: BorderRadius.circular(30)),
+                  height: 40,
+                  child: TextButton(
+                    child: Text(
+                      'GENERATE',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                          color: Colors.white),
+                    ),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                      didPush();
+                      didPopNext();
+                      data = await step1();
+                        await _checkInternetConnection();
+                                if (_isConnected == true) {
                                  
-//                                     print('is connect');
-//                                     AndroidDeviceInfo info = await deviceInfo.androidInfo;
-//                           var formData = FormData.fromMap({
-//                                 'progname': 'RALS_TOOLS ',
-//                                 'versi': '${versi}',
-//                                 'date_run': '${DateTime.now()}',
-//                                 'info1': 'Aktivitas Tukar Poin - Menu Tukar Poin',
-//                                 ' info2': '${_udid} ',
-//                                 'userid': '${userData.getUsernameID()}',
-//                                 ' toko': '${userData.getUserToko()}',
-//                                 ' devicename': '${info.device}',
-//                                 'TOKEN': 'R4M4Y4N4'
-//                               });
+                                    print('is connect');
+                                    AndroidDeviceInfo info = await deviceInfo.androidInfo;
+                          var formData = FormData.fromMap({
+                                'progname': 'RALS_TOOLS ',
+                                'versi': '${versi}',
+                                'date_run': '${DateTime.now()}',
+                                'info1': 'Aktivitas Tukar Poin - Menu Tukar Poin',
+                                ' info2': '${_udid} ',
+                                'userid': '${userData.getUsernameID()}',
+                                ' toko': '${userData.getUserToko()}',
+                                ' devicename': '${info.device}',
+                                'TOKEN': 'R4M4Y4N4'
+                              });
                               
                                
-//                               var response = await dio.post(
-//                                   '${tipeurl}v1/activity/createmylog',
-//                                   data: formData);   
+                              var response = await dio.post(
+                                  '${tipeurl}v1/activity/createmylog',
+                                  data: formData);   
                                   
-//                                   print('berhasil $_udid');    
+                                  print('berhasil $_udid');    
                                 
-//                                 } else if (_isConnected == false){
-//                                    String format = DateFormat.Hms().format(DateTime.now());
-//                                     print('not connect');
-//                                      db.saveActivityy(LogOffline(
-//                                       deskripsi: 'Aktivitas Tukar Poin - Menu Tukar Poin ',
-//                                       datetime: '${DateTime.now()}',
+                                } else if (_isConnected == false){
+                                   String format = DateFormat.Hms().format(DateTime.now());
+                                    print('not connect');
+                                     db.saveActivityy(LogOffline(
+                                      deskripsi: 'Aktivitas Tukar Poin - Menu Tukar Poin ',
+                                      datetime: '${DateTime.now()}',
                                       
-//       ));
+      ));
                                 
-//                                 }
-//                         length.clear;
-//                         ganjil.clear();
-//                         genap.clear();
-//                         data = await step1();
+                                }
+                        length.clear;
+                        ganjil.clear();
+                        genap.clear();
                         
-//                         setState(() {
-//                           _visible = true;
-//                         });
-//                         print(_visible);
-//                                   if (_visible == true) {
-//                                     await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
-//                                   } else {
-//                                     await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
-//                                   }
-//                       }
-//                     },
-//                   ),
-//                 ),
-//                 Container(
-//                     margin: EdgeInsets.fromLTRB(10, 350, 10, 0),
-//                     child: AnimatedOpacity(
-//                         opacity: _visible ? 1.0 : 0.0,
-//                         duration: const Duration(milliseconds: 500),
-//                         child: Container(
-//                           height: 400,
-//                           // color: Colors.red,
-//                           child: Column(children: [
-//                             Container(
-//                               decoration: BoxDecoration(
-//                                 borderRadius: BorderRadius.circular(50),
-//                                 color: Color.fromARGB(255, 214, 210, 210),
-//                               ),
-//                               height: 50,
-//                               child: Row(
-//                                   mainAxisAlignment:
-//                                       MainAxisAlignment.spaceBetween,
-//                                   children: [
-//                                     MaterialButton(
-//                                       shape: RoundedRectangleBorder(
-//                                           borderRadius:
-//                                               BorderRadius.circular(30)),
-//                                       minWidth: 225,
-//                                       height: 50,
-//                                       color: _barcode
-//                                           ? Color.fromARGB(255, 255, 17, 17)
-//                                           : Color.fromARGB(255, 214, 210, 210),
-//                                       onPressed: () {
-//                                         setState(() {
-//                                           _barcode = true;
-//                                         });
-//                                       },
-//                                       child: Text(
-//                                         "Barcode",
-//                                         style: TextStyle(
-//                                             color: _barcode
-//                                                 ? Colors.white
-//                                                 : Colors.black,
-//                                             fontSize: 20,
-//                                             fontWeight: FontWeight.bold),
-//                                       ),
-//                                     ),
-//                                     MaterialButton(
-//                                       shape: RoundedRectangleBorder(
-//                                           borderRadius:
-//                                               BorderRadius.circular(30)),
-//                                       minWidth: 225,
-//                                       height: 50,
-//                                       color: _barcode
-//                                           ? Color.fromARGB(255, 214, 210, 210)
-//                                           : Color.fromARGB(255, 255, 17, 17),
-//                                       onPressed: () {
-//                                         setState(() {
-//                                           _barcode = false;
-//                                           length.clear();
-//                                           ganjil.clear();
-//                                           genap.clear();
-//                                         });
-//                                       },
-//                                       child: Text(
-//                                         "QR",
-//                                         style: TextStyle(
-//                                             color: _barcode
-//                                                 ? Colors.black
-//                                                 : Colors.white,
-//                                             fontSize: 20,
-//                                             fontWeight: FontWeight.bold),
-//                                       ),
-//                                     ),
+                        
+                        setState(() {
+                          _visible = true;
+                        });
+                        print(_visible);
+                                  if (_visible == true) {
+                                    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+                                  } else {
+                                    await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+                                  }
+                      }
+                    },
+                  ),
+                ),
+                Container(
+                    margin: EdgeInsets.fromLTRB(10, 350, 10, 0),
+                    child: AnimatedOpacity(
+                        opacity: _visible ? 1.0 : 0.0,
+                        duration: const Duration(milliseconds: 500),
+                        child: Container(
+                          height: 400,
+                          // color: Colors.red,
+                          child: Column(children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: Color.fromARGB(255, 214, 210, 210),
+                              ),
+                              height: 50,
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    MaterialButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
+                                      minWidth: 225,
+                                      height: 50,
+                                      color: _barcode
+                                          ? Color.fromARGB(255, 255, 17, 17)
+                                          : Color.fromARGB(255, 214, 210, 210),
+                                      onPressed: () {
+                                        setState(() {
+                                          _barcode = true;
+                                        });
+                                      },
+                                      child: Text(
+                                        "Barcode",
+                                        style: TextStyle(
+                                            color: _barcode
+                                                ? Colors.white
+                                                : Colors.black,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    MaterialButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
+                                      minWidth: 225,
+                                      height: 50,
+                                      color: _barcode
+                                          ? Color.fromARGB(255, 214, 210, 210)
+                                          : Color.fromARGB(255, 255, 17, 17),
+                                      onPressed: () {
+                                        setState(() {
+                                          _barcode = false;
+                                          length.clear();
+                                          ganjil.clear();
+                                          genap.clear();
+                                        });
+                                      },
+                                      child: Text(
+                                        "QR",
+                                        style: TextStyle(
+                                            color: _barcode
+                                                ? Colors.black
+                                                : Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
                                    
-//                                   ]),
-//                             ),
-//                             Container(
-//                                 child: _barcode
-//                                     ? Column(
-//                                       children: [
-//                                         Container(
-//                                             margin:
-//                                                 EdgeInsets.fromLTRB(10, 100, 10, 0),
-//                                             child: Center(
-//                                                 child: BarCodeImage(
-//                                               backgroundColor: Colors.white,
-//                                               params: Code128BarCodeParams(
-//                                                 "${data}",
-//                                                 lineWidth:
-//                                                     1.5, // width for a single black/white bar (default: 2.0)
-//                                                 barHeight:
-//                                                     100, // height for the entire widget (default: 100.0)
-//                                                 withText:
-//                                                     false, // Render with text label or not (default: false)
-//                                               ),
-//                                               padding: EdgeInsets.only(bottom: 7),
-//                                               onError: (error) {
-//                                                 // Error handler
-//                                                 print('error = $error');
-//                                               },
-//                                             ))),
-//                                              Text('${hasilAkhir}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
-//                                       ],
-//                                     )
-//                                     : Column(
-//                                       children: [
-//                                         Container(
-//                                             margin: EdgeInsets.fromLTRB(
-//                                                 100, 50, 100, 0),
-//                                             child: PrettyQr(
-//                                               image: AssetImage(
-//                                                   'assets/ramayana(C).png'),
-//                                               size: 200,
-//                                               data: '$data',
-//                                               errorCorrectLevel:
-//                                                   QrErrorCorrectLevel.M,
-//                                               typeNumber: 7,
-//                                               roundEdges: false,
-//                                             ),
-//                                           ),
-//                                           SizedBox(
-//                                             height: 10,
-//                                           ),
-//                                           Text('${hasilAkhir}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
-//                                       ],
-//                                     ))
-//                           ]),
-//                         )
+                                  ]),
+                            ),
+                            Container(
+                                child: _barcode
+                                    ? Column(
+                                      children: [
+                                        Container(
+                                            margin:
+                                                EdgeInsets.fromLTRB(10, 100, 10, 0),
+                                            child: Center(
+                                                child: BarCodeImage(
+                                              backgroundColor: Colors.white,
+                                              params: Code128BarCodeParams(
+                                                "${data}",
+                                                lineWidth:
+                                                    1.5, // width for a single black/white bar (default: 2.0)
+                                                barHeight:
+                                                    100, // height for the entire widget (default: 100.0)
+                                                withText:
+                                                    false, // Render with text label or not (default: false)
+                                              ),
+                                              padding: EdgeInsets.only(bottom: 7),
+                                              onError: (error) {
+                                                // Error handler
+                                                print('error = $error');
+                                              },
+                                            ))),
+                                             Text('${hasilAkhir}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+                                      ],
+                                    )
+                                    : Column(
+                                      children: [
+                                        Container(
+                                            margin: EdgeInsets.fromLTRB(
+                                                100, 50, 100, 0),
+                                            child: PrettyQr(
+                                              image: AssetImage(
+                                                  'assets/ramayana(C).png'),
+                                              size: 200,
+                                              data: '$data',
+                                              errorCorrectLevel:
+                                                  QrErrorCorrectLevel.M,
+                                              typeNumber: 7,
+                                              roundEdges: false,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text('${hasilAkhir}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+                                      ],
+                                    ))
+                          ]),
+                        )
 
-//                         // Container(
-//                         //   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-//                         //   child: Column(
-//                         //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                         //     crossAxisAlignment: CrossAxisAlignment.center,
-//                         //     children: [
-//                         //       Container(
-//                         //           margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-//                         //           child: Center(
-//                         //             child: BarCodeImage(
-//                         //               backgroundColor: Colors.white,
-//                         //               params: Code128BarCodeParams(
-//                         //                 "${data}",
-//                         //                 lineWidth:
-//                         //                     1.5, // width for a single black/white bar (default: 2.0)
-//                         //                 barHeight:
-//                         //                     100, // height for the entire widget (default: 100.0)
-//                         //                 withText:
-//                         //                     false, // Render with text label or not (default: false)
-//                         //               ),
-//                         //               padding: EdgeInsets.only(bottom: 7),
-//                         //               onError: (error) {
-//                         //                 // Error handler
-//                         //                 print('error = $error');
-//                         //               },
-//                         //             ),
-//                         //           )),
-//                         //       Container(
-//                         //         margin: EdgeInsets.fromLTRB(100, 30, 100, 0),
-//                         //         child: PrettyQr(
-//                         //           image: AssetImage('assets/ramayana(C).png'),
-//                         //           size: 200,
-//                         //           data: '$data',
-//                         //           errorCorrectLevel: QrErrorCorrectLevel.M,
-//                         //           typeNumber: 7,
-//                         //           roundEdges: false,
-//                         //         ),
-//                         //       )
-//                         //     ],
-//                         //   ),
-//                         // )
-//                         )),
-//               ]),
-//             ],
-//           ),
-//         );
-//       }),
-//       onWillPop: () async {
-//         if (true) {
-//           Navigator.pushAndRemoveUntil(context,
-//               MaterialPageRoute(builder: (context) {
-//             return DefaultBottomBarController(child: Ramayana());
-//           }), (route) => false);
-//           return true;
-//         }
-//       },
-//     );
-//   }
+                        // Container(
+                        //   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        //   child: Column(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //     crossAxisAlignment: CrossAxisAlignment.center,
+                        //     children: [
+                        //       Container(
+                        //           margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        //           child: Center(
+                        //             child: BarCodeImage(
+                        //               backgroundColor: Colors.white,
+                        //               params: Code128BarCodeParams(
+                        //                 "${data}",
+                        //                 lineWidth:
+                        //                     1.5, // width for a single black/white bar (default: 2.0)
+                        //                 barHeight:
+                        //                     100, // height for the entire widget (default: 100.0)
+                        //                 withText:
+                        //                     false, // Render with text label or not (default: false)
+                        //               ),
+                        //               padding: EdgeInsets.only(bottom: 7),
+                        //               onError: (error) {
+                        //                 // Error handler
+                        //                 print('error = $error');
+                        //               },
+                        //             ),
+                        //           )),
+                        //       Container(
+                        //         margin: EdgeInsets.fromLTRB(100, 30, 100, 0),
+                        //         child: PrettyQr(
+                        //           image: AssetImage('assets/ramayana(C).png'),
+                        //           size: 200,
+                        //           data: '$data',
+                        //           errorCorrectLevel: QrErrorCorrectLevel.M,
+                        //           typeNumber: 7,
+                        //           roundEdges: false,
+                        //         ),
+                        //       )
+                        //     ],
+                        //   ),
+                        // )
+                        )),
+              ]),
+            ],
+          ),
+        );
+      }),
+      onWillPop: () async {
+        if (true) {
+          Navigator.pushAndRemoveUntil(context,
+              MaterialPageRoute(builder: (context) {
+            return DefaultBottomBarController(child: Ramayana());
+          }), (route) => false);
+          return true;
+        }
+      },
+    );
+  }
 
-// }
+}

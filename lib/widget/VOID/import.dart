@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:badges/badges.dart';
 import 'package:barcode_flutter/barcode_flutter.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
@@ -49,5 +48,3 @@ import 'package:myactivity_project/service/SP_service/SP_service.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
 
 part 'ramayana_void.dart';
-
-

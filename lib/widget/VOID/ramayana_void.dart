@@ -309,7 +309,7 @@ String stepThree({required String angkaPertama, required String angkaKedua}) {
                                    AndroidDeviceInfo info = await deviceInfo.androidInfo;
                                 var formData = FormData.fromMap({
                                 'progname': 'RALS_TOOLS ',
-                                'versi': '${imei}',
+                                'versi': '${versi}',
                                 'date_run': '${DateTime.now()}',
                                 'info1': 'Aktivitas Void - Menu Void ,',
                                 ' info2': '${_udid} ',

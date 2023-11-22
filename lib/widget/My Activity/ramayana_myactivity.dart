@@ -26,6 +26,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   var infoTask = '';
   bool uploadEdit = false;
   bool iniApiEdit = false;
+  bool iniApiSave = false;
   bool edit = false;
   String? _fileName;
   List<PlatformFile>? _paths;
@@ -322,6 +323,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                       taskId2 = '${e.task_id}';
                         infoTask = taskIdd();
                         sendDataApi = false;
+                        iniApiSave = false;
                         iniApiEdit = true;
                         print('sendDataApi :${sendDataApi}');
                         edit = true;
@@ -427,6 +429,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
           resultProject =
         LinkedHashSet<String>.from(MyactivityModel.addSelect).toList();
         });
+        if (iniApiSave == true){
+          selected = 'Reguler';
+        }
       }
 
       print('check length ${MyactivityModel.myactivitymodel.length}');
@@ -1265,6 +1270,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                             print(edit);
                             print('iniApiEdit : ${iniApiEdit}');
                             iniApiEdit = false;
+                            
                             fetchProject();
                             fetchTask(apiProject: '${apiTask}');
                             print('HasilTask : ${result}');
@@ -1481,6 +1487,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               print(
                                   'Berhasil ${dokumen} ${dokumenEdit}, ${selectedTask}, ${timeStart.text}, ${timeStart.text}, ${timeStart.text},');
                               popup();
+                              iniApiSave = true;
                               apiTask = 'P202300001';
                               fetchProject();
                               fetchTask(apiProject: '${apiTask}');

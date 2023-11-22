@@ -34,4 +34,5 @@ import 'package:screen_brightness/screen_brightness.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:http/http.dart' as http;
 
-part 'ramayana_tukar_poin2.dart';
+part 'ramayana_tukar_poin.dart';
+// part 'ramayana_tukar_poin2.dart';

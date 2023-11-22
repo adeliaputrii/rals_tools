@@ -1,4 +1,4 @@
-part of'import.dart';
+part of 'import.dart';
 
 class RamayanaLogin extends StatefulWidget {
   const RamayanaLogin({super.key});
@@ -25,7 +25,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   Timer? timer;
   bool _isLoading = true;
   // SimData? _simData;
-  var token  = '';
+  var token = '';
   static var fcmToken;
   final _firebaseMessaging = FirebaseMessaging.instance;
   @override
@@ -33,7 +33,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     print(versi);
     print('wakwaw 123');
     super.initState();
-    // checkForUpdate();
+    checkForUpdate();
     initPlatformState();
     initNotification();
     _passwordVisible = false;
@@ -41,10 +41,10 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     fetchDataNoKartu(id_user: '${userData.getUsername7()}');
   }
 
-  
-    Future<void> initNotification() async{
+  Future<void> initNotification() async {
     await _firebaseMessaging.requestPermission();
-    fcmToken = await _firebaseMessaging.getToken();
+    fcmToken = "";
+    // fcmToken = await _firebaseMessaging.getToken();
     print('Token kirim api : ${fcmToken}');
     return fcmToken;
   }
@@ -71,7 +71,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   //     setState(() {
   //       _isLoading = false;
   //       _simData = simData;
-        
+
   //     });
   //     void printSimCardsData() async {
   //       try {
@@ -137,8 +137,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           .showSnackBar(SnackBar(content: Text(text)));
     }
   }
-
-  
 
   String? _userId;
   String _password = '';
@@ -303,12 +301,11 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
   fetchDataNoKartu({required String id_user}) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     print('${userData.getUsername7()}');
     print(tipeurl);
     ApprovalIdcashCustomer.approvalidcashcust.clear();
     final responseku = await http.post(
-      
         Uri.parse('${tipeurl}v1/membercards/tbl_customer'),
         body: {'id_user': '${userData.getUsername7()}'});
 
@@ -325,7 +322,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       }
       ApprovalIdcashCustomer.approvalidcashcust.forEach((element) {
         print('oke');
-        if(ApprovalIdcashCustomer.noMember.isEmpty) {
+        if (ApprovalIdcashCustomer.noMember.isEmpty) {
           ApprovalIdcashCustomer.noMember.add(element.nokartu);
           prefs.setString('noMember', '${element.nokartu}');
           print('empty');
@@ -356,20 +353,20 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         http.Response response =
             //  await AuthServices.login(username.text, pass.text);
             await AuthServicesLog.login(
-                //' ini versi yang sama kaya diataskan ya del?
-                username.text,
-                pass.text,
-                // 'RALS-TOOLS',
-                // '${versi}',
-                // '${DateTime.now()}',
-                // 'Login Aplikasi RALS',
-                // '${imei}',
-                // '${username.text}',
-                // 'toko',
-                // '${info.brand}',
-                // '${imei}',
-                // '${imei}${info.device}',
-                );
+          //' ini versi yang sama kaya diataskan ya del?
+          username.text,
+          pass.text,
+          'RALS-TOOLS',
+          '${versi}',
+          '${DateTime.now()}',
+          'Login Aplikasi RALS',
+          '${imei}',
+          '${username.text}',
+          'toko',
+          '${info.brand}',
+          '${_udid}',
+          // '${imei}${info.device}',
+        );
         Map responseMap = jsonDecode(response.body);
         if (responseMap['userpass'] == "0") {
           await userData.setUser(data: responseMap);
@@ -391,14 +388,12 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           var response = await dio.post('${tipeurl}v1/activity/createmylog',
               data: formData);
           print('berhasil $_udid');
-          
 
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    DefaultBottomBarController(child: Ramayana())
-              ),
+                  builder: (context) =>
+                      DefaultBottomBarController(child: Ramayana())),
               (Route<dynamic> route) => false);
         } else if (responseMap['status'] == 909) {
           updateAplikasi(context);
@@ -718,29 +713,26 @@ class _RamayanaLogin extends State<RamayanaLogin> {
             color: Color.fromARGB(255, 240, 238, 238),
           ),
           Container(
-              // width: 2000,
-              // height: 700,
-              color: Color.fromARGB(255, 216, 19, 19),
-              ),
+            // width: 2000,
+            // height: 700,
+            color: Color.fromARGB(255, 216, 19, 19),
+          ),
           Form(
             key: _formKey,
             child: ListView(
               children: [
-                
                 Container(
-                  
                     margin: EdgeInsets.fromLTRB(25, 50, 25, 0),
                     height: 780,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.white,
-                        boxShadow: [(BoxShadow(
-                          color: Color.fromARGB(255, 185, 185, 185),
-                          blurRadius: 5,
-                          offset: Offset(2, 4)
-                        ))]
-                        ),
-                        
+                        boxShadow: [
+                          (BoxShadow(
+                              color: Color.fromARGB(255, 185, 185, 185),
+                              blurRadius: 5,
+                              offset: Offset(2, 4)))
+                        ]),
                     child: Column(
                       children: <Widget>[
                         Container(
@@ -752,11 +744,19 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                             )),
                         Container(
                           margin: EdgeInsets.only(top: 35),
-                          child: Center(child: Text('Welcome!', style: GoogleFonts.plusJakartaSans(fontSize: 35, color: Colors.black, fontWeight: FontWeight.w600))),
+                          child: Center(
+                              child: Text('Welcome!',
+                                  style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 35,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600))),
                         ),
-                         Container(
+                        Container(
                           margin: EdgeInsets.only(top: 10),
-                          child: Center(child: Text('Login to Continue', style: GoogleFonts.plusJakartaSans(fontSize: 20, color: Colors.black))),
+                          child: Center(
+                              child: Text('Login to Continue',
+                                  style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 20, color: Colors.black))),
                         ),
                         SizedBox(
                           height: 70,
@@ -769,7 +769,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                             validator:
                                 RequiredValidator(errorText: 'Please Enter'),
                             keyboardType: TextInputType.multiline,
-                            style:GoogleFonts.plusJakartaSans(color: Colors.black, fontSize: 18),
+                            style: GoogleFonts.plusJakartaSans(
+                                color: Colors.black, fontSize: 18),
                             decoration: InputDecoration(
                                 border: UnderlineInputBorder(
                                   borderSide: BorderSide(
@@ -809,7 +810,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                           margin: EdgeInsets.only(left: 20, right: 20),
                           child: TextFormField(
                               controller: pass,
-                                  style:GoogleFonts.plusJakartaSans(color: Colors.black, fontSize: 18),
+                              style: GoogleFonts.plusJakartaSans(
+                                  color: Colors.black, fontSize: 18),
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "Please Enter";
@@ -865,126 +867,135 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                       borderRadius:
                                           BorderRadius.circular(25)))),
                         ),
-
                         Column(
-                  children: <Widget>[
-                    SizedBox(height: 60),
-                    FittedBox(
-                      fit: BoxFit.fill,
-                      child: Row(
-                        children: [
-                          isLoading
-                              ? SpinKitCircle(
-                                  color: Color.fromARGB(255, 255, 17, 17),
-                                  size: 60.0,
-                                )
-                              : Container(
-                                margin: EdgeInsets.only(left: 20, right: 20),
-                                child: MaterialButton(
-                                  
-                                    padding: EdgeInsets.symmetric(horizontal: 150),
-                                    height: 45,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Text(
-                                      'LOGIN',
-                                      style: GoogleFonts.plusJakartaSans(color: Colors.white, fontSize: 18)
-                                    ),
-                                    color: Color.fromARGB(255, 255, 17, 17),
-                                    onPressed: 
-                                //     _updateInfo?.updateAvailability ==
-                                //     UpdateAvailability.updateAvailable && update == false
-                                // ? () {
-                                //   print("update : ${update}");
+                          children: <Widget>[
+                            SizedBox(height: 60),
+                            FittedBox(
+                              fit: BoxFit.fill,
+                              child: Row(
+                                children: [
+                                  isLoading
+                                      ? SpinKitCircle(
+                                          color:
+                                              Color.fromARGB(255, 255, 17, 17),
+                                          size: 60.0,
+                                        )
+                                      : Container(
+                                          margin: EdgeInsets.only(
+                                              left: 20, right: 20),
+                                          child: MaterialButton(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 150),
+                                              height: 45,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                              ),
+                                              child: Text('LOGIN',
+                                                  style: GoogleFonts
+                                                      .plusJakartaSans(
+                                                          color: Colors.white,
+                                                          fontSize: 18)),
+                                              color: Color.fromARGB(
+                                                  255, 255, 17, 17),
+                                              onPressed:
+                                                      _updateInfo?.updateAvailability ==
+                                                      UpdateAvailability.updateAvailable && update == false
+                                                  ? () {
+                                                    print("update : ${update}");
 
-                                //     InAppUpdate.startFlexibleUpdate().then((_) {
-                                //       setState(() {
-                                //         _flexibleUpdateAvailable = true;
-                                //         update = true;
-                                //       });
-                                //     }).catchError((e) {
-                                //       showSnack(e.toString());
-                                //     });
-                                //   }
-                                // :
-                                () async {
-                                      if (_formKey.currentState!.validate()) {
-                                        SharedPreferences pref = await SharedPreferences.getInstance();
-                                        print(tipeurl);
-                                        
-                                       
-                                        setState(() {
-                                          isLoading = true;
-                                        });
-                                        await Future.delayed(
-                                            const Duration(seconds: 3));
-                                        // await init();
-                                        await loginPressed();
-                                        await fetchDataNoKartu(id_user: '${userData.getUsername7()}');
-                                        setState(() {
-                                          isLoading = false;
-                                        });
-                                        print('huhu');
-                                      }
-                                    }),
+                                                      InAppUpdate.startFlexibleUpdate().then((_) {
+                                                        setState(() {
+                                                          _flexibleUpdateAvailable = true;
+                                                          update = true;
+                                                        });
+                                                      }).catchError((e) {
+                                                        showSnack(e.toString());
+                                                      });
+                                                    }
+                                                  :
+                                                  () async {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  SharedPreferences pref =
+                                                      await SharedPreferences
+                                                          .getInstance();
+                                                  print(tipeurl);
+
+                                                  setState(() {
+                                                    isLoading = true;
+                                                  });
+                                                  await Future.delayed(
+                                                      const Duration(
+                                                          seconds: 3));
+                                                  // await init();
+                                                  await loginPressed();
+                                                  await fetchDataNoKartu(
+                                                      id_user:
+                                                          '${userData.getUsername7()}');
+                                                  setState(() {
+                                                    isLoading = false;
+                                                  });
+                                                  print('huhu');
+                                                }
+                                              }),
+                                        ),
+                                ],
                               ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    MaterialButton(
-                        padding: EdgeInsets.symmetric(horizontal: 50),
-                        height: 40,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            MaterialButton(
+                                padding: EdgeInsets.symmetric(horizontal: 50),
+                                height: 40,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text('Forgot Password?',
+                                    style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 18,
+                                        color: Color.fromARGB(255, 152, 10, 0),
+                                        fontWeight: FontWeight.bold)),
+                                // color: Colors.red,
+                                onPressed: () {
+                                  if (username.text.isEmpty) {
+                                    _displayCenterMotionUsername();
+                                  } else {
+                                    fetchDataCustomer(user_name: username.text);
+                                  }
+                                }),
+                            // SizedBox(
+                            //   height: 70,
+                            // ),
+                          ],
                         ),
-                        child: Text(
-                          'Forgot Password?',
-                          style: 
-                           GoogleFonts.plusJakartaSans(fontSize: 18, color: Color.fromARGB(255, 152, 10, 0), fontWeight: FontWeight.bold)
-                        ),
-                        // color: Colors.red,
-                        onPressed: () {
-                          if (username.text.isEmpty) {
-                            _displayCenterMotionUsername();
-                          } else {
-                            fetchDataCustomer(user_name: username.text);
-                          }
-                        }),
-                    // SizedBox(
-                    //   height: 70,
-                    // ),
-                    
-                  ],
-                ),
-                
                       ],
                     )),
-                    SizedBox(
+                SizedBox(
                   height: 50,
                 ),
                 Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'Version ${versi} Copyright RALS',
-                          // ini pak?
-                          style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white,)
-                        ),
-                        Icon(
-                          Icons.copyright,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Version ${versi} Copyright RALS',
+                        // ini pak?
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 18,
                           color: Colors.white,
-                          size: 18,
-                        ),
-                        Text(
-                          '${copyright}',
-                          style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white,)
-                        )
-                      ],
-                    )
+                        )),
+                    Icon(
+                      Icons.copyright,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                    Text('${copyright}',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ))
+                  ],
+                )
               ],
             ),
           ),
