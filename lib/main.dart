@@ -1,7 +1,8 @@
-
 import 'dart:async';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:get_it/get_it.dart';
 import 'package:myactivity_project/firebase/firebase_api.dart';
 import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,19 +25,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:background_fetch/background_fetch.dart';
+import 'package:myactivity_project/base/base_paths.dart' as basePath;
+
+import 'utils/app_cubit.dart';
+import 'utils/app_services.dart';
+import 'utils/app_utils.dart';
 
 void main() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   await NotificationPermissions.requestNotificationPermissions;
   await NotificationPermissions.getNotificationPermissionStatus();
   await Permission.notification.isDenied.then((value) {
-        if (value) {
-          Permission.notification.request();
-        }
-      });
-      await Firebase.initializeApp();
-    await FirebaseApi().initNotification();
-
+    if (value) {
+      Permission.notification.request();
+    }
+  });
+  await Firebase.initializeApp();
+  await FirebaseApi().initNotification();
+  registerAppServices();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   print(formattedDate);
@@ -46,21 +52,27 @@ void main() async {
   print('grgr 123');
   print(userId);
   var username = prefs.getString("username");
-  
+
   print(" username : ${username}");
   var waktuLogin = prefs.getString("waktuLogin");
   print("waktu login : ${waktuLogin}");
   await NotificationService.initializeNotification();
+  final appCubit = AppCubit();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]).then(
-    (value) => runApp(
-       waktuLogin == formattedDate
-                ? HomeMainApp()
-                : SplashHomeMainApp()
-                ));
+  ]).then((value) => runApp(waktuLogin == formattedDate
+      ? appCubit.initCubit(HomeMainApp())
+      : appCubit.initCubit(SplashHomeMainApp())));
 }
+
+Future<void> registerAppServices() async {
+  final appUtil = AppUtils();
+  appUtil.initNetwork();
+  final appServices = AppServices(GetIt.I.get<Dio>());
+  await appServices.registerAppServices(basePath.base_url);
+}
+
 class HomeMainApp extends StatelessWidget {
   const HomeMainApp({super.key});
 
@@ -69,21 +81,20 @@ class HomeMainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-       builder: (context, child) => ResponsiveWrapper.builder(
-              child,
-              maxWidth: 1200,
-              minWidth: 480,
-              defaultScale: true,
-              breakpoints: [
-                ResponsiveBreakpoint.autoScale(600, name: PHONE),
-                ResponsiveBreakpoint.autoScale(800, name: TABLET),
-                ResponsiveBreakpoint.autoScale(1200, name: DESKTOP),
-              ],
-            ),
+      builder: (context, child) => ResponsiveWrapper.builder(
+        child,
+        maxWidth: 1200,
+        minWidth: 480,
+        defaultScale: true,
+        breakpoints: [
+          ResponsiveBreakpoint.autoScale(600, name: PHONE),
+          ResponsiveBreakpoint.autoScale(800, name: TABLET),
+          ResponsiveBreakpoint.autoScale(1200, name: DESKTOP),
+        ],
+      ),
       navigatorKey: navigatorKey,
       title: 'rals-tools',
-        debugShowCheckedModeBanner: false,
-      
+      debugShowCheckedModeBanner: false,
       home: DefaultBottomBarController(child: Ramayana()),
     );
   }
@@ -97,7 +108,7 @@ class SplashHomeMainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-       builder: (context, child) => ResponsiveWrapper.builder(
+        builder: (context, child) => ResponsiveWrapper.builder(
               child,
               maxWidth: 1200,
               minWidth: 480,
@@ -108,11 +119,9 @@ class SplashHomeMainApp extends StatelessWidget {
                 ResponsiveBreakpoint.autoScale(1200, name: DESKTOP),
               ],
             ),
-      navigatorKey: navigatorKey,
-      title: 'rals-tools',
+        navigatorKey: navigatorKey,
+        title: 'rals-tools',
         debugShowCheckedModeBanner: false,
-      
-      home: SplashScreenRamayana()
-    );
+        home: SplashScreenRamayana());
   }
 }

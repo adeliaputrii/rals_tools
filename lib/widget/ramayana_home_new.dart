@@ -110,10 +110,12 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
   _loadToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    UserData userData = UserData();
 
-    print('token ${prefs.getString('token')}');
+    var accToken = userData.getUserToken();
+    print('load token ${accToken}');
     setState(() {
-      token = (prefs.getString('token') ?? '');
+      token = (prefs.getString('user_token_str') ?? '');
     });
     return token;
   }
@@ -159,7 +161,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       print('NO DATA');
     }
 
-    setState(() {});
   }
 
   fetchBerita() async {
@@ -199,7 +200,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       print('NO DATA');
     }
 
-    setState(() {});
   }
 
   fetchDataJumlahTask() async {
@@ -313,7 +313,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     UserData userData = UserData();
     await userData.getPref();
     String userId = userData.getUsernameID();
-    print('grgr 123');
     print(userId);
   }
 
@@ -546,7 +545,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                           backgroundColor: Color.fromARGB(255, 207, 11, 11),
                           radius: 30,
                           backgroundImage: AssetImage(
-                            'C:\Users\albet\Documents\Ramayana\rals_tools\assets\menu\ic_idcash.png',
+                            'assets/ic_idcash.png',
                           ),
                         ),
                         visible: true,
@@ -821,11 +820,13 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       }
       if (element == 'myactivity.activity') {
         data.add(element);
-        // } if (element == 'suratjalan.trackingsj') {
-        // data.add(element);
-        // } if (element == 'comchek.approvedcomchek') {
-        // data.add(element);
-        // HakAkses.hakaksesSubmenuComcek.add(element);
+      }
+      if (element == 'suratjalan.trackingsj') {
+        data.add(element);
+      }
+      if (element == 'comchek.approvedcomchek') {
+        data.add(element);
+        HakAkses.hakaksesSubmenuComcek.add(element);
       }
       if (element == 'comchek.historycomchek') {
         HakAkses.hakaksesSubmenuComcek.add(element);
