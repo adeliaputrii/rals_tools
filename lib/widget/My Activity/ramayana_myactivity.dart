@@ -44,6 +44,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   var taskId = '';
   var taskId2 = '';
   var taskId3 = '';
+  var imei2 = '';
   List<String> result = [];
   List<String> resultEdit = [];
   List<String> resultProject = [];
@@ -70,22 +71,18 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     apiTask;
     fetchTask(apiProject: '${apiTask}');
     fetchEdit(user_create: '${userData.getUsername7()}');
-    initPlatformState();
+    _loadImei();
   }
 
-  Future<void> initPlatformState() async {
-    String udid;
-    try {
-      udid = await FlutterUdid.consistentUdid;
-    } on PlatformException {
-      udid = 'Failed to get UDID.';
-    }
+  _loadImei() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (!mounted) return;
-
+    print('imei2 ${prefs.getString('serialImei')}');
     setState(() {
-      _udid = udid;
+      imei2 = (prefs.getString('serialImei') ?? '');
+      imei = imei2;
     });
+    return imei2;
   }
 
   _loadToken() async {
@@ -1262,6 +1259,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                           height: 50,
                           color: Color.fromARGB(255, 255, 17, 17),
                           onPressed: () async {
+                            print ('imei == $imei2');
                             result.clear();
                             MyactivityModelTask.addselectTask.clear();
                             resultEdit.clear();
@@ -1348,7 +1346,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                 'versi': '${versi}',
                                 'date_run': '${DateTime.now()}',
                                 'info1': 'My Activity - Edit My Activity',
-                                ' info2': '${_udid} ',
+                                ' info2': '${imei2} ',
                                 'userid': '${userData.getUsernameID()}',
                                 ' toko': '${userData.getUserToko()}',
                                 ' devicename': '${info.device}',
@@ -1387,7 +1385,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                 'versi': '${versi}',
                                 'date_run': '${DateTime.now()}',
                                 'info1': 'My Activity - Edit My Activity',
-                                ' info2': '${_udid} ',
+                                ' info2': '${imei2} ',
                                 'userid': '${userData.getUsernameID()}',
                                 ' toko': '${userData.getUserToko()}',
                                 ' devicename': '${info.device}',
@@ -1435,7 +1433,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                 'versi': '${versi}',
                                 'date_run': '${DateTime.now()}',
                                 'info1': 'My Activity - Input My Activity',
-                                ' info2': '${_udid} ',
+                                ' info2': '${imei2} ',
                                 'userid': '${userData.getUsernameID()}',
                                 ' toko': '${userData.getUserToko()}',
                                 ' devicename': '${info.device}',
@@ -1472,7 +1470,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                 'versi': '${versi}',
                                 'date_run': '${DateTime.now()}',
                                 'info1': 'My Activity - Input My Activity',
-                                ' info2': '${_udid} ',
+                                ' info2': '${imei2} ',
                                 'userid': '${userData.getUsernameID()}',
                                 ' toko': '${userData.getUserToko()}',
                                 ' devicename': '${info.device}',

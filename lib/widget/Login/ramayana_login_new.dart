@@ -1,5 +1,6 @@
 part of 'import.dart';
 
+
 class RamayanaLogin extends StatefulWidget {
   const RamayanaLogin({super.key});
 
@@ -23,8 +24,9 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   bool isLoading = false;
   bool _passwordVisible = false;
   Timer? timer;
+  var imei2 = '';
   bool _isLoading = true;
-  // SimData? _simData;
+  SimData? _simData;
   var token = '';
   static var fcmToken;
   final _firebaseMessaging = FirebaseMessaging.instance;
@@ -38,20 +40,66 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     initNotification();
     _passwordVisible = false;
     deleteUserData();
-    fetchDataNoKartu(id_user: '${userData.getUsername7()}');
   }
 
   Future<void> initNotification() async {
     await _firebaseMessaging.requestPermission();
     fcmToken = "";
-    // fcmToken = await _firebaseMessaging.getToken();
+    fcmToken = await _firebaseMessaging.getToken();
     print('Token kirim api : ${fcmToken}');
     return fcmToken;
   }
 
+
+  
+
+
+   Future<void> init() async {
+    SimData simData;
+    try {
+      var status = await Permission.phone.status;
+      if (!status.isGranted) {
+        bool isGranted = await Permission.phone.request().isGranted;
+        if (!isGranted) return;
+      }
+      simData = await SimDataPlugin.getSimData();
+      setState(() {
+
+        _simData = simData;
+
+      });
+      void printSimCardsData() async {
+        try {
+          SimData simData = await SimDataPlugin.getSimData();
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          for (var s in simData.cards) {
+             pref.setString('serialImei', '${s.serialNumber}');
+            imei2 = '${s.serialNumber}';
+            if (s.slotIndex == 1) {
+              pref.setString('serialImei', '${s.serialNumber}');
+              
+              
+            }
+            print('Serial number: ${s.serialNumber}');
+            print('Data Roaming: ${imei}');
+          }
+        } on PlatformException catch (e) {
+          debugPrint("error! code: ${e.code} - message: ${e.message}");
+        }
+      }
+
+      printSimCardsData();
+    } catch (e) {
+      debugPrint(e.toString());
+      setState(() {
+        _simData = null;
+      });
+    }
+  }
+
   _loadToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    prefs.getString('serialNumber');
     print('token ${prefs.getString('token')}');
     setState(() {
       token = (prefs.getString('token') ?? '');
@@ -59,45 +107,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     return token;
   }
 
-  // Future<void> init() async {
-  //   SimData simData;
-  //   try {
-  //     var status = await Permission.phone.status;
-  //     if (!status.isGranted) {
-  //       bool isGranted = await Permission.phone.request().isGranted;
-  //       if (!isGranted) return;
-  //     }
-  //     simData = await SimDataPlugin.getSimData();
-  //     setState(() {
-  //       _isLoading = false;
-  //       _simData = simData;
-
-  //     });
-  //     void printSimCardsData() async {
-  //       try {
-  //         SimData simData = await SimDataPlugin.getSimData();
-  //         SharedPreferences pref = await SharedPreferences.getInstance();
-  //         for (var s in simData.cards) {
-  //           if (s.slotIndex == 1) {
-  //             pref.setString('serialImei', '${s.serialNumber}');
-  //           }
-  //           print('Serial number: ${s.serialNumber}');
-  //           print('Data Roaming: ${s.isNetworkRoaming}');
-  //         }
-  //       } on PlatformException catch (e) {
-  //         debugPrint("error! code: ${e.code} - message: ${e.message}");
-  //       }
-  //     }
-
-  //     printSimCardsData();
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //     setState(() {
-  //       _isLoading = false;
-  //       _simData = null;
-  //     });
-  //   }
-  // }
 
   Future<void> deleteUserData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -158,6 +167,23 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       description: const Text(
         'Please Check Again',
         style: TextStyle(fontSize: 15),
+      ),
+      //description: "Center displayed motion toast",
+      position: MotionToastPosition.center,
+    ).show(context);
+  }
+   void _displayCenterMotionToastUserDevice() async {
+    MotionToast(
+      toastDuration: Duration(seconds: 4),
+      icon: Icons.error,
+      primaryColor: Colors.red,
+      width: 350,
+      backgroundType: BackgroundType.lighter,
+      height: 100,
+      description: const Text(
+        'Anda terdeteksi menggunakan device berbeda!',
+        style: 
+        TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
       ),
       //description: "Center displayed motion toast",
       position: MotionToastPosition.center,
@@ -274,7 +300,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
               'versi': '${versi}',
               'date_run': '${DateTime.now()}',
               'info1': 'Pop Up Update Aplikasi',
-              ' info2': '${imei} ',
+              ' info2': '${imei2} ',
               'userid': '${userData.getUsernameID()}',
               ' toko': '${userData.getUserToko()}',
               ' devicename': '${info.device}',
@@ -300,47 +326,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
 
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-  fetchDataNoKartu({required String id_user}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    print('${userData.getUsername7()}');
-    print(tipeurl);
-    ApprovalIdcashCustomer.approvalidcashcust.clear();
-    final responseku = await http.post(
-        Uri.parse('${tipeurl}v1/membercards/tbl_customer'),
-        body: {'id_user': '${userData.getUsername7()}'});
-
-    var data = jsonDecode(responseku.body);
-
-    if (data['status'] == 200) {
-      print("API Success oooo");
-      print(data);
-      int count = data['data'].length;
-      final Map<String, ApprovalIdcashCustomer> profileMap = new Map();
-      for (int i = 0; i < count; i++) {
-        ApprovalIdcashCustomer.approvalidcashcust
-            .add(ApprovalIdcashCustomer.fromjson(data['data'][i]));
-      }
-      ApprovalIdcashCustomer.approvalidcashcust.forEach((element) {
-        print('oke');
-        if (ApprovalIdcashCustomer.noMember.isEmpty) {
-          ApprovalIdcashCustomer.noMember.add(element.nokartu);
-          prefs.setString('noMember', '${element.nokartu}');
-          print('empty');
-          print(ApprovalIdcashCustomer.noMember);
-        }
-        profileMap[element.nokartu] = element;
-        ApprovalIdcashCustomer.approvalidcashcust = profileMap.values.toList();
-        print(ApprovalIdcashCustomer.approvalidcashcust);
-      });
-      print('check length ${ApprovalIdcashCustomer.approvalidcashcust.length}');
-      print(data['data'].toString());
-    } else {
-      print('NO DATA');
-    }
-
-    setState(() {});
-  }
-
   loginPressed() async {
     print(versi);
     print('daaaaaaamn 23111');
@@ -360,12 +345,12 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           '${versi}',
           '${DateTime.now()}',
           'Login Aplikasi RALS',
-          '${imei}',
+          '${imei2}',
           '${username.text}',
           'toko',
           '${info.brand}',
           '${_udid}',
-          // '${imei}${info.device}',
+          '${imei2}${info.device}',
         );
         Map responseMap = jsonDecode(response.body);
         if (responseMap['userpass'] == "0") {
@@ -378,7 +363,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
             'versi': '${versi}',
             'date_run': '${DateTime.now()}',
             'info1': 'Login Aplikasi RALS',
-            ' info2': '${imei}',
+            ' info2': '${imei2}',
             'userid': '${userData.getUsernameID()}',
             ' toko': '${userData.getUserToko()}',
             ' devicename': '${info.device}',
@@ -649,6 +634,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           showDialog(context: context, builder: (context) => popup);
         } else if (responseMap['status'] == 201) {
           _displayCenterMotionToast();
+        }else if (responseMap['status'] == 401) {
+          _displayCenterMotionToastUserDevice();
         }
       }
     } on Exception {
@@ -682,7 +669,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         'versi': '${versi}',
         'date_run': '${DateTime.now()}',
         'info1': 'Forgot Password Aplikasi RALS',
-        ' info2': '${imei} ',
+        ' info2': '${imei2} ',
         'userid': '${username.text}',
         ' toko': '${userData.getUserToko()}',
         ' devicename': '${info.device}',
@@ -928,11 +915,9 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                                   await Future.delayed(
                                                       const Duration(
                                                           seconds: 3));
-                                                  // await init();
+                                                  await init();
+                                                  initNotification();
                                                   await loginPressed();
-                                                  await fetchDataNoKartu(
-                                                      id_user:
-                                                          '${userData.getUsername7()}');
                                                   setState(() {
                                                     isLoading = false;
                                                   });
@@ -1004,3 +989,5 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     );
   }
 }
+
+

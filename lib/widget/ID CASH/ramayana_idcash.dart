@@ -10,6 +10,7 @@ class RamayanaIDCash extends StatefulWidget {
 class _RamayanaIDCashState extends State<RamayanaIDCash> {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   String _udid = 'Unknown';
+  var imei2 = '';
   TextEditingController nama = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController hp = TextEditingController();
@@ -74,25 +75,21 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    _loadImei();
     didPushNext();
     didPop();
     fetchDataCustomer(id_user: '0${userData.getUsername7()}');
   }
 
-  Future<void> initPlatformState() async {
-    String udid;
-    try {
-      udid = await FlutterUdid.consistentUdid;
-    } on PlatformException {
-      udid = 'Failed to get UDID.';
-    }
+  _loadImei() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (!mounted) return;
-
+    print('imei2 ${prefs.getString('serialImei')}');
     setState(() {
-      _udid = udid;
+      imei2 = (prefs.getString('serialImei') ?? '');
+      imei = imei2;
     });
+    return imei2;
   }
 
   @override
@@ -384,7 +381,7 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                                 'versi': '${versi}',
                                 'date_run': '${DateTime.now()}',
                                 'info1': 'Riwayat ID CASH',
-                                ' info2': '${imei} ',
+                                ' info2': '${imei2} ',
                                 'userid': '${userData.getUsernameID()}',
                                 ' toko': '${userData.getUserToko()}',
                                 ' devicename': '${info.device}',

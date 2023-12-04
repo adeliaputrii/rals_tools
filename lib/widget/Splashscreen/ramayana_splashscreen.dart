@@ -11,6 +11,8 @@ class _SplashScreenRamayanaState extends State<SplashScreenRamayana> {
 
   bool isLoaded = false;
   bool needLogin= true;
+  SimData? _simData;
+  static var iniImei;
 
   @override
   void initState() {
@@ -18,9 +20,11 @@ class _SplashScreenRamayanaState extends State<SplashScreenRamayana> {
     ApprovalReturnMenu.approvalmenu.clear();
     ApprovalReturnMenu.idcashmenu.clear();
     ApprovalIdcash.approvalidcash.clear();
-deleteUserData();
+    deleteUserData();
     loadUserData();
   }
+
+   
 
   Future<void> deleteUserData()async{
     SharedPreferences pref = await SharedPreferences.getInstance();

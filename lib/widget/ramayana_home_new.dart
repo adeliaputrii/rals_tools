@@ -38,6 +38,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   List data3Menu = [];
   List task3 = [];
   var token = '';
+  var imei2 = '';
   int? unread_task;
   int? total_task;
   var fcmToken;
@@ -51,6 +52,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     UserData userData = UserData();
+    _loadImei();
     initPlatformState();
     didPop();
     _checkInternetConnection();
@@ -61,7 +63,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     ApprovalIdcash.approvalidcash.clear();
     ModelToko.menutoko.clear();
     deleteToko();
-    imei();
     dapetinData();
     Future.delayed(const Duration(seconds: 1), () async {
       await fetchDataJumlahTask();
@@ -116,6 +117,17 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       token = (prefs.getString('token') ?? '');
     });
     return token;
+  }
+
+  _loadImei() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    print('imei2 ${prefs.getString('serialImei')}');
+    setState(() {
+      imei2 = (prefs.getString('serialImei') ?? '');
+      imei = imei2;
+    });
+    return imei2;
   }
 
   fetchDataListUser() async {
@@ -344,20 +356,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     print(MyactivityModelTask.addselectTask);
   }
 
-  imei() async {
-    AndroidDeviceInfo info = await deviceInfo.androidInfo;
-    var code = "${userData.getUsername7()}+${info.id}+${info.device}";
-    var ascAdel = AsciiEncoder().convert(code);
-    var str = ascAdel.join("");
-    String message = '';
-    for (int code in ascAdel) {
-      message += String.fromCharCode(code);
-    }
-    print('encode : ${message}');
-    print(str);
-    print('asqi : ${ascAdel}');
-  }
-
   Future<void> initPlatformState() async {
     String udid;
     try {
@@ -377,6 +375,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.remove('username');
     pref.remove('waktuLogin');
+    pref.remove('noMember');
     pref.remove('token');
     pref.remove('serialImei');
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
@@ -439,7 +438,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
               'date_run': '${DateTime.now()}',
               'info1': 'Logout Aplikasi RALS',
               ' info2':
-                  '${imei} ', //ini disini yang imei ya del? iya pak. ini lari nya kemana ya del isi nya? -reza sebentar pak, saya ijin ke belakang
+                  '${imei2} ', //ini disini yang imei ya del? iya pak. ini lari nya kemana ya del isi nya? -reza sebentar pak, saya ijin ke belakang
 
               'userid': '${userData.getUsernameID()}',
               ' toko': '${userData.getUserToko()}',
@@ -450,8 +449,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
             var response = await dio.post('${tipeurl}v1/activity/createmylog',
                 data: formData);
             print('berhasil $_udid');
-            Navigator.pop(context);
             logoutPressed();
+            Navigator.pop(context);
+            
           },
           child: Text(
             "Log Out",
@@ -727,7 +727,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                               'versi': '${versi}',
                               'date_run': '${DateTime.now()}',
                               'info1': '${getName()} ',
-                              ' info2': '${imei} ',
+                              ' info2': '${imei2} ',
                               'userid': '${userData.getUsernameID()}',
                               ' toko': '${userData.getUserToko()}',
                               ' devicename': '${info.device}',
@@ -786,7 +786,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           'versi': '${versi}',
           'date_run': '${element.datetime}',
           'info1': '${element.deskripsi}',
-          ' info2': '${imei} ',
+          ' info2': '${imei2} ',
           'userid': '${userData.getUsernameID()}',
           ' toko': '${userData.getUserToko()}',
           ' devicename': '${info.device}',
@@ -827,9 +827,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
         // data.add(element);
         // HakAkses.hakaksesSubmenuComcek.add(element);
       }
-      if (element == 'comchek.historycomchek') {
-        HakAkses.hakaksesSubmenuComcek.add(element);
-      }
+      // if (element == 'comchek.historycomchek') {
+      //   HakAkses.hakaksesSubmenuComcek.add(element);
+      // }
       if (element == 'homepage.news') {
         setState(() {
           news = true;
@@ -1221,6 +1221,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             onPressed: () async {
                                               await _checkInternetConnection();
                                               print('haiiioooo');
+                                              print('$imei2');
                                               if (e == 'mastervoid.void') {
                                                 Navigator.push(context,
                                                     MaterialPageRoute(
@@ -1301,7 +1302,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                   'date_run':
                                                       '${DateTime.now()}',
                                                   'info1': '${getName()} ',
-                                                  ' info2': '${imei} ',
+                                                  ' info2': '${imei2} ',
                                                   'userid':
                                                       '${userData.getUsernameID()}',
                                                   ' toko':

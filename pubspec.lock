@@ -868,6 +868,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.3.0"
+  sim_data_plus:
+    dependency: "direct main"
+    description:
+      name: sim_data_plus
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.4"
   simnumber:
     dependency: "direct main"
     description:

@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:badges/badges.dart' as badge;
-// import 'package:barcode_flutter/barcode_flutter.dart';
+import 'package:barcode_flutter/barcode_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';

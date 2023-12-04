@@ -12,6 +12,7 @@ class _RamayanaResetState extends State<RamayanaReset> {
   var dio = Dio();
   bool _isLoading = false;
   String _udid = 'Unknown';
+  var imei2 = '';
   UserData userData = UserData();
 
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -19,22 +20,18 @@ class _RamayanaResetState extends State<RamayanaReset> {
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    _loadImei();
   }
 
-  Future<void> initPlatformState() async {
-    String udid;
-    try {
-      udid = await FlutterUdid.consistentUdid;
-    } on PlatformException {
-      udid = 'Failed to get UDID.';
-    }
+ _loadImei() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (!mounted) return;
-
+    print('imei2 ${prefs.getString('serialImei')}');
     setState(() {
-      _udid = udid;
+      imei2 = (prefs.getString('serialImei') ?? '');
+      imei = imei2;
     });
+    return imei2;
   }
 
   // void _displayCenterMotionToastSuccess() {
@@ -143,7 +140,7 @@ class _RamayanaResetState extends State<RamayanaReset> {
           'versi': '${versi}',
           'date_run': '${DateTime.now()}',
           'info1': 'Forget Password Aplikasi RALS',
-          ' info2': '${_udid} ',
+          ' info2': '${imei2} ',
           'userid': '${reset2}',
           ' toko': '${userData.getUserToko()}',
           ' devicename': '${info.device}',

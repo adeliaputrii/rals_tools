@@ -21,11 +21,12 @@ DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   UserData userData = UserData();
   bool _isKeptOn = true;
   double _brightness = 1.0;
+  var imei2 = '';
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    _loadImei();
     _checkInternetConnection();
     setState(() {
       _isConnected;
@@ -35,19 +36,15 @@ DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 //adel kalo void apa?
 
 
-Future<void> initPlatformState() async {
-    String udid;
-    try {
-      udid = await FlutterUdid.consistentUdid;
-    } on PlatformException {
-      udid = 'Failed to get UDID.';
-    }
+_loadImei() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (!mounted) return;
-
+    print('imei2 ${prefs.getString('serialImei')}');
     setState(() {
-      _udid = udid;
+      imei2 = (prefs.getString('serialImei') ?? '');
+      imei = imei2;
     });
+    return imei2;
   }
 
 
@@ -312,7 +309,7 @@ String stepThree({required String angkaPertama, required String angkaKedua}) {
                                 'versi': '${versi}',
                                 'date_run': '${DateTime.now()}',
                                 'info1': 'Aktivitas Void - Menu Void ,',
-                                ' info2': '${_udid} ',
+                                ' info2': '${imei2} ',
                                 'userid': '${userData.getUsernameID()}',
                                 ' toko': '${userData.getUserToko()}',
                                 ' devicename': '${info.device}',

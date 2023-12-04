@@ -19,6 +19,7 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
   bool _isKeptOn = true;
   double _brightness = 1.0;
   bool _barcode = true;
+  var imei2 = '';
 
   @override
   void didPush() {
@@ -33,22 +34,18 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
    @override
   void initState() {
     super.initState();
-    initPlatformState();
+    _loadImei();
   }
 
-  Future<void> initPlatformState() async {
-    String udid;
-    try {
-      udid = await FlutterUdid.consistentUdid;
-    } on PlatformException {
-      udid = 'Failed to get UDID.';
-    }
+  _loadImei() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (!mounted) return;
-
+    print('imei2 ${prefs.getString('serialImei')}');
     setState(() {
-      _udid = udid;
+      imei2 = (prefs.getString('serialImei') ?? '');
+      imei = imei2;
     });
+    return imei2;
   }
 
   TextEditingController myController = TextEditingController();
@@ -296,7 +293,7 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
                                 'versi': '${versi}',
                                 'date_run': '${DateTime.now()}',
                                 'info1': 'Aktivitas Tukar Poin - Menu Tukar Poin',
-                                ' info2': '${_udid} ',
+                                ' info2': '${imei2} ',
                                 'userid': '${userData.getUsernameID()}',
                                 ' toko': '${userData.getUserToko()}',
                                 ' devicename': '${info.device}',

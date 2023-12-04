@@ -16,28 +16,25 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
   String _udid = 'Unknown';
   bool _passwordVisible = false;
   Dio dio = Dio();
+  var imei2 = '';
   bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    _loadImei();
     _passwordVisible = false;
   }
 
-  Future<void> initPlatformState() async {
-    String udid;
-    try {
-      udid = await FlutterUdid.consistentUdid;
-    } on PlatformException {
-      udid = 'Failed to get UDID.';
-    }
+  _loadImei() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (!mounted) return;
-
+    print('imei2 ${prefs.getString('serialImei')}');
     setState(() {
-      _udid = udid;
+      imei2 = (prefs.getString('serialImei') ?? '');
+      imei = imei2;
     });
+    return imei2;
   }
 
   snackBar(String? message) {
@@ -75,8 +72,8 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                 '${userData.getUsername7()}',
                 'toko',
                 '${info.device}',
-                '${_udid}',
-                // '${imei}${info.device}',
+                '${imei}',
+                '${imei}${info.device}',
                 );
         Map responseMap = jsonDecode(response.body);
         print(responseMap);
@@ -87,7 +84,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
             'versi': '${versi}',
             'date_run': '${DateTime.now()}',
             'info1': 'Enter PIN ID CASH',
-            ' info2': '${_udid} ',
+            ' info2': '${imei2} ',
             'userid': '${userData.getUsernameID()}',
             ' toko': '${userData.getUserToko()}',
             ' devicename': '${info.device}',

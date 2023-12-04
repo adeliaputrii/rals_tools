@@ -13,7 +13,7 @@ class AuthServicesLog {
      String toko, 
      String devicename,
      String imei,
-    //  String device_id
+     String device_id
      ) async {
       
     print('damn 88');
@@ -31,7 +31,7 @@ class AuthServicesLog {
       'toko' : toko,
       'devicename' : devicename,
       'imei' : imei,
-      // 'device_id' : device_id,
+      'device_id' : device_id,
     };
     print('damn 555');
     print(data);

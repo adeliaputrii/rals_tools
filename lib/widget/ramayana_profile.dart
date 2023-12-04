@@ -22,6 +22,7 @@ class _ProfileeState extends State<Profilee> {
   String _fullname = '';
   String _scanBarcode = '';
   String _email = '';
+  var _member = '';
   String _divisi = '';
   String _udid = 'Unknown';
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -33,6 +34,7 @@ class _ProfileeState extends State<Profilee> {
       void initState() {
     super.initState();
     initPlatformState();
+    fetchDataCustomer(id_user: '${userData.getUsername7()}');
   }
 
     Future<void> initPlatformState() async {
@@ -49,6 +51,46 @@ class _ProfileeState extends State<Profilee> {
     setState(() {
       _udid = udid;
     });
+  }
+ fetchDataCustomer({required String id_user}) async {
+    
+    print('${userData.getUsername7()}');
+    print(tipeurl);
+    ApprovalIdcashCustomer.approvalidcashcust.clear();
+    final responseku = await http.post(
+      
+        Uri.parse('${tipeurl}v1/membercards/tbl_customer'),
+        body: {'id_user': '${userData.getUsername7()}'});
+
+    var data = jsonDecode(responseku.body);
+
+    if (data['status'] == 200) {
+      print("API Success oooo");
+      print(data);
+      int count = data['data'].length;
+      final Map<String, ApprovalIdcashCustomer> profileMap = new Map();
+      final Map<String, LogOffline> profileMap1 = new Map();
+      for (int i = 0; i < count; i++) {
+        ApprovalIdcashCustomer.approvalidcashcust
+            .add(ApprovalIdcashCustomer.fromjson(data['data'][i]));
+      }
+      ApprovalIdcashCustomer.approvalidcashcust.forEach((element) {
+        profileMap[element.nokartu] = element;
+        setState(() {
+          _member = '${element.nokartu}';
+        });
+        ApprovalIdcashCustomer.approvalidcashcust = profileMap.values.toList();
+        print('yaa');
+        print(profileMap);
+        print(ApprovalIdcashCustomer.approvalidcashcust);
+      });
+      print('check length ${ApprovalIdcashCustomer.approvalidcashcust.length}');
+      print(data['data'].toString());
+    } else {
+      print('NO DATA');
+    }
+
+    setState(() {});
   }
 
    Future<void> dapetinData() async {
@@ -131,6 +173,8 @@ class _ProfileeState extends State<Profilee> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.remove('username');
     pref.remove('waktuLogin');
+    pref.remove('serialImei');
+    imei = '';
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
       return RamayanaLogin();
     }));
@@ -415,56 +459,56 @@ class _ProfileeState extends State<Profilee> {
                           ),
                         ),
 
-                      Container(
-                             height: 80,
-                             margin: EdgeInsets.only(bottom: 20),
-                             decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(20)
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 20),
-                                child: CircleAvatar(
-                                backgroundColor: Color.fromARGB(255, 210, 14, 0),
-                                radius: 30,
-                                backgroundImage: AssetImage('assets/telp.png')),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(top: 12),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                      Container(
-                                        margin: EdgeInsets.only(left: 20),
-                                        child: Text('No. HP',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          textStyle: TextStyle(
-                                            fontSize: 19,
-                                            color: Color.fromARGB(255, 71, 70, 70),
-                                            fontWeight: FontWeight.w500
-                                            )
-                                        ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                       Container(
-                                        margin: EdgeInsets.only(left: 20),
-                                         child: Text(userData.getPhone() != null ? '-' : '${userData.getPhone()}',
-                                          style: GoogleFonts.plusJakartaSans(
-                                          textStyle: TextStyle(
-                                            fontSize: 17,
-                                            color: Color.fromARGB(255, 71, 70, 70))), ),
-                                       ),
-                                  ],),
-                              ),
-                            ],
-                          ),
-                        ),
+                      // Container(
+                      //        height: 80,
+                      //        margin: EdgeInsets.only(bottom: 20),
+                      //        decoration: BoxDecoration(
+                      //       color: Colors.grey[200],
+                      //       borderRadius: BorderRadius.circular(20)
+                      //     ),
+                      //     child: Row(
+                      //       children: [
+                      //         Container(
+                      //           margin: EdgeInsets.only(left: 20),
+                      //           child: CircleAvatar(
+                      //           backgroundColor: Color.fromARGB(255, 210, 14, 0),
+                      //           radius: 30,
+                      //           backgroundImage: AssetImage('assets/telp.png')),
+                      //         ),
+                      //         Container(
+                      //           margin: EdgeInsets.only(top: 12),
+                      //           child: Column(
+                      //             mainAxisAlignment: MainAxisAlignment.start,
+                      //             crossAxisAlignment: CrossAxisAlignment.start,
+                      //             children: [
+                      //                 Container(
+                      //                   margin: EdgeInsets.only(left: 20),
+                      //                   child: Text('No. HP',
+                      //                   style: GoogleFonts.plusJakartaSans(
+                      //                     textStyle: TextStyle(
+                      //                       fontSize: 19,
+                      //                       color: Color.fromARGB(255, 71, 70, 70),
+                      //                       fontWeight: FontWeight.w500
+                      //                       )
+                      //                   ),
+                      //                   ),
+                      //                 ),
+                      //                 SizedBox(
+                      //                   height: 5,
+                      //                 ),
+                      //                  Container(
+                      //                   margin: EdgeInsets.only(left: 20),
+                      //                    child: Text(userData.getPhone() != null ? '-' : '${userData.getPhone()}',
+                      //                     style: GoogleFonts.plusJakartaSans(
+                      //                     textStyle: TextStyle(
+                      //                       fontSize: 17,
+                      //                       color: Color.fromARGB(255, 71, 70, 70))), ),
+                      //                  ),
+                      //             ],),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
 
                       Container(
                              height: 80,
@@ -591,7 +635,7 @@ class _ProfileeState extends State<Profilee> {
                           child: 
 
                             Container(
-                            margin: EdgeInsets.only(top: 20, bottom: 30, left: 70, right: 70),
+                            margin: EdgeInsets.only(top: 20, bottom: 30, left: 10, right: 10),
                             child:
                             
                               Column(
@@ -600,25 +644,24 @@ class _ProfileeState extends State<Profilee> {
                               children : <Widget>[
                                 QrImage(
                                 foregroundColor: Colors.white,
-                                data: "${userData.getUsernameID()}",
+                                data: "${_member}",
                                 version: QrVersions.auto,
-                                size: 70.0,
+                                size: 85.0,
                                 ),
 
-                                //  BarCodeImage(
-                                //   backgroundColor: Colors.white,
-                                //   params: Code128BarCodeParams(
-                                //   "${userData.getUsernameID()}",
-                                //   lineWidth: 2.65,             
-                                //   barHeight: 45,              
-                                //   withText: true,               
-                                //   ),
-                                //   padding: EdgeInsets.only(bottom: 7),
-                                //   onError: (error) {               // Error handler
-                                //   print('error = $error'); 
-                                //   },
-                                //   ),
-                                        
+                                 BarCodeImage(
+                                  backgroundColor: Colors.white,
+                                  params: Code128BarCodeParams(
+                                  "${_member}",
+                                  lineWidth: 1.5,             
+                                  barHeight: 75,              
+                                  // withText: true,               
+                                  ),
+                                  padding: EdgeInsets.only(bottom: 7),
+                                  onError: (error) {               // Error handler
+                                  print('error = $error'); 
+                                  },
+                                  ),
                             ])
                                         )
                                     ),
