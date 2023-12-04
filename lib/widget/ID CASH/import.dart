@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:barcode_flutter/barcode_flutter.dart';
+// import 'package:barcode_flutter/barcode_flutter.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';

@@ -9,7 +9,7 @@ import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
-import 'package:barcode_flutter/barcode_flutter.dart';
+// import 'package:barcode_flutter/barcode_flutter.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';

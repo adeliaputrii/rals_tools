@@ -1,7 +1,6 @@
 part of 'SP_service.dart';
 
 class UserData {
-
   Dio dio = Dio();
   RamayanaLogin ramayanaLogin = RamayanaLogin();
 
@@ -35,14 +34,14 @@ class UserData {
   static String _userPassword = '';
   static String _userPhone = '';
   static String _userPicUrl = '';
-  static String _userID = ''; 
-  static String _userRole = ''; 
-  static String _listmenu = ''; 
-  static late String _userToken= '';
-  static late String _userToko= '';
-  static late String _userAkses= '';
-  static late String _username7= '';
-  var token  = '';
+  static String _userID = '';
+  static String _userRole = '';
+  static String _listmenu = '';
+  static late String _userToken = '';
+  static late String _userToko = '';
+  static late String _userAkses = '';
+  static late String _username7 = '';
+  var token = '';
   var fcmToken;
   final _firebaseMessaging = FirebaseMessaging.instance;
 
@@ -61,6 +60,7 @@ class UserData {
   String getUserToko() {
     return _userToko;
   }
+
   String getUserAkses() {
     return _userAkses;
   }
@@ -84,7 +84,6 @@ class UserData {
   String getUsernameID() {
     return _userName;
   }
-
 
   String getnameofUser() {
     return _userNameOfUser;
@@ -166,18 +165,19 @@ class UserData {
     return;
   }
 
-  Future<void> initNotification() async{
+  Future<void> initNotification() async {
     await _firebaseMessaging.requestPermission();
     fcmToken = await _firebaseMessaging.getToken();
     print('Token kirim api : ${fcmToken}');
     return fcmToken;
   }
+
   @override
   void initState() {
     initNotification();
   }
+
   sendTokenFirebase() async {
-    
     print(getUserToken());
     print('${fcmToken}');
     print('${initNotification()}');
@@ -190,12 +190,15 @@ class UserData {
     pref.setString(UserData.username_str, data['data']['username'].toString());
     pref.setString(UserData.user_fullname_str, data['data']['name'].toString());
     pref.setString(UserData.user_email_str, data['data']['email'].toString());
-    pref.setString(UserData.user_subdivisi_str, data['data']['id_sub_divisi'].toString());
+    pref.setString(
+        UserData.user_subdivisi_str, data['data']['id_sub_divisi'].toString());
     pref.setString(UserData.user_token_str, data['access_token'].toString());
     pref.setString(UserData.user_toko_str, data['data']['toko'].toString());
     pref.setString(UserData.user_role_str, data['data']['role'].toString());
-    pref.setString(UserData.user_akses_str, data['data']['akses_menu'].toString());
-    pref.setString(UserData.username7_str, data['data']['username7'].toString());
+    pref.setString(
+        UserData.user_akses_str, data['data']['akses_menu'].toString());
+    pref.setString(
+        UserData.username7_str, data['data']['username7'].toString());
     pref.setString(UserData.listmenu_str, data['data']['list_menu'].toString());
     // pref.getString('tokenApi', data['access_token'].toString());
     // if (data['akses'] == 'adm') {
@@ -211,25 +214,76 @@ class UserData {
     print(getUserToken());
     print(token);
     print('adelia cantik');
-    try{
-          var formData = FormData.fromMap({
-          'device_token': '${token}',
-          });
-          var response = await dio.post(
-          '${tipeurl}api/v1/auth/fcm-token',
-          data: formData,
-          options: Options(
+    try {
+      var formData = FormData.fromMap({
+        'device_token': '${token}',
+      });
+      var response = await dio.post(
+        '${tipeurl}api/v1/auth/fcm-token',
+        data: formData,
+        options: Options(
           headers: {
-           'Authorization': 'Bearer ${getUserToken()}',
+            'Authorization': 'Bearer ${getUserToken()}',
             'Content-Type': 'application/json',
-             },
-             ),
-             );
-            print('send token');
-            print('send token adalah ${token}');
-             }catch(e){
-           print(e.toString()); 
-            }
+          },
+        ),
+      );
+      print('send token');
+      print('send token adalah ${token}');
+    } catch (e) {
+      print(e.toString());
+    }
+    return;
+  }
+
+  Future<void> setDataUser(LoginResponse data) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setBool(UserData.logstatus, true);
+    pref.setString(UserData.user_id_str, data.data!.userId.toString());
+    pref.setString(UserData.username_str, data.data!.username.toString());
+    pref.setString(UserData.user_fullname_str, data.data!.name.toString());
+    pref.setString(UserData.user_email_str, data.data!.email.toString());
+    pref.setString(
+        UserData.user_subdivisi_str, data.data!.idSubDivisi.toString());
+    pref.setString(UserData.user_token_str, data.accessToken.toString());
+    pref.setString(UserData.user_toko_str, data.data!.toko.toString());
+    pref.setString(UserData.user_role_str, "Admin");
+    pref.setString(UserData.user_akses_str, data.data!.aksesMenu.toString());
+    pref.setString(UserData.username7_str, data.data!.username7.toString());
+    pref.setString(UserData.listmenu_str, data.data!.listMenu.toString());
+    // pref.getString('tokenApi', data['access_token'].toString());
+    // if (data['akses'] == 'adm') {
+    //   pref.setBool(UserData.isAdmin_str, true);
+    // } else {
+    //   pref.setBool(UserData.isAdmin_str, false);
+    // }
+    var token = pref.getString('firebaseToken');
+    await getPref();
+    print('[LOGIN INFO] : Updated..!');
+    printdevinfo();
+    print('adel manis');
+    print(getUserToken());
+    print(token);
+    print('adelia cantik');
+    try {
+      var formData = FormData.fromMap({
+        'device_token': '${token}',
+      });
+      var response = await dio.post(
+        '${tipeurl}api/v1/auth/fcm-token',
+        data: formData,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer ${getUserToken()}',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      print('send token');
+      print('send token adalah ${token}');
+    } catch (e) {
+      print(e.toString());
+    }
     return;
   }
 
@@ -243,14 +297,14 @@ class UserData {
     _userEmail = pref.getString(user_email_str).toString();
     _userSubdivisi = pref.getString(user_subdivisi_str).toString();
     _userPicUrl = pref.getString(user_picUrl_str).toString();
-    _userPhone = pref.getString(user_phone_str).toString();    
-    _userAdress = pref.getString(user_address_str).toString();  
-    _userToken = pref.getString(user_token_str).toString();  
-    _userToko = pref.getString(user_toko_str).toString(); 
-    _userRole = pref.getString(user_role_str).toString(); 
-    _userAkses = pref.getString(user_akses_str).toString(); 
-    _username7 = pref.getString(username7_str).toString(); 
-    _listmenu = pref.getString(listmenu_str).toString(); 
+    _userPhone = pref.getString(user_phone_str).toString();
+    _userAdress = pref.getString(user_address_str).toString();
+    _userToken = pref.getString(user_token_str).toString();
+    _userToko = pref.getString(user_toko_str).toString();
+    _userRole = pref.getString(user_role_str).toString();
+    _userAkses = pref.getString(user_akses_str).toString();
+    _username7 = pref.getString(username7_str).toString();
+    _listmenu = pref.getString(listmenu_str).toString();
     if (pref.getBool(logstatus) == null || pref.getBool(logstatus) == false) {
       _statuslog = false;
     } else {
@@ -265,4 +319,3 @@ class UserData {
     return;
   }
 }
-

@@ -9,5 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-part 'account.dart';
+import '../../data/model/login_response.dart';
 
+part 'account.dart';
