@@ -7,3 +7,5 @@ var dev =  'https://dev-android-api.ramayana.co.id:8305/';
 var prod =  'https://android-api.ramayana.co.id:8304/';
 var tipeurl = prod;
 var imei = '';
+
+//test push git
