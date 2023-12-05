@@ -363,7 +363,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       final body = LoginBody(
           userName: usernameController.text,
           password: passwordController.text,
-          deviceId: "samsung");
+          deviceId: "xiaomi");
       loginCubit.login(loginBody: body);
     }
 
