@@ -56,28 +56,30 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
     try {
       if (password.text.isNotEmpty) {
         print('oke');
+        UserData userData = UserData();
         SharedPreferences pref = await SharedPreferences.getInstance();
-        var username =pref.getString("username");
+        var username = userData.getUsername7();
+
         print(username);
         AndroidDeviceInfo info = await deviceInfo.androidInfo;
 
         http.Response response =
             //  await AuthServices.login(username.text, pass.text);
             await AuthServicesLog.login(
-                //' ini versi yang sama kaya diataskan ya del?
-                '${username}',
-                password.text,
-                'RALS-TOOLS',
-                '${versi}',
-                '${DateTime.now()}',
-                'Login Aplikasi RALS',
-                '${imei}',
-                '${userData.getUsername7()}',
-                'toko',
-                '${info.device}',
-                '${_udid}',
-                // '${imei}${info.device}',
-                );
+          //' ini versi yang sama kaya diataskan ya del?
+          '${username}',
+          password.text,
+          'RALS-TOOLS',
+          '${versi}',
+          '${DateTime.now()}',
+          'Login Aplikasi RALS',
+          '${imei}',
+          '${userData.getUsername7()}',
+          'toko',
+          'xiaomi',
+          '${_udid}',
+          // '${imei}${info.device}',
+        );
         Map responseMap = jsonDecode(response.body);
         print(responseMap);
         if (responseMap['userpass'] == "0") {
@@ -115,8 +117,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false, 
-      
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -147,10 +148,12 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                       size: 25,
                     ),
                   ),
-                  Text(
-                    'ID CASH',
-                    style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 23, color: Colors.white,fontWeight: FontWeight.w500 ))
-                  ),
+                  Text('ID CASH',
+                      style: GoogleFonts.plusJakartaSans(
+                          textStyle: TextStyle(
+                              fontSize: 23,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500))),
                   IconButton(
                     onPressed: () {},
                     icon: Icon(
@@ -168,7 +171,9 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                 margin: EdgeInsets.only(left: 20, top: 50, right: 20),
                 // color: Colors.green,
                 height: 320,
-                child: Center(child: Image.asset('assets/idcashpin_password_enter.png',
+                child: Center(
+                    child: Image.asset(
+                  'assets/idcashpin_password_enter.png',
                 )),
               ),
             ),
@@ -178,7 +183,6 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
               margin:
                   EdgeInsets.only(left: 20, top: 350, right: 20, bottom: 50),
               child: Column(
-                
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -193,22 +197,28 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                             offset: Offset(4, 8),
                           )
                         ]),
-            
+
                     // margin: EdgeInsets.only(left: 20, top: 350, right: 20),
                     height: 400,
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            "Masukkan Password",
-                           style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 23, color: Colors.black,fontWeight: FontWeight.w500 ))
-                          ),
+                          Text("Masukkan Password",
+                              style: GoogleFonts.plusJakartaSans(
+                                  textStyle: TextStyle(
+                                      fontSize: 23,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500))),
                           Form(
                             key: _formKey,
                             child: Container(
                               margin: EdgeInsets.only(left: 30, right: 30),
                               child: TextFormField(
-                                style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 18, color: Colors.black,)),
+                                style: GoogleFonts.plusJakartaSans(
+                                    textStyle: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                )),
                                 controller: password,
                                 obscureText: _passwordVisible ? false : true,
                                 validator: RequiredValidator(
@@ -217,56 +227,52 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                                     labelText: 'Enter Password',
                                     border: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Colors.black,
-                                            width: 5.0),
+                                            color: Colors.black, width: 5.0),
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     errorBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 255, 17, 17),
+                                          color:
+                                              Color.fromARGB(255, 255, 17, 17),
                                         ),
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     errorStyle: TextStyle(
-                                        color: Color.fromARGB(
-                                            255, 255, 17, 17),
+                                        color: Color.fromARGB(255, 255, 17, 17),
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400),
                                     labelStyle:
                                         TextStyle(color: Colors.black87),
-                                         suffixIcon: IconButton(
-                                    icon: Icon(
-                                      // Based on passwordVisible state choose the icon
-                                      _passwordVisible
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
-                                      color: Color.fromARGB(255, 255, 17, 17),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        // Based on passwordVisible state choose the icon
+                                        _passwordVisible
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: Color.fromARGB(255, 255, 17, 17),
+                                      ),
+                                      onPressed: () {
+                                        // Update the state i.e. toogle the state of passwordVisible variable
+                                        setState(() {
+                                          _passwordVisible = !_passwordVisible;
+                                        });
+                                      },
                                     ),
-                                    onPressed: () {
-                                      // Update the state i.e. toogle the state of passwordVisible variable
-                                      setState(() {
-                                        _passwordVisible = !_passwordVisible;
-                                      });
-                                    },
-                                  ),
                                     prefixIcon: Icon(
                                       Icons.lock,
-                                      color:
-                                          Color.fromARGB(255, 255, 17, 17),
+                                      color: Color.fromARGB(255, 255, 17, 17),
                                     ),
                                     hintStyle: TextStyle(
                                         color: Colors.black, fontSize: 20),
                                     enabledBorder: OutlineInputBorder(
-                                        borderSide: new BorderSide(
-                                            color: Colors.black),
+                                        borderSide:
+                                            new BorderSide(color: Colors.black),
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(10),
-                                      borderSide: new BorderSide(
-                                          color: Colors.black),
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide:
+                                          new BorderSide(color: Colors.black),
                                     )),
                               ),
                             ),
@@ -277,30 +283,32 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                                   size: 60.0,
                                 )
                               : MaterialButton(
-                            onPressed: ()async {
-                              if (_formKey.currentState!.validate()) {
-                                setState(() {
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
                                         isLoading = true;
                                       });
-                               await Future.delayed(
+                                      await Future.delayed(
                                           const Duration(seconds: 3));
                                       await loginPressed();
                                       setState(() {
                                         isLoading = false;
                                       });
-                              }
-                            },
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            color: Color.fromARGB(255, 255, 17, 17),
-                            height: 50,
-                            minWidth: 200,
-                            child: Text(
-                              'Submit',
-                             style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 18, color: Colors.white,))
-                            ),
-                          )
+                                    }
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  color: Color.fromARGB(255, 255, 17, 17),
+                                  height: 50,
+                                  minWidth: 200,
+                                  child: Text('Submit',
+                                      style: GoogleFonts.plusJakartaSans(
+                                          textStyle: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ))),
+                                )
                         ]),
                   ),
                   SizedBox(
@@ -312,19 +320,21 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Copyright RALS',
-                         style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 18, color: Colors.black))
-                        ),
+                        Text('Copyright RALS',
+                            style: GoogleFonts.plusJakartaSans(
+                                textStyle: TextStyle(
+                                    fontSize: 18, color: Colors.black))),
                         Icon(
                           Icons.copyright,
                           color: Colors.black,
                           size: 21,
                         ),
-                        Text(
-                          '${copyright}',
-                          style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 18, color: Colors.black,fontWeight: FontWeight.w500 ))
-                        )
+                        Text('${copyright}',
+                            style: GoogleFonts.plusJakartaSans(
+                                textStyle: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500)))
                       ],
                     ),
                   ),
@@ -338,7 +348,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
   }
 }
 
-class BottomClipperIdCash  extends CustomClipper<Path> {
+class BottomClipperIdCash extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = Path();
@@ -346,8 +356,8 @@ class BottomClipperIdCash  extends CustomClipper<Path> {
     path.lineTo(0, size.height - 200);
     path.quadraticBezierTo(
         size.width / 2, size.height, size.width / 2, size.height);
-    path.quadraticBezierTo(
-        size.width - size.width / 4, size.height, size.width, size.height - 100);
+    path.quadraticBezierTo(size.width - size.width / 4, size.height, size.width,
+        size.height - 100);
     path.lineTo(size.width, 0);
     path.lineTo(0, 0);
     return path;

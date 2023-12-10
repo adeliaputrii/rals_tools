@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:myactivity_project/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../main.dart';
+import '../widget/My List Task/import.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
   print('Title : ${message.notification?.title}');
@@ -21,12 +23,11 @@ class FirebaseApi {
       importance: Importance.defaultImportance);
   final _localNotifications = FlutterLocalNotificationsPlugin();
   void handleMessage(RemoteMessage? message) {
+    // debugPrint('response fcm' + message!.data.toString());
     if (message == null) return;
-    // HomeMainApp.navigatorKey.currentState?.push(
-    //     MaterialPageRoute(
-    //       builder: (_) => RamayanaMyListTask()
-    //     ),
-    //   );
+    navigatorKey.currentState?.push(
+      MaterialPageRoute(builder: (_) => RamayanaMyListTask()),
+    );
   }
 
   Future initLocalNotification() async {
@@ -53,7 +54,7 @@ class FirebaseApi {
     FirebaseMessaging.onMessage.listen((message) {
       final notification = message.notification;
       if (notification == null) return;
-
+      debugPrint('notification init' + message.data.toString());
       _localNotifications.show(
           notification.hashCode,
           notification.title,

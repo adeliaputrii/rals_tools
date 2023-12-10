@@ -2,7 +2,7 @@ part of 'import.dart';
 
 class RamayanaMyListTask extends StatefulWidget {
   const RamayanaMyListTask({super.key});
-
+  static const route = '/ramayana-list-screen';
   @override
   State<RamayanaMyListTask> createState() => _RamayanaMyListTaskState();
 }
@@ -10,7 +10,7 @@ class RamayanaMyListTask extends StatefulWidget {
 class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
   var token = '';
   bool isLoading = false;
-
+  bool isMounted = true;
   @override
   void initState() {
     super.initState();
@@ -20,6 +20,12 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
       loadData();
       print('delayed execution');
     });
+  }
+
+  @override
+  void dispose() {
+    isMounted = false;
+    super.dispose();
   }
 
   loadData() async {
@@ -38,9 +44,12 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     UserData userData = UserData();
     print('token ${prefs.getString('token')}');
-    setState(() {
-      token = userData.getUserToken();
-    });
+    if (isMounted) {
+      setState(() {
+        token = userData.getUserToken();
+      });
+    }
+
     return token;
   }
 

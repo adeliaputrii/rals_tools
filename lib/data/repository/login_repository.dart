@@ -22,22 +22,20 @@ class LoginRepositories {
             isSuccess: true, statusCode: value.status, dataResponse: value);
       });
     } catch (e) {
-      if (e is DioError) {
-        if (e.response?.statusCode == 401) {
-          response = RepositoriesResponse(
-              isSuccess: false,
-              statusCode: e.response?.statusCode,
-              dataResponse: e.response!.data['message'].toString());
-        } else if (e.response?.statusCode == 404) {
-          response = RepositoriesResponse(
-              isSuccess: false,
-              statusCode: e.response?.statusCode,
-              dataResponse: e.response!.data['message'].toString());
-        }
-      }
       if (e is IOException) {
         response = RepositoriesResponse(
             isSuccess: false, statusCode: 500, dataResponse: e.toString());
+      } else {
+        response = RepositoriesResponse(
+            isSuccess: false, statusCode: 0, dataResponse: e.toString());
+      }
+      if (e is DioException) {
+        response = RepositoriesResponse(
+            isSuccess: false,
+            statusCode: e.response?.statusCode,
+            dataResponse: e.response!.data['message'].toString());
+
+        debugPrint(e.response!.data['message']);
       }
     }
     return response;

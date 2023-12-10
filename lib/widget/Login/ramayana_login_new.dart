@@ -349,7 +349,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
 
       loginCubit.createLog(createLogBody);
       print('check length ${ApprovalIdcashCustomer.approvalidcashcust.length}');
-      print(data['data'].toString());
+      print('data customer' + data['data'].toString());
     } else {
       print('NO DATA');
     }

@@ -268,30 +268,36 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
                                 ),
                                 Column(
                                   children: [
-                                    // Container(
-                                    //     height:
-                                    //         MediaQuery.of(context).size.height /
-                                    //             10,
-                                    //     color: Colors.deepOrange,
-                                    //     margin:
-                                    //         EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                    //     child: BarCodeImage(
-                                    //       backgroundColor: Colors.white,
-                                    //       params: Code128BarCodeParams(
-                                    //         "${e.nokartu}",
-                                    //         lineWidth:
-                                    //             1.5, // width for a single black/white bar (default: 2.0)
-                                    //         barHeight: 10,
-                                    //         // barHeight: 30.0,               // height for the entire widget (default: 100.0)
-                                    //         withText:
-                                    //             false, // Render with text label or not (default: false)
-                                    //       ),
-                                    //       padding: EdgeInsets.only(bottom: 7),
-                                    //       onError: (error) {
-                                    //         // Error handler
-                                    //         print('error = $error');
-                                    //       },
-                                    //     )),
+                                    Container(
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                10,
+                                        color: Colors.deepOrange,
+                                        margin:
+                                            EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                        child: SfBarcodeGenerator(
+                                            value: "${e.nokartu}",
+                                            backgroundColor: Colors.white,
+                                            barColor: Colors.black,
+                                            symbology: Code128B())
+                                        // BarCodeImage(
+                                        //   backgroundColor: Colors.white,
+                                        //   params: Code128BarCodeParams(
+                                        //     "${e.nokartu}",
+                                        //     lineWidth:
+                                        //         1.5, // width for a single black/white bar (default: 2.0)
+                                        //     barHeight: 10,
+                                        //     // barHeight: 30.0,               // height for the entire widget (default: 100.0)
+                                        //     withText:
+                                        //         false, // Render with text label or not (default: false)
+                                        //   ),
+                                        //   padding: EdgeInsets.only(bottom: 7),
+                                        //   onError: (error) {
+                                        //     // Error handler
+                                        //     print('error = $error');
+                                        //   },
+                                        // )),
+                                        ),
                                     Container(
                                       height:
                                           MediaQuery.of(context).size.height /

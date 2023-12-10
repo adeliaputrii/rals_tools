@@ -71,6 +71,7 @@ class NotificationService {
       ReceivedAction receivedAction) async {
     debugPrint('onActionReceivedMethod');
     final payload = receivedAction.payload ?? {};
+
     // if (payload["navigate"] == "true") {
     //  HomeMainApp.navigatorKey.currentState?.push(
     //     MaterialPageRoute(

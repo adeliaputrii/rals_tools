@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
@@ -24,6 +25,7 @@ import 'package:myactivity_project/service/API_service/API_service.dart';
 import 'package:myactivity_project/tools/keyboard.dart';
 import 'package:myactivity_project/models/model_log.dart';
 import 'package:myactivity_project/tools/device_info.dart';
+import 'package:myactivity_project/utils/format_number.dart';
 import 'package:myactivity_project/widget/import.dart';
 import 'package:myactivity_project/service/SP_service/SP_service.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -32,6 +34,10 @@ import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:syncfusion_flutter_barcodes/barcodes.dart';
+
+import '../../cubit/id_cash/id_cash_cubit.dart';
+import '../../data/model/data_member_card_body.dart';
 
 part 'ramayana_idcash.dart';
 part 'ramayana_id_cash_riwayat.dart';

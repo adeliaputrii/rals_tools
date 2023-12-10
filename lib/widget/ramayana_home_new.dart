@@ -45,6 +45,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   bool mylisttask = false;
   bool task = false;
   int? jumlahTask;
+  bool isMounted = true;
 
   @override
   void initState() {
@@ -71,6 +72,12 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     fetchDataJumlahTask();
     _unsecureScreen();
     fetchBerita();
+  }
+
+  @override
+  void dispose() {
+    isMounted = false;
+    super.dispose();
   }
 
   _unsecureScreen() async {
@@ -114,9 +121,12 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
     var accToken = userData.getUserToken();
     print('load token ${accToken}');
-    setState(() {
-      token = (prefs.getString('user_token_str') ?? '');
-    });
+    if (isMounted) {
+      setState(() {
+        token = (prefs.getString('user_token_str') ?? '');
+      });
+    }
+
     return token;
   }
 
@@ -160,7 +170,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       print(data['status']);
       print('NO DATA');
     }
-
   }
 
   fetchBerita() async {
@@ -199,7 +208,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       print(data['status']);
       print('NO DATA');
     }
-
   }
 
   fetchDataJumlahTask() async {
@@ -233,8 +241,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     } else {
       print('NO DATA');
     }
-
-    setState(() {});
   }
 
   read_task() async {

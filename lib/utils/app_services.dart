@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:myactivity_project/data/service/id_cash_service.dart';
 import 'package:myactivity_project/data/service/login_service.dart';
 import 'package:myactivity_project/data/service/surat_jalan_service.dart';
 import 'package:myactivity_project/utils/dio_interceptor.dart';
@@ -32,6 +33,13 @@ class AppServices {
     } else {
       get.unregister<SuratJalanService>();
       get.registerFactory(() => SuratJalanService(dio, baseUrl: url));
+    }
+
+    if (!get.isRegistered<IDCashService>()) {
+      get.registerFactory(() => IDCashService(dio, baseUrl: url));
+    } else {
+      get.unregister<IDCashService>();
+      get.registerFactory(() => IDCashService(dio, baseUrl: url));
     }
   }
 }

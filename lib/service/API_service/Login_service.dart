@@ -29,7 +29,7 @@ class AuthServicesLog {
       // 'toko': toko,
       // 'devicename': devicename,
       // 'imei': imei,
-      'device_id': 'samsung',
+      'device_id': 'xiaomi',
     };
     print('damn 555');
     print(data);

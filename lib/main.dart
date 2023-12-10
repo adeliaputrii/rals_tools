@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:myactivity_project/service/SP_service/SP_service.dart';
 import 'package:myactivity_project/service/notification/notification_service.dart';
+import 'package:myactivity_project/widget/My%20List%20Task/import.dart';
 import 'package:myactivity_project/widget/Splashscreen/import.dart';
 import 'package:myactivity_project/widget/import.dart';
 import 'package:notification_permissions/notification_permissions.dart';
@@ -27,9 +28,13 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:myactivity_project/base/base_paths.dart' as basePath;
 
+import 'firebase/firebase_api_new.dart';
+import 'firebase_options.dart';
 import 'utils/app_cubit.dart';
 import 'utils/app_services.dart';
 import 'utils/app_utils.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,8 +45,9 @@ void main() async {
       Permission.notification.request();
     }
   });
+
   await Firebase.initializeApp();
-  await FirebaseApi().initNotification();
+  await FirebaseApiNew().initNotification();
   registerAppServices();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -76,8 +82,6 @@ Future<void> registerAppServices() async {
 class HomeMainApp extends StatelessWidget {
   const HomeMainApp({super.key});
 
-  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -93,6 +97,9 @@ class HomeMainApp extends StatelessWidget {
         ],
       ),
       navigatorKey: navigatorKey,
+      routes: {
+        RamayanaMyListTask.route: ((context) => const RamayanaMyListTask())
+      },
       title: 'rals-tools',
       debugShowCheckedModeBanner: false,
       home: DefaultBottomBarController(child: Ramayana()),
@@ -102,8 +109,6 @@ class HomeMainApp extends StatelessWidget {
 
 class SplashHomeMainApp extends StatelessWidget {
   const SplashHomeMainApp({super.key});
-
-  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +127,9 @@ class SplashHomeMainApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         title: 'rals-tools',
         debugShowCheckedModeBanner: false,
+        routes: {
+          RamayanaMyListTask.route: ((context) => const RamayanaMyListTask())
+        },
         home: SplashScreenRamayana());
   }
 }

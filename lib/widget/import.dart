@@ -13,6 +13,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_udid/flutter_udid.dart';
@@ -38,6 +39,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 import 'package:tbib_splash_screen/splash_screen_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:myactivity_project/database/db_log.dart';
@@ -60,6 +62,9 @@ import 'package:myactivity_project/tools/device_info.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:myactivity_project/widget/VOID/import.dart';
 
+import '../cubit/id_cash/id_cash_cubit.dart';
+import '../data/model/data_member_card_body.dart';
+import '../utils/generate_barcode.dart';
 import 'Berita/import.dart';
 
 part 'ramayana_home_new.dart';
