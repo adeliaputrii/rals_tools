@@ -937,9 +937,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                               colorScheme: ColorScheme.light(
                                                   primary: Color.fromARGB(
                                                       255, 255, 17, 17),
-                                                  primaryVariant: Colors.white,
-                                                  secondaryVariant:
-                                                      Colors.black,
+                                                 
                                                   onSecondary: Colors.black,
                                                   onPrimary: Colors.white,
                                                   surface: Colors.white,
@@ -1045,10 +1043,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                                                   255,
                                                                   17,
                                                                   17),
-                                                          primaryVariant:
-                                                              Colors.white,
-                                                          secondaryVariant:
-                                                              Colors.black,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
                                                           onSecondary:
                                                               Colors.black,
                                                           onPrimary:

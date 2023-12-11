@@ -1792,12 +1792,13 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                               fontSize: 20 //badge font size
                                                                               )),
                                                                     )),
-                                                            badgeColor:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    255,
-                                                                    67,
-                                                                    67), //badge background color
+
+                                                            // badgeColor:
+                                                            //     Color.fromARGB(
+                                                            //         255,
+                                                            //         255,
+                                                            //         67,
+                                                            //         67), //badge background color
                                                           )
                                                   ],
                                                 ),

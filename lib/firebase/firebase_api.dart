@@ -34,11 +34,11 @@ class FirebaseApi {
     const android = AndroidInitializationSettings('@drawable/ic_launcher');
     const setting = InitializationSettings(android: android);
 
-    await _localNotifications.initialize(setting,
-        onSelectNotification: (payload) {
-      final message = RemoteMessage.fromMap(jsonDecode(payload!));
-      handleMessage(message);
-    });
+    // await _localNotifications.initialize(setting,
+    //     onSelectNotification: (payload) {
+    //   final message = RemoteMessage.fromMap(jsonDecode(payload!));
+    //   handleMessage(message);
+    // });
     final platform = _localNotifications.resolvePlatformSpecificImplementation<
         AndroidFlutterLocalNotificationsPlugin>();
     await platform?.createNotificationChannel(_androidChannel);
