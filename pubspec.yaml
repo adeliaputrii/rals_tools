@@ -65,7 +65,7 @@ dependencies:
   notification_permissions: ^0.6.1
   carousel_slider: ^4.2.1
   badges: ^2.0.2
-  awesome_notifications: ^0.8.2
+  awesome_notifications: ^0.8.0
   background_fetch: ^1.2.1
   firebase_core: ^2.16.0
   cloud_firestore: ^4.9.2
@@ -73,9 +73,8 @@ dependencies:
   flutter_windowmanager: any
   in_app_update: ^4.2.2
   simnumber: ^0.0.12
-  get:
-  flutter_localizations:
-    sdk: flutter
+
+  intl: ^0.18.0
   google_fonts: ^4.0.4
   firebase_messaging: ^14.6.8
   flutter_local_notifications: ^9.8.0+1
