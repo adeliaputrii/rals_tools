@@ -5,6 +5,8 @@ import 'package:myactivity_project/data/service/login_service.dart';
 import 'package:myactivity_project/data/service/surat_jalan_service.dart';
 import 'package:myactivity_project/utils/dio_interceptor.dart';
 
+import '../data/service/home_app_service.dart';
+
 class AppServices {
   final Dio dio;
 
@@ -40,6 +42,13 @@ class AppServices {
     } else {
       get.unregister<IDCashService>();
       get.registerFactory(() => IDCashService(dio, baseUrl: url));
+    }
+
+    if (!get.isRegistered<HomeAppService>()) {
+      get.registerFactory(() => HomeAppService(dio, baseUrl: url));
+    } else {
+      get.unregister<HomeAppService>();
+      get.registerFactory(() => HomeAppService(dio, baseUrl: url));
     }
   }
 }

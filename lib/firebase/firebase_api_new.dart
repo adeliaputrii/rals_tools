@@ -1,8 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:myactivity_project/widget/Login/import.dart';
 import 'package:myactivity_project/widget/My%20List%20Task/import.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
+import '../utils/check_session.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
   print('Message Id: ${message.messageId}');
@@ -14,11 +17,18 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
 class FirebaseApiNew {
   final _firebaseMessaging = FirebaseMessaging.instance;
 
-  void handleMessage(RemoteMessage? message) {
+  void handleMessage(RemoteMessage? message) async {
+    CheckSession checkSession = CheckSession();
     if (message == null) return;
     debugPrint('test fcm');
-    navigatorKey.currentState
-        ?.pushNamed(RamayanaMyListTask.route, arguments: message);
+    debugPrint(checkSession.checkSession().toString());
+    if (await checkSession.checkSession()) {
+      navigatorKey.currentState
+          ?.pushNamed(RamayanaMyListTask.route, arguments: message);
+    } else {
+      navigatorKey.currentState
+          ?.pushNamed(RamayanaLogin.route, arguments: message);
+    }
   }
 
   Future initPushNotifications() async {

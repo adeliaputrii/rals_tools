@@ -3,6 +3,8 @@ part of 'import.dart';
 class RamayanaLogin extends StatefulWidget {
   const RamayanaLogin({super.key});
 
+  static const route = '/ramayana-login-screen';
+
   @override
   _RamayanaLogin createState() => _RamayanaLogin();
 }
@@ -768,6 +770,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           popUpWidget.showPopUp(pleaseCheck, state.message);
         }
         if (state is CreateLogSuccess) {
+          pref.setString("waktuLogin", "${formattedDate}");
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => Ramayana()));
         }

@@ -62,6 +62,7 @@ import 'package:myactivity_project/tools/device_info.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:myactivity_project/widget/VOID/import.dart';
 
+import '../cubit/home/home_cubit.dart';
 import '../cubit/id_cash/id_cash_cubit.dart';
 import '../data/model/data_member_card_body.dart';
 import '../utils/generate_barcode.dart';

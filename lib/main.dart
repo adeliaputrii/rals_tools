@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:myactivity_project/service/SP_service/SP_service.dart';
 import 'package:myactivity_project/service/notification/notification_service.dart';
+import 'package:myactivity_project/widget/Login/import.dart';
 import 'package:myactivity_project/widget/My%20List%20Task/import.dart';
 import 'package:myactivity_project/widget/Splashscreen/import.dart';
 import 'package:myactivity_project/widget/import.dart';
@@ -98,7 +99,8 @@ class HomeMainApp extends StatelessWidget {
       ),
       navigatorKey: navigatorKey,
       routes: {
-        RamayanaMyListTask.route: ((context) => const RamayanaMyListTask())
+        RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()),
+        RamayanaLogin.route: ((context) => const RamayanaLogin())
       },
       title: 'rals-tools',
       debugShowCheckedModeBanner: false,
@@ -128,7 +130,8 @@ class SplashHomeMainApp extends StatelessWidget {
         title: 'rals-tools',
         debugShowCheckedModeBanner: false,
         routes: {
-          RamayanaMyListTask.route: ((context) => const RamayanaMyListTask())
+          RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()),
+          RamayanaLogin.route: ((context) => const RamayanaLogin())
         },
         home: SplashScreenRamayana());
   }

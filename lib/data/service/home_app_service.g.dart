@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'id_cash_service.dart';
+part of 'home_app_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'id_cash_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _IDCashService implements IDCashService {
-  _IDCashService(
+class _HomeAppService implements HomeAppService {
+  _HomeAppService(
     this._dio, {
     this.baseUrl,
   });
@@ -19,21 +19,20 @@ class _IDCashService implements IDCashService {
   String? baseUrl;
 
   @override
-  Future<DataMemberCardResponse> getDataMember(DataMemberCardBody body) async {
+  Future<GetTaskResponse> getTaskUser() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<DataMemberCardResponse>(Options(
-      method: 'POST',
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<GetTaskResponse>(Options(
+      method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              'v1/membercards/tbl_customer',
+              'v1/activity/task/get-task',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -42,7 +41,7 @@ class _IDCashService implements IDCashService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = DataMemberCardResponse.fromJson(_result.data!);
+    final value = GetTaskResponse.fromJson(_result.data!);
     return value;
   }
 

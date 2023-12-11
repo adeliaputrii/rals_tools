@@ -46,12 +46,14 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   bool task = false;
   int? jumlahTask;
   bool isMounted = true;
+  late HomeCubit homeCubit;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     UserData userData = UserData();
+    homeCubit = context.read<HomeCubit>();
     initPlatformState();
     didPop();
     _checkInternetConnection();
@@ -64,6 +66,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     deleteToko();
     imei();
     dapetinData();
+    homeCubit.getTaskUser();
     Future.delayed(const Duration(seconds: 1), () async {
       await fetchDataJumlahTask();
       await fetchDataListUser();
@@ -289,18 +292,20 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     //list menampung data dari database
     var list = await db.getAllFormat();
 
-    //ada perubahanan state
-    setState(() {
-      //hapus data pada listKontak
-      LogOffline.listActivity.clear();
+    if (isMounted) {
+      setState(() {
+        //hapus data pada listKontak
+        LogOffline.listActivity.clear();
 
-      //lakukan perulangan pada variabel list
-      list!.forEach((activityy) {
-        //masukan data ke listKontak
-        LogOffline.listActivity.add(LogOffline.fromMap(activityy));
-        print(LogOffline.listActivity);
+        //lakukan perulangan pada variabel list
+        list!.forEach((activityy) {
+          //masukan data ke listKontak
+          LogOffline.listActivity.add(LogOffline.fromMap(activityy));
+          print(LogOffline.listActivity);
+        });
       });
-    });
+    }
+    //ada perubahanan state
   }
 
   int _selectedIndex = 1;
