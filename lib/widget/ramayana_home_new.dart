@@ -72,6 +72,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     fetchDataJumlahTask();
     _unsecureScreen();
     fetchBerita();
+    fetchDataCustomer(id_user: '${userData.getUsername7()}');
   }
 
   _unsecureScreen() async {
@@ -128,6 +129,46 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       imei = imei2;
     });
     return imei2;
+  }
+
+  fetchDataCustomer({required String id_user}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    print('${userData.getUsername7()}');
+    print(tipeurl);
+    ApprovalIdcashCustomer.approvalidcashcust.clear();
+    final responseku = await http.post(
+        Uri.parse('${tipeurl}v1/membercards/tbl_customer'),
+        body: {'id_user': '${userData.getUsername7()}'});
+
+    var data = jsonDecode(responseku.body);
+
+    if (data['status'] == 200) {
+      print("API Success oooo");
+      print(data);
+      int count = data['data'].length;
+      final Map<String, ApprovalIdcashCustomer> profileMap = new Map();
+      final Map<String, LogOffline> profileMap1 = new Map();
+      for (int i = 0; i < count; i++) {
+        ApprovalIdcashCustomer.approvalidcashcust
+            .add(ApprovalIdcashCustomer.fromjson(data['data'][i]));
+      }
+      ApprovalIdcashCustomer.approvalidcashcust.forEach((element) {
+        profileMap[element.nokartu] = element;
+        setState(() {
+          pref.setString('member', '${element.nokartu}');
+        });
+        ApprovalIdcashCustomer.approvalidcashcust = profileMap.values.toList();
+        print('yaa');
+        print(profileMap);
+        print(ApprovalIdcashCustomer.approvalidcashcust);
+      });
+      print('check length ${ApprovalIdcashCustomer.approvalidcashcust.length}');
+      print(data['data'].toString());
+    } else {
+      print('NO DATA');
+    }
+
+    setState(() {});
   }
 
   fetchDataListUser() async {
@@ -376,6 +417,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     pref.remove('username');
     pref.remove('waktuLogin');
     pref.remove('noMember');
+    pref.remove('member');
     pref.remove('token');
     pref.remove('serialImei');
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
@@ -451,7 +493,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
             print('berhasil $_udid');
             logoutPressed();
             Navigator.pop(context);
-            
           },
           child: Text(
             "Log Out",
@@ -1807,7 +1848,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                       margin: EdgeInsets.only(
                                                           bottom: 10),
                                                       decoration: BoxDecoration(
-                                                          boxShadow: <BoxShadow>[
+                                                          boxShadow: <
+                                                              BoxShadow>[
                                                             BoxShadow(
                                                                 color: Color
                                                                     .fromARGB(

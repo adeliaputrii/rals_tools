@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:myactivity_project/database/db_log.dart';
+import 'package:myactivity_project/models/ID%20CASH/model_idacash_cust.dart';
 import 'package:myactivity_project/models/model_log.dart';
 import 'package:myactivity_project/widget/import.dart';
 import 'package:myactivity_project/service/SP_service/SP_service.dart';

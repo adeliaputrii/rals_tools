@@ -1,6 +1,6 @@
 import 'package:myactivity_project/models/model_log.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class DbHelper {
@@ -34,7 +34,8 @@ class DbHelper {
 
   //membuat tabel dan field-fieldnya
   Future<void> _onCreate(Database db, int version) async {
-    var sql = "CREATE TABLE $tableName($columnId INTEGER PRIMARY KEY AUTOINCREMENT, "
+    var sql =
+        "CREATE TABLE $tableName($columnId INTEGER PRIMARY KEY AUTOINCREMENT, "
         "$columnDeskripsi TEXT,"
         "$columnDatetime TEXT)";
     await db.execute(sql);

@@ -1,5 +1,4 @@
-
-part of'import.dart';
+part of 'import.dart';
 
 class RamayanaTukarPoin extends StatefulWidget {
   static const routeName = '/RamayanaVoid';
@@ -31,7 +30,7 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
     ScreenBrightness().setScreenBrightness(1.0);
   }
 
-   @override
+  @override
   void initState() {
     super.initState();
     _loadImei();
@@ -53,12 +52,51 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
   String _scanBarcode = '';
   bool _visible = false;
 
-    List length = [];
-    List ganjil = [];
-    List genap = [];
-    // String nokartu = '${ApprovalIdcashCustomer.noMember[0]}';
-    String hasilAkhir = '';
-    bool? _isConnected;
+  List length = [];
+  List ganjil = [];
+  List genap = [];
+  // String nokartu = '${ApprovalIdcashCustomer.noMember[0]}';
+  String hasilAkhir = '';
+  bool? _isConnected;
+
+  // fetchDataCustomer({required String id_user}) async {
+  //   print('${userData.getUsername7()}');
+  //   print(tipeurl);
+  //   ApprovalIdcashCustomer.approvalidcashcust.clear();
+  //   final responseku = await http.post(
+  //       Uri.parse('${tipeurl}v1/membercards/tbl_customer'),
+  //       body: {'id_user': '${userData.getUsername7()}'});
+
+  //   var data = jsonDecode(responseku.body);
+
+  //   if (data['status'] == 200) {
+  //     print("API Success oooo");
+  //     print(data);
+  //     int count = data['data'].length;
+  //     final Map<String, ApprovalIdcashCustomer> profileMap = new Map();
+  //     final Map<String, LogOffline> profileMap1 = new Map();
+  //     for (int i = 0; i < count; i++) {
+  //       ApprovalIdcashCustomer.approvalidcashcust
+  //           .add(ApprovalIdcashCustomer.fromjson(data['data'][i]));
+  //     }
+  //     ApprovalIdcashCustomer.approvalidcashcust.forEach((element) {
+  //       profileMap[element.nokartu] = element;
+  //       setState(() {
+  //         _member = '${element.nokartu}';
+  //       });
+  //       ApprovalIdcashCustomer.approvalidcashcust = profileMap.values.toList();
+  //       print('yaa');
+  //       print(profileMap);
+  //       print(ApprovalIdcashCustomer.approvalidcashcust);
+  //     });
+  //     print('check length ${ApprovalIdcashCustomer.approvalidcashcust.length}');
+  //     print(data['data'].toString());
+  //   } else {
+  //     print('NO DATA');
+  //   }
+
+  //   setState(() {});
+  // }
 
   _checkInternetConnection() async {
     try {
@@ -81,12 +119,12 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
     print(_isConnected);
   }
 
-   Future<String>step1() async {
+  Future<String> step1() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // user id
     UserData userData = UserData();
     await userData.getPref();
-    var member = prefs.getString('noMember');
+    var member = prefs.getString('member');
     String userId = '${member}';
     String? randomAngka = myController.text;
     print('grgr 123');
@@ -99,59 +137,57 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
     print(noMember[15]);
     int current = 1;
 
-      for (int i = 0; i < noMember.length; i++) {
-        current = i + 1;
-        print(current);
-        if(current.isEven){
-          genap.add(noMember[i]);
+    for (int i = 0; i < noMember.length; i++) {
+      current = i + 1;
+      print(current);
+      if (current.isEven) {
+        genap.add(noMember[i]);
         print('valuegenap : ${noMember[i]}');
       } else if (current.isOdd) {
         ganjil.add(noMember[i]);
         print('valueganjil : ${noMember[i]}');
-      }  
+      }
     }
 
-  print('ganjil : $ganjil');
-  print('genap : $genap');
+    print('ganjil : $ganjil');
+    print('genap : $genap');
 
-  var sum = 0;
-  ganjil.forEach((val) {
-    sum += int.parse(val);
-  });
-  print('jumlah ganjil $sum');
+    var sum = 0;
+    ganjil.forEach((val) {
+      sum += int.parse(val);
+    });
+    print('jumlah ganjil $sum');
 
-  var sum2 = 0;
-  genap.forEach((val2) {
-    sum2 += int.parse(val2);
-  });
-  print('jumlah genap $sum2');
+    var sum2 = 0;
+    genap.forEach((val2) {
+      sum2 += int.parse(val2);
+    });
+    print('jumlah genap $sum2');
 
-  var perhitunganGanjil = (sum + 5) * int.parse(myController.text);
-  var perhitunganGenap = (sum2 - 5) * int.parse(myController.text);
-  // var perhitunganGenap = -32;
+    var perhitunganGanjil = (sum + 5) * int.parse(myController.text);
+    var perhitunganGenap = (sum2 - 5) * int.parse(myController.text);
+    // var perhitunganGenap = -32;
 
-  if(perhitunganGanjil < 0) {
-    perhitunganGanjil = perhitunganGanjil * -1;
-  } 
+    if (perhitunganGanjil < 0) {
+      perhitunganGanjil = perhitunganGanjil * -1;
+    }
 
-  if(perhitunganGenap < 0) {
-    perhitunganGenap = perhitunganGenap * -1;
+    if (perhitunganGenap < 0) {
+      perhitunganGenap = perhitunganGenap * -1;
+    }
+
+    print('Plus 5 Ganjil $perhitunganGanjil');
+    print('Minus 5 Genap $perhitunganGenap');
+
+    var hasilGanjil = perhitunganGanjil.toString();
+    var hasilGenap = perhitunganGenap.toString();
+
+    hasilAkhir = hasilGanjil + hasilGenap;
+    print(hasilAkhir);
+    return hasilAkhir;
   }
 
-  print('Plus 5 Ganjil $perhitunganGanjil');
-  print('Minus 5 Genap $perhitunganGenap');
-
-  var hasilGanjil = perhitunganGanjil.toString();
-  var hasilGenap = perhitunganGenap.toString();
-
-  hasilAkhir = hasilGanjil+hasilGenap;
-  print(hasilAkhir);
-  return hasilAkhir;
-
-}
-  
   String data = '';
-  
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +197,8 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
           appBar: AppBar(
             leading: IconButton(
               onPressed: () async {
-                await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+                await FlutterWindowManager.clearFlags(
+                    FlutterWindowManager.FLAG_SECURE);
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
@@ -280,57 +317,54 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                      didPush();
-                      didPopNext();
-                      data = await step1();
-                        await _checkInternetConnection();
-                                if (_isConnected == true) {
-                                 
-                                    print('is connect');
-                                    AndroidDeviceInfo info = await deviceInfo.androidInfo;
-                          var formData = FormData.fromMap({
-                                'progname': 'RALS_TOOLS ',
-                                'versi': '${versi}',
-                                'date_run': '${DateTime.now()}',
-                                'info1': 'Aktivitas Tukar Poin - Menu Tukar Poin',
-                                ' info2': '${imei2} ',
-                                'userid': '${userData.getUsernameID()}',
-                                ' toko': '${userData.getUserToko()}',
-                                ' devicename': '${info.device}',
-                                'TOKEN': 'R4M4Y4N4'
-                              });
-                              
-                               
-                              var response = await dio.post(
-                                  '${tipeurl}v1/activity/createmylog',
-                                  data: formData);   
-                                  
-                                  print('berhasil $_udid');    
-                                
-                                } else if (_isConnected == false){
-                                   String format = DateFormat.Hms().format(DateTime.now());
-                                    print('not connect');
-                                     db.saveActivityy(LogOffline(
-                                      deskripsi: 'Aktivitas Tukar Poin - Menu Tukar Poin ',
-                                      datetime: '${DateTime.now()}',
-                                      
-      ));
-                                
-                                }
-                        length.clear;
-                        ganjil.clear();
-                        genap.clear();
-                        
-                        
+                        didPush();
+                        didPopNext();
+                        data = await step1();
                         setState(() {
                           _visible = true;
                         });
                         print(_visible);
-                                  if (_visible == true) {
-                                    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
-                                  } else {
-                                    await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
-                                  }
+                        if (_visible == true) {
+                          await FlutterWindowManager.addFlags(
+                              FlutterWindowManager.FLAG_SECURE);
+                        } else {
+                          await FlutterWindowManager.clearFlags(
+                              FlutterWindowManager.FLAG_SECURE);
+                        }
+                        await _checkInternetConnection();
+                        if (_isConnected == true) {
+                          print('is connect');
+                          AndroidDeviceInfo info = await deviceInfo.androidInfo;
+                          var formData = FormData.fromMap({
+                            'progname': 'RALS_TOOLS ',
+                            'versi': '${versi}',
+                            'date_run': '${DateTime.now()}',
+                            'info1': 'Aktivitas Tukar Poin - Menu Tukar Poin',
+                            ' info2': '${imei2} ',
+                            'userid': '${userData.getUsernameID()}',
+                            ' toko': '${userData.getUserToko()}',
+                            ' devicename': '${info.device}',
+                            'TOKEN': 'R4M4Y4N4'
+                          });
+
+                          var response = await dio.post(
+                              '${tipeurl}v1/activity/createmylog',
+                              data: formData);
+
+                          print('berhasil $_udid');
+                        } else if (_isConnected == false) {
+                          String format =
+                              DateFormat.Hms().format(DateTime.now());
+                          print('not connect');
+                          db.saveActivityy(LogOffline(
+                            deskripsi:
+                                'Aktivitas Tukar Poin - Menu Tukar Poin ',
+                            datetime: '${DateTime.now()}',
+                          ));
+                        }
+                        length.clear;
+                        ganjil.clear();
+                        genap.clear();
                       }
                     },
                   ),
@@ -405,40 +439,45 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                   
                                   ]),
                             ),
                             Container(
                                 child: _barcode
                                     ? Column(
-                                      children: [
-                                        Container(
-                                            margin:
-                                                EdgeInsets.fromLTRB(10, 100, 10, 0),
-                                            child: Center(
-                                                child: BarCodeImage(
-                                              backgroundColor: Colors.white,
-                                              params: Code128BarCodeParams(
-                                                "${data}",
-                                                lineWidth:
-                                                    1.5, // width for a single black/white bar (default: 2.0)
-                                                barHeight:
-                                                    100, // height for the entire widget (default: 100.0)
-                                                withText:
-                                                    false, // Render with text label or not (default: false)
-                                              ),
-                                              padding: EdgeInsets.only(bottom: 7),
-                                              onError: (error) {
-                                                // Error handler
-                                                print('error = $error');
-                                              },
-                                            ))),
-                                             Text('${hasilAkhir}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
-                                      ],
-                                    )
+                                        children: [
+                                          Container(
+                                              margin: EdgeInsets.fromLTRB(
+                                                  10, 100, 10, 0),
+                                              child: Center(
+                                                  child: BarCodeImage(
+                                                backgroundColor: Colors.white,
+                                                params: Code128BarCodeParams(
+                                                  "${data}",
+                                                  lineWidth:
+                                                      1.5, // width for a single black/white bar (default: 2.0)
+                                                  barHeight:
+                                                      100, // height for the entire widget (default: 100.0)
+                                                  withText:
+                                                      false, // Render with text label or not (default: false)
+                                                ),
+                                                padding:
+                                                    EdgeInsets.only(bottom: 7),
+                                                onError: (error) {
+                                                  // Error handler
+                                                  print('error = $error');
+                                                },
+                                              ))),
+                                          Text(
+                                            '${hasilAkhir}',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      )
                                     : Column(
-                                      children: [
-                                        Container(
+                                        children: [
+                                          Container(
                                             margin: EdgeInsets.fromLTRB(
                                                 100, 50, 100, 0),
                                             child: PrettyQr(
@@ -455,9 +494,12 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
                                           SizedBox(
                                             height: 10,
                                           ),
-                                          Text('${hasilAkhir}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
-                                      ],
-                                    ))
+                                          Text('${hasilAkhir}',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold))
+                                        ],
+                                      ))
                           ]),
                         )
 
@@ -519,5 +561,4 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
       },
     );
   }
-
 }
