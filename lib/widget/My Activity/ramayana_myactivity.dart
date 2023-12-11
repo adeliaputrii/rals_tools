@@ -1,7 +1,8 @@
 part of 'import.dart';
 
 class RamayanaMyActivity extends StatefulWidget {
-  const RamayanaMyActivity({super.key});
+  RamayanaMyActivity({super.key, this.response});
+  GetTaskResponse? response;
 
   @override
   State<RamayanaMyActivity> createState() => _RamayanaMyActivityState();

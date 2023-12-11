@@ -1808,119 +1808,127 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                     left: 20,
                                                     right: 20,
                                                   ),
-                                                  child: Column(
-                                                      children: TaskHome
-                                                          .taskhome
-                                                          .map((e) {
-                                                    print('${e.project_id}');
-                                                    return Container(
-                                                      height: 90,
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 10),
-                                                      decoration: BoxDecoration(
-                                                          boxShadow: <BoxShadow>[
-                                                            BoxShadow(
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        197,
-                                                                        197,
-                                                                        197),
-                                                                blurRadius: 1,
-                                                                spreadRadius: 1,
-                                                                offset: Offset(
-                                                                    2, 2))
-                                                          ],
-                                                          color: Colors.white,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10)),
-                                                      child: ListTile(
-                                                        leading: CircleAvatar(
-                                                            backgroundColor:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    210,
-                                                                    14,
-                                                                    0),
-                                                            radius: 30,
-                                                            backgroundImage:
-                                                                AssetImage(
-                                                                    'assets/todolist.png')),
-                                                        // title: Text('${e.task_desc}', style: GoogleFonts.plusJakartaSans(
-                                                        //   fontSize: 18, color: Colors.black
-                                                        // ),),
-                                                        subtitle: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Container(
-                                                              margin: EdgeInsets
-                                                                  .only(top: 3),
-                                                              child: Text(
-                                                                '${e.task_desc}',
-                                                                style: GoogleFonts.plusJakartaSans(
-                                                                    fontSize:
-                                                                        18,
+                                                  child: BlocBuilder<HomeCubit,
+                                                          HomeState>(
+                                                      builder:
+                                                          (context, state) {
+                                                    if (state is HomeSuccess) {
+                                                      return Expanded(
+                                                        child: SizedBox(
+                                                          height: 200,
+                                                          child:
+                                                              ListView.builder(
+                                                            itemCount: state
+                                                                .response
+                                                                .data!
+                                                                .length,
+                                                            itemBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    int index) {
+                                                              return Container(
+                                                                height: 90,
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            10),
+                                                                decoration: BoxDecoration(
+                                                                    boxShadow: <BoxShadow>[
+                                                                      BoxShadow(
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              197,
+                                                                              197,
+                                                                              197),
+                                                                          blurRadius:
+                                                                              1,
+                                                                          spreadRadius:
+                                                                              1,
+                                                                          offset: Offset(
+                                                                              2,
+                                                                              2))
+                                                                    ],
                                                                     color: Colors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ),
-                                                            Row(
-                                                              children: [
-                                                                Container(
-                                                                  width: 80,
-                                                                  child: Text(
-                                                                      'Status',
-                                                                      style: GoogleFonts.plusJakartaSans(
-                                                                          fontSize:
-                                                                              15,
-                                                                          color:
-                                                                              Colors.grey)),
+                                                                        .white,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10)),
+                                                                child: ListTile(
+                                                                  leading: CircleAvatar(
+                                                                      backgroundColor:
+                                                                          Color.fromARGB(
+                                                                              255,
+                                                                              210,
+                                                                              14,
+                                                                              0),
+                                                                      radius:
+                                                                          30,
+                                                                      backgroundImage:
+                                                                          AssetImage(
+                                                                              'assets/todolist.png')),
+                                                                  // title: Text('${e.task_desc}', style: GoogleFonts.plusJakartaSans(
+                                                                  //   fontSize: 18, color: Colors.black
+                                                                  // ),),
+                                                                  subtitle:
+                                                                      Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .start,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Container(
+                                                                        margin: EdgeInsets.only(
+                                                                            top:
+                                                                                3),
+                                                                        child:
+                                                                            Text(
+                                                                          '${state.response.data?[index].taskDesc}',
+                                                                          style: GoogleFonts.plusJakartaSans(
+                                                                              fontSize: 18,
+                                                                              color: Colors.black,
+                                                                              fontWeight: FontWeight.w500),
+                                                                        ),
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          Container(
+                                                                            width:
+                                                                                80,
+                                                                            child:
+                                                                                Text('Status', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                          ),
+                                                                          Text(
+                                                                              '${state.response.data?[index].taskStatus}',
+                                                                              style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          Container(
+                                                                            width:
+                                                                                80,
+                                                                            child:
+                                                                                Text('Project ID', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                          ),
+                                                                          Text(
+                                                                              ': ${state.response.data?[index].projectId}',
+                                                                              style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                                Text(
-                                                                    ': ${e.task_status}',
-                                                                    style: GoogleFonts.plusJakartaSans(
-                                                                        fontSize:
-                                                                            15,
-                                                                        color: Colors
-                                                                            .grey)),
-                                                              ],
-                                                            ),
-                                                            Row(
-                                                              children: [
-                                                                Container(
-                                                                  width: 80,
-                                                                  child: Text(
-                                                                      'Project ID',
-                                                                      style: GoogleFonts.plusJakartaSans(
-                                                                          fontSize:
-                                                                              15,
-                                                                          color:
-                                                                              Colors.grey)),
-                                                                ),
-                                                                Text(
-                                                                    ': ${e.project_id}',
-                                                                    style: GoogleFonts.plusJakartaSans(
-                                                                        fontSize:
-                                                                            15,
-                                                                        color: Colors
-                                                                            .grey)),
-                                                              ],
-                                                            ),
-                                                          ],
+                                                              );
+                                                            },
+                                                          ),
                                                         ),
-                                                      ),
-                                                    );
-                                                  }).toList())),
+                                                      );
+                                                    }
+
+                                                    return Container();
+                                                  })),
                                             ],
                                           )
                                         : Container()),
