@@ -22,8 +22,6 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
   TextEditingController originController = TextEditingController();
   TextEditingController destinationController = TextEditingController();
   TextEditingController statusController = TextEditingController();
-
-  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   late TabController _controller;
   late SuratJalanCubit sjCubit;
   double turns = 0.0;
@@ -33,20 +31,6 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
   bool _visible = false;
   Color _containerColorSj = Color.fromARGB(255, 210, 14, 0);
   Color _containerColorLacak = Color.fromARGB(255, 201, 201, 201);
-  final _stepperData = List.generate(
-      4,
-      (index) => StepperItemData(
-            id: '$index',
-            content: ({
-              'status': 'Packing',
-              'site': 'Ramayana Yogyakarta',
-              'description': 'Barang diterima',
-              'remark': 'Petugas description disini',
-              'pic': 'Radit',
-              'no_truck': '123456',
-              'date': '12\nOkt',
-            }),
-          )).toList();
   List<StepperItemData> stepperSJ = [];
 
   Future<void> scanBarcodeScan() async {
