@@ -31,14 +31,14 @@ class SuratJalanResponse {
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Data {
-  TrackingStatus? trackingStatus;
+  DetailSj? detailSj;
   Button? button;
 
-  Data({this.trackingStatus, this.button});
+  Data({this.detailSj, this.button});
 
   Data.fromJson(Map<String, dynamic> json) {
-    trackingStatus = json['tracking_status'] != null
-        ? new TrackingStatus.fromJson(json['tracking_status'])
+    detailSj = json['detail_sj'] != null
+        ? new DetailSj.fromJson(json['detail_sj'])
         : null;
     button =
         json['button'] != null ? new Button.fromJson(json['button']) : null;
@@ -46,8 +46,8 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.trackingStatus != null) {
-      data['tracking_status'] = this.trackingStatus!.toJson();
+    if (this.detailSj != null) {
+      data['detail_sj'] = this.detailSj!.toJson();
     }
     if (this.button != null) {
       data['button'] = this.button!.toJson();
@@ -57,40 +57,47 @@ class Data {
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class TrackingStatus {
+class DetailSj {
   String? noSj;
-  String? site;
-  String? description;
-  String? createdDate;
-  String? statusBarang;
+  String? destination;
+  String? documentType;
+  String? noVehicle;
+  String? driverName;
+  String? origin;
+  String? trackingStatus;
 
-  TrackingStatus(
+  DetailSj(
       {this.noSj,
-      this.site,
-      this.description,
-      this.createdDate,
-      this.statusBarang});
+      this.destination,
+      this.documentType,
+      this.noVehicle,
+      this.driverName,
+      this.origin,
+      this.trackingStatus});
 
-  TrackingStatus.fromJson(Map<String, dynamic> json) {
+  DetailSj.fromJson(Map<String, dynamic> json) {
     noSj = json['no_sj'];
-    site = json['site'];
-    description = json['description'];
-    createdDate = json['created_date'];
-    statusBarang = json['status_barang'];
+    destination = json['destination'];
+    documentType = json['document_type'];
+    noVehicle = json['no_vehicle'];
+    driverName = json['driver_name'];
+    origin = json['origin'];
+    trackingStatus = json['tracking_status'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['no_sj'] = this.noSj;
-    data['site'] = this.site;
-    data['description'] = this.description;
-    data['created_date'] = this.createdDate;
-    data['status_barang'] = this.statusBarang;
+    data['destination'] = this.destination;
+    data['document_type'] = this.documentType;
+    data['no_vehicle'] = this.noVehicle;
+    data['driver_name'] = this.driverName;
+    data['origin'] = this.origin;
+    data['tracking_status'] = this.trackingStatus;
     return data;
   }
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake)
 class Button {
   bool? receivedBySupplier;
   bool? regular;
@@ -100,7 +107,7 @@ class Button {
 
   Button.fromJson(Map<String, dynamic> json) {
     receivedBySupplier = json['received_by_supplier'];
-    regular = json['default'];
+    regular = json['regular'];
     storeline = json['storeline'];
   }
 

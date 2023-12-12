@@ -20,3 +20,4 @@ const String differentDevice =
 
 //Popup SJ Title or Description
 const String notFound = "Not Found";
+const String failed = "Failed";

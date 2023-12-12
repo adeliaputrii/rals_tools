@@ -23,46 +23,35 @@ Map<String, dynamic> _$SuratJalanResponseToJson(SuratJalanResponse instance) =>
     };
 
 Data _$DataFromJson(Map<String, dynamic> json) => Data(
-      trackingStatus: json['tracking_status'] == null
+      detailSj: json['detail_sj'] == null
           ? null
-          : TrackingStatus.fromJson(
-              json['tracking_status'] as Map<String, dynamic>),
+          : DetailSj.fromJson(json['detail_sj'] as Map<String, dynamic>),
       button: json['button'] == null
           ? null
           : Button.fromJson(json['button'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
-      'tracking_status': instance.trackingStatus,
+      'detail_sj': instance.detailSj,
       'button': instance.button,
     };
 
-TrackingStatus _$TrackingStatusFromJson(Map<String, dynamic> json) =>
-    TrackingStatus(
+DetailSj _$DetailSjFromJson(Map<String, dynamic> json) => DetailSj(
       noSj: json['no_sj'] as String?,
-      site: json['site'] as String?,
-      description: json['description'] as String?,
-      createdDate: json['created_date'] as String?,
-      statusBarang: json['status_barang'] as String?,
+      destination: json['destination'] as String?,
+      documentType: json['document_type'] as String?,
+      noVehicle: json['no_vehicle'] as String?,
+      driverName: json['driver_name'] as String?,
+      origin: json['origin'] as String?,
+      trackingStatus: json['tracking_status'] as String?,
     );
 
-Map<String, dynamic> _$TrackingStatusToJson(TrackingStatus instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$DetailSjToJson(DetailSj instance) => <String, dynamic>{
       'no_sj': instance.noSj,
-      'site': instance.site,
-      'description': instance.description,
-      'created_date': instance.createdDate,
-      'status_barang': instance.statusBarang,
-    };
-
-Button _$ButtonFromJson(Map<String, dynamic> json) => Button(
-      receivedBySupplier: json['received_by_supplier'] as bool?,
-      regular: json['regular'] as bool?,
-      storeline: json['storeline'] as bool?,
-    );
-
-Map<String, dynamic> _$ButtonToJson(Button instance) => <String, dynamic>{
-      'received_by_supplier': instance.receivedBySupplier,
-      'regular': instance.regular,
-      'storeline': instance.storeline,
+      'destination': instance.destination,
+      'document_type': instance.documentType,
+      'no_vehicle': instance.noVehicle,
+      'driver_name': instance.driverName,
+      'origin': instance.origin,
+      'tracking_status': instance.trackingStatus,
     };

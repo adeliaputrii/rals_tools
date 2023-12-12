@@ -27,6 +27,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   Timer? timer;
   bool _isLoading = true;
 
+  final FocusNode _focusNode = FocusNode();
+
   late LoginCubit loginCubit;
   late PopUpWidget popUpWidget;
   late CreateLogBody createLogBody;
@@ -367,6 +369,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           password: passwordController.text,
           deviceId: "xiaomi");
       loginCubit.login(loginBody: body);
+      _focusNode.unfocus();
     }
 
     // print(versi);
@@ -885,6 +888,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                           Container(
                             margin: EdgeInsets.only(left: 20, right: 20),
                             child: TextFormField(
+                                focusNode: _focusNode,
                                 controller: passwordController,
                                 style: GoogleFonts.plusJakartaSans(
                                     color: Colors.black, fontSize: 18),

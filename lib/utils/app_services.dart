@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:myactivity_project/data/service/id_cash_service.dart';
 import 'package:myactivity_project/data/service/login_service.dart';
+import 'package:myactivity_project/data/service/myactivity_service.dart';
 import 'package:myactivity_project/data/service/surat_jalan_service.dart';
 import 'package:myactivity_project/utils/dio_interceptor.dart';
 
@@ -49,6 +50,13 @@ class AppServices {
     } else {
       get.unregister<HomeAppService>();
       get.registerFactory(() => HomeAppService(dio, baseUrl: url));
+    }
+
+    if (!get.isRegistered<MyActivityService>()) {
+      get.registerFactory(() => MyActivityService(dio, baseUrl: url));
+    } else {
+      get.unregister<MyActivityService>();
+      get.registerFactory(() => MyActivityService(dio, baseUrl: url));
     }
   }
 }
