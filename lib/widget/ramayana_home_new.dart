@@ -17,7 +17,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   String _lastMessage = "";
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
-
   List data = [];
   List jumlahNews = [];
   int _current = 0;
@@ -46,6 +45,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   bool task = false;
   int? jumlahTask;
   bool isMounted = true;
+  bool animatedText = false;
+  bool isLoading = false;
   late HomeCubit homeCubit;
 
   @override
@@ -66,7 +67,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     deleteToko();
     imei();
     dapetinData();
-    homeCubit.getTaskUser();
+    loadData();
     Future.delayed(const Duration(seconds: 1), () async {
       await fetchDataJumlahTask();
       await fetchDataListUser();
@@ -131,6 +132,19 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     }
 
     return token;
+  }
+
+  loadData() async {
+    setState(() {
+      isLoading = true;
+    });
+    await Future.delayed(const Duration(seconds: 3));
+    await fetchDataListUser();
+    homeCubit.getTaskUser();
+    print('delayed execution');
+    setState(() {
+      isLoading = false;
+    });
   }
 
   fetchDataListUser() async {
@@ -449,7 +463,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
               'date_run': '${DateTime.now()}',
               'info1': 'Logout Aplikasi RALS',
               ' info2':
-                  '${imei} ', //ini disini yang imei ya del? iya pak. ini lari nya kemana ya del isi nya? -reza sebentar pak, saya ijin ke belakang
+                  '${imei} ',
 
               'userid': '${userData.getUsernameID()}',
               ' toko': '${userData.getUserToko()}',
@@ -476,6 +490,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
   alertMenu() {
     var alertStyle = AlertStyle(
+      alertPadding: EdgeInsets.only(left: 40, right: 40),
       titlePadding: EdgeInsets.only(top: 0),
       animationType: AnimationType.fromRight,
       isCloseButton: false,
@@ -502,6 +517,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       buttons: [
         DialogButton(
           color: Color.fromARGB(255, 210, 14, 0),
+          radius: BorderRadius.circular(20),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -528,13 +544,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
             Container(
               margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
               child: Wrap(
-                spacing: 15.0,
-                runSpacing: 15.0,
+                spacing: 10.0,
+                runSpacing: 10.0,
                 alignment: WrapAlignment.spaceAround,
                 runAlignment: WrapAlignment.spaceBetween,
-                //adel ini gausah di masukin ke model bisa gaa? langsung aja dia pake api nya nembak langsung
                 children: data.map((e) {
-                  // ${e.nsadssaame_menu}
                   print(e);
 
                   getIcon() {
@@ -813,7 +827,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     }
     var listmneu = '${userData.getListMenu()}';
     List split = listmneu.split('|');
-    double c_width = MediaQuery.of(context).size.width * 0.8;
+    double _width = MediaQuery.of(context).size.width * 0.8;
     data = [];
     for (var element in split) {
       if (element == 'masteridcash.idcash') {
@@ -821,10 +835,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       }
       if (element == 'mastervoid.void') {
         data.add(element);
-        //  } if (element == 'approvalreturn.approvalreturn') {
-        // data.add(element);
-        // } if (element == 'cekprice.cekprice') {
-        //   data.add(element);
+         } if (element == 'approvalreturn.approvalreturn') {
+        data.add(element);
+        } if (element == 'cekprice.cekprice') {
+          data.add(element);
       }
       if (element == 'tukarpoin.tukarpoin') {
         data.add(element);
@@ -861,34 +875,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
     return RelativeBuilder(builder: (context, height, width, sy, sx) {
       return Scaffold(
-          bottomNavigationBar: BottomNavigationBar(
-            selectedIconTheme: IconThemeData(color: Colors.white, size: 35),
-            selectedItemColor: Colors.white,
-            unselectedIconTheme: IconThemeData(
-                color: Color.fromARGB(255, 216, 216, 216), size: 25),
-            unselectedItemColor: Color.fromARGB(255, 216, 216, 216),
-            selectedLabelStyle: GoogleFonts.plusJakartaSans(
-                fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600),
-            unselectedLabelStyle:
-                GoogleFonts.plusJakartaSans(fontSize: 11, color: Colors.grey),
-            currentIndex: _selectedIndex, //New
-            onTap: _onItemTapped,
-            backgroundColor: Color.fromARGB(255, 210, 14, 0),
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(IconlyBold.logout),
-                label: 'LOG OUT',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(IconlyBold.home),
-                label: 'HOME',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(IconlyBold.profile),
-                label: 'PROFILE',
-              ),
-            ],
-          ),
+          
           backgroundColor: Theme.of(context).canvasColor,
           extendBody: true,
           appBar: AppBar(
@@ -922,9 +909,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                margin: EdgeInsets.only(top: 0, left: 20),
+                                margin: EdgeInsets.only(top: 20, left: 20),
                                 child: Text(
                                   'Welcome',
                                   style: GoogleFonts.plusJakartaSans(
@@ -936,43 +924,66 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 10, right: 20),
-                                child: CircleAvatar(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 210, 14, 0),
-                                  radius: 40,
-                                  backgroundImage: AssetImage(
-                                    'assets/profil.jpeg',
-                                  ),
-                                ),
+                                child: InkWell(
+                                    onTap: () {
+                                      print('klik');
+                                      Navigator.pushReplacement(context,
+                                          MaterialPageRoute(builder: (_) {
+                                        return Profilee();
+                                      }));
+                                    },
+                                    child: Column(
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          radius: 30,
+                                          child: Icon(
+                                            IconlyBold.profile,
+                                            color: Colors.red,
+                                            size: 40,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text('Lihat Profil',
+                                            style: GoogleFonts.mukta(
+                                                textStyle: TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.white)))
+                                      ],
+                                    ),
+                                  )
                               )
                             ],
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 70, left: 20),
-                            child: AnimatedTextKit(
-                              isRepeatingAnimation: true,
-                              repeatForever: true,
-                              //       animatedTexts: [
-                              //         WavyAnimatedText('Halo ${userData.getFullname()}',
-                              //  speed: Duration(milliseconds: 100),
-                              //  textStyle: GoogleFonts.mukta(
-                              //    textStyle: TextStyle(
-                              //      fontSize: 20,
-                              //      color: Colors.white)
-                              //  ),
-                              //  ),
-
-                              //       ]
-
-                              animatedTexts: [
-                                FadeAnimatedText(
-                                  'Halo ${userData.getFullname()}',
-                                  textStyle: GoogleFonts.mukta(
-                                      textStyle: TextStyle(
-                                          fontSize: 20, color: Colors.white)),
-                                ),
-                              ],
-                            ),
+                            child: animatedText
+                                ? Text(
+                                    'Halo ${userData.getFullname()}',
+                                    style: GoogleFonts.mukta(
+                                        textStyle: TextStyle(
+                                            fontSize: 20, color: Colors.white)),
+                                  )
+                                : AnimatedTextKit(
+                                    totalRepeatCount: 1,
+                                    isRepeatingAnimation: false,
+                                    onFinished: () {
+                                      setState(() {
+                                        animatedText = true;
+                                      });
+                                    },
+                                    animatedTexts: [
+                                      FadeAnimatedText(
+                                        'Halo ${userData.getFullname()}',
+                                        textStyle: GoogleFonts.mukta(
+                                            textStyle: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white)),
+                                      ),
+                                    ],
+                                  ),
                           ),
                           Container(
                             margin:
@@ -1059,10 +1070,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
                                 // ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
                                   child: Wrap(
-                                    // spacing: 0.5,
-                                    // runSpacing: 1.0,
+                                    spacing: 0.0,
                                     alignment: WrapAlignment.spaceBetween,
                                     runAlignment: WrapAlignment.spaceBetween,
                                     //adel ini gausah di masukin ke model bisa gaa? langsung aja dia pake api nya nembak langsung
@@ -1457,7 +1467,15 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                               Container(
                                                 margin: EdgeInsets.fromLTRB(
                                                     20, 0, 20, 0),
-                                                child: Column(
+                                                child: 
+                                                isLoading 
+                                                  ?
+                                                  SpinKitThreeBounce(
+                                                    color: Color.fromARGB(255, 255, 17, 17),
+                                                    size: 50.0,
+                                                  )
+                                                  :
+                                                Column(
                                                   children: [
                                                     SingleChildScrollView(
                                                       scrollDirection:
@@ -1809,7 +1827,15 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                     left: 20,
                                                     right: 20,
                                                   ),
-                                                  child: Column(
+                                                  child: 
+                                                  isLoading 
+                                                  ?
+                                                  SpinKitThreeBounce(
+                                                    color: Color.fromARGB(255, 255, 17, 17),
+                                                    size: 50.0,
+                                                  )
+                                                  :
+                                                  Column(
                                                       children: TaskHome
                                                           .taskhome
                                                           .map((e) {
