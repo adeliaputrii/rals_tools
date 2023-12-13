@@ -141,8 +141,6 @@ class _RamayanaApprovalReturnState extends State<RamayanaApprovalReturn> {
               hintColor: Colors.black,
               colorScheme: ColorScheme.light(
                   primary: Color.fromARGB(255, 255, 17, 17),
-                  primaryVariant: Colors.black,
-                  secondaryVariant: Colors.black,
                   onSecondary: Colors.black,
                   onPrimary: Colors.white,
                   surface: Colors.black,

@@ -29,11 +29,12 @@ class _RamayanaLogin extends State<RamayanaLogin> {
 
   final FocusNode _focusNode = FocusNode();
 
+  var imei2 = '';
+  SimData? _simData;
   late LoginCubit loginCubit;
   late PopUpWidget popUpWidget;
   late CreateLogBody createLogBody;
   late SharedPreferences pref;
-  // SimData? _simData;
   var token = '';
   static var fcmToken;
   final _firebaseMessaging = FirebaseMessaging.instance;
@@ -54,6 +55,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     deviceInfo = await devicePlugin.androidInfo;
     pref = await SharedPreferences.getInstance();
     checkForUpdate();
+    initSim();
     initPlatformState();
     initNotification();
   }
@@ -75,45 +77,45 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     return token;
   }
 
-  // Future<void> init() async {
-  //   SimData simData;
-  //   try {
-  //     var status = await Permission.phone.status;
-  //     if (!status.isGranted) {
-  //       bool isGranted = await Permission.phone.request().isGranted;
-  //       if (!isGranted) return;
-  //     }
-  //     simData = await SimDataPlugin.getSimData();
-  //     setState(() {
-  //       _isLoading = false;
-  //       _simData = simData;
+  Future<void> initSim() async {
+    SimData simData;
+    try {
+      var status = await Permission.phone.status;
+      if (!status.isGranted) {
+        bool isGranted = await Permission.phone.request().isGranted;
+        if (!isGranted) return;
+      }
+      simData = await SimDataPlugin.getSimData();
+      setState(() {
+        _isLoading = false;
+        _simData = simData;
+      });
+      void printSimCardsData() async {
+        try {
+          SimData simData = await SimDataPlugin.getSimData();
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          for (var s in simData.cards) {
+            imei2 = '${s.serialNumber}';
+            if (s.slotIndex == 1) {
+              pref.setString('serialImei', '${s.serialNumber}');
+            }
+            print('Serial number: ${s.serialNumber}');
+            print('Data Roaming: ${s.isNetworkRoaming}');
+          }
+        } on PlatformException catch (e) {
+          debugPrint("error! code: ${e.code} - message: ${e.message}");
+        }
+      }
 
-  //     });
-  //     void printSimCardsData() async {
-  //       try {
-  //         SimData simData = await SimDataPlugin.getSimData();
-  //         SharedPreferences pref = await SharedPreferences.getInstance();
-  //         for (var s in simData.cards) {
-  //           if (s.slotIndex == 1) {
-  //             pref.setString('serialImei', '${s.serialNumber}');
-  //           }
-  //           print('Serial number: ${s.serialNumber}');
-  //           print('Data Roaming: ${s.isNetworkRoaming}');
-  //         }
-  //       } on PlatformException catch (e) {
-  //         debugPrint("error! code: ${e.code} - message: ${e.message}");
-  //       }
-  //     }
-
-  //     printSimCardsData();
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //     setState(() {
-  //       _isLoading = false;
-  //       _simData = null;
-  //     });
-  //   }
-  // }
+      printSimCardsData();
+    } catch (e) {
+      debugPrint(e.toString());
+      setState(() {
+        _isLoading = false;
+        _simData = null;
+      });
+    }
+  }
 
   Future<void> deleteUserData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -367,7 +369,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       final body = LoginBody(
           userName: usernameController.text,
           password: passwordController.text,
-          deviceId: "xiaomi");
+          deviceId: "${imei2}${deviceInfo.device}");
       loginCubit.login(loginBody: body);
       _focusNode.unfocus();
     }

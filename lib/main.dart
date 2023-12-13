@@ -18,7 +18,7 @@ import 'package:myactivity_project/widget/Splashscreen/import.dart';
 import 'package:myactivity_project/widget/import.dart';
 import 'package:notification_permissions/notification_permissions.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:responsive_framework/responsive_framework.dart';
+import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:path_provider/path_provider.dart';

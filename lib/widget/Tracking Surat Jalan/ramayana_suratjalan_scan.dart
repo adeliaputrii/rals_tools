@@ -448,132 +448,71 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                     size: 50.0,
                   );
                 }
-                if (state is ScanSJSuccess) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        height: 100,
-                        width: 200,
-                        child: OutlinedButton(
-                          onPressed: () {
-                            postTracking(1);
-                            print('Button pressed');
-                          },
-                          style: ButtonStyle(
-                            side: MaterialStateProperty.all(
-                              BorderSide(
-                                color: baseColor
-                                    .primaryColor, // Set the border color to red
-                                width: 2.0, // Set the border width
+                if (state is SuratJalanSuccess) {
+                  if (buttonSupplier || buttonStoreline) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          height: 100,
+                          width: 200,
+                          child: OutlinedButton(
+                            onPressed: () {
+                              postTracking(1);
+                              print('Button pressed');
+                            },
+                            style: ButtonStyle(
+                              side: MaterialStateProperty.all(
+                                BorderSide(
+                                  color: baseColor
+                                      .primaryColor, // Set the border color to red
+                                  width: 2.0, // Set the border width
+                                ),
+                              ),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
                               ),
                             ),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                              ),
-                            ),
+                            child: Text('Submit',
+                                style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 18,
+                                    color: baseColor.primaryColor)),
                           ),
-                          child: Text('Submit',
+                        ),
+                        Container(
+                          width: 200,
+                          height: 100,
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 210, 14, 0),
+                              borderRadius: BorderRadius.circular(30)),
+                          child: MaterialButton(
+                            onPressed: () {
+                              if (buttonStoreline) {
+                                postTracking(2);
+                              } else {
+                                postTracking(3);
+                              }
+                              // if (_formKey.currentState!.validate()) {
+                              //   popup();
+                              //   remarkController.clear();
+                              //   noSjController.clear();
+                              // }
+                            },
+                            child: Text(
+                              buttonStoreline ? 'Storeline' : 'Supplier',
                               style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 18, color: baseColor.primaryColor)),
-                        ),
-                      ),
-                      Container(
-                        width: 200,
-                        height: 100,
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 210, 14, 0),
-                            borderRadius: BorderRadius.circular(30)),
-                        child: MaterialButton(
-                          onPressed: () {
-                            if (buttonStoreline) {
-                              postTracking(2);
-                            } else {
-                              postTracking(3);
-                            }
-                            // if (_formKey.currentState!.validate()) {
-                            //   popup();
-                            //   remarkController.clear();
-                            //   noSjController.clear();
-                            // }
-                          },
-                          child: Text(
-                            buttonStoreline ? 'Storeline' : 'Supplier',
-                            style: GoogleFonts.plusJakartaSans(
-                                fontSize: 18, color: Colors.white),
+                                  fontSize: 18, color: Colors.white),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
+                      ],
+                    );
+                  }
                 }
                 return Column(
                   children: [
-                    Visibility(
-                      visible: buttonSupplier || buttonStoreline,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            height: 100,
-                            width: 200,
-                            child: OutlinedButton(
-                              onPressed: () {
-                                postTracking(1);
-                                print('Button pressed');
-                              },
-                              style: ButtonStyle(
-                                side: MaterialStateProperty.all(
-                                  BorderSide(
-                                    color: baseColor
-                                        .primaryColor, // Set the border color to red
-                                    width: 2.0, // Set the border width
-                                  ),
-                                ),
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
-                                ),
-                              ),
-                              child: Text('Submit',
-                                  style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 18,
-                                      color: baseColor.primaryColor)),
-                            ),
-                          ),
-                          Container(
-                            width: 200,
-                            height: 100,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 210, 14, 0),
-                                borderRadius: BorderRadius.circular(30)),
-                            child: MaterialButton(
-                              onPressed: () {
-                                if (buttonStoreline) {
-                                  postTracking(2);
-                                } else {
-                                  postTracking(3);
-                                }
-                                // if (_formKey.currentState!.validate()) {
-                                //   popup();
-                                //   remarkController.clear();
-                                //   noSjController.clear();
-                                // }
-                              },
-                              child: Text(
-                                buttonStoreline
-                                    ? 'buttonStoreline'
-                                    : 'buttonSupplier',
-                                style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 18, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                     Container(
                       height: 50,
                       width: double.infinity,

@@ -288,47 +288,47 @@ class _ProfileeState extends State<Profilee> {
         child: Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: Text('Profile', style: TextStyle(fontSize: 23)),
+              leading: IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (_) {
+                  return DefaultBottomBarController(child: Ramayana());
+                }));
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+              )),
+          title: Text(
+            'Profile',
+            style: GoogleFonts.plusJakartaSans(
+                textStyle: TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500)),
+          ),
+          actions: [
+            Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: IconButton(
+                  onPressed: () {
+                    sweatAlert();
+                  },
+                  icon: Icon(
+                    Icons.power_settings_new_rounded,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ))
+          ],
               backgroundColor: Color.fromARGB(255, 210, 14, 0),
               elevation: 0,
             ),
-            bottomNavigationBar: BottomNavigationBar(
-              selectedFontSize: 18,
-              unselectedFontSize: 15,
-              selectedIconTheme: IconThemeData(color: Colors.white, size: 35),
-              selectedItemColor: Colors.white,
-              unselectedIconTheme: IconThemeData(
-                  color: Color.fromARGB(255, 216, 216, 216), size: 23),
-              unselectedItemColor: Color.fromARGB(255, 216, 216, 216),
-              selectedLabelStyle: GoogleFonts.plusJakartaSans(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600),
-              unselectedLabelStyle:
-                  GoogleFonts.plusJakartaSans(fontSize: 11, color: Colors.grey),
-              currentIndex: _selectedIndex, //New
-              onTap: _onItemTapped,
-              backgroundColor: Color.fromARGB(255, 210, 14, 0),
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(IconlyBold.logout),
-                  label: 'LOG OUT',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(IconlyBold.home),
-                  label: 'HOME',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(IconlyBold.profile),
-                  label: 'PROFILE',
-                ),
-              ],
-            ),
+           
             body: ListView(
               children: [
                 Stack(fit: StackFit.loose, children: <Widget>[
                   Container(
-                    // height: MediaQuery.of(context).size.height/1.29,
                     color: Colors.white,
                   ),
                   Container(
@@ -676,7 +676,7 @@ class _ProfileeState extends State<Profilee> {
                                                                 '${noMember}');
                                                           },
                                                           child: Container(
-                                                              width: 200,
+                                                              width: 280,
                                                               height: 75,
                                                               child: SfBarcodeGenerator(
                                                                   value:

@@ -92,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                       NotificationActionButton(
                         key: 'check',
                         label: 'Check it out',
-                        buttonType: ActionButtonType.Default,
+                        actionType: ActionType.Default,
                         color: Colors.red,
                       )
                     ]);

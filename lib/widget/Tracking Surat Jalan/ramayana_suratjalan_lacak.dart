@@ -32,6 +32,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
   Color _containerColorSj = Color.fromARGB(255, 210, 14, 0);
   Color _containerColorLacak = Color.fromARGB(255, 201, 201, 201);
   List<StepperItemData> stepperSJ = [];
+  late PopUpWidget popUp;
 
   Future<void> scanBarcodeScan() async {
     String barcodeScanRes;
@@ -65,6 +66,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
   void initState() {
     super.initState();
     sjCubit = context.read<SuratJalanCubit>();
+    popUp = PopUpWidget(context);
     _controller = TabController(length: 2, vsync: this)
       ..addListener(() {
         if (_controller.index == 0) {
@@ -123,19 +125,28 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                   state.response.data!.detailSj!.trackingStatus!;
             }
           }
+
+          if (state is SuratJalanFailure) {
+            setState(() {
+              isLoading = false;
+            });
+            popUp.showPopUp(notFound, state.message);
+          }
           if (state is TrackSJSuccess) {
             setState(() {
               isLoading = false;
               _visible = true;
             });
+
             final response = state.response.data;
+            debugPrint(state.response.data!.first.remark);
             for (int i = 0; i < response!.length; i++) {
               stepperSJ.add(StepperItemData(
                   id: '${i}',
                   content: ({
                     'status': response[i].status,
                     'site': response[i].site,
-                    'description': response[i].description != ""
+                    'description': response[i].description != "null"
                         ? response[i].description
                         : "-",
                     'remark': response[i].remark,

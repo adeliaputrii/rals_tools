@@ -25,7 +25,7 @@ class NotificationService {
       ],
       channelGroups: [
         NotificationChannelGroup(
-          channelGroupkey: 'high_importance_channel_group',
+          channelGroupKey: 'high_importance_channel_group',
           channelGroupName: 'Group 1',
         )
       ],
