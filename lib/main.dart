@@ -104,7 +104,8 @@ class HomeMainApp extends StatelessWidget {
       },
       title: 'rals-tools',
       debugShowCheckedModeBanner: false,
-      home: DefaultBottomBarController(child: Ramayana()),
+      // home: DefaultBottomBarController(child: Ramayana()),
+      home: RamayanaLoginOffline(),
     );
   }
 }
