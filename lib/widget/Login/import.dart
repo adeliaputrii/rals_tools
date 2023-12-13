@@ -41,6 +41,6 @@ import '../../data/model/create_my_log_body.dart';
 import '../../data/model/login_body.dart';
 import '../../utils/app_shared_pref.dart';
 import '../../utils/popup_widget.dart';
-
 part 'ramayana_login_new.dart';
+part 'ramayana_login_offline.dart';
 part 'ramayana_reset.dart';
