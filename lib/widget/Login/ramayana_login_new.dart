@@ -26,6 +26,9 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   bool _passwordVisible = false;
   Timer? timer;
   bool _isLoading = true;
+
+  final FocusNode _focusNode = FocusNode();
+
   var imei2 = '';
   SimData? _simData;
   late LoginCubit loginCubit;
@@ -75,7 +78,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   }
 
   Future<void> initSim() async {
-
     SimData simData;
     try {
       var status = await Permission.phone.status;
@@ -87,14 +89,13 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       setState(() {
         _isLoading = false;
         _simData = simData;
-
       });
       void printSimCardsData() async {
         try {
           SimData simData = await SimDataPlugin.getSimData();
           SharedPreferences pref = await SharedPreferences.getInstance();
           for (var s in simData.cards) {
-             imei2 = '${s.serialNumber}';
+            imei2 = '${s.serialNumber}';
             if (s.slotIndex == 1) {
               pref.setString('serialImei', '${s.serialNumber}');
             }
@@ -370,6 +371,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           password: passwordController.text,
           deviceId: "${imei2}${deviceInfo.device}");
       loginCubit.login(loginBody: body);
+      _focusNode.unfocus();
     }
 
     // print(versi);
@@ -888,6 +890,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                           Container(
                             margin: EdgeInsets.only(left: 20, right: 20),
                             child: TextFormField(
+                                focusNode: _focusNode,
                                 controller: passwordController,
                                 style: GoogleFonts.plusJakartaSans(
                                     color: Colors.black, fontSize: 18),

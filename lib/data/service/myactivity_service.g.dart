@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'home_app_service.dart';
+part of 'myactivity_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'home_app_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _HomeAppService implements HomeAppService {
-  _HomeAppService(
+class _MyActivityService implements MyActivityService {
+  _MyActivityService(
     this._dio, {
     this.baseUrl,
   });
@@ -19,20 +19,20 @@ class _HomeAppService implements HomeAppService {
   String? baseUrl;
 
   @override
-  Future<GetTaskResponse> getTaskUser() async {
+  Future<GetProjectResponse> getProject() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<GetTaskResponse>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<GetProjectResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              'v1/activity/task/get-task',
+              'v1/activity/list-project',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -41,25 +41,25 @@ class _HomeAppService implements HomeAppService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = GetTaskResponse.fromJson(_result.data!);
+    final value = GetProjectResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<GetNewsResponse> getListNews() async {
+  Future<MyActivityTaskResponse> getTaskById(String projectId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<GetNewsResponse>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MyActivityTaskResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              'v1/news/get',
+              'v1/activity/list-task?project_id=${projectId}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -68,7 +68,7 @@ class _HomeAppService implements HomeAppService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = GetNewsResponse.fromJson(_result.data!);
+    final value = MyActivityTaskResponse.fromJson(_result.data!);
     return value;
   }
 

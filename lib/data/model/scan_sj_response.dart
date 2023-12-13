@@ -1,15 +1,15 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'error_response.g.dart';
+part 'scan_sj_response.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class ErrorResponse {
+class ScanSJResponse {
   int? status;
   String? message;
 
-  ErrorResponse({this.status, this.message});
+  ScanSJResponse({this.status, this.message});
 
-  ErrorResponse.fromJson(Map<String, dynamic> json) {
+  ScanSJResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
   }
