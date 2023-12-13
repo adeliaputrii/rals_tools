@@ -1,18 +1,16 @@
-import 'dart:core';
-
 import 'package:json_annotation/json_annotation.dart';
 
-part 'track_sj_response.g.dart';
+part 'get_news_response.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class TrackingSJResponse {
+class GetNewsResponse {
   int? status;
   String? message;
   List<Data>? data;
 
-  TrackingSJResponse({this.status, this.message, this.data});
+  GetNewsResponse({this.status, this.message, this.data});
 
-  TrackingSJResponse.fromJson(Map<String, dynamic> json) {
+  GetNewsResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
@@ -35,42 +33,26 @@ class TrackingSJResponse {
 }
 
 class Data {
-  String? noSj;
-  String? site;
-  String? remark;
-  String? description;
-  String? status;
+  String? beritaHdr;
+  String? beritaDtl;
+  String? urlPhoto;
   String? date;
-  String? pic;
 
-  Data(
-      {this.noSj,
-      this.site,
-      this.remark,
-      this.description,
-      this.status,
-      this.date,
-      this.pic});
+  Data({this.beritaHdr, this.beritaDtl, this.urlPhoto, this.date});
 
   Data.fromJson(Map<String, dynamic> json) {
-    noSj = json['no_sj'];
-    site = json['site'];
-    remark = json['remark'];
-    description = json['description'];
-    status = json['status'];
+    beritaHdr = json['berita_hdr'];
+    beritaDtl = json['berita_dtl'];
+    urlPhoto = json['url_photo'];
     date = json['date'];
-    pic = json['pic'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['no_sj'] = this.noSj;
-    data['site'] = this.site;
-    data['remark'] = this.remark;
-    data['description'] = this.description;
-    data['status'] = this.status;
+    data['berita_hdr'] = this.beritaHdr;
+    data['berita_dtl'] = this.beritaDtl;
+    data['url_photo'] = this.urlPhoto;
     data['date'] = this.date;
-    data['pic'] = this.pic;
     return data;
   }
 }

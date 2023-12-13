@@ -26,6 +26,7 @@ class _ProfileeState extends State<Profilee> {
   var dio = Dio();
   bool isOn = false;
   bool loading = true;
+  var uuid = Uuid();
 
   late IDCashCubit cubit;
 
@@ -289,42 +290,41 @@ class _ProfileeState extends State<Profilee> {
             appBar: AppBar(
               centerTitle: true,
               leading: IconButton(
-              onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (_) {
-                  return DefaultBottomBarController(child: Ramayana());
-                }));
-              },
-              icon: Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.white,
-              )),
-          title: Text(
-            'Profile',
-            style: GoogleFonts.plusJakartaSans(
-                textStyle: TextStyle(
-                    fontSize: 25,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500)),
-          ),
-          actions: [
-            Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: IconButton(
                   onPressed: () {
-                    sweatAlert();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (_) {
+                      return DefaultBottomBarController(child: Ramayana());
+                    }));
                   },
                   icon: Icon(
-                    Icons.power_settings_new_rounded,
+                    Icons.arrow_back_ios_new,
                     color: Colors.white,
-                    size: 30,
-                  ),
-                ))
-          ],
+                  )),
+              title: Text(
+                'Profile',
+                style: GoogleFonts.plusJakartaSans(
+                    textStyle: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500)),
+              ),
+              actions: [
+                Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: IconButton(
+                      onPressed: () {
+                        sweatAlert();
+                      },
+                      icon: Icon(
+                        Icons.power_settings_new_rounded,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ))
+              ],
               backgroundColor: Color.fromARGB(255, 210, 14, 0),
               elevation: 0,
             ),
-           
             body: ListView(
               children: [
                 Stack(fit: StackFit.loose, children: <Widget>[
@@ -572,13 +572,41 @@ class _ProfileeState extends State<Profilee> {
                                                       255, 71, 70, 70))),
                                         ),
                                       ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          var v1 = uuid.v1();
+                                          // var v1 =
+                                          //     '4ec50320-f013-1df4-8bd0-e9359216fede';
+                                          List<String> separatedUuid =
+                                              v1.split('-');
+
+                                          List<String> numbers = RegExp(
+                                                  r'[0-9]')
+                                              .allMatches(separatedUuid.last)
+                                              .map((match) => match.group(0)!)
+                                              .toList();
+                                          int combinedNumber =
+                                              int.parse(numbers.join(''));
+                                          int idUser = int.parse(
+                                              userData.getUsernameID());
+                                          int uniqueId =
+                                              idUser + (combinedNumber * 2);
+                                          debugPrint(
+                                              '${userData.getUsernameID()}');
+                                          debugPrint('${v1}');
+                                          debugPrint('${numbers}');
+                                          debugPrint('${combinedNumber}');
+                                          debugPrint('${uniqueId}');
+                                          debugPrint('testing');
+                                        },
+                                        child: const Text('Enabled'),
+                                      ),
                                     ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-
                           Center(
                             child: Container(
                               margin: EdgeInsets.only(top: 10, bottom: 30),
@@ -690,27 +718,6 @@ class _ProfileeState extends State<Profilee> {
                                                                   symbology:
                                                                       Code128())),
                                                         ),
-
-                                                        // QrImage(
-                                                        //   foregroundColor:
-                                                        //       Colors.white,
-                                                        //   data: "${_member}",
-                                                        //   version: QrVersions.auto,
-                                                        //   size: 85.0,
-                                                        // ),
-                                                        //  BarCodeImage(
-                                                        //   backgroundColor: Colors.white,
-                                                        //   params: Code128BarCodeParams(
-                                                        //   "${_member}",
-                                                        //   lineWidth: 1.5,
-                                                        //   barHeight: 75,
-                                                        //   // withText: true,
-                                                        //   ),
-                                                        //   padding: EdgeInsets.only(bottom: 7),
-                                                        //   onError: (error) {               // Error handler
-                                                        //   print('error = $error');
-                                                        //   },
-                                                        //   ),
                                                       ]))),
                                         ),
                                       );

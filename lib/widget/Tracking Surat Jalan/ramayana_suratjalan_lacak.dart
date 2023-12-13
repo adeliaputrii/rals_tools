@@ -146,10 +146,11 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                   content: ({
                     'status': response[i].status,
                     'site': response[i].site,
-                    'description': response[i].description != "null"
+                    'description': response[i].description != ""
                         ? response[i].description
                         : "-",
-                    'remark': response[i].remark,
+                    'remark':
+                        response[i].remark != "" ? response[i].remark : "-",
                     'pic': response[i].pic,
                     'date': response[i].date,
                   })));
