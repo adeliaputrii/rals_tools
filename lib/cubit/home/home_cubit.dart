@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myactivity_project/data/model/data_member_card_response.dart';
+import 'package:myactivity_project/data/model/get_news_response.dart';
 import 'package:myactivity_project/data/model/get_task_response.dart';
 import 'package:myactivity_project/data/repository/home_respository.dart';
 import 'package:myactivity_project/utils/app_shared_pref.dart';
@@ -28,6 +29,24 @@ class HomeCubit extends Cubit<HomeState> {
           debugPrint('Success cubit' + res.toString());
         } else {
           emit(HomeFailure(message: value.dataResponse!));
+          debugPrint('Failed' + value.dataResponse);
+        }
+      } else {
+        debugPrint('value null');
+      }
+    });
+  }
+
+  void getListNews() async {
+    emit(HomeNewsLoading());
+    await repositories.getListNews().then((value) {
+      if (value != null) {
+        if (value.isSuccess && value.dataResponse is GetNewsResponse) {
+          final res = value.dataResponse as GetNewsResponse;
+          emit(HomeNewsSuccess(res));
+          debugPrint('Success cubit' + res.toString());
+        } else {
+          emit(HomeNewsFailure(message: value.dataResponse!));
           debugPrint('Failed' + value.dataResponse);
         }
       } else {

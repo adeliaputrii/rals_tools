@@ -29,3 +29,25 @@ class HomeFailure extends HomeState {
   @override
   List<Object?> get props => [message];
 }
+
+class HomeNewsInitial extends HomeState {}
+
+class HomeNewsSuccess extends HomeState {
+  final GetNewsResponse response;
+
+  const HomeNewsSuccess(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
+class HomeNewsLoading extends HomeState {}
+
+class HomeNewsFailure extends HomeState {
+  final String message;
+
+  const HomeNewsFailure({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
