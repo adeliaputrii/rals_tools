@@ -33,9 +33,10 @@ class LoginRepositories {
         response = RepositoriesResponse(
             isSuccess: false,
             statusCode: e.response?.statusCode,
-            dataResponse: e.response!.data['message'].toString());
+            dataResponse: e.response?.data['message'].toString() ??
+                'Please check your connection..');
 
-        debugPrint(e.response!.data['message']);
+        debugPrint(e.response?.data['message'] ?? 'error login ');
       }
     }
     return response;
