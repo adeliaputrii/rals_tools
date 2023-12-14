@@ -162,6 +162,97 @@ class _RamayanaLogin extends State<RamayanaLogin> {
 
   UserData userData = UserData();
 
+    sweatAlert() {
+    var alertStyle = AlertStyle(
+      titlePadding: EdgeInsets.only(bottom: 10),
+      isCloseButton: false,
+      isOverlayTapDismiss: false,
+      descStyle: GoogleFonts.plusJakartaSans(
+        fontSize: 18,
+        color: Colors.black,
+      ),
+      descTextAlign: TextAlign.center,
+      animationDuration: Duration(milliseconds: 400),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(
+          color: Colors.grey,
+        ),
+      ),
+      titleStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 25, color: Color.fromARGB(255, 210, 14, 0), fontWeight: FontWeight.w500),
+      alertAlignment: Alignment.center,
+    );
+    Alert(
+      style: alertStyle,
+      context: context,
+      image: FadeInImageWidget(imageUrl: "assets/loginOffline.png"),
+      title: 'Server Offline',
+      desc: "Apakah Anda ingin login dengan mode offline? Jika YA harap hubungi DTC dengan angka random di bawah.",
+      content: Padding(
+        padding: const EdgeInsets.only(top: 20, bottom: 20),
+        child: 
+        Center(
+          child: 
+          Text('"235343"',
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 40,
+            color: Color.fromARGB(255, 210, 14, 0)
+          ),
+          )),
+      ),
+      buttons: [
+        DialogButton(
+          radius: BorderRadius.circular(20),
+          color: Color.fromARGB(255, 210, 14, 0),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text(
+            "TIDAK",
+            style:
+                GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+          ),
+        ),
+        DialogButton(
+          radius: BorderRadius.circular(20),
+          color: Colors.green,
+          onPressed: () async {
+            var formData = FormData.fromMap({
+              'progname': 'RALS_TOOLS ',
+              'versi': '${versi}',
+              'date_run': '${DateTime.now()}',
+              'info1': 'Login Offline Aplikasi RALS',
+              ' info2':
+                  '${imei} ',
+
+              'userid': '${userData.getUsernameID()}',
+              ' toko': '${userData.getUserToko()}',
+              ' devicename': '${deviceInfo.device}',
+              'TOKEN': 'R4M4Y4N4'
+            });
+
+            var response = await dio.post('${tipeurl}v1/activity/createmylog',
+                data: formData);
+            print('berhasil $_udid');
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        RamayanaLoginOffline()),
+                (Route<dynamic> route) => false);
+          },
+          child: Text(
+            "YA",
+            style:
+                GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+          ),
+        ),
+      ],
+    ).show();
+    return;
+  }
+
   void _displayCenterMotionToast() async {
     MotionToast(
       toastDuration: Duration(seconds: 4),
@@ -1021,8 +1112,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                                               const Duration(
                                                                   seconds: 3));
                                                           // await init();
-                                                          loginPressed();
-
+                                                          // loginPressed();
+                                                          sweatAlert();
                                                           setState(() {
                                                             isLoading = false;
                                                           });
