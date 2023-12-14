@@ -253,7 +253,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     return;
   }
 
-  void _displayCenterMotionToast() async {
+ void displayCenterMotionToast() async {
     MotionToast(
       toastDuration: Duration(seconds: 4),
       icon: Icons.error,
@@ -844,6 +844,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
             isLoading = true;
           });
         }
+     
         if (state is LoginSuccess) {
           createLogBody = CreateLogBody(
               toko: state.response.data?.toko,
@@ -857,7 +858,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
               token: logToken);
           fetchDataNoKartu(id_user: state.response.data!.userId.toString());
         }
-        if (state is LoginFailure) {
+    
+          if (state is LoginFailure) {
           setState(() {
             isLoading = false;
           });
@@ -874,6 +876,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           });
           popUpWidget.showPopUp(state.message, state.message);
         }
+      
+        
       },
       child: Scaffold(
         // key: _scaffoldKey,
@@ -1112,8 +1116,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                                               const Duration(
                                                                   seconds: 3));
                                                           // await init();
-                                                          // loginPressed();
-                                                          sweatAlert();
+                                                          loginPressed();
+                                                          // sweatAlert();
                                                           setState(() {
                                                             isLoading = false;
                                                           });

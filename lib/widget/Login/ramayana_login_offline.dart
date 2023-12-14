@@ -180,12 +180,20 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                             color: Color.fromARGB(255, 210, 14, 0),
                             onPressed: () {
                               if(formKey.currentState!.validate()) {
-                              Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                  RamayanaVoid()),
-                              (Route<dynamic> route) => false);
+                                UserData userData = UserData();
+                                if (userData.getListMenu.toString()
+                                .contains('void')) {
+                                debugPrint('user has access void');
+                                 Navigator.pushAndRemoveUntil(
+                                  context,
+                                    MaterialPageRoute(
+                                    builder: (context) =>
+                                    RamayanaVoid()),
+                                    (Route<dynamic> route) => false);
+                                } else {
+                                  debugPrint(
+                                  'user cannot access void');
+                                }
                               }
                             },
                             child: Text('LOGIN',

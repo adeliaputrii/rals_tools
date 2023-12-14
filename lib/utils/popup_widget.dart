@@ -5,7 +5,6 @@ import 'package:motion_toast/resources/arrays.dart';
 class PopUpWidget {
   final BuildContext context;
   PopUpWidget(this.context);
-
   showPopUp(String title, String description) {
     return MotionToast(
       toastDuration: Duration(seconds: 4),

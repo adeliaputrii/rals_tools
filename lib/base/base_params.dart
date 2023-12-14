@@ -14,6 +14,7 @@ const String logInfo1 = 'Login Aplikasi RALS';
 const String pleaseCheck = "Please Check Again";
 const String usernameEmpty = "Username harus diisi";
 const String usernameNotFound = "Username/Password not found";
+const String usernameNotFoundDescription = "Username/Password not found";
 const String usernameNotRegistered = "Username tidak terdaftar";
 const String differentDevice =
     "Anda terdeteksi menggunakan device berbeda! Jika anda merasa tidak menggunakan device berbeda silahkan hubungi IT Helpdesk untuk dapat kembali login.";
