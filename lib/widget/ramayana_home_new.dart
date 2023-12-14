@@ -926,10 +926,15 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                 margin: EdgeInsets.only(top: 10, right: 20),
                                 child: InkWell(
                                     onTap: () {
-                                      print('klik');
+                            
+                                      // Navigator.pushReplacement(context,
+                                      //     MaterialPageRoute(builder: (_) {
+                                      //   return Profilee();
+                                      // }));
+                                      
                                       Navigator.pushReplacement(context,
                                           MaterialPageRoute(builder: (_) {
-                                        return Profilee();
+                                        return RamayanaLoginOffline();
                                       }));
                                     },
                                     child: Column(
