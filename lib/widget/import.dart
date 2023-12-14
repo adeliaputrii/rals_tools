@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:badges/badges.dart' as badge;
@@ -66,6 +67,7 @@ import '../cubit/home/home_cubit.dart';
 import '../cubit/id_cash/id_cash_cubit.dart';
 import '../data/model/data_member_card_body.dart';
 import '../utils/generate_barcode.dart';
+import '../utils/random_number.dart';
 import 'Berita/import.dart';
 import 'package:uuid/uuid.dart';
 part 'ramayana_home_new.dart';

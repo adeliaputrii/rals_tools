@@ -32,10 +32,9 @@ class LoginRepositories {
       if (e is DioException) {
         response = RepositoriesResponse(
             isSuccess: false,
-            statusCode: e.response?.statusCode,
-            dataResponse: e.response!.data['message'].toString());
-
-        debugPrint(e.response!.data['message']);
+            statusCode: e.response?.statusCode ?? 0,
+            dataResponse: e.response?.data['message'].toString() ??
+                'Please check your connection..');
       }
     }
     return response;
@@ -52,11 +51,12 @@ class LoginRepositories {
             isSuccess: true, statusCode: value.status, dataResponse: value);
       });
     } catch (e) {
-      if (e is DioError) {
+      if (e is DioException) {
         response = RepositoriesResponse(
             isSuccess: false,
             statusCode: e.response?.statusCode,
-            dataResponse: e.response!.data.toString());
+            dataResponse: e.response?.data['message'].toString() ??
+                'Please check your connection..');
       } else {
         response = RepositoriesResponse(
             isSuccess: false, statusCode: 500, dataResponse: e.toString());
@@ -76,7 +76,7 @@ class LoginRepositories {
             isSuccess: true, statusCode: value.status, dataResponse: value);
       });
     } catch (e) {
-      if (e is DioError) {
+      if (e is DioException) {
         if (e.response?.statusCode == 400) {
           response = RepositoriesResponse(
               isSuccess: false,
@@ -85,8 +85,9 @@ class LoginRepositories {
         } else if (e.response?.statusCode == 404) {
           response = RepositoriesResponse(
               isSuccess: false,
-              statusCode: e.response?.statusCode,
-              dataResponse: e.response!.data.toString());
+              statusCode: e.response?.statusCode ?? 0,
+              dataResponse: e.response?.data['message'].toString() ??
+                  'Please check your connection..');
         }
       } else {
         response = RepositoriesResponse(

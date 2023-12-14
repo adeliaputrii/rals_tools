@@ -572,40 +572,50 @@ class _ProfileeState extends State<Profilee> {
                                                       255, 71, 70, 70))),
                                         ),
                                       ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          var v1 = uuid.v1();
-                                          // var v1 =
-                                          //     '4ec50320-f013-1df4-8bd0-e9359216fede';
-                                          List<String> separatedUuid =
-                                              v1.split('-');
-
-                                          List<String> numbers = RegExp(
-                                                  r'[0-9]')
-                                              .allMatches(separatedUuid.last)
-                                              .map((match) => match.group(0)!)
-                                              .toList();
-                                          int combinedNumber =
-                                              int.parse(numbers.join(''));
-                                          int idUser = int.parse(
-                                              userData.getUsernameID());
-                                          int uniqueId =
-                                              idUser + (combinedNumber * 2);
-                                          debugPrint(
-                                              '${userData.getUsernameID()}');
-                                          debugPrint('${v1}');
-                                          debugPrint('${numbers}');
-                                          debugPrint('${combinedNumber}');
-                                          debugPrint('${uniqueId}');
-                                          debugPrint('testing');
-                                        },
-                                        child: const Text('Enabled'),
-                                      ),
                                     ],
                                   ),
                                 ),
                               ],
                             ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              UserData userData = UserData();
+                              String aksesUser = userData.getListMenu();
+                              if (aksesUser.contains('void')) {
+                                debugPrint('user has access void');
+                              } else {
+                                debugPrint('user cannot access void');
+                              }
+                              SharedPreferences pref =
+                                  await SharedPreferences.getInstance();
+                              String? imei = pref.getString('serialImei');
+                              AndroidDeviceInfo info =
+                                  await deviceInfo.androidInfo;
+                              RandomNumber randomNumber = RandomNumber();
+                              final randomNum =
+                                  randomNumber.getRandomNumber(11111, 99999);
+                              String formattedImei = "0";
+                              debugPrint(
+                                  'ascii ${AsciiEncoder().convert(imei!)}');
+                              if (imei != null) {
+                                formattedImei =
+                                    imei.substring(0, imei.length - 1);
+                              }
+
+                              int idUser = int.parse(userData.getUsernameID());
+                              int uniqueId = idUser +
+                                  (randomNum * 2) +
+                                  (AsciiEncoder().convert(imei!)[0] * 10);
+                              debugPrint('${userData.getUsernameID()}');
+                              debugPrint(
+                                  'user list menu ${userData.getListMenu().contains('void')}');
+                              debugPrint('random number is ${randomNum}');
+                              debugPrint('${uniqueId}');
+                              debugPrint('imei ${imei}');
+                              debugPrint('formatted imei ${formattedImei}');
+                            },
+                            child: const Text('Enabled'),
                           ),
                           Center(
                             child: Container(
