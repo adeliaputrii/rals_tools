@@ -21,6 +21,7 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
   UserData userData = UserData();
   var dio = Dio();
   late IDCashCubit cubit;
+  late memberResponse.DataMemberCardResponse responseData;
 
   @override
   void didPushNext() {
@@ -78,6 +79,7 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
   @override
   void initState() {
     super.initState();
+    responseData = DataMemberCardResponse();
     cubit = context.read<IDCashCubit>();
     initPlatformState();
     didPushNext();
@@ -108,6 +110,7 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
     return BlocListener<IDCashCubit, IDCashState>(
         listener: (context, state) {
           if (state is IDCashSuccess) {
+            responseData = state.response;
             setState(() {
               balance = state.response.data!.first.saldo.toString();
               name = state.response.data!.first.nama.toString();
@@ -170,94 +173,12 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                               TextStyle(fontSize: 20, color: Colors.white),
                         ),
                       ),
-                      Column(
-                        children: ApprovalIdcashCustomer.approvalidcashcust.map(
-                          (e) {
-                            kondisiSelisih() {
-                              var ex = '${e.saldo_pemakaian}';
-                              List<String> resultSelisih = ex.split('');
-                              print(resultSelisih);
-                              if (resultSelisih.length <= 4 &&
-                                  resultSelisih.length > 2) {
-                                resultSelisih.insert(
-                                    resultSelisih.length - 3, '.');
-                                print(resultSelisih);
-                              } //doneee 1000
-                              else if (resultSelisih.length <= 5 &&
-                                  resultSelisih.length > 4) {
-                                resultSelisih.insert(
-                                    resultSelisih.length - 3, '.');
-                                print(resultSelisih);
-                              } else if (resultSelisih.length <= 6 &&
-                                  resultSelisih.length > 5) {
-                                resultSelisih.insert(
-                                    resultSelisih.length - 3, '.');
-                                print(resultSelisih);
-                              } else if (resultSelisih.length <= 7 &&
-                                  resultSelisih.length > 6) {
-                                resultSelisih.insert(
-                                    resultSelisih.length - 3, '.');
-                                resultSelisih.insert(
-                                    resultSelisih.length - 7, '.');
-                                print(resultSelisih);
-                              } else if (resultSelisih.length <= 8 &&
-                                  resultSelisih.length > 7) {
-                                resultSelisih.insert(
-                                    resultSelisih.length - 3, '.');
-                                resultSelisih.insert(
-                                    resultSelisih.length - 7, '.');
-                                print(resultSelisih);
-                              } else if (resultSelisih.length <= 9 &&
-                                  resultSelisih.length > 8) {
-                                resultSelisih.insert(
-                                    resultSelisih.length - 3, '.');
-                                resultSelisih.insert(
-                                    resultSelisih.length - 7, '.');
-                                print(resultSelisih);
-                              } else if (resultSelisih.length <= 10 &&
-                                  resultSelisih.length > 9) {
-                                resultSelisih.insert(
-                                    resultSelisih.length - 3, '.');
-                                resultSelisih.insert(
-                                    resultSelisih.length - 7, '.');
-                                resultSelisih.insert(
-                                    resultSelisih.length - 11, '.');
-                                print(resultSelisih);
-                              } else if (resultSelisih.length <= 11 &&
-                                  resultSelisih.length > 10) {
-                                resultSelisih.insert(
-                                    resultSelisih.length - 3, '.');
-                                resultSelisih.insert(
-                                    resultSelisih.length - 7, '.');
-                                resultSelisih.insert(
-                                    resultSelisih.length - 11, '.');
-                                print(resultSelisih);
-                              } else if (resultSelisih.length <= 12 &&
-                                  resultSelisih.length > 11) {
-                                resultSelisih.insert(
-                                    resultSelisih.length - 3, '.');
-                                resultSelisih.insert(
-                                    resultSelisih.length - 7, '.');
-                                resultSelisih.insert(
-                                    resultSelisih.length - 11, '.');
-                                print(resultSelisih);
-                              } else {
-                                return e.saldo;
-                              }
-                              var resultSelisihDone = resultSelisih.join('');
-                              return resultSelisihDone;
-                            }
-
-                            return Text(
-                                '${int.tryParse(balance)?.toIdr() ?? "-"}',
-                                style: GoogleFonts.plusJakartaSans(
-                                    textStyle: TextStyle(
-                                        fontSize: 40,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500)));
-                          },
-                        ).toList(),
-                      ),
+                      Text('${int.tryParse(balance)?.toIdr() ?? "-"}',
+                          style: GoogleFonts.plusJakartaSans(
+                              textStyle: TextStyle(
+                                  fontSize: 40,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500)))
                     ],
                   ),
 
@@ -383,7 +304,9 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                               onPressed: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return RamayanaIdcashNewPin();
+                                  return RamayanaIdcashNewPin(
+                                    dataMember: responseData.data!.first,
+                                  );
                                 }));
                               },
                               child: Icon(
@@ -401,109 +324,69 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                         ],
                       ),
                       Column(
-                          children: ApprovalIdcashCustomer.approvalidcashcust
-                              .map((e) {
-                        return Column(
-                          children: [
-                            MaterialButton(
-                                minWidth: MediaQuery.of(context).size.width / 7,
-                                height: MediaQuery.of(context).size.height / 15,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50)),
-                                color: Colors.white,
-                                onPressed: () async {
-                                  AndroidDeviceInfo info =
-                                      await deviceInfo.androidInfo;
-                                  var formData = FormData.fromMap({
-                                    'progname': 'RALS_TOOLS ',
-                                    'versi': '${versi}',
-                                    'date_run': '${DateTime.now()}',
-                                    'info1': 'Riwayat ID CASH',
-                                    ' info2': '${imei} ',
-                                    'userid': '${userData.getUsernameID()}',
-                                    ' toko': '${userData.getUserToko()}',
-                                    ' devicename': '${info.device}',
-                                    'TOKEN': 'R4M4Y4N4'
-                                  });
-                                  var response = await dio.post(
-                                      '${tipeurl}v1/activity/createmylog',
-                                      data: formData);
-                                  print('berhasil $_udid');
-                                  ApprovalIdcash.approvalidcash.add(e.nokartu);
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return RamayanaRiwayatIDCash();
-                                  }));
-                                },
-                                child: Icon(
-                                  Icons.bar_chart,
-                                  size: 35,
-                                  color: Color.fromARGB(255, 210, 14, 0),
-                                )),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text('Riwayat Transaksi',
-                                style: GoogleFonts.plusJakartaSans(
-                                    textStyle: TextStyle(
-                                        fontSize: 17, color: Colors.white))),
-                          ],
-                        );
-                      }).toList())
+                        children: [
+                          MaterialButton(
+                              minWidth: MediaQuery.of(context).size.width / 7,
+                              height: MediaQuery.of(context).size.height / 15,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50)),
+                              color: Colors.white,
+                              onPressed: () async {
+                                AndroidDeviceInfo info =
+                                    await deviceInfo.androidInfo;
+                                var formData = FormData.fromMap({
+                                  'progname': 'RALS_TOOLS ',
+                                  'versi': '${versi}',
+                                  'date_run': '${DateTime.now()}',
+                                  'info1': 'Riwayat ID CASH',
+                                  ' info2': '${imei} ',
+                                  'userid': '${userData.getUsernameID()}',
+                                  ' toko': '${userData.getUserToko()}',
+                                  ' devicename': '${info.device}',
+                                  'TOKEN': 'R4M4Y4N4'
+                                });
+                                var response = await dio.post(
+                                    '${tipeurl}v1/activity/createmylog',
+                                    data: formData);
+                                print('berhasil $_udid');
+                                // ApprovalIdcash.approvalidcash.add(e.nokartu);
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return RamayanaRiwayatIDCash(
+                                      noMember: responseData
+                                          .data!.first!.nokartu
+                                          .toString());
+                                }));
+                              },
+                              child: Icon(
+                                Icons.bar_chart,
+                                size: 35,
+                                color: Color.fromARGB(255, 210, 14, 0),
+                              )),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text('Riwayat Transaksi',
+                              style: GoogleFonts.plusJakartaSans(
+                                  textStyle: TextStyle(
+                                      fontSize: 17, color: Colors.white))),
+                        ],
+                      )
                     ],
                   )
                 ],
               ),
             ),
             Container(
-              // height: MediaQuery.of(context).size.height/1.81,
-              margin: EdgeInsets.fromLTRB(5, 320, 5, 0),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30))),
-
-              child: ListView(
-                  children: ApprovalIdcashCustomer.approvalidcashcust.map(
-                (e) {
-                  kondisinameController() {
-                    var nameController = "${e.nama}";
-                    if (nameController != "${e.nama}") {
-                      return '-';
-                    } else {
-                      return e.nama;
-                    }
-                  }
-
-                  kondisiemailController() {
-                    var emailController = "${e.email}";
-                    if (emailController != "${e.email}" ||
-                        emailController == " ") {
-                      print('true');
-                      return '-';
-                    } else {
-                      print('false');
-                      return e.email;
-                    }
-                  }
-
-                  print(kondisiemailController());
-
-                  kondisiNophoneControler() {
-                    var nophoneControler = "${e.nohp}";
-                    if (nophoneControler != "${e.nohp}" ||
-                        nophoneControler == " ") {
-                      print('true');
-                      return '-';
-                    } else {
-                      print('false');
-                      return e.nohp;
-                    }
-                  }
-
-                  print(kondisiNophoneControler());
-                  return Column(
+                // height: MediaQuery.of(context).size.height/1.81,
+                margin: EdgeInsets.fromLTRB(5, 320, 5, 0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30))),
+                child: ListView(children: [
+                  Column(
                     children: [
                       Container(
                         height: 80,
@@ -677,10 +560,8 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                         ),
                       ),
                     ],
-                  );
-                },
-              ).toList()),
-            ),
+                  )
+                ]))
           ]),
         ));
   }

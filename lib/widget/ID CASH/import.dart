@@ -37,7 +37,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 
 import '../../cubit/id_cash/id_cash_cubit.dart';
+import '../../cubit/login/login_cubit.dart';
 import '../../data/model/data_member_card_body.dart';
+import '../../data/model/data_member_card_response.dart' as memberResponse;
+import '../../data/model/data_member_card_response.dart';
+import '../../data/model/login_body.dart';
 
 part 'ramayana_idcash.dart';
 part 'ramayana_id_cash_riwayat.dart';

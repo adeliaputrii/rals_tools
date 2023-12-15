@@ -1697,14 +1697,21 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                   await read_task();
                                                                   print(
                                                                       'read data');
-                                                                  Navigator.pushAndRemoveUntil(
+                                                                  Navigator.push(
                                                                       context,
                                                                       MaterialPageRoute(
                                                                         builder:
                                                                             (context) =>
                                                                                 RamayanaMyListTask(),
-                                                                      ),
-                                                                      (Route<dynamic> route) => false);
+                                                                      ));
+                                                                  // Navigator.pushAndRemoveUntil(
+                                                                  //     context,
+                                                                  //     MaterialPageRoute(
+                                                                  //       builder:
+                                                                  //           (context) =>
+                                                                  //               RamayanaMyListTask(),
+                                                                  //     ),
+                                                                  //     (Route<dynamic> route) => false);
                                                                 },
                                                                 child: Text(
                                                                   'View All',
@@ -1761,13 +1768,19 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                     ),
                                                                     onPressed: () async {
                                                                       await read_task();
-                                                                      Navigator.pushAndRemoveUntil(
+                                                                      Navigator.push(
                                                                           context,
                                                                           MaterialPageRoute(
                                                                             builder: (context) =>
                                                                                 RamayanaMyListTask(),
-                                                                          ),
-                                                                          (Route<dynamic> route) => false);
+                                                                          ));
+                                                                      // Navigator.pushAndRemoveUntil(
+                                                                      //     context,
+                                                                      //     MaterialPageRoute(
+                                                                      //       builder: (context) =>
+                                                                      //           RamayanaMyListTask(),
+                                                                      //     ),
+                                                                      //     (Route<dynamic> route) => false);
                                                                     },
                                                                     child: Text(
                                                                       'View All',

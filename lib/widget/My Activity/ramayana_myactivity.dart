@@ -452,7 +452,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
       print('NO DATA');
       print('data[status] ${data['status']}');
     }
-    setState(() {});
   }
 
   fetchTask({required String apiProject}) async {
@@ -522,7 +521,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     } else {
       print('NO DATA');
     }
-    setState(() {});
   }
 
   fetchEdit({required String user_create}) async {
@@ -552,7 +550,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     } else {
       print('NO DATA');
     }
-    setState(() {});
   }
 
   //----------------------------------------------------------------------------------------------------------------
@@ -643,13 +640,14 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        DefaultBottomBarController(child: Ramayana()),
-                  ),
-                  (Route<dynamic> route) => false);
+              Navigator.pop(context);
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) =>
+              //           DefaultBottomBarController(child: Ramayana()),
+              //     ),
+              //     (Route<dynamic> route) => false);
             },
             icon: Icon(
               Icons.arrow_back_ios,

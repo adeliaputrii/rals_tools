@@ -31,15 +31,22 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
   }
 
   loadData() async {
-    setState(() {
-      isLoading = true;
-    });
-    await Future.delayed(const Duration(seconds: 3));
-    await fetchDataListUser();
-    print('delayed execution');
-    setState(() {
-      isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+      try {
+        await Future.delayed(const Duration(seconds: 3));
+        await fetchDataListUser();
+        print('delayed execution');
+      } finally {
+        if (mounted) {
+          setState(() {
+            isLoading = false;
+          });
+        }
+      }
+    }
   }
 
   _loadToken() async {
@@ -96,9 +103,10 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
-              return DefaultBottomBarController(child: Ramayana());
-            }));
+            Navigator.pop(context);
+            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
+            //   return DefaultBottomBarController(child: Ramayana());
+            // }));
           },
           icon: Icon(
             Icons.arrow_back_ios,
