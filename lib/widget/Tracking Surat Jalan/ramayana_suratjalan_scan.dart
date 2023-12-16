@@ -43,7 +43,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
       print(barcodeScanRes);
       if (barcodeScanRes == '-1') {
-        popUp.showPopUp(notFound, 'Barcode tidak terdeteksi');
+        popUp.showPopUpError(notFound, 'Barcode tidak terdeteksi');
       } else {
         noSjController.text = barcodeScanRes;
         sjCubit.getScanTracking(noSjController.text);
@@ -56,6 +56,14 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
         ScreenBrightness().resetScreenBrightness();
       });
     }
+  }
+
+  void navigateTrackSJ() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
+      return RamayanaSuratJalanLacak(
+        noSJ: noSj,
+      );
+    }));
   }
 
   popup() {
@@ -98,6 +106,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BlocListener<SuratJalanCubit, SuratJalanState>(
         listener: (context, state) {
           if (state is SuratJalanSuccess) {
@@ -139,14 +148,18 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
               isLoading = false;
               _visible = false;
             });
-            popUp.showPopUp(notFound, state.message);
+            popUp.showPopUpError(notFound, state.message);
           }
 
           if (state is ScanSJSuccess) {
-            sjCubit.getScanTracking(noSj);
+            popUp.showPopUpSuccess(
+                trackSJSuccess, trackSJNavigate, navigateTrackSJ);
+            setState(() {
+              _visible = false;
+            });
           }
           if (state is ScanSJFailure) {
-            popUp.showPopUp(failed, state.message);
+            popUp.showPopUpError(failed, state.message);
           }
         },
         child: Stack(

@@ -44,9 +44,12 @@ class FirebaseApiNew {
   }
 
   Future<void> initNotification() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     await _firebaseMessaging.requestPermission();
-    final fCMToken = await _firebaseMessaging.getToken();
-    print('Token ${fCMToken}');
+    final fcmToken = await _firebaseMessaging.getToken();
+    print('Token ${fcmToken}');
+    var tokenFirebase =
+        prefs.setString('firebaseToken', fcmToken == null ? '' : fcmToken);
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
     initPushNotifications();
   }

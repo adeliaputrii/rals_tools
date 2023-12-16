@@ -637,6 +637,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {

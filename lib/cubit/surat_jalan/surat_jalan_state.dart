@@ -60,3 +60,12 @@ class TrackSJSuccess extends SuratJalanState {
   @override
   List<Object?> get props => [response];
 }
+
+class TrackSJFailure extends SuratJalanState {
+  final String message;
+
+  const TrackSJFailure({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}

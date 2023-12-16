@@ -56,13 +56,13 @@ class SuratJalanCubit extends Cubit<SuratJalanState> {
   void trackSJ(String noSJ) async {
     emit(ScanSJLoading());
     await repositories.trackSJ(noSJ).then((value) {
-      if (value!.isSuccess && value.dataResponse is TrackingSJResponse) {
+      if (value.isSuccess && value.dataResponse is TrackingSJResponse) {
         final res = value.dataResponse as TrackingSJResponse;
         emit(TrackSJSuccess(res));
         debugPrint('Success' + res.toString());
       } else {
-        emit(ScanSJFailure(message: value.dataResponse!));
-        debugPrint('Failed' + value.dataResponse);
+        emit(TrackSJFailure(message: value.dataResponse!));
+        debugPrint('Failed track sj' + value.dataResponse);
       }
     });
   }

@@ -37,7 +37,7 @@ class TrackingSJResponse {
 class Data {
   String? noSj;
   String? site;
-  Null? remark;
+  String? remark;
   String? description;
   String? status;
   String? date;

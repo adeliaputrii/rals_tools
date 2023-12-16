@@ -21,3 +21,5 @@ const String differentDevice =
 //Popup SJ Title or Description
 const String notFound = "Not Found";
 const String failed = "Failed";
+const String trackSJSuccess = 'Track Surat Jalan Sukses';
+const String trackSJNavigate = 'Lihat Track SJ';

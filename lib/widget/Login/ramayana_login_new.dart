@@ -63,7 +63,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   Future<void> initNotification() async {
     await _firebaseMessaging.requestPermission();
     fcmToken = "";
-    // fcmToken = await _firebaseMessaging.getToken();
+    fcmToken = await _firebaseMessaging.getToken();
     print('Token kirim api : ${fcmToken}');
     return fcmToken;
   }
@@ -772,7 +772,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           setState(() {
             isLoading = false;
           });
-          popUpWidget.showPopUp(pleaseCheck, state.message);
+          popUpWidget.showPopUpError(pleaseCheck, state.message);
         }
         if (state is CreateLogSuccess) {
           pref.setString("waktuLogin", "${formattedDate}");
@@ -783,10 +783,11 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           setState(() {
             isLoading = false;
           });
-          popUpWidget.showPopUp(state.message, state.message);
+          popUpWidget.showPopUpError(state.message, state.message);
         }
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         // key: _scaffoldKey,
         body: Stack(
           children: <Widget>[

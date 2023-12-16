@@ -1,7 +1,8 @@
 part of 'import.dart';
 
 class RamayanaSuratJalanLacak extends StatefulWidget {
-  const RamayanaSuratJalanLacak({super.key});
+  RamayanaSuratJalanLacak({super.key, this.noSJ});
+  String? noSJ;
 
   @override
   State<RamayanaSuratJalanLacak> createState() =>
@@ -67,6 +68,10 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
     super.initState();
     sjCubit = context.read<SuratJalanCubit>();
     popUp = PopUpWidget(context);
+    if (widget.noSJ != null) {
+      noSj..text = widget.noSJ!;
+      trackBySuratJalan(widget.noSJ!);
+    }
     _controller = TabController(length: 2, vsync: this)
       ..addListener(() {
         if (_controller.index == 0) {
@@ -130,35 +135,40 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
             setState(() {
               isLoading = false;
             });
-            popUp.showPopUp(notFound, state.message);
+            popUp.showPopUpError(notFound, state.message);
           }
           if (state is TrackSJSuccess) {
-            setState(() {
-              isLoading = false;
-              _visible = true;
-            });
-
+            // setState(() {
+            //   isLoading = false;
+            //   _visible = true;
+            // });
+            debugPrint('track sj success');
+            int index = 0;
             final response = state.response.data;
             debugPrint(state.response.data!.first.remark);
-            for (int i = 0; i < response!.length; i++) {
+            response!.forEach((element) {
               stepperSJ.add(StepperItemData(
-                  id: '${i}',
+                  id: "${index++}",
                   content: ({
-                    'status': response[i].status,
-                    'site': response[i].site,
-                    'description': response[i].description != "null"
-                        ? response[i].description
+                    'status': element.status,
+                    'site': element.site,
+                    'description': element.description != "null"
+                        ? element.description
                         : "-",
-                    'remark': response[i].remark,
-                    'pic': response[i].pic,
-                    'date': response[i].date,
+                    'remark': element.remark,
+                    'pic': element.pic,
+                    'date': element.date,
                   })));
-            }
+            });
+            // for (int i = 0; i < response!.length; i++) {
+
+            // }
           }
         },
         child: DefaultTabController(
           length: 2,
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
             body: Stack(
               children: [

@@ -19,6 +19,7 @@ class _RamayanaPin extends State<RamayanaPin> {
   String _udid = 'Unknown';
   Dio dio = Dio();
   late LoginCubit loginCubit;
+  KeyboardUtils keyboardUtils = KeyboardUtils();
 
   @override
   void didPushNext() {
@@ -64,6 +65,7 @@ class _RamayanaPin extends State<RamayanaPin> {
   loginPressed() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final phoneSerialNum = prefs.getString('serialImei');
+    keyboardUtils.dissmissKeyboard(context);
     if (passwordController.text.isNotEmpty) {
       AndroidDeviceInfo info = await deviceInfo.androidInfo;
       final body = LoginBody(

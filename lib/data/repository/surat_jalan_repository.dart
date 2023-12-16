@@ -100,7 +100,7 @@ class SuratJalanRepositories {
             isSuccess: false, statusCode: 500, dataResponse: e.toString());
       } else {
         response = RepositoriesResponse(
-            isSuccess: false, statusCode: 0, dataResponse: 'Harap coba lagi..');
+            isSuccess: false, statusCode: 0, dataResponse: e.toString());
       }
       if (e is DioException) {
         response = RepositoriesResponse(

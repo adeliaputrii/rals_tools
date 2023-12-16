@@ -1837,6 +1837,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                         child: Container(
                                                           child:
                                                               ListView.builder(
+                                                                primary:false,
                                                             shrinkWrap: true,
                                                             itemCount: state
                                                                 .response

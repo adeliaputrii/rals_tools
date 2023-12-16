@@ -18,6 +18,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
   Dio dio = Dio();
   bool isLoading = false;
   late LoginCubit loginCubit;
+  KeyboardUtils keyboardUtils = KeyboardUtils();
 
   @override
   void initState() {
@@ -55,7 +56,8 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
     print(versi);
     print('daaaaaaamn 23111');
     print(tipeurl);
-    // try {
+    keyboardUtils.dissmissKeyboard(context);
+    // // try {
     if (passwordController.text.isNotEmpty) {
       UserData userData = UserData();
       SharedPreferences pref = await SharedPreferences.getInstance();
@@ -124,7 +126,15 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
+          if (state is LoginLoading) {
+            setState(() {
+              isLoading = true;
+            });
+          }
           if (state is LoginSuccess) {
+            setState(() {
+              isLoading = false;
+            });
             final response = state.response;
             if (response.userpass == "0") {
               userData.setUser(data: response.toJson());
@@ -139,6 +149,9 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
             }
           }
           if (state is LoginFailure) {
+            setState(() {
+              isLoading = false;
+            });
             snackBar('PIN SALAH');
           }
         },
@@ -319,15 +332,16 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                                   : MaterialButton(
                                       onPressed: () async {
                                         if (_formKey.currentState!.validate()) {
-                                          setState(() {
-                                            isLoading = true;
-                                          });
-                                          await Future.delayed(
-                                              const Duration(seconds: 3));
                                           await loginPressed();
-                                          setState(() {
-                                            isLoading = false;
-                                          });
+                                          // setState(() {
+                                          //   isLoading = true;
+                                          // });
+                                          // await Future.delayed(
+                                          //     const Duration(seconds: 3));
+                                          // await loginPressed();
+                                          // setState(() {
+                                          //   isLoading = false;
+                                          // });
                                         }
                                       },
                                       shape: RoundedRectangleBorder(
