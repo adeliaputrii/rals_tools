@@ -1054,29 +1054,29 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                                 color: Color.fromARGB(
                                                     255, 255, 17, 17),
                                                 onPressed: 
-                                                // _updateInfo
-                                                //                 ?.updateAvailability ==
-                                                //             UpdateAvailability
-                                                //                 .updateAvailable &&
-                                                //         update == false
-                                                //     ? () {
-                                                //         print(
-                                                //             "update : ${update}");
+                                                _updateInfo
+                                                                ?.updateAvailability ==
+                                                            UpdateAvailability
+                                                                .updateAvailable &&
+                                                        update == false
+                                                    ? () {
+                                                        print(
+                                                            "update : ${update}");
 
-                                                //         InAppUpdate
-                                                //                 .startFlexibleUpdate()
-                                                //             .then((_) {
-                                                //           setState(() {
-                                                //             _flexibleUpdateAvailable =
-                                                //                 true;
-                                                //             update = true;
-                                                //           });
-                                                //         }).catchError((e) {
-                                                //           showSnack(
-                                                //               e.toString());
-                                                //         });
-                                                //       }
-                                                //     :
+                                                        InAppUpdate
+                                                                .startFlexibleUpdate()
+                                                            .then((_) {
+                                                          setState(() {
+                                                            _flexibleUpdateAvailable =
+                                                                true;
+                                                            update = true;
+                                                          });
+                                                        }).catchError((e) {
+                                                          showSnack(
+                                                              e.toString());
+                                                        });
+                                                      }
+                                                    :
                                                      () async {
                                                         if (_formKey
                                                             .currentState!

@@ -102,7 +102,7 @@ class HomeMainApp extends StatelessWidget {
         RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()),
         RamayanaLogin.route: ((context) => const RamayanaLogin())
       },
-      title: 'rals-tools',
+      title: 'Rtools',
       debugShowCheckedModeBanner: false,
       home: DefaultBottomBarController(child: Ramayana()),
       // home: RamayanaLoginOffline(),
@@ -128,7 +128,7 @@ class SplashHomeMainApp extends StatelessWidget {
               ],
             ),
         navigatorKey: navigatorKey,
-        title: 'rals-tools',
+        title: 'Rtools',
         debugShowCheckedModeBanner: false,
         routes: {
           RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()),

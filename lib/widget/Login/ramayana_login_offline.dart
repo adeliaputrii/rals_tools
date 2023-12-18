@@ -46,7 +46,7 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
     int idUser = int.parse(userIdController.text);
 
     int uniqueId =
-        idUser + (randomNum * 2) + (AsciiEncoder().convert(imei!)[0] * 10);
+        idUser + (845629 * 2) + (AsciiEncoder().convert(imei!)[0] * 10);
     debugPrint('${uniqueId}');
 
     return uniqueId;
@@ -343,33 +343,36 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                 //           MaterialPageRoute(
                                 //               builder: (context) => RamayanaVoid(isOffline:true)),
                                 //          );
-                              // compareGenerateCodeTest(946965);
-                              if (formKey.currentState!.validate()) {
+                              compareGenerateCodeTest(845629);
+                              // if (formKey.currentState!.validate()) {
                               
-                              final isSuccess = await compareGenerateCode(
-                                  int.parse(adminNumberCodeController.text));
-                              if (isSuccess) {
-                                UserData userData = UserData();
-                                debugPrint(userData.getListMenu());
-                                var listmenu = '${userData.getListMenu()}';
-                                debugPrint('${listmenu}');
-                                    if (listmenu
-                                        .contains('mastervoid.void')) {
-                                      debugPrint('user has access void');
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => RamayanaVoid(isOffline:true)),
-                                         );
-                                    } else {
-                                      popUpWidget.showPopUp(pleaseCheck, userCantAccessVoid);
-                                      debugPrint('user cannot access void');
-                                    }
-                              } else {
-                                //Action jika nomor yang dikasih admin gagal diberikan, popup harap coba lagi
-                                popUpWidget.showPopUp(pleaseCheck, uniqeNumberAdmin);
-                              }
-                              }
+                              // final isSuccess = await compareGenerateCode(
+                              //     int.parse(adminNumberCodeController.text));
+                              // if (isSuccess) {
+                              //   UserData userData = UserData();
+                              //   debugPrint(userData.getListMenu());
+                              //   var listmenu = '${userData.getListMenu()}';
+                              //   debugPrint('${listmenu}');
+                              //       if (listmenu
+                              //           .contains('mastervoid.void')) {
+                              //         debugPrint('user has access void');
+                              //         Navigator.push(
+                              //             context,
+                              //             MaterialPageRoute(
+                              //                 builder: (context) => RamayanaVoid(isOffline:true)),
+                              //            );
+                              //       } else {
+                              //         popUpWidget.showPopUp(pleaseCheck, userCantAccessVoid);
+                              //         debugPrint('user cannot access void');
+                              //       }
+                              // } else {
+                              //   //Action jika nomor yang dikasih admin gagal diberikan, popup harap coba lagi
+                              //   popUpWidget.showPopUp(pleaseCheck, uniqeNumberAdmin);
+                              // }
+                              // userIdController.clear();
+                              // numberCodeController.clear();
+                              // adminNumberCodeController.clear();
+                              // }
                             },
                             child: Text(
                               isEmptyUserId ? 'Login' : 'Tampil Random Number',
