@@ -166,10 +166,7 @@ class _ProfileeState extends State<Profilee> {
 
   logoutPressed() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.remove('username');
     pref.remove('waktuLogin');
-    pref.remove('serialImei');
-    imei = '';
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
       return RamayanaLogin();
     }));

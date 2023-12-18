@@ -399,10 +399,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
   logoutPressed() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.remove('username');
     pref.remove('waktuLogin');
     pref.remove('token');
-    pref.remove('serialImei');
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
       return RamayanaLogin();
     }));

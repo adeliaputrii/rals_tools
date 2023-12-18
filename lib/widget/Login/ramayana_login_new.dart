@@ -45,7 +45,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     super.initState();
     _passwordVisible = false;
     deleteUserData();
-    // fetchDataNoKartu(id_user: '${userData.getUsername7()}');
   }
 
   Future<void> init() async {
@@ -187,7 +186,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       image: FadeInImageWidget(imageUrl: "assets/loginOffline.png"),
       title: 'Server Offline',
       desc: "Apakah Anda ingin login dengan mode offline? Jika YA harap hubungi DTC dengan angka random di bawah.",
-      
       buttons: [
         DialogButton(
           radius: BorderRadius.circular(20),

@@ -61,6 +61,12 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
     ScreenBrightness().setScreenBrightness(1.0);
   }
 
+  logoutPressed() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.remove('waktuLogin');
+    pref.remove('waktuLoginOffline');
+  }
+
   Future<bool> _willPopCallback() async {
   if(!widget.isOffline){
   debugPrint('to home');
@@ -72,7 +78,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
      ),
      (Route<dynamic> route) => false);
   }else{
-    sweatAlert();
+    exit(0);
 }
 return Future.value(false);
   }
@@ -141,6 +147,7 @@ return Future.value(false);
           onPressed: () {
             Navigator.pop(context);
             
+            
           },
           child: Text(
             "Cancel",
@@ -152,6 +159,7 @@ return Future.value(false);
           radius: BorderRadius.circular(20),
           color: Color.fromARGB(255, 210, 14, 0),
           onPressed: () async {
+          logoutPressed();
            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: 
            (context)=> RamayanaLogin()), (route) => false);
           },
