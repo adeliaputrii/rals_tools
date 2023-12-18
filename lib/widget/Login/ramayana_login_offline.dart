@@ -16,11 +16,19 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
   int randomNum = 0;
   bool generateNumberWidget = false;
   late PopUpWidget popUpWidget;
+  UserData userData = UserData();
+  String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  late SharedPreferences pref;
 
   @override
   void initState() {
     super.initState();
     popUpWidget = PopUpWidget(context);
+    init();
+  }
+
+  Future<void> init() async {
+    pref = await SharedPreferences.getInstance();
   }
 
   int generateNumber() {
@@ -37,6 +45,7 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
 
     int uniqueId =
         idUser + (randomNum * 2) + (AsciiEncoder().convert(imei!)[0] * 10);
+        debugPrint('${uniqueId}');
 
     return numberFromAdmin == uniqueId;
   }
@@ -170,21 +179,28 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                 borderRadius: BorderRadius.circular(60)),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              bottom: 10, left: 10, top: 10),
-                          child: Text(
-                            'Nomor Unik',
-                            style: GoogleFonts.plusJakartaSans(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 19),
-                          ),
-                        ),
+                        generateNumberWidget
+                        ?
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  bottom: 10, left: 10, top: 10),
+                              child: Text(
+                                'Nomor Unik',
+                                style: GoogleFonts.plusJakartaSans(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 19),
+                              ),
+                            ),
+                         
                         TextFormField(
                           readOnly: true,
                           controller: numberCodeController,
-
+                        
                           onTap: () {
                             setState(() {
                               userIdController.text;
@@ -209,6 +225,60 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                 borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(60)),
                             disabledBorder: OutlineInputBorder(
+                                 borderSide: BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(60)),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(60)),
+                          ),
+                        ),
+                          ]
+                        )
+                        : 
+                        Container(),
+                        numberCodeController.text == ''
+                        ?
+                        Container()
+                        :
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  bottom: 10, left: 10, top: 10),
+                              child: Text(
+                                'Nomor Unik Admin',
+                                style: GoogleFonts.plusJakartaSans(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 19),
+                              ),
+                            ),
+                          
+                        TextFormField(
+                          readOnly: false,
+                          keyboardType: TextInputType.number,
+                          controller: adminNumberCodeController,
+                          style: GoogleFonts.plusJakartaSans(
+                              color: Colors.black, fontSize: 17),
+                          validator: RequiredValidator(
+                              errorText: 'Masukkan Nomor Unik Admin'),
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(IconlyLight.password),
+                            errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color:
+                                        const Color.fromARGB(255, 255, 0, 0)),
+                                borderRadius: BorderRadius.circular(60)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 29, 37, 127)),
+                                borderRadius: BorderRadius.circular(60)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(60)),
+                            disabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(60)),
                             border: OutlineInputBorder(
@@ -216,119 +286,61 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                 borderRadius: BorderRadius.circular(60)),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: 
-                          numberCodeController.text == ''
+                        ],
+                        ),
+                          generateNumberWidget 
                           ?
                           Container()
                           :
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    bottom: 10, left: 10, top: 10),
-                                child: Text(
-                                  'Nomor Unik Admin',
-                                  style: GoogleFonts.plusJakartaSans(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 19),
-                                ),
-                              ),
-                            
-                          TextFormField(
-                            readOnly: false,
-                            controller: adminNumberCodeController,
-                            style: GoogleFonts.plusJakartaSans(
-                                color: Colors.black, fontSize: 17),
-                            validator: RequiredValidator(
-                                errorText: 'Masukkan Nomor Unik Admin'),
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(IconlyLight.password),
-                              errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          const Color.fromARGB(255, 255, 0, 0)),
-                                  borderRadius: BorderRadius.circular(60)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 29, 37, 127)),
-                                  borderRadius: BorderRadius.circular(60)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(60)),
-                              disabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(60)),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(60)),
-                            ),
-                          ),
-                          ],
-                          ),
-                        ),
-                        Container(
-                          child: 
-                          generateNumberWidget
-                          ?
-                          Container()
-                          :
-                          Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: 
-                            userIdController.text == '' 
-                            ? 
-                            Container()
-                            :
-                            Container(
-                              margin: EdgeInsets.fromLTRB(10, 50, 10, 0),
-                              child: MaterialButton(
-                                minWidth: 500,
-                                height: 50,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30)),
-                                color: Color.fromARGB(255, 210, 14, 0),
-                                onPressed: () async {
-                                  if (userIdController.text != "") {
-                                    generateNumber();
-                                    setState(() {
-                                    numberCodeController.text;
-                                    generateNumberWidget = true;
-                                    debugPrint('${generateNumberWidget}');
-                                    });
-                                  } else {
-                                    //tampil action kalo user belum memasukkan user id
-                                  }
-                            
-                                  // if (formKey.currentState!.validate()) {
-                                  //   UserData userData = UserData();
-                                  //   if (userData.getListMenu
-                                  //       .toString()
-                                  //       .contains('void')) {
-                                  //     debugPrint('user has access void');
-                                  //     Navigator.pushAndRemoveUntil(
-                                  //         context,
-                                  //         MaterialPageRoute(
-                                  //             builder: (context) => RamayanaVoid()),
-                                  //         (Route<dynamic> route) => false);
-                                  //   } else {
-                                  //     debugPrint('user cannot access void');
-                                  //   }
-                                  // }
-                                },
-                                child: Text(
-                                  'Generate Number',
-                                  style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 18, color: Colors.white),
-                                ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(10, 50, 10, 0),
+                            child: MaterialButton(
+                              minWidth: 500,
+                              height: 50,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              color: Color.fromARGB(255, 210, 14, 0),
+                              onPressed: () async {
+                                 if (formKey.currentState!.validate()) {
+                                  debugPrint(userData.getUsername7());
+                                if (userIdController.text == userData.getUsername7()) {
+                                  generateNumber();
+                                  setState(() {
+                                  numberCodeController.text;
+                                  generateNumberWidget = true;
+                                  debugPrint('genrate number button ${generateNumberWidget}');
+                                  });
+                                } else {
+                                   popUpWidget.showPopUp(pleaseCheck, usernameNotFound);
+                                }
+                          
+                                // if (formKey.currentState!.validate()) {
+                                //   UserData userData = UserData();
+                                //   if (userData.getListMenu
+                                //       .toString()
+                                //       .contains('void')) {
+                                //     debugPrint('user has access void');
+                                //     Navigator.pushAndRemoveUntil(
+                                //         context,
+                                //         MaterialPageRoute(
+                                //             builder: (context) => RamayanaVoid()),
+                                //         (Route<dynamic> route) => false);
+                                //   } else {
+                                //     debugPrint('user cannot access void');
+                                //   }
+                                // }
+                                 }
+                              },
+                              child: Text(
+                                'Generate Number',
+                                style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 18, color: Colors.white),
                               ),
                             ),
                           ),
-                        ),
+                        
+                        generateNumberWidget 
+                        ? 
                         Container(
                           margin: EdgeInsets.fromLTRB(10, 20, 10, 0),
                           child: MaterialButton(
@@ -338,41 +350,38 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                 borderRadius: BorderRadius.circular(30)),
                             color: Color.fromARGB(255, 210, 14, 0),
                             onPressed: () async {
-                                // Navigator.push(
-                                //           context,
-                                //           MaterialPageRoute(
-                                //               builder: (context) => RamayanaVoid(isOffline:true)),
-                                //          );
-                              compareGenerateCodeTest(845629);
-                              // if (formKey.currentState!.validate()) {
+                              compareGenerateCode(583115);
+                              if (formKey.currentState!.validate()) {
                               
-                              // final isSuccess = await compareGenerateCode(
-                              //     int.parse(adminNumberCodeController.text));
-                              // if (isSuccess) {
-                              //   UserData userData = UserData();
-                              //   debugPrint(userData.getListMenu());
-                              //   var listmenu = '${userData.getListMenu()}';
-                              //   debugPrint('${listmenu}');
-                              //       if (listmenu
-                              //           .contains('mastervoid.void')) {
-                              //         debugPrint('user has access void');
-                              //         Navigator.push(
-                              //             context,
-                              //             MaterialPageRoute(
-                              //                 builder: (context) => RamayanaVoid(isOffline:true)),
-                              //            );
-                              //       } else {
-                              //         popUpWidget.showPopUp(pleaseCheck, userCantAccessVoid);
-                              //         debugPrint('user cannot access void');
-                              //       }
-                              // } else {
-                              //   //Action jika nomor yang dikasih admin gagal diberikan, popup harap coba lagi
-                              //   popUpWidget.showPopUp(pleaseCheck, uniqeNumberAdmin);
-                              // }
-                              // userIdController.clear();
-                              // numberCodeController.clear();
-                              // adminNumberCodeController.clear();
-                              // }
+                              final isSuccess = await compareGenerateCode(
+                                  int.parse(adminNumberCodeController.text));
+                              if (isSuccess) {
+                                debugPrint(userData.getListMenu());
+                                var listmenu = '${userData.getListMenu()}';
+                                debugPrint('${listmenu}');
+                                
+                                    if (listmenu
+                                        .contains('mastervoid.void')) {
+                                      pref.setString("waktuLoginOffline", "${formattedDate}");
+                                      debugPrint('user has access void');
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => RamayanaVoid(isOffline:true)),
+                                         );
+                                    } else {
+                                      popUpWidget.showPopUp(pleaseCheck, userCantAccessVoid);
+                                      debugPrint('user cannot access void');
+                                      adminNumberCodeController.clear();
+                                    }
+                                } else {
+                                //Action jika nomor yang dikasih admin gagal diberikan, popup harap coba lagi
+                                popUpWidget.showPopUp(pleaseCheck, uniqeNumberAdmin);
+                                adminNumberCodeController.clear();
+                              } 
+                              }
+                              
+                              
                             },
                             child: Text(
                               isEmptyUserId ? 'Login' : 'Tampil Random Number',
@@ -380,7 +389,9 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                   fontSize: 18, color: Colors.white),
                             ),
                           ),
-                        ),
+                        )
+                        :
+                        Container(),
                         Container(
                             margin: EdgeInsets.fromLTRB(20, 50, 20, 50),
                             child: Row(
