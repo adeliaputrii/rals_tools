@@ -40,18 +40,19 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
 
     return numberFromAdmin == uniqueId;
   }
-  Future<int> compareGenerateCodeTest(int numberFromAdmin) async {
+
+  Future<bool> compareGenerateCodeTest(int numberFromAdmin) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? imei = pref.getString('serialImei');
     int idUser = int.parse(userIdController.text);
 
-    int uniqueId =
-        idUser + (845629 * 2) + (AsciiEncoder().convert(imei!)[0] * 10);
-    debugPrint('${uniqueId}');
-
-    return uniqueId;
+    int uniqueId = idUser +
+        (numberFromAdmin * 2) +
+        (AsciiEncoder().convert(imei!)[0] * 10);
+    debugPrint('unique id ${uniqueId}');
+    debugPrint('imei ${imei}');
+    return numberFromAdmin == uniqueId;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -143,6 +144,9 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                           validator:
                               RequiredValidator(errorText: 'Masukkan User ID'),
                           controller: userIdController,
+                          onChanged: (value) => setState(() {
+                            userIdController.text;
+                          }),
                           onTap: () {
                             setState(() {
                               userIdController.text;
@@ -184,7 +188,6 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                         TextFormField(
                           readOnly: true,
                           controller: numberCodeController,
-
                           onTap: () {
                             setState(() {
                               userIdController.text;
@@ -218,116 +221,120 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
-                          child: 
-                          numberCodeController.text == ''
-                          ?
-                          Container()
-                          :
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    bottom: 10, left: 10, top: 10),
-                                child: Text(
-                                  'Nomor Unik Admin',
-                                  style: GoogleFonts.plusJakartaSans(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 19),
+                          child: numberCodeController.text == ''
+                              ? Container()
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: 10, left: 10, top: 10),
+                                      child: Text(
+                                        'Nomor Unik Admin',
+                                        style: GoogleFonts.plusJakartaSans(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 19),
+                                      ),
+                                    ),
+                                    TextFormField(
+                                      readOnly: false,
+                                      controller: adminNumberCodeController,
+                                      style: GoogleFonts.plusJakartaSans(
+                                          color: Colors.black, fontSize: 17),
+                                      validator: RequiredValidator(
+                                          errorText:
+                                              'Masukkan Nomor Unik Admin'),
+                                      decoration: InputDecoration(
+                                        prefixIcon: Icon(IconlyLight.password),
+                                        errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: const Color.fromARGB(
+                                                    255, 255, 0, 0)),
+                                            borderRadius:
+                                                BorderRadius.circular(60)),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Color.fromARGB(
+                                                    255, 29, 37, 127)),
+                                            borderRadius:
+                                                BorderRadius.circular(60)),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.black),
+                                            borderRadius:
+                                                BorderRadius.circular(60)),
+                                        disabledBorder: OutlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.black),
+                                            borderRadius:
+                                                BorderRadius.circular(60)),
+                                        border: OutlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.black),
+                                            borderRadius:
+                                                BorderRadius.circular(60)),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            
-                          TextFormField(
-                            readOnly: false,
-                            controller: adminNumberCodeController,
-                            style: GoogleFonts.plusJakartaSans(
-                                color: Colors.black, fontSize: 17),
-                            validator: RequiredValidator(
-                                errorText: 'Masukkan Nomor Unik Admin'),
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(IconlyLight.password),
-                              errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          const Color.fromARGB(255, 255, 0, 0)),
-                                  borderRadius: BorderRadius.circular(60)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 29, 37, 127)),
-                                  borderRadius: BorderRadius.circular(60)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(60)),
-                              disabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(60)),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(60)),
-                            ),
-                          ),
-                          ],
-                          ),
                         ),
                         Container(
-                          child: 
-                          generateNumberWidget
-                          ?
-                          Container()
-                          :
-                          Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: 
-                            userIdController.text == '' 
-                            ? 
-                            Container()
-                            :
-                            Container(
-                              margin: EdgeInsets.fromLTRB(10, 50, 10, 0),
-                              child: MaterialButton(
-                                minWidth: 500,
-                                height: 50,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30)),
-                                color: Color.fromARGB(255, 210, 14, 0),
-                                onPressed: () async {
-                                  if (userIdController.text != "") {
-                                    generateNumber();
-                                    setState(() {
-                                    numberCodeController.text;
-                                    generateNumberWidget = true;
-                                    debugPrint('${generateNumberWidget}');
-                                    });
-                                  } else {
-                                    //tampil action kalo user belum memasukkan user id
-                                  }
-                            
-                                  // if (formKey.currentState!.validate()) {
-                                  //   UserData userData = UserData();
-                                  //   if (userData.getListMenu
-                                  //       .toString()
-                                  //       .contains('void')) {
-                                  //     debugPrint('user has access void');
-                                  //     Navigator.pushAndRemoveUntil(
-                                  //         context,
-                                  //         MaterialPageRoute(
-                                  //             builder: (context) => RamayanaVoid()),
-                                  //         (Route<dynamic> route) => false);
-                                  //   } else {
-                                  //     debugPrint('user cannot access void');
-                                  //   }
-                                  // }
-                                },
-                                child: Text(
-                                  'Generate Number',
-                                  style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 18, color: Colors.white),
+                          child: generateNumberWidget
+                              ? Container()
+                              : Padding(
+                                  padding: const EdgeInsets.all(0.0),
+                                  child: userIdController.text == ''
+                                      ? Container()
+                                      : Container(
+                                          margin: EdgeInsets.fromLTRB(
+                                              10, 50, 10, 0),
+                                          child: MaterialButton(
+                                            minWidth: 500,
+                                            height: 50,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(30)),
+                                            color:
+                                                Color.fromARGB(255, 210, 14, 0),
+                                            onPressed: () async {
+                                              if (userIdController.text != "") {
+                                                generateNumber();
+                                                setState(() {
+                                                  numberCodeController.text;
+                                                  generateNumberWidget = true;
+                                                });
+                                              } else {
+                                                //tampil action kalo user belum memasukkan user id
+                                              }
+
+                                              // if (formKey.currentState!.validate()) {
+                                              //   UserData userData = UserData();
+                                              //   if (userData.getListMenu
+                                              //       .toString()
+                                              //       .contains('void')) {
+                                              //     debugPrint('user has access void');
+                                              //     Navigator.pushAndRemoveUntil(
+                                              //         context,
+                                              //         MaterialPageRoute(
+                                              //             builder: (context) => RamayanaVoid()),
+                                              //         (Route<dynamic> route) => false);
+                                              //   } else {
+                                              //     debugPrint('user cannot access void');
+                                              //   }
+                                              // }
+                                            },
+                                            child: Text(
+                                              'Generate Number',
+                                              style:
+                                                  GoogleFonts.plusJakartaSans(
+                                                      fontSize: 18,
+                                                      color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
                                 ),
-                              ),
-                            ),
-                          ),
                         ),
                         Container(
                           margin: EdgeInsets.fromLTRB(10, 20, 10, 0),
@@ -338,41 +345,36 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                 borderRadius: BorderRadius.circular(30)),
                             color: Color.fromARGB(255, 210, 14, 0),
                             onPressed: () async {
-                                // Navigator.push(
-                                //           context,
-                                //           MaterialPageRoute(
-                                //               builder: (context) => RamayanaVoid(isOffline:true)),
-                                //          );
-                              compareGenerateCodeTest(845629);
-                              // if (formKey.currentState!.validate()) {
-                              
-                              // final isSuccess = await compareGenerateCode(
-                              //     int.parse(adminNumberCodeController.text));
-                              // if (isSuccess) {
-                              //   UserData userData = UserData();
-                              //   debugPrint(userData.getListMenu());
-                              //   var listmenu = '${userData.getListMenu()}';
-                              //   debugPrint('${listmenu}');
-                              //       if (listmenu
-                              //           .contains('mastervoid.void')) {
-                              //         debugPrint('user has access void');
-                              //         Navigator.push(
-                              //             context,
-                              //             MaterialPageRoute(
-                              //                 builder: (context) => RamayanaVoid(isOffline:true)),
-                              //            );
-                              //       } else {
-                              //         popUpWidget.showPopUp(pleaseCheck, userCantAccessVoid);
-                              //         debugPrint('user cannot access void');
-                              //       }
-                              // } else {
-                              //   //Action jika nomor yang dikasih admin gagal diberikan, popup harap coba lagi
-                              //   popUpWidget.showPopUp(pleaseCheck, uniqeNumberAdmin);
-                              // }
-                              // userIdController.clear();
-                              // numberCodeController.clear();
-                              // adminNumberCodeController.clear();
-                              // }
+                              if (formKey.currentState!.validate()) {
+                                final isSuccess = await compareGenerateCode(
+                                    int.parse(adminNumberCodeController.text));
+                                if (isSuccess) {
+                                  UserData userData = UserData();
+                                  debugPrint(userData.getListMenu());
+                                  var listmenu = '${userData.getListMenu()}';
+                                  debugPrint('${listmenu}');
+                                  if (listmenu.contains('mastervoid.void')) {
+                                    debugPrint('user has access void');
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RamayanaVoid(isOffline: true)),
+                                    );
+                                  } else {
+                                    popUpWidget.showPopUp(
+                                        pleaseCheck, userCantAccessVoid);
+                                    debugPrint('user cannot access void');
+                                  }
+                                } else {
+                                  //Action jika nomor yang dikasih admin gagal diberikan, popup harap coba lagi
+                                  popUpWidget.showPopUp(
+                                      pleaseCheck, uniqeNumberAdmin);
+                                }
+                                userIdController.clear();
+                                numberCodeController.clear();
+                                adminNumberCodeController.clear();
+                              }
                             },
                             child: Text(
                               isEmptyUserId ? 'Login' : 'Tampil Random Number',
