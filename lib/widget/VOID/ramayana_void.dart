@@ -19,6 +19,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
   UserData userData = UserData();
   bool _isKeptOn = true;
   double _brightness = 1.0;
+  KeyboardUtils keyboardUtils = KeyboardUtils();
 
   @override
   void initState() {
@@ -280,6 +281,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500))),
                     onPressed: () async {
+                      keyboardUtils.dissmissKeyboard(context);
                       if (_formKey.currentState!.validate()) {
                         didPush();
                         didPopNext();

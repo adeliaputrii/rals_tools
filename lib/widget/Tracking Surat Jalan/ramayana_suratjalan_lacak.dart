@@ -13,9 +13,8 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
     with SingleTickerProviderStateMixin {
   GlobalKey<FormState> sjKey = GlobalKey<FormState>();
   GlobalKey<FormState> sjSearchKey = GlobalKey<FormState>();
-  TextEditingController noSj = TextEditingController();
-  TextEditingController remarkController = TextEditingController();
   TextEditingController noSjController = TextEditingController();
+  TextEditingController remarkController = TextEditingController();
   TextEditingController noDocumentController = TextEditingController();
   TextEditingController documentTypeController = TextEditingController();
   TextEditingController noVehicleController = TextEditingController();
@@ -34,6 +33,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
   Color _containerColorLacak = Color.fromARGB(255, 201, 201, 201);
   List<StepperItemData> stepperSJ = [];
   late PopUpWidget popUp;
+  KeyboardUtils keyboardUtils = KeyboardUtils();
 
   Future<void> scanBarcodeScan() async {
     String barcodeScanRes;
@@ -45,7 +45,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
       if (barcodeScanRes == '-1') {
         print('Barcode not valid');
       } else {
-        noSj..text = barcodeScanRes;
+        noSjController..text = barcodeScanRes;
         barcodeSj = barcodeScanRes;
         trackBySuratJalan(barcodeScanRes);
       }
@@ -53,7 +53,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
       barcodeScanRes = 'Failed to get platform version.';
       if (!mounted) return;
       setState(() {
-        noSj..text = barcodeScanRes;
+        noSjController..text = barcodeScanRes;
       });
     }
   }
@@ -69,7 +69,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
     sjCubit = context.read<SuratJalanCubit>();
     popUp = PopUpWidget(context);
     if (widget.noSJ != null) {
-      noSj..text = widget.noSJ!;
+      noSjController..text = widget.noSJ!;
       trackBySuratJalan(widget.noSJ!);
     }
     _controller = TabController(length: 2, vsync: this)
@@ -133,6 +133,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
 
           if (state is SuratJalanFailure) {
             setState(() {
+              _visible = false;
               isLoading = false;
             });
             popUp.showPopUpError(notFound, state.message);
@@ -264,7 +265,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                                 child: TextFormField(
                                   validator: RequiredValidator(
                                       errorText: ' Please Enter'),
-                                  controller: noSj,
+                                  controller: noSjController,
                                   style: GoogleFonts.plusJakartaSans(
                                       color: Colors.black, fontSize: 18),
                                   cursorColor: Colors.black,
@@ -290,18 +291,22 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
                           onPressed: () async {
+                            keyboardUtils.dissmissKeyboard(context);
+                            setState(() {
+                              barcodeSj = noSjController.text;
+                            });
                             trackBySuratJalan(barcodeSj);
-                            if (sjKey.currentState!.validate()) {
-                              setState(() {
-                                isLoading = true;
-                                _visible = true;
-                              });
-                              await Future.delayed(const Duration(seconds: 3));
+                            // if (sjKey.currentState!.validate()) {
+                            //   setState(() {
+                            //     isLoading = true;
+                            //     _visible = true;
+                            //   });
+                            //   await Future.delayed(const Duration(seconds: 3));
 
-                              setState(() {
-                                isLoading = false;
-                              });
-                            }
+                            //   setState(() {
+                            //     isLoading = false;
+                            //   });
+                            // }
                           },
                           child: Text(
                             'Search',
@@ -456,6 +461,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                                             borderRadius:
                                                 BorderRadius.circular(20)),
                                         child: TextFormField(
+                                          readOnly: true,
                                           validator: RequiredValidator(
                                               errorText: ' Please Enter'),
                                           controller: remarkController,

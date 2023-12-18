@@ -35,6 +35,9 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   late PopUpWidget popUpWidget;
   late CreateLogBody createLogBody;
   late SharedPreferences pref;
+
+  KeyboardUtils keyboardUtils = KeyboardUtils();
+  // SimData? _simData;
   var token = '';
   static var fcmToken;
   final _firebaseMessaging = FirebaseMessaging.instance;
@@ -55,15 +58,15 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     deviceInfo = await devicePlugin.androidInfo;
     pref = await SharedPreferences.getInstance();
     checkForUpdate();
-    initSim();
     initPlatformState();
     initNotification();
+    initSimData();
   }
 
   Future<void> initNotification() async {
     await _firebaseMessaging.requestPermission();
     fcmToken = "";
-    fcmToken = await _firebaseMessaging.getToken();
+    // fcmToken = await _firebaseMessaging.getToken();
     print('Token kirim api : ${fcmToken}');
     return fcmToken;
   }
@@ -77,7 +80,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     return token;
   }
 
-  Future<void> initSim() async {
+  Future<void> initSimData() async {
     SimData simData;
     try {
       var status = await Permission.phone.status;
@@ -95,8 +98,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           SimData simData = await SimDataPlugin.getSimData();
           SharedPreferences pref = await SharedPreferences.getInstance();
           for (var s in simData.cards) {
-            imei2 = '${s.serialNumber}';
             if (s.slotIndex == 1) {
+              imei = s.serialNumber;
               pref.setString('serialImei', '${s.serialNumber}');
             }
             print('Serial number: ${s.serialNumber}');
@@ -355,7 +358,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
 
       loginCubit.createLog(createLogBody);
       print('check length ${ApprovalIdcashCustomer.approvalidcashcust.length}');
-      print('data customer' + data['data'].toString());
+      print(data['data'].toString());
     } else {
       print('NO DATA');
     }
@@ -364,14 +367,15 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   }
 
   loginPressed() async {
+    keyboardUtils.dissmissKeyboard(context);
+    AndroidDeviceInfo info = await devicePlugin.androidInfo;
     if (usernameController.text.isNotEmpty &&
         passwordController.text.isNotEmpty) {
       final body = LoginBody(
           userName: usernameController.text,
           password: passwordController.text,
-          deviceId: "${imei2}${deviceInfo.device}");
+          deviceId: "${imei}${info.device}");
       loginCubit.login(loginBody: body);
-      _focusNode.unfocus();
     }
 
     // print(versi);
@@ -787,7 +791,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         }
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
         // key: _scaffoldKey,
         body: Stack(
           children: <Widget>[
@@ -891,7 +894,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                           Container(
                             margin: EdgeInsets.only(left: 20, right: 20),
                             child: TextFormField(
-                                focusNode: _focusNode,
                                 controller: passwordController,
                                 style: GoogleFonts.plusJakartaSans(
                                     color: Colors.black, fontSize: 18),

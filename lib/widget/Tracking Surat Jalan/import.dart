@@ -17,6 +17,7 @@ import 'package:stepper_list_view/stepper_list_view.dart';
 import 'package:myactivity_project/base/base_params.dart';
 import '../../cubit/surat_jalan/surat_jalan_cubit.dart';
 import '../../data/model/scan_sj_body.dart';
+import '../../utils/keyboard_utils.dart';
 import '../../utils/logging.dart';
 import '../../utils/popup_widget.dart';
 import 'package:myactivity_project/base/base_colors.dart' as baseColor;

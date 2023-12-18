@@ -29,6 +29,7 @@ class LoginCubit extends Cubit<LoginState> {
       if (value.isSuccess && value.dataResponse is LoginResponse) {
         final res = value.dataResponse as LoginResponse;
         userData.setDataUser(res);
+
         SharedPref.setToken(res.accessToken!);
         emit(LoginSuccess(res));
       } else {

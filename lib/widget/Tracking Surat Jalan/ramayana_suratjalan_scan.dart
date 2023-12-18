@@ -28,6 +28,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
   bool buttonSupplier = false;
   late SuratJalanCubit sjCubit;
   late PopUpWidget popUp;
+  KeyboardUtils keyboardUtils = KeyboardUtils();
   @override
   void initState() {
     popUp = PopUpWidget(context);
@@ -249,11 +250,13 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                       color: Color.fromARGB(255, 210, 14, 0),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
-                      onPressed: () async {
-                        if (_formKeySearch.currentState!.validate()) {
-                          sjCubit
-                              .getScanTracking(noSjController.text.toString());
-                        }
+                      onPressed: () {
+                        keyboardUtils.dissmissKeyboard(context);
+                        sjCubit.getScanTracking(noSjController.text.toString());
+                        // if (_formKeySearch.currentState!.validate()) {
+                        //   sjCubit
+                        //       .getScanTracking(noSjController.text.toString());
+                        // }
                       },
                       child: Text(
                         'Search',

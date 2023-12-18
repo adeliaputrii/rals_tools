@@ -77,9 +77,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
       fetchTask(apiProject: '${apiTask}');
       fetchEdit(user_create: '${userData.getUsername7()}');
       initPlatformState();
+    } else {
+      setData(widget.response);
     }
-
-    setData(widget.response);
   }
 
   void setData(GetTaskResponse.Data? response) {
@@ -407,6 +407,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     _loadToken();
     print('ini token1111 : $token');
     MyactivityModel.myactivitymodel.clear();
+    // cubit.getProject();
+    // cubit.getTaskById(apiTask);
     final responseku = await http
         .get(Uri.parse('${tipeurl}v1/activity/list-project'), headers: {
       'Content-Type': 'application/json',
@@ -451,6 +453,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     } else {
       print('NO DATA');
       print('data[status] ${data['status']}');
+    }
+    if (mounted) {
+      setState(() {});
     }
   }
 
@@ -520,6 +525,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
       print(data['data'].toString());
     } else {
       print('NO DATA');
+    }
+    if (mounted) {
+      setState(() {});
     }
   }
 
@@ -684,7 +692,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                 response?.forEach((element) {
                   setState(() {
                     result.add(element.taskDesc!);
-                    if (element.taskId == widget.response!.taskId) {
+                    if (element.taskId == widget.response?.taskId) {
                       selectedTask = element.taskDesc!;
                       // debugPrint('selected is ' + selected);
                     }
