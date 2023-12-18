@@ -693,7 +693,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                           if (e == 'mastervoid.void') {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return RamayanaVoid();
+                              return RamayanaVoid(isOffline: false);
                             }));
                           } else if (e == 'masteridcash.idcash') {
                             Navigator.push(context,
@@ -927,15 +927,15 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                 child: InkWell(
                                     onTap: () {
                             
-                                      // Navigator.pushReplacement(context,
-                                      //     MaterialPageRoute(builder: (_) {
-                                      //   return Profilee();
-                                      // }));
-                                      
                                       Navigator.pushReplacement(context,
                                           MaterialPageRoute(builder: (_) {
-                                        return RamayanaLoginOffline();
+                                        return Profilee();
                                       }));
+                                      
+                                      // Navigator.pushReplacement(context,
+                                      //     MaterialPageRoute(builder: (_) {
+                                      //   return RamayanaLoginOffline();
+                                      // }));
                                     },
                                     child: Column(
                                       children: [
@@ -1252,7 +1252,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 Navigator.push(context,
                                                     MaterialPageRoute(
                                                         builder: (context) {
-                                                  return RamayanaVoid();
+                                                  return RamayanaVoid(isOffline: false,);
                                                 }));
                                               } else if (e ==
                                                   'masteridcash.idcash') {

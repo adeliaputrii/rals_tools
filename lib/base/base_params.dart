@@ -16,6 +16,9 @@ const String usernameEmpty = "Username harus diisi";
 const String usernameNotFound = "Username/Password not found";
 const String usernameNotFoundDescription = "Username/Password not found";
 const String usernameNotRegistered = "Username tidak terdaftar";
+const String userCantAccessVoid = "User tidak memiliki akses void";
+const String uniqeNumberAdmin = 
+    "Nomor unik admin salah. Harap coba lagi";
 const String differentDevice =
     "Anda terdeteksi menggunakan device berbeda! Jika anda merasa tidak menggunakan device berbeda silahkan hubungi IT Helpdesk untuk dapat kembali login.";
 

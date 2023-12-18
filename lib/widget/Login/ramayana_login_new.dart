@@ -95,9 +95,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           SharedPreferences pref = await SharedPreferences.getInstance();
           for (var s in simData.cards) {
              imei2 = '${s.serialNumber}';
-            if (s.slotIndex == 1) {
-              pref.setString('serialImei', '${s.serialNumber}');
-            }
+             pref.setString('serialImei', '${s.serialNumber}');
             print('Serial number: ${s.serialNumber}');
             print('Data Roaming: ${s.isNetworkRoaming}');
           }
@@ -189,23 +187,14 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       image: FadeInImageWidget(imageUrl: "assets/loginOffline.png"),
       title: 'Server Offline',
       desc: "Apakah Anda ingin login dengan mode offline? Jika YA harap hubungi DTC dengan angka random di bawah.",
-      content: Padding(
-        padding: const EdgeInsets.only(top: 20, bottom: 20),
-        child: 
-        Center(
-          child: 
-          Text('"235343"',
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 40,
-            color: Color.fromARGB(255, 210, 14, 0)
-          ),
-          )),
-      ),
+      
       buttons: [
         DialogButton(
           radius: BorderRadius.circular(20),
           color: Color.fromARGB(255, 210, 14, 0),
           onPressed: () {
+            usernameController.clear();
+            passwordController.clear();
             Navigator.pop(context);
           },
           child: Text(
@@ -218,23 +207,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           radius: BorderRadius.circular(20),
           color: Colors.green,
           onPressed: () async {
-            var formData = FormData.fromMap({
-              'progname': 'RALS_TOOLS ',
-              'versi': '${versi}',
-              'date_run': '${DateTime.now()}',
-              'info1': 'Login Offline Aplikasi RALS',
-              ' info2':
-                  '${imei} ',
-
-              'userid': '${userData.getUsernameID()}',
-              ' toko': '${userData.getUserToko()}',
-              ' devicename': '${deviceInfo.device}',
-              'TOKEN': 'R4M4Y4N4'
-            });
-
-            var response = await dio.post('${tipeurl}v1/activity/createmylog',
-                data: formData);
-            print('berhasil $_udid');
+            initSim();
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
@@ -863,7 +836,11 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           setState(() {
             isLoading = false;
           });
-          popUpWidget.showPopUp(pleaseCheck, state.message);
+          if(state.message == 'Please check your connection..') {
+            sweatAlert();
+          } else {
+            popUpWidget.showPopUp(pleaseCheck, state.message);
+          }
         }
         if (state is CreateLogSuccess) {
           pref.setString("waktuLogin", "${formattedDate}");
@@ -875,6 +852,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
             isLoading = false;
           });
           popUpWidget.showPopUp(state.message, state.message);
+          
         }
       
         
@@ -1117,7 +1095,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                                                   seconds: 3));
                                                           await init();
                                                           loginPressed();
-                                                          // sweatAlert();
                                                           setState(() {
                                                             isLoading = false;
                                                           });
