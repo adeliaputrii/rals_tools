@@ -13,12 +13,18 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
   TextEditingController numberCodeController = TextEditingController();
   TextEditingController adminNumberCodeController = TextEditingController();
   bool isEmptyUserId = true;
+  late AndroidDeviceInfo deviceInfo;
+  DeviceInfoPlugin devicePlugin = DeviceInfoPlugin();
   int randomNum = 0;
   bool generateNumberWidget = false;
   late PopUpWidget popUpWidget;
   UserData userData = UserData();
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   late SharedPreferences pref;
+  bool _isLoading = true;
+  var imei2 = '';
+  SimData? _simData;
+  late CreateLogBody createLogBody;
 
   @override
   void initState() {
@@ -29,6 +35,8 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
 
   Future<void> init() async {
     pref = await SharedPreferences.getInstance();
+    deviceInfo = await devicePlugin.androidInfo;
+    initSim();
   }
 
   int generateNumber() {
@@ -41,10 +49,14 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
   Future<bool> compareGenerateCode(int numberFromAdmin) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? imei = pref.getString('serialImei');
-    int idUser = int.parse(userIdController.text);
+    int idUser = int.parse(userData.getUsername7());
+
+    // int uniqueId =
+    //     idUser + (randomNum * 2) + (AsciiEncoder().convert(imei!+deviceInfo.device)[0] * 10);
+    //     debugPrint('${uniqueId}');
 
     int uniqueId =
-        idUser + (randomNum * 2) + (AsciiEncoder().convert(imei!)[0] * 10);
+        idUser + (randomNum * 5) * 2;
         debugPrint('${uniqueId}');
 
     return numberFromAdmin == uniqueId;
@@ -52,13 +64,52 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
   Future<int> compareGenerateCodeTest(int numberFromAdmin) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? imei = pref.getString('serialImei');
-    int idUser = int.parse(userIdController.text);
+    int idUser = int.parse(userData.getUsername7());
 
     int uniqueId =
-        idUser + (845629 * 2) + (AsciiEncoder().convert(imei!)[0] * 10);
-    debugPrint('${uniqueId}');
+        idUser + (randomNum * 5) * 2;
+        debugPrint('${uniqueId}');
 
     return uniqueId;
+  }
+
+  Future<void> initSim() async {
+
+    SimData simData;
+    try {
+      var status = await Permission.phone.status;
+      if (!status.isGranted) {
+        bool isGranted = await Permission.phone.request().isGranted;
+        if (!isGranted) return;
+      }
+      simData = await SimDataPlugin.getSimData();
+      setState(() {
+        _isLoading = false;
+        _simData = simData;
+
+      });
+      void printSimCardsData() async {
+        try {
+          SimData simData = await SimDataPlugin.getSimData();
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          for (var s in simData.cards) {
+             imei2 = '${s.serialNumber}';
+            print('Serial number: ${s.serialNumber}');
+            print('Data Roaming: ${s.isNetworkRoaming}');
+          }
+        } on PlatformException catch (e) {
+          debugPrint("error! code: ${e.code} - message: ${e.message}");
+        }
+      }
+
+      printSimCardsData();
+    } catch (e) {
+      debugPrint(e.toString());
+      setState(() {
+        _isLoading = false;
+        _simData = null;
+      });
+    }
   }
 
 
@@ -135,52 +186,7 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                         Center(
                             child: FadeInImageWidget(
                                 imageUrl: "assets/loginOff.png")),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              bottom: 10, left: 10, top: 10),
-                          child: Text(
-                            'Masukkan User ID',
-                            style: GoogleFonts.plusJakartaSans(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 19),
-                          ),
-                        ),
-                        TextFormField(
-                          style: GoogleFonts.plusJakartaSans(
-                              color: Colors.black, fontSize: 17),
-                          validator:
-                              RequiredValidator(errorText: 'Masukkan User ID'),
-                          controller: userIdController,
-                          onTap: () {
-                            setState(() {
-                              userIdController.text;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(IconlyLight.lock),
-                            errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color:
-                                        const Color.fromARGB(255, 255, 0, 0)),
-                                borderRadius: BorderRadius.circular(60)),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 29, 37, 127)),
-                                borderRadius: BorderRadius.circular(60)),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                                borderRadius: BorderRadius.circular(60)),
-                            disabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                                borderRadius: BorderRadius.circular(60)),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                                borderRadius: BorderRadius.circular(60)),
-                          ),
-                        ),
-                        generateNumberWidget
-                        ?
+                        
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,7 +195,7 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                               padding: const EdgeInsets.only(
                                   bottom: 10, left: 10, top: 10),
                               child: Text(
-                                'Nomor Unik',
+                                'Unique ID',
                                 style: GoogleFonts.plusJakartaSans(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500,
@@ -209,7 +215,7 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                           style: GoogleFonts.plusJakartaSans(
                               color: Colors.black, fontSize: 17),
                           validator: RequiredValidator(
-                              errorText: 'Masukkan Nomor Unik'),
+                              errorText: 'Please Enter'),
                           decoration: InputDecoration(
                             prefixIcon: Icon(IconlyLight.password),
                             errorBorder: OutlineInputBorder(
@@ -225,7 +231,7 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                 borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(60)),
                             disabledBorder: OutlineInputBorder(
-                                 borderSide: BorderSide(color: Colors.black),
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(60)),
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
@@ -233,13 +239,9 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                           ),
                         ),
                           ]
-                        )
-                        : 
-                        Container(),
-                        numberCodeController.text == ''
-                        ?
-                        Container()
-                        :
+                        ),
+                        
+                        
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,7 +250,7 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                               padding: const EdgeInsets.only(
                                   bottom: 10, left: 10, top: 10),
                               child: Text(
-                                'Nomor Unik Admin',
+                                'Login Code',
                                 style: GoogleFonts.plusJakartaSans(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500,
@@ -263,7 +265,7 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                           style: GoogleFonts.plusJakartaSans(
                               color: Colors.black, fontSize: 17),
                           validator: RequiredValidator(
-                              errorText: 'Masukkan Nomor Unik Admin'),
+                              errorText: 'Please Enter'),
                           decoration: InputDecoration(
                             prefixIcon: Icon(IconlyLight.password),
                             errorBorder: OutlineInputBorder(
@@ -301,19 +303,18 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                   borderRadius: BorderRadius.circular(30)),
                               color: Color.fromARGB(255, 210, 14, 0),
                               onPressed: () async {
-                                 if (formKey.currentState!.validate()) {
-                                  debugPrint(userData.getUsername7());
-                                if (userIdController.text == userData.getUsername7()) {
+                                debugPrint('tes generate');
+                                compareGenerateCodeTest(941573);
+                                String? serialimei = pref.getString('serialImei');
+                                debugPrint(userData.getUsername7());
+                                  debugPrint(imei2);
+                                  debugPrint(serialimei);
                                   generateNumber();
                                   setState(() {
                                   numberCodeController.text;
                                   generateNumberWidget = true;
                                   debugPrint('genrate number button ${generateNumberWidget}');
                                   });
-                                } else {
-                                   popUpWidget.showPopUp(pleaseCheck, usernameNotFound);
-                                }
-                          
                                 // if (formKey.currentState!.validate()) {
                                 //   UserData userData = UserData();
                                 //   if (userData.getListMenu
@@ -328,8 +329,7 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                 //   } else {
                                 //     debugPrint('user cannot access void');
                                 //   }
-                                // }
-                                 }
+                                // }sss
                               },
                               child: Text(
                                 'Generate Number',
@@ -350,7 +350,8 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                 borderRadius: BorderRadius.circular(30)),
                             color: Color.fromARGB(255, 210, 14, 0),
                             onPressed: () async {
-                              compareGenerateCode(583115);
+                              debugPrint('test generate');
+                              compareGenerateCodeTest(461024);
                               if (formKey.currentState!.validate()) {
                               
                               final isSuccess = await compareGenerateCode(
@@ -364,6 +365,7 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                         .contains('mastervoid.void')) {
                                       pref.setString("waktuLoginOffline", "${formattedDate}");
                                       debugPrint('user has access void');
+                                      
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
