@@ -1009,28 +1009,14 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                                         });
                                                       }
                                                     : () async {
+                                                        keyboardUtils
+                                                            .dissmissKeyboard(
+                                                                context);
                                                         if (_formKey
                                                             .currentState!
                                                             .validate()) {
-                                                          SharedPreferences
-                                                              pref =
-                                                              await SharedPreferences
-                                                                  .getInstance();
-                                                          print(tipeurl);
-
-                                                          setState(() {
-                                                            isLoading = true;
-                                                          });
-                                                          await Future.delayed(
-                                                              const Duration(
-                                                                  seconds: 3));
                                                           // await init();
                                                           loginPressed();
-
-                                                          setState(() {
-                                                            isLoading = false;
-                                                          });
-                                                          print('huhu');
                                                         }
                                                       }),
                                           ),
