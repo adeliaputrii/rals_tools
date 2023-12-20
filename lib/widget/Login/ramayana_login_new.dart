@@ -66,6 +66,20 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     initPlatformState();
     initNotification();
     initSimData();
+    deviceInfo = await devicePlugin.androidInfo;
+    debugPrint('device info manufacturer ' + deviceInfo.manufacturer);
+    debugPrint('device info device ' + deviceInfo.device);
+    debugPrint('device info brand ' + deviceInfo.brand);
+    debugPrint('device info board ' + deviceInfo.board);
+    debugPrint('device info hardware ' + deviceInfo.hardware);
+    debugPrint('device info bootloader ' + deviceInfo.bootloader);
+    debugPrint('device info id ' + deviceInfo.id);
+    debugPrint('device info type ' + deviceInfo.type);
+    debugPrint('device info serial number ' + deviceInfo.serialNumber);
+    debugPrint('device info model ' + deviceInfo.model);
+    debugPrint('device info hardware ' + deviceInfo.hardware);
+    debugPrint('device info host ' + deviceInfo.host);
+    debugPrint('device info display ' + deviceInfo.display);
   }
 
   Future<void> initNotification() async {
@@ -103,8 +117,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           SimData simData = await SimDataPlugin.getSimData();
           SharedPreferences pref = await SharedPreferences.getInstance();
           for (var s in simData.cards) {
+            imei2 = s.serialNumber;
             if (s.slotIndex == 1) {
-              imei = s.serialNumber;
               pref.setString('serialImei', '${s.serialNumber}');
             }
             print('Serial number: ${s.serialNumber}');
@@ -1104,7 +1118,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                                         if (_formKey
                                                             .currentState!
                                                             .validate()) {
-                                                          // await init();
+                                                          await init();
                                                           loginPressed();
                                                         }
                                                       }),
@@ -1166,6 +1180,9 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                             color: Colors.white,
                           ))
                     ],
+                  ),
+                  SizedBox(
+                    height: 30,
                   )
                 ],
               ),

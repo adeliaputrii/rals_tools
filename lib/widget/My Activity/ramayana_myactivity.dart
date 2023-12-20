@@ -661,10 +661,15 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
             icon: Icon(
               Icons.arrow_back_ios,
               size: 23,
+              color: Colors.white,
             ),
           ),
           title: Text('My Activity',
-              style: TextStyle(fontSize: 23), textAlign: TextAlign.center),
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 23,
+                color: Colors.white
+              )
+              ),
           backgroundColor: Color.fromARGB(255, 255, 17, 17),
           elevation: 5,
           toolbarHeight: 80,
@@ -717,7 +722,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         children: [
                           Text(
                             'Date',
-                            style: TextStyle(fontSize: 17, color: Colors.black),
+                            style: GoogleFonts.plusJakartaSans(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500
+                          )
                           ),
                           SizedBox(
                             height: 10,
@@ -740,9 +749,14 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                 ),
                                 //  labelText: 'Date',
                                 hintText: '${formattedDate}',
-                                hintStyle: TextStyle(
-                                    fontSize: 18, color: Colors.black)),
-                            style: TextStyle(fontSize: 18),
+                                hintStyle: GoogleFonts.plusJakartaSans(
+                                  fontSize: 17, 
+                                  color: Colors.black
+                                ),),
+                            style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 17, 
+                                  color: Colors.black
+                                ),
                             // enabled: false,
                             keyboardType: TextInputType.text,
                             readOnly: true,
@@ -751,6 +765,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               _setDate = val;
                             },
                           ),
+                          
                         ],
                       ),
 
@@ -764,7 +779,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         children: [
                           Text(
                             'Project',
-                            style: TextStyle(fontSize: 17, color: Colors.black),
+                             style: GoogleFonts.plusJakartaSans(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500
+                          )
                           ),
                           SizedBox(
                             height: 20,
@@ -783,13 +802,17 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               Container(
                                 width: 350,
                                 child: DropdownButton(
+                                  style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 17, 
+                                  color: Colors.black
+                                ),
                                   value: selected,
                                   hint: Text(
                                     '${selected}',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w500),
+                                    style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 17, 
+                                  color: Colors.black
+                                ),
                                   ),
                                   onChanged: (value) {
                                     print(value);
@@ -848,7 +871,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         children: [
                           Text(
                             'Task',
-                            style: TextStyle(fontSize: 17, color: Colors.black),
+                            style: GoogleFonts.plusJakartaSans(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500
+                          )
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -865,13 +892,17 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                 // margin: EdgeInsets.only(right: 30),
                                 width: 350,
                                 child: DropdownButton(
+                                  style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 17, 
+                                  color: Colors.black
+                                ),
                                   value: selectedTask,
                                   hint: Text(
                                     '${selectedTask}',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w500),
+                                    style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 17, 
+                                  color: Colors.black
+                                ),
                                   ),
                                   onChanged: (value) {
                                     print(value);
@@ -948,8 +979,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                           children: [
                             Text(
                               'Time',
-                              style:
-                                  TextStyle(fontSize: 17, color: Colors.black),
+                              style: GoogleFonts.plusJakartaSans(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500
+                          )
                             ),
                             SizedBox(
                               height: 10,
@@ -983,9 +1017,15 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                           ),
                                           //  labelText: 'Date',
                                           hintText: '${formattedTime}',
-                                          hintStyle: TextStyle(fontSize: 18)),
-                                      style: TextStyle(fontSize: 18),
-                                      // enabled: false,
+                                          hintStyle: GoogleFonts.plusJakartaSans(
+                                          fontSize: 17, 
+                                          color: Colors.black
+                                        ),),
+                                      style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 17, 
+                                        color: Colors.black
+                                      ),
+                                        // enabled: false,
                                       keyboardType: TextInputType.text,
                                       controller: timeStart,
                                       onTap: () async {
@@ -1016,10 +1056,10 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                                                       255,
                                                                       17,
                                                                       17),
-                                                              primaryVariant:
-                                                                  Colors.white,
-                                                              secondaryVariant:
-                                                                  Colors.black,
+                                                              // primaryVariant:
+                                                              //     Colors.white,
+                                                              // secondaryVariant:
+                                                              //     Colors.black,
                                                               onSecondary:
                                                                   Colors.black,
                                                               onPrimary:
@@ -1073,9 +1113,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                 ),
                                 Text(
                                   'to',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
+                            style: GoogleFonts.plusJakartaSans(
+                            fontSize: 15,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500
+                          )
                                 ),
                                 Container(
                                   width: 170,
@@ -1103,8 +1145,14 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                           ),
                                           //  labelText: 'Date',
                                           hintText: '${formattedTime}',
-                                          hintStyle: TextStyle(fontSize: 18)),
-                                      style: TextStyle(fontSize: 18),
+                                          hintStyle: GoogleFonts.plusJakartaSans(
+                                          fontSize: 17, 
+                                          color: Colors.black
+                                        ),),
+                                      style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 17, 
+                                        color: Colors.black
+                                      ),
                                       // enabled: false,
                                       keyboardType: TextInputType.text,
                                       controller: timeEnd,
@@ -1137,10 +1185,10 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                                                       255,
                                                                       17,
                                                                       17),
-                                                              primaryVariant:
-                                                                  Colors.white,
-                                                              secondaryVariant:
-                                                                  Colors.black,
+                                                              // primaryVariant:
+                                                              //     Colors.white,
+                                                              // secondaryVariant:
+                                                              //     Colors.black,
                                                               onSecondary:
                                                                   Colors.black,
                                                               onPrimary:
@@ -1199,7 +1247,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         children: [
                           Text(
                             'Description',
-                            style: TextStyle(fontSize: 17, color: Colors.black),
+                           style: GoogleFonts.plusJakartaSans(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500
+                          )
                           ),
                           SizedBox(
                             height: 20,
@@ -1227,8 +1279,10 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                 borderSide: BorderSide(color: Colors.black),
                               ),
                               labelText: 'Deskripsi',
-                              labelStyle: TextStyle(
-                                  color: Color.fromARGB(255, 255, 17, 17)),
+                              labelStyle: GoogleFonts.plusJakartaSans(
+                                  fontSize: 17, 
+                                  color: Colors.red
+                                ),
                               prefixIcon: Icon(
                                 Icons.chrome_reader_mode,
                                 color: Color.fromARGB(255, 255, 17, 17),
@@ -1237,6 +1291,10 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               // fillColor: Colors.grey[200],
                               filled: true,
                             ),
+                            style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 17, 
+                                  color: Colors.black
+                                ),
                           ),
                         ],
                       ),
@@ -1318,8 +1376,10 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               Icon(Icons.file_copy),
                               Text(
                                 'Upload Document',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 15),
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 15, 
+                                  color: Colors.black
+                                ),
                               )
                             ],
                           ),
@@ -1371,10 +1431,10 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               },
                               child: Text(
                                 "Edit",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 17, 
+                                  color: Colors.white
+                                ),
                               ),
                             ),
                             MaterialButton(
@@ -1609,10 +1669,10 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               },
                               child: Text(
                                 "Save",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 17, 
+                                  color: Colors.white
+                                ),
                               ),
                             ),
                           ]),

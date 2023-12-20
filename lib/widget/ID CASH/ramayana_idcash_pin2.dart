@@ -67,8 +67,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
       final body = LoginBody(
           username: "${username}",
           password: passwordController.text,
-          deviceId: "${phoneSerialNum}${info.device}",
-          versi: versi);
+          deviceId: "${phoneSerialNum}${info.device}");
       print(username);
       loginCubit.login(loginBody: body);
       //     http.Response response =

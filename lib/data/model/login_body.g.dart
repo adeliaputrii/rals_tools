@@ -17,5 +17,5 @@ Map<String, dynamic> _$LoginBodyToJson(LoginBody instance) => <String, dynamic>{
       'user_name': instance.username,
       'password': instance.password,
       'device_id': instance.deviceId,
-      'version': instance.versi,
+      'version': instance.versi
     };

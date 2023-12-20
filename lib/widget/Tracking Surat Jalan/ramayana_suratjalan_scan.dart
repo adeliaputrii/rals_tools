@@ -455,7 +455,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.only(left: 30, top: 10, bottom: 10, right: 30),
         child: Visibility(
           visible: _visible,
           child: Container(

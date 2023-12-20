@@ -94,7 +94,8 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
               return RamayanaIDCash();
             }), (route) => false);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.white,),
         ),
         title: Container(
             margin: EdgeInsets.only(left: 100, right: 115),

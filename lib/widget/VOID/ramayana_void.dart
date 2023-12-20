@@ -270,6 +270,7 @@ return Future.value(false);
             icon: Icon(
               Icons.arrow_back_ios,
               size: 20,
+              color: Colors.white,
             ),
           ),
           title: Text('Void',
@@ -278,8 +279,7 @@ return Future.value(false);
                       fontSize: 23,
                       color: Colors.white,
                       fontWeight: FontWeight.w500))),
-          backgroundColor: Color.fromARGB(255, 255, 17, 17),
-          elevation: 7.20,
+          backgroundColor: Color.fromARGB(255, 210, 14, 0),
           toolbarHeight: 90,
         ),
         body: WillPopScope(
@@ -293,7 +293,7 @@ return Future.value(false);
                 Container(
                   width: MediaQuery.of(context).size.width / 1,
                   height: 170,
-                  color: Color.fromARGB(255, 255, 17, 17),
+                  color: Color.fromARGB(255, 210, 14, 0),
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(30, 30, 30, 0),
