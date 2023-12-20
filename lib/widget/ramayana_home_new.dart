@@ -385,10 +385,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
   logoutPressed() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.remove('username');
     pref.remove('waktuLogin');
     pref.remove('token');
-    pref.remove('serialImei');
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
       return RamayanaLogin();
     }));
@@ -679,7 +677,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                           if (e == 'mastervoid.void') {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return RamayanaVoid();
+                              return RamayanaVoid(isOffline: false);
                             }));
                           } else if (e == 'masteridcash.idcash') {
                             Navigator.push(context,
@@ -935,16 +933,37 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.only(top: 10, right: 20),
-                                child: CircleAvatar(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 210, 14, 0),
-                                  radius: 40,
-                                  backgroundImage: AssetImage(
-                                    'assets/profil.jpeg',
-                                  ),
-                                ),
-                              )
+                                  margin: EdgeInsets.only(top: 10, right: 20),
+                                  child: InkWell(
+                                    onTap: () {
+                                      print('klik');
+                                      Navigator.pushReplacement(context,
+                                          MaterialPageRoute(builder: (_) {
+                                        return Profilee();
+                                      }));
+                                    },
+                                    child: Column(
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          radius: 30,
+                                          child: Icon(
+                                            IconlyBold.profile,
+                                            color: Colors.red,
+                                            size: 40,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text('Lihat Profil',
+                                            style: GoogleFonts.mukta(
+                                                textStyle: TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.white)))
+                                      ],
+                                    ),
+                                  ))
                             ],
                           ),
                           Container(
@@ -1237,7 +1256,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 Navigator.push(context,
                                                     MaterialPageRoute(
                                                         builder: (context) {
-                                                  return RamayanaVoid();
+                                                  return RamayanaVoid(
+                                                    isOffline: false,
+                                                  );
                                                 }));
                                               } else if (e ==
                                                   'masteridcash.idcash') {
@@ -1837,7 +1858,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                         child: Container(
                                                           child:
                                                               ListView.builder(
-                                                                primary:false,
+                                                            primary: false,
                                                             shrinkWrap: true,
                                                             itemCount: state
                                                                 .response

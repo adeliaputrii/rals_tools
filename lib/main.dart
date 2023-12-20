@@ -15,6 +15,7 @@ import 'package:myactivity_project/service/notification/notification_service.dar
 import 'package:myactivity_project/widget/Login/import.dart';
 import 'package:myactivity_project/widget/My%20List%20Task/import.dart';
 import 'package:myactivity_project/widget/Splashscreen/import.dart';
+import 'package:myactivity_project/widget/VOID/import.dart';
 import 'package:myactivity_project/widget/import.dart';
 import 'package:notification_permissions/notification_permissions.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -62,7 +63,9 @@ void main() async {
 
   print(" username : ${username}");
   var waktuLogin = prefs.getString("waktuLogin");
+  var waktuLoginOffline = prefs.getString("waktuLoginOffline");
   print("waktu login : ${waktuLogin}");
+  debugPrint("waktu login offline: ${waktuLoginOffline}");
   await NotificationService.initializeNotification();
   final appCubit = AppCubit();
   SystemChrome.setPreferredOrientations([
@@ -70,7 +73,7 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]).then((value) => runApp(waktuLogin == formattedDate
       ? appCubit.initCubit(HomeMainApp())
-      : appCubit.initCubit(SplashHomeMainApp())));
+      : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
 }
 
 Future<void> registerAppServices() async {
@@ -102,18 +105,22 @@ class HomeMainApp extends StatelessWidget {
         RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()),
         RamayanaLogin.route: ((context) => const RamayanaLogin())
       },
-      title: 'rals-tools',
+      title: 'Rtools',
       debugShowCheckedModeBanner: false,
       home: DefaultBottomBarController(child: Ramayana()),
+      // home: RamayanaLoginOffline(),
     );
   }
 }
 
 class SplashHomeMainApp extends StatelessWidget {
-  const SplashHomeMainApp({super.key});
+  SplashHomeMainApp({super.key, required this.loginOffline});
+  final String? loginOffline;
 
   @override
   Widget build(BuildContext context) {
+    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+   
     return MaterialApp(
         builder: (context, child) => ResponsiveWrapper.builder(
               child,
@@ -127,12 +134,17 @@ class SplashHomeMainApp extends StatelessWidget {
               ],
             ),
         navigatorKey: navigatorKey,
-        title: 'rals-tools',
+        title: 'Rtools',
         debugShowCheckedModeBanner: false,
         routes: {
           RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()),
           RamayanaLogin.route: ((context) => const RamayanaLogin())
         },
-        home: SplashScreenRamayana());
+        home: 
+        loginOffline == formattedDate 
+        ?
+        RamayanaVoid(isOffline: true)
+        :
+        SplashScreenRamayana());
   }
 }

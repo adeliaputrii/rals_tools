@@ -5,4 +5,6 @@ class RepositoriesResponse {
 
   RepositoriesResponse(
       {required this.isSuccess, this.statusCode, required this.dataResponse});
+
+
 }

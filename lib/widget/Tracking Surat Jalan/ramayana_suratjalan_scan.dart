@@ -117,26 +117,31 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
             });
             if (state.response.data.toString().isNotEmpty) {
               documentTypeController.text =
-                  state.response.data!.detailSj!.documentType!;
-              originController.text = state.response.data!.detailSj!.origin!;
+                  state.response.data!.detailSj?.documentType ?? baseParam.dash;
+              originController.text =
+                  state.response.data?.detailSj?.origin ?? baseParam.dash;
               destinationController.text =
-                  state.response.data!.detailSj!.destination!;
+                  state.response.data?.detailSj?.destination ?? baseParam.dash;
               driverNameController.text =
-                  state.response.data!.detailSj!.driverName!;
+                  state.response.data?.detailSj?.driverName ?? baseParam.dash;
               noVehicleController.text =
-                  state.response.data!.detailSj!.noVehicle!;
-              noSjController.text = state.response.data!.detailSj!.noSj!;
-              noDocumentController.text = state.response.data!.detailSj!.noSj!;
+                  state.response.data?.detailSj?.noVehicle ?? baseParam.dash;
+              noSjController.text =
+                  state.response.data?.detailSj?.noSj ?? baseParam.dash;
+              noDocumentController.text =
+                  state.response.data?.detailSj?.noSj ?? baseParam.dash;
               statusController.text =
-                  state.response.data!.detailSj!.trackingStatus!;
+                  state.response.data?.detailSj?.trackingStatus ??
+                      baseParam.dash;
               setState(() {
-                buttonStoreline = state.response.data!.button!.storeline!;
-                buttonRegular = state.response.data!.button!.regular!;
+                buttonStoreline =
+                    state.response.data?.button?.storeline ?? false;
+                buttonRegular = state.response.data?.button?.regular ?? false;
                 buttonSupplier =
-                    state.response.data!.button!.receivedBySupplier!;
+                    state.response.data?.button?.receivedBySupplier ?? false;
               });
 
-              noSj = state.response.data!.detailSj!.noSj!;
+              noSj = state.response.data?.detailSj?.noSj ?? '';
             }
           }
           if (state is SuratJalanLoading) {

@@ -55,7 +55,7 @@ deleteUserData();
   Widget build(BuildContext context) {
     return SplashScreenView(
       navigateWhere: isLoaded,
-      navigateRoute: needLogin?RamayanaLogin():DefaultBottomBarController(child: Ramayana()), backgroundColor: Colors.white,
+      navigateRoute: needLogin? RamayanaLogin():DefaultBottomBarController(child: Ramayana()), backgroundColor: Colors.white,
       linearGradient: const LinearGradient(
           colors: [
             Colors.white,

@@ -51,7 +51,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     super.initState();
     _passwordVisible = false;
     deleteUserData();
-    // fetchDataNoKartu(id_user: '${userData.getUsername7()}');
   }
 
   Future<void> init() async {
@@ -166,7 +165,73 @@ class _RamayanaLogin extends State<RamayanaLogin> {
 
   UserData userData = UserData();
 
-  void _displayCenterMotionToast() async {
+  sweatAlert() {
+    var alertStyle = AlertStyle(
+      titlePadding: EdgeInsets.only(bottom: 10),
+      isCloseButton: false,
+      isOverlayTapDismiss: false,
+      descStyle: GoogleFonts.plusJakartaSans(
+        fontSize: 18,
+        color: Colors.black,
+      ),
+      descTextAlign: TextAlign.center,
+      animationDuration: Duration(milliseconds: 400),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(
+          color: Colors.grey,
+        ),
+      ),
+      titleStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 25,
+          color: Color.fromARGB(255, 210, 14, 0),
+          fontWeight: FontWeight.w500),
+      alertAlignment: Alignment.center,
+    );
+    Alert(
+      style: alertStyle,
+      context: context,
+      image: FadeInImageWidget(imageUrl: "assets/loginOffline.png"),
+      title: 'Server Offline',
+      desc:
+          "Apakah Anda ingin login dengan mode offline? Jika YA harap hubungi DTC dengan angka random di bawah.",
+      buttons: [
+        DialogButton(
+          radius: BorderRadius.circular(20),
+          color: Color.fromARGB(255, 210, 14, 0),
+          onPressed: () {
+            usernameController.clear();
+            passwordController.clear();
+            Navigator.pop(context);
+          },
+          child: Text(
+            "TIDAK",
+            style:
+                GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+          ),
+        ),
+        DialogButton(
+          radius: BorderRadius.circular(20),
+          color: Colors.green,
+          onPressed: () async {
+            initSimData();
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => RamayanaLoginOffline()),
+                (Route<dynamic> route) => false);
+          },
+          child: Text(
+            "YA",
+            style:
+                GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+          ),
+        ),
+      ],
+    ).show();
+    return;
+  }
+
+  void displayCenterMotionToast() async {
     MotionToast(
       toastDuration: Duration(seconds: 4),
       icon: Icons.error,
@@ -759,6 +824,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
             isLoading = true;
           });
         }
+
         if (state is LoginSuccess) {
           createLogBody = CreateLogBody(
               toko: state.response.data?.toko,
@@ -772,11 +838,16 @@ class _RamayanaLogin extends State<RamayanaLogin> {
               token: logToken);
           fetchDataNoKartu(id_user: state.response.data!.userId.toString());
         }
+
         if (state is LoginFailure) {
           setState(() {
             isLoading = false;
           });
-          popUpWidget.showPopUpError(pleaseCheck, state.message);
+          if (state.message == 'Please check your connection..') {
+            sweatAlert();
+          } else {
+            popUpWidget.showPopUpError(pleaseCheck, state.message);
+          }
         }
         if (state is CreateLogSuccess) {
           pref.setString("waktuLogin", "${formattedDate}");
@@ -787,7 +858,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           setState(() {
             isLoading = false;
           });
-          popUpWidget.showPopUpError(state.message, state.message);
+          sweatAlert();
+          // popUpWidget.showPopUpError(state.message, state.message);
         }
       },
       child: Scaffold(
@@ -1009,9 +1081,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                                         });
                                                       }
                                                     : () async {
-                                                        keyboardUtils
-                                                            .dissmissKeyboard(
-                                                                context);
                                                         if (_formKey
                                                             .currentState!
                                                             .validate()) {

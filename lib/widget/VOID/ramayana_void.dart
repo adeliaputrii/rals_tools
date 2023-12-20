@@ -2,7 +2,8 @@ part of 'import.dart';
 
 class RamayanaVoid extends StatefulWidget {
   static const routeName = '/RamayanaVoid';
-  const RamayanaVoid({super.key});
+   RamayanaVoid({super.key, required this.isOffline});
+  final bool isOffline;
 
   @override
   State<RamayanaVoid> createState() => _RamayanaVoidState();
@@ -24,6 +25,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
   @override
   void initState() {
     super.initState();
+    debugPrint('cek'+widget.isOffline.toString());
     initPlatformState();
     _checkInternetConnection();
     setState(() {
@@ -60,11 +62,35 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
     ScreenBrightness().setScreenBrightness(1.0);
   }
 
+  logoutPressed() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.remove('waktuLogin');
+    pref.remove('waktuLoginOffline');
+  }
+
+  Future<bool> _willPopCallback() async {
+  if(!widget.isOffline){
+  debugPrint('to home');
+  Navigator.pushAndRemoveUntil(
+   context,
+   MaterialPageRoute(
+   builder: (context) =>
+    DefaultBottomBarController(child: Ramayana()),
+     ),
+     (Route<dynamic> route) => false);
+  }else{
+    exit(0);
+}
+return Future.value(false);
+  }
+
   @override
   void didPopNext() {
     super.didPopNext();
     ScreenBrightness().setScreenBrightness(1.0);
   }
+
+  
 
   _checkInternetConnection() async {
     try {
@@ -85,6 +111,68 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
       }
     }
     print(_isConnected);
+  }
+
+  sweatAlert() {
+    var alertStyle = AlertStyle(
+      titlePadding: EdgeInsets.only(top: 0),
+      animationType: AnimationType.fromRight,
+      isCloseButton: false,
+      isOverlayTapDismiss: false,
+      descStyle: GoogleFonts.plusJakartaSans(
+        fontSize: 19,
+        color: Colors.black,
+      ),
+      descTextAlign: TextAlign.center,
+      animationDuration: Duration(milliseconds: 400),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(
+          color: Colors.grey,
+        ),
+      ),
+      titleStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 23, color: Colors.red, fontWeight: FontWeight.w500),
+      alertAlignment: Alignment.center,
+    );
+    Alert(
+      style: alertStyle,
+      context: context,
+      image: FadeInImageWidget(imageUrl: "assets/logout.png"),
+      title: 'Log Out',
+      desc: "Are you sure you want to log out?",
+      buttons: [
+        DialogButton(
+          radius: BorderRadius.circular(20),
+          color: Colors.green,
+          onPressed: () {
+            Navigator.pop(context);
+            
+            
+          },
+          child: Text(
+            "Cancel",
+            style:
+                GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+          ),
+        ),
+        DialogButton(
+          radius: BorderRadius.circular(20),
+          color: Color.fromARGB(255, 210, 14, 0),
+          onPressed: () async {
+          logoutPressed();
+           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: 
+           (context)=> RamayanaLogin()), (route) => false);
+          },
+          child: Text(
+            "Log Out",
+            style:
+                GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+          ),
+        ),
+      ],
+    ).show();
+    return;
   }
 
   Future<String> _getLogikaVoid() async {
@@ -158,38 +246,45 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: RelativeBuilder(builder: (context, height, width, sy, sx) {
-        return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              onPressed: () async {
-                await FlutterWindowManager.clearFlags(
-                    FlutterWindowManager.FLAG_SECURE);
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          DefaultBottomBarController(child: Ramayana()),
-                    ),
-                    (Route<dynamic> route) => false);
-              },
-              icon: Icon(
-                Icons.arrow_back_ios,
-                size: 20,
-              ),
+    return RelativeBuilder(builder: (context, height, width, sy, sx) {
+      return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () async {
+              await FlutterWindowManager.clearFlags(
+                  FlutterWindowManager.FLAG_SECURE);
+                  if(!widget.isOffline){
+                    debugPrint('to home');
+                  Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        DefaultBottomBarController(child: Ramayana()),
+                  ),
+                  (Route<dynamic> route) => false);
+                  }else{
+                    sweatAlert();
+                  }
+           
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 20,
             ),
-            title: Text('Void',
-                style: GoogleFonts.plusJakartaSans(
-                    textStyle: TextStyle(
-                        fontSize: 23,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500))),
-            backgroundColor: Color.fromARGB(255, 255, 17, 17),
-            elevation: 7.20,
-            toolbarHeight: 90,
           ),
-          body: ListView(
+          title: Text('Void',
+              style: GoogleFonts.plusJakartaSans(
+                  textStyle: TextStyle(
+                      fontSize: 23,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500))),
+          backgroundColor: Color.fromARGB(255, 255, 17, 17),
+          elevation: 7.20,
+          toolbarHeight: 90,
+        ),
+        body: WillPopScope(
+          onWillPop: _willPopCallback,
+          child: ListView(
             children: [
               Stack(children: <Widget>[
                 Container(
@@ -312,11 +407,11 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
                             ' devicename': '${info.device}',
                             'TOKEN': 'R4M4Y4N4'
                           });
-
+              
                           var response = await dio.post(
                               '${tipeurl}v1/activity/createmylog',
                               data: formData);
-
+              
                           print('berhasil $_udid');
                         } else if (_isConnected == false) {
                           String format =
@@ -364,7 +459,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
                               //     ),
                               //    )
                               // ),
-
+              
                               Container(
                                 margin: EdgeInsets.fromLTRB(100, 30, 100, 0),
                                 child: PrettyQr(
@@ -382,17 +477,8 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
               ]),
             ],
           ),
-        );
-      }),
-      onWillPop: () async {
-        if (true) {
-          Navigator.pushAndRemoveUntil(context,
-              MaterialPageRoute(builder: (context) {
-            return DefaultBottomBarController(child: Ramayana());
-          }), (route) => false);
-          return true;
-        }
-      },
-    );
+        ),
+      );
+    });
   }
 }

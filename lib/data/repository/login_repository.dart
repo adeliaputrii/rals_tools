@@ -36,7 +36,7 @@ class LoginRepositories {
             dataResponse: e.response?.data['message'].toString() ??
                 'Please check your connection..');
 
-        debugPrint(e.response?.data['message'] ?? 'check connection');
+        debugPrint(e.response?.data['message'] ?? 'Failed');
       }
     }
     return response;
