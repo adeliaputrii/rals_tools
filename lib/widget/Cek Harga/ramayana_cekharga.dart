@@ -81,7 +81,6 @@ class _RamayanaCekHargaState extends State<RamayanaCekHarga> {
               hintColor: Colors.black,
               colorScheme: ColorScheme.light(
                   primary: Color.fromARGB(255, 255, 17, 17),
-                 
                   onSecondary: Colors.black,
                   onPrimary: Colors.white,
                   surface: Colors.black,
@@ -123,7 +122,6 @@ class _RamayanaCekHargaState extends State<RamayanaCekHarga> {
               hintColor: Colors.black,
               colorScheme: ColorScheme.light(
                   primary: Color.fromARGB(255, 255, 17, 17),
-                 
                   onSecondary: Colors.black,
                   onPrimary: Colors.white,
                   surface: Colors.black,

@@ -91,7 +91,7 @@ dependencies:
   meta: ^1.9.1
   uuid: ^4.3.1
 
-dependency_overrides: 
+dependency_overrides:
   meta: ^1.11.0
 
 dev_dependencies:
