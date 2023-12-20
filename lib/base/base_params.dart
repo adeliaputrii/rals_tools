@@ -22,6 +22,7 @@ const String userCantAccessVoid = "User tidak memiliki akses void";
 const String uniqeNumberAdmin = "Nomor unik admin salah. Harap coba lagi";
 const String differentDevice =
     "Anda terdeteksi menggunakan device berbeda! Jika anda merasa tidak menggunakan device berbeda silahkan hubungi IT Helpdesk untuk dapat kembali login.";
+const String pleaseCheckConnection = 'Please check your connection..';
 
 //Popup SJ Title or Description
 const String notFound = "Not Found";

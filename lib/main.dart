@@ -50,21 +50,16 @@ void main() async {
 
   await Firebase.initializeApp();
   await FirebaseApiNew().initNotification();
+
   registerAppServices();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  print(formattedDate);
   UserData userData = UserData();
   await userData.getPref();
   String userId = userData.getUsernameID();
-  print('grgr 123');
-  print(userId);
   var username = prefs.getString("username");
-
-  print(" username : ${username}");
   var waktuLogin = prefs.getString("waktuLogin");
   var waktuLoginOffline = prefs.getString("waktuLoginOffline");
-  print("waktu login : ${waktuLogin}");
   debugPrint("waktu login offline: ${waktuLoginOffline}");
   await NotificationService.initializeNotification();
   final appCubit = AppCubit();
@@ -73,7 +68,8 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]).then((value) => runApp(waktuLogin == formattedDate
       ? appCubit.initCubit(HomeMainApp())
-      : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
+      : appCubit
+          .initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
 }
 
 Future<void> registerAppServices() async {
@@ -120,7 +116,7 @@ class SplashHomeMainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-   
+
     return MaterialApp(
         builder: (context, child) => ResponsiveWrapper.builder(
               child,
@@ -140,11 +136,8 @@ class SplashHomeMainApp extends StatelessWidget {
           RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()),
           RamayanaLogin.route: ((context) => const RamayanaLogin())
         },
-        home: 
-        loginOffline == formattedDate 
-        ?
-        RamayanaVoid(isOffline: true)
-        :
-        SplashScreenRamayana());
+        home: loginOffline == formattedDate
+            ? RamayanaVoid(isOffline: true)
+            : SplashScreenRamayana());
   }
 }

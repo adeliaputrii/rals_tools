@@ -11,7 +11,6 @@ class RamayanaLogin extends StatefulWidget {
 
 class _RamayanaLogin extends State<RamayanaLogin> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -35,7 +34,14 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   late PopUpWidget popUpWidget;
   late CreateLogBody createLogBody;
   late SharedPreferences pref;
+  bool isloading = false;
+  String? _userId;
+  String _password = '';
+  String _nativeId = 'Unknown';
 
+  final _nativeIdPlugin = NativeId();
+  UserData userData = UserData();
+  GetFile getFile = GetFile();
   KeyboardUtils keyboardUtils = KeyboardUtils();
   // SimData? _simData;
   var token = '';
@@ -47,7 +53,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     popUpWidget = PopUpWidget(context);
     init();
     print(versi);
-    print('wakwaw 123');
     super.initState();
     _passwordVisible = false;
     deleteUserData();
@@ -55,6 +60,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
 
   Future<void> init() async {
     deviceInfo = await devicePlugin.androidInfo;
+
     pref = await SharedPreferences.getInstance();
     checkForUpdate();
     initPlatformState();
@@ -127,16 +133,27 @@ class _RamayanaLogin extends State<RamayanaLogin> {
 
   Future<void> initPlatformState() async {
     String udid;
+    String nativeId;
+    String uuid;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    // We also handle the message potentially returning null.
     try {
-      udid = await FlutterUdid.consistentUdid;
+      nativeId = await _nativeIdPlugin.getId() ?? 'Unknown NATIVE_ID';
     } on PlatformException {
-      udid = 'Failed to get UDID.';
+      nativeId = 'Failed to get native id.';
+    }
+
+    try {
+      uuid = await _nativeIdPlugin.getUUID() ?? 'Unknown UUID';
+    } on PlatformException {
+      uuid = 'Failed to get uuid.';
     }
 
     if (!mounted) return;
 
     setState(() {
-      _udid = udid;
+      _nativeId = nativeId;
+      _udid = uuid;
     });
   }
 
@@ -159,11 +176,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           .showSnackBar(SnackBar(content: Text(text)));
     }
   }
-
-  String? _userId;
-  String _password = '';
-
-  UserData userData = UserData();
 
   sweatAlert() {
     var alertStyle = AlertStyle(
@@ -439,7 +451,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       final body = LoginBody(
           userName: usernameController.text,
           password: passwordController.text,
-          deviceId: "${imei}${info.device}");
+          deviceId: "${_nativeId}${info.device}");
       loginCubit.login(loginBody: body);
     }
 
@@ -449,7 +461,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     // try {
     //   if (usernameController.text.isNotEmpty && passwordController.text.isNotEmpty) {
     //     SharedPreferences pref = await SharedPreferences.getInstance();
-    //     AndroidDeviceInfo info = await devicePlugin.androidInfo;
+    //     AndroidDeviceInfo info = await devicePlugin.androideviceInfo;
     //     final body = LoginBody(
     //         userName: usernameController.text,
     //         password: password.text,
@@ -843,7 +855,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           setState(() {
             isLoading = false;
           });
-          if (state.message == 'Please check your connection..') {
+          if (state.message == pleaseCheckConnection) {
             sweatAlert();
           } else {
             popUpWidget.showPopUpError(pleaseCheck, state.message);
@@ -1081,6 +1093,12 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                                         });
                                                       }
                                                     : () async {
+                                                        // getFile
+                                                        //     .writeUUIDToFile();
+                                                        // final uuidFile =
+                                                        //     await getFile
+                                                        //         .readUUIDFromFile();
+                                                        // debugPrint(uuidFile);
                                                         if (_formKey
                                                             .currentState!
                                                             .validate()) {
