@@ -449,9 +449,11 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     if (usernameController.text.isNotEmpty &&
         passwordController.text.isNotEmpty) {
       final body = LoginBody(
-          userName: usernameController.text,
+          username: usernameController.text,
           password: passwordController.text,
-          deviceId: "${_nativeId}${info.device}");
+          deviceId: "${_nativeId}${info.device}",
+          versi: versi);
+
       loginCubit.login(loginBody: body);
     }
 

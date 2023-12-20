@@ -7,7 +7,7 @@ class DioInterceptor extends Interceptor {
   Future<void> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     SharedPref.getToken()
-        .then((value) => options.headers[auth] = 'aBearer ${value}');
+        .then((value) => options.headers[auth] = 'Bearer ${value}');
     options.headers[contentType] = appJson;
     super.onRequest(options, handler);
   }

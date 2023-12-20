@@ -65,9 +65,10 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
       var username = userData.getUsername7();
       final phoneSerialNum = pref.getString('serialImei');
       final body = LoginBody(
-          userName: "${username}",
+          username: "${username}",
           password: passwordController.text,
-          deviceId: "${phoneSerialNum}${info.device}");
+          deviceId: "${phoneSerialNum}${info.device}",
+          versi: versi);
       print(username);
       loginCubit.login(loginBody: body);
       //     http.Response response =
