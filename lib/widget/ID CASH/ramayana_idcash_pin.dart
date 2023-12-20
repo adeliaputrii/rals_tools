@@ -71,7 +71,9 @@ class _RamayanaPin extends State<RamayanaPin> {
       final body = LoginBody(
           userName: userData.getUsernameID(),
           password: passwordController.text,
-          deviceId: "${phoneSerialNum}${info.device}");
+          deviceId: "${info.brand}${info.device}${info.id}",
+          version: versi
+          );
       loginCubit.login(loginBody: body);
       // http.Response response = await AuthServicesLog.login(
       //   '${userData.getUsername7()}', passwordController.text,

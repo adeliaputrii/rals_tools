@@ -130,7 +130,9 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                   return DefaultBottomBarController(child: Ramayana());
                 }), (route) => false);
               },
-              icon: Icon(Icons.arrow_back_ios),
+              icon: Icon(Icons.arrow_back_ios,
+              color: Colors.white,
+              ),
             ),
             title: Text(
               'ID CASH',
@@ -389,7 +391,7 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                   Column(
                     children: [
                       Container(
-                        height: 80,
+                        height: 90,
                         width: 100000,
                         margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
                         decoration: BoxDecoration(
@@ -446,7 +448,7 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                         ),
                       ),
                       Container(
-                        height: 80,
+                        height: 90,
                         width: 100000,
                         margin: EdgeInsets.fromLTRB(20, 25, 20, 0),
                         decoration: BoxDecoration(
@@ -503,7 +505,7 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                         ),
                       ),
                       Container(
-                        height: 80,
+                        height: 90,
                         width: 100000,
                         margin: EdgeInsets.fromLTRB(20, 25, 20, 0),
                         decoration: BoxDecoration(

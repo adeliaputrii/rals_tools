@@ -88,7 +88,12 @@ class LoginRepositories {
               isSuccess: false,
               statusCode: e.response?.statusCode,
               dataResponse: e.response!.data.toString());
-        }
+        } else if (e.response?.statusCode == 401) {
+          response = RepositoriesResponse(
+              isSuccess: false,
+              statusCode: e.response?.statusCode,
+              dataResponse: e.response!.data.toString());
+        } 
       } else {
         response = RepositoriesResponse(
             isSuccess: false, statusCode: 500, dataResponse: e.toString());

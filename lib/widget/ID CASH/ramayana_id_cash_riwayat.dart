@@ -116,7 +116,8 @@ class _RamayanaRiwayatIDCashState extends State<RamayanaRiwayatIDCash> {
               return RamayanaIDCash();
             }), (route) => false);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.white,),
         ),
         title: Container(
             margin: EdgeInsets.only(left: 70, right: 70),

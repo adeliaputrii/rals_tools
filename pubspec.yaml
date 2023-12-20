@@ -90,6 +90,7 @@ dependencies:
   syncfusion_flutter_barcodes: ^23.2.7
   cool_alert: ^1.1.0
   timelines: ^0.1.0
+  liquid_pull_to_refresh: ^3.0.1
 
 dev_dependencies:
   build_runner: ^2.1.4
