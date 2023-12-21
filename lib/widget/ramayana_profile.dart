@@ -231,7 +231,6 @@ class _ProfileeState extends State<Profilee> {
               'info1': 'Logout Aplikasi RALS',
               ' info2':
                   '${_udid} ', //ini disini yang imei ya del? iya pak. ini lari nya kemana ya del isi nya? -reza sebentar pak, saya ijin ke belakang
-
               'userid': '${userData.getUsernameID()}',
               ' toko': '${userData.getUserToko()}',
               ' devicename': '${info.device}',
@@ -239,8 +238,8 @@ class _ProfileeState extends State<Profilee> {
             });
             loginCubit.createLog(
                 baseParam.logInfoProfilePage, baseParam.logInfoProfile, " ");
-            var response = await dio.post('${tipeurl}v1/activity/createmylog',
-                data: formData);
+            // var response = await dio.post('${tipeurl}v1/activity/createmylog',
+            //     data: formData);
             print('berhasil $_udid');
             logoutPressed();
             Navigator.pop(context);
