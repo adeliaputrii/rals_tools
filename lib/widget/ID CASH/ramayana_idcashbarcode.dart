@@ -14,6 +14,8 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
   UserData userData = UserData();
   var balance = "";
   var memberCode = "";
+  late LoginCubit loginCubit;
+  final apiUrl = '${tipeurl}${basePath.api_membercard_customer}';
 
   String _udid = 'Unknown';
   @override
@@ -73,22 +75,8 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
         leading: IconButton(
           onPressed: () async {
             _unsecureScreen();
-            AndroidDeviceInfo info = await deviceInfo.androidInfo;
-
-            var formData = FormData.fromMap({
-              'progname': 'RALS_TOOLS ',
-              'versi': '${versi}',
-              'date_run': '${DateTime.now()}',
-              'info1': 'Barcode No.Kartu Menu ID Cash',
-              ' info2': '${_udid} ',
-              'userid': '${userData.getUsernameID()}',
-              ' toko': '${userData.getUserToko()}',
-              ' devicename': '${info.device}',
-              'TOKEN': 'R4M4Y4N4'
-            });
-
-            var response = await dio.post('${tipeurl}v1/activity/createmylog',
-                data: formData);
+           loginCubit.createLog(baseParam.logInfoIdcashPage,
+                baseParam.logInfoIdcashBarcode, apiUrl);
             Navigator.pushAndRemoveUntil(context,
                 MaterialPageRoute(builder: (context) {
               return RamayanaIDCash();
@@ -256,23 +244,8 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
                         color: Color.fromARGB(255, 255, 17, 17),
                         onPressed: () async {
                           _unsecureScreen();
-                          AndroidDeviceInfo info = await deviceInfo.androidInfo;
-
-                          var formData = FormData.fromMap({
-                            'progname': 'RALS_TOOLS ',
-                            'versi': '${versi}',
-                            'date_run': '${DateTime.now()}',
-                            'info1': 'Barcode No.Kartu Menu ID Cash',
-                            ' info2': '${_udid} ',
-                            'userid': '${userData.getUsernameID()}',
-                            ' toko': '${userData.getUserToko()}',
-                            ' devicename': '${info.device}',
-                            'TOKEN': 'R4M4Y4N4'
-                          });
-
-                          var response = await dio.post(
-                              '${tipeurl}v1/activity/createmylog',
-                              data: formData);
+                         loginCubit.createLog(baseParam.logInfoIdcashPage,
+                         baseParam.logInfoIdcashBarcode, apiUrl);
                           Navigator.pushAndRemoveUntil(context,
                               MaterialPageRoute(builder: (context) {
                             return RamayanaIDCash();

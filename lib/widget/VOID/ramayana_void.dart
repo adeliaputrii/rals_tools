@@ -21,9 +21,12 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
   bool _isKeptOn = true;
   double _brightness = 1.0;
   KeyboardUtils keyboardUtils = KeyboardUtils();
+  late LoginCubit loginCubit;
+  final urlApi = '${tipeurl}${basePath.api_login}';
 
   @override
   void initState() {
+    loginCubit = context.read<LoginCubit>();
     super.initState();
     debugPrint('cek'+widget.isOffline.toString());
     initPlatformState();
@@ -395,24 +398,8 @@ return Future.value(false);
                         await _checkInternetConnection();
                         if (_isConnected == true) {
                           print('is connect');
-                          AndroidDeviceInfo info = await deviceInfo.androidInfo;
-                          var formData = FormData.fromMap({
-                            'progname': 'RALS_TOOLS ',
-                            'versi': '${versi}',
-                            'date_run': '${DateTime.now()}',
-                            'info1': 'Aktivitas Void - Menu Void ,',
-                            ' info2': '${_udid} ',
-                            'userid': '${userData.getUsernameID()}',
-                            ' toko': '${userData.getUserToko()}',
-                            ' devicename': '${info.device}',
-                            'TOKEN': 'R4M4Y4N4'
-                          });
-              
-                          var response = await dio.post(
-                              '${tipeurl}v1/activity/createmylog',
-                              data: formData);
-              
-                          print('berhasil $_udid');
+                         loginCubit.createLog(
+                          'VOID', 'Aktivitas Void', urlApi);
                         } else if (_isConnected == false) {
                           String format =
                               DateFormat.Hms().format(DateTime.now());
@@ -459,6 +446,18 @@ return Future.value(false);
                               //     ),
                               //    )
                               // ),
+
+                              Container(
+                                margin: EdgeInsets.fromLTRB(10, 0,10, 0),
+                                height: 110,
+                                child: SfBarcodeGenerator(
+                                 value:
+                                 '$data',
+                                  backgroundColor:
+                                  Colors.white,
+                                  barColor:Colors.black,
+                                  symbology:Code128()),
+                              ),
               
                               Container(
                                 margin: EdgeInsets.fromLTRB(100, 30, 100, 0),

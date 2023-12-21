@@ -21,6 +21,8 @@ const String logInfoResetFail = 'Reset Password Gagal';
 //*Log ID CASH Page*//
 const String logInfoIdcashPage = 'Ramayana ID CASH Page';
 const String logInfoIdcashSucc = 'Navigasi ke ID CASH';
+const String logInfoIdcashBarcode = 'Barcode ID CASH';
+const String logInfoIdcashHistory = 'Riwayat ID CASH';
 const String logInfoIdcashFail = 'Reset Password Gagal';
 //*Log Surat Jalan Page*//
 const String logInfoScanSJPage = 'Ramayana Scan Surat Jalan Page';

@@ -64,7 +64,7 @@ import 'package:myactivity_project/tools/device_info.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:myactivity_project/widget/VOID/import.dart';
 import 'package:myactivity_project/base/base_params.dart' as baseParam;
-
+import 'package:myactivity_project/base/base_paths.dart' as basePath;
 import '../cubit/home/home_cubit.dart';
 import '../cubit/id_cash/id_cash_cubit.dart';
 import '../cubit/login/login_cubit.dart';

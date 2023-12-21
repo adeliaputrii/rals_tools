@@ -62,7 +62,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   String formattedDate = DateFormat('d MMMM yyyy').format(DateTime.now());
   String dateInput = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
   String formattedTime = DateFormat('HH:mm').format(DateTime.now());
-
+  final urlApi = '${tipeurl}${basePath.api_login}';
   late MyActivityCubit cubit;
   late LoginCubit loginCubit;
 
@@ -1643,6 +1643,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               ),
                             ),
                           ]),
+                          SizedBox(height: 30,)
                     ],
                   ),
                 ),

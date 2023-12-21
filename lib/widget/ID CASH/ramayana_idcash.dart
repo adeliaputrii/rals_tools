@@ -344,24 +344,8 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                                   borderRadius: BorderRadius.circular(50)),
                               color: Colors.white,
                               onPressed: () async {
-                                AndroidDeviceInfo info =
-                                    await deviceInfo.androidInfo;
-                                var formData = FormData.fromMap({
-                                  'progname': 'RALS_TOOLS ',
-                                  'versi': '${versi}',
-                                  'date_run': '${DateTime.now()}',
-                                  'info1': 'Riwayat ID CASH',
-                                  ' info2': '${imei} ',
-                                  'userid': '${userData.getUsernameID()}',
-                                  ' toko': '${userData.getUserToko()}',
-                                  ' devicename': '${info.device}',
-                                  'TOKEN': 'R4M4Y4N4'
-                                });
-                                var response = await dio.post(
-                                    '${tipeurl}v1/activity/createmylog',
-                                    data: formData);
-                                print('berhasil $_udid');
-                                // ApprovalIdcash.approvalidcash.add(e.nokartu);
+                               loginCubit.createLog(baseParam.logInfoIdcashPage,
+                              baseParam.logInfoIdcashHistory, apiUrl);
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
                                   return RamayanaRiwayatIDCash(

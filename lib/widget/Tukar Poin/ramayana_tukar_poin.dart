@@ -18,6 +18,8 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
   bool _isKeptOn = true;
   double _brightness = 1.0;
   bool _barcode = true;
+  late LoginCubit loginCubit;
+  final urlApi = '${tipeurl}${basePath.api_login}';
 
   @override
   void didPush() {
@@ -31,6 +33,7 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
 
   @override
   void initState() {
+    loginCubit = context.read<LoginCubit>();
     super.initState();
     initPlatformState();
   }
@@ -174,9 +177,10 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
               icon: Icon(
                 Icons.arrow_back_ios,
                 size: 20,
+                color: Colors.white,
               ),
             ),
-            title: Text('Tukar Poin', style: TextStyle(fontSize: 23)),
+            title: Text('Tukar Poin', style: TextStyle(fontSize: 23, color: Colors.white)),
             backgroundColor: Color.fromARGB(255, 255, 17, 17),
             elevation: 7.20,
             toolbarHeight: 90,
@@ -287,22 +291,8 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
                         await _checkInternetConnection();
                         if (_isConnected == true) {
                           print('is connect');
-                          AndroidDeviceInfo info = await deviceInfo.androidInfo;
-                          var formData = FormData.fromMap({
-                            'progname': 'RALS_TOOLS ',
-                            'versi': '${versi}',
-                            'date_run': '${DateTime.now()}',
-                            'info1': 'Aktivitas Tukar Poin - Menu Tukar Poin',
-                            ' info2': '${_udid} ',
-                            'userid': '${userData.getUsernameID()}',
-                            ' toko': '${userData.getUserToko()}',
-                            ' devicename': '${info.device}',
-                            'TOKEN': 'R4M4Y4N4'
-                          });
-
-                          var response = await dio.post(
-                              '${tipeurl}v1/activity/createmylog',
-                              data: formData);
+                          loginCubit.createLog(
+                         'Tukar Poin', 'Aktivitas Tukar Poin', urlApi);
 
                           print('berhasil $_udid');
                         } else if (_isConnected == false) {
@@ -410,27 +400,19 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
                                 child: _barcode
                                     ? Column(
                                         children: [
-                                          // Container(
-                                          //     margin:
-                                          //         EdgeInsets.fromLTRB(10, 100, 10, 0),
-                                          //     child: Center(
-                                          //         child: BarCodeImage(
-                                          //       backgroundColor: Colors.white,
-                                          //       params: Code128BarCodeParams(
-                                          //         "${data}",
-                                          //         lineWidth:
-                                          //             1.5, // width for a single black/white bar (default: 2.0)
-                                          //         barHeight:
-                                          //             100, // height for the entire widget (default: 100.0)
-                                          //         withText:
-                                          //             false, // Render with text label or not (default: false)
-                                          //       ),
-                                          //       padding: EdgeInsets.only(bottom: 7),
-                                          //       onError: (error) {
-                                          //         // Error handler
-                                          //         print('error = $error');
-                                          //       },
-                                          //     ))),
+                                          Container(
+                                            height: 110,
+                                              margin:
+                                                  EdgeInsets.fromLTRB(10, 100, 10, 0),
+                                              child: Center(
+                                                  child: SfBarcodeGenerator(
+                                                  value:
+                                                  '$data',
+                                                    backgroundColor:
+                                                    Colors.white,
+                                                    barColor:Colors.black,
+                                                    symbology:Code128()),
+                                              )),
                                           Text(
                                             '${hasilAkhir}',
                                             style: TextStyle(

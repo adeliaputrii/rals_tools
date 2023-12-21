@@ -48,9 +48,12 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   bool isMounted = true;
   late HomeCubit homeCubit;
   bool namaUser = false;
+  late LoginCubit loginCubit;
+  final urlApi = '${tipeurl}${basePath.api_login}';
 
   @override
   void initState() {
+    loginCubit = context.read<LoginCubit>();
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     UserData userData = UserData();
@@ -738,23 +741,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                           }
                           if (_isConnected == true) {
                             print('is connect');
-                            AndroidDeviceInfo info =
-                                await deviceInfo.androidInfo;
-                            var formData = FormData.fromMap({
-                              'progname': 'RALS_TOOLS ',
-                              'versi': '${versi}',
-                              'date_run': '${DateTime.now()}',
-                              'info1': '${getName()} ',
-                              ' info2': '${imei} ',
-                              'userid': '${userData.getUsernameID()}',
-                              ' toko': '${userData.getUserToko()}',
-                              ' devicename': '${info.device}',
-                              'TOKEN': 'R4M4Y4N4'
-                            });
-
-                            var response = await dio.post(
-                                '${tipeurl}v1/activity/createmylog',
-                                data: formData);
+                            loginCubit.createLog(
+                             '${getName()}', 'Navigasi Menu ${getName()}', urlApi);
 
                             print('berhasil $_udid');
                           } else if (_isConnected == false) {
@@ -1313,31 +1301,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 }
                                                 if (_isConnected == true) {
                                                   print('is connect');
-                                                  AndroidDeviceInfo info =
-                                                      await deviceInfo
-                                                          .androidInfo;
-                                                  var formData =
-                                                      FormData.fromMap({
-                                                    'progname': 'RALS_TOOLS ',
-                                                    'versi': '${versi}',
-                                                    'date_run':
-                                                        '${DateTime.now()}',
-                                                    'info1': '${getName()} ',
-                                                    ' info2': '${imei} ',
-                                                    'userid':
-                                                        '${userData.getUsernameID()}',
-                                                    ' toko':
-                                                        '${userData.getUserToko()}',
-                                                    ' devicename':
-                                                        '${info.device}',
-                                                    'TOKEN': 'R4M4Y4N4'
-                                                  });
-
-                                                  var response = await dio.post(
-                                                      '${tipeurl}v1/activity/createmylog',
-                                                      data: formData);
-
-                                                  print('berhasil $_udid');
+                                                  loginCubit.createLog(
+                                                  '${getName()}', 'Navigasi Menu ${getName()}', urlApi);
                                                 } else if (_isConnected ==
                                                     false) {
                                                   String format =
