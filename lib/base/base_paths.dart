@@ -1,4 +1,5 @@
-const String base_url = "https://dev-android-api.ramayana.co.id:8305/";
+const String base_url_dev = "https://dev-android-api.ramayana.co.id:8305/";
+const String base_url_prod = "https://android-api.ramayana.co.id:8304/";
 
 const String api_login = "api/v1/auth/signin";
 const String api_reset_pass = 'api/v1/auth/reset.password';

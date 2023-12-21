@@ -811,10 +811,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
         });
         var response =
             await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
-        // print('berhasil $_udid');
-        // print('success');
-        // print(formData);
-        // print('delete');
         await db.deleteActivityy(element.id_act!);
       });
     }

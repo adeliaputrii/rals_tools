@@ -51,20 +51,16 @@ void main() async {
       Permission.notification.request();
     }
   });
-
-  await Firebase.initializeApp();
-  await FirebaseApiNew().initNotification();
-
+  firebaseInit();
   registerAppServices();
   initPlatformState();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   UserData userData = UserData();
   await userData.getPref();
-  String userId = userData.getUsernameID();
-  var username = prefs.getString("username");
-  var waktuLogin = prefs.getString("waktuLogin");
+
   var waktuLoginOffline = prefs.getString("waktuLoginOffline");
+  final lastLogin = await SharedPref.getLastLogin();
   final deviceId = await SharedPref.getDeviceId();
 
   await NotificationService.initializeNotification();
@@ -72,17 +68,24 @@ void main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]).then((value) => runApp(waktuLogin == formattedDate
+  ]).then((value) => runApp(lastLogin == formattedDate
       ? appCubit.initCubit(HomeMainApp())
-      : appCubit
-          .initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
+      : appCubit.initCubit(SplashHomeMainApp(loginOffline: lastLogin))));
 }
 
 Future<void> registerAppServices() async {
   final appUtil = AppUtils();
   appUtil.initNetwork();
   final appServices = AppServices(GetIt.I.get<Dio>());
-  await appServices.registerAppServices(basePath.base_url);
+  final url =
+      kDebugMode ? '${basePath.base_url_dev}' : '${basePath.base_url_prod}';
+  debugPrint('url' + url);
+  await appServices.registerAppServices(url);
+}
+
+void firebaseInit() async {
+  await Firebase.initializeApp();
+  await FirebaseApiNew().initNotification();
 }
 
 Future<void> initPlatformState() async {

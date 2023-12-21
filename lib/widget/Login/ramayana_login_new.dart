@@ -47,6 +47,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   var token = '';
   static var fcmToken;
   final _firebaseMessaging = FirebaseMessaging.instance;
+  String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
   @override
   void initState() {
     loginCubit = context.read<LoginCubit>();
@@ -412,8 +414,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     return;
   }
 
-  String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-
   fetchDataNoKartu({required String id_user}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     print('${userData.getUsername7()}');
@@ -457,18 +457,19 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   }
 
   loginPressed() async {
-    keyboardUtils.dissmissKeyboard(context);
-    AndroidDeviceInfo info = await devicePlugin.androidInfo;
-    if (usernameController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty) {
-      final body = LoginBody(
-          username: usernameController.text,
-          password: passwordController.text,
-          deviceId: "${_nativeId}${info.device}",
-          versi: versi);
+    FirebaseCrashlytics.instance.crash();
+    // keyboardUtils.dissmissKeyboard(context);
+    // AndroidDeviceInfo info = await devicePlugin.androidInfo;
+    // if (usernameController.text.isNotEmpty &&
+    //     passwordController.text.isNotEmpty) {
+    //   final body = LoginBody(
+    //       username: usernameController.text,
+    //       password: passwordController.text,
+    //       deviceId: "${_nativeId}${info.device}",
+    //       versi: versi);
 
-      loginCubit.login(loginBody: body);
-    }
+    //   loginCubit.login(loginBody: body);
+    // }
 
     // print(versi);
     // print('daaaaaaamn 23111');
@@ -854,10 +855,13 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         }
 
         if (state is LoginSuccess) {
+          pref.setString('user_token_str', state.response.accessToken ?? '');
+          SharedPref.setLastLogin('${formattedDate}');
           SharedPref.setUserId(
               state.response.data?.username7.toString() ?? 'unknown');
           SharedPref.setUserToko(
               state.response.data?.toko.toString() ?? 'unknown');
+
           await fetchDataNoKartu(
               id_user: state.response.data!.userId.toString());
           loginCubit.createLog(
@@ -882,7 +886,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           setState(() {
             isLoading = false;
           });
-          pref.setString("waktuLogin", "${formattedDate}");
         }
         if (state is CreateLogFailure) {
           setState(() {
