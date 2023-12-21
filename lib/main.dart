@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get_it/get_it.dart';
@@ -12,11 +13,13 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:myactivity_project/service/SP_service/SP_service.dart';
 import 'package:myactivity_project/service/notification/notification_service.dart';
+import 'package:myactivity_project/utils/app_shared_pref.dart';
 import 'package:myactivity_project/widget/Login/import.dart';
 import 'package:myactivity_project/widget/My%20List%20Task/import.dart';
 import 'package:myactivity_project/widget/Splashscreen/import.dart';
 import 'package:myactivity_project/widget/VOID/import.dart';
 import 'package:myactivity_project/widget/import.dart';
+import 'package:native_id/native_id.dart';
 import 'package:notification_permissions/notification_permissions.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
@@ -37,7 +40,8 @@ import 'utils/app_services.dart';
 import 'utils/app_utils.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
-
+String _nativeId = 'Unknown';
+final _nativeIdPlugin = NativeId();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationPermissions.requestNotificationPermissions;
@@ -52,6 +56,7 @@ void main() async {
   await FirebaseApiNew().initNotification();
 
   registerAppServices();
+  initPlatformState();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   UserData userData = UserData();
@@ -60,7 +65,8 @@ void main() async {
   var username = prefs.getString("username");
   var waktuLogin = prefs.getString("waktuLogin");
   var waktuLoginOffline = prefs.getString("waktuLoginOffline");
-  debugPrint("waktu login offline: ${waktuLoginOffline}");
+  final deviceId = await SharedPref.getDeviceId();
+
   await NotificationService.initializeNotification();
   final appCubit = AppCubit();
   SystemChrome.setPreferredOrientations([
@@ -77,6 +83,29 @@ Future<void> registerAppServices() async {
   appUtil.initNetwork();
   final appServices = AppServices(GetIt.I.get<Dio>());
   await appServices.registerAppServices(basePath.base_url);
+}
+
+Future<void> initPlatformState() async {
+  DeviceInfoPlugin devicePlugin = DeviceInfoPlugin();
+  AndroidDeviceInfo info = await devicePlugin.androidInfo;
+  String udid;
+  String nativeId;
+  String uuid;
+  // Platform messages may fail, so we use a try/catch PlatformException.
+  // We also handle the message potentially returning null.
+  try {
+    nativeId = await _nativeIdPlugin.getId() ?? 'Unknown NATIVE_ID';
+  } on PlatformException {
+    nativeId = 'Failed to get native id.';
+  }
+
+  try {
+    uuid = await _nativeIdPlugin.getUUID() ?? 'Unknown UUID';
+  } on PlatformException {
+    uuid = 'Failed to get uuid.';
+  }
+  SharedPref.setDeviceId('${nativeId}${info.device}');
+  SharedPref.setDeviceName('${info.brand}');
 }
 
 class HomeMainApp extends StatelessWidget {

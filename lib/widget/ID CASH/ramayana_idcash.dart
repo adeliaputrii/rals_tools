@@ -21,7 +21,9 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
   UserData userData = UserData();
   var dio = Dio();
   late IDCashCubit cubit;
+  late LoginCubit loginCubit;
   late memberResponse.DataMemberCardResponse responseData;
+  final apiUrl = '${tipeurl}${basePath.api_membercard_customer}';
 
   @override
   void didPushNext() {
@@ -80,6 +82,7 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
   void initState() {
     super.initState();
     responseData = DataMemberCardResponse();
+    loginCubit = context.read<LoginCubit>();
     cubit = context.read<IDCashCubit>();
     initPlatformState();
     didPushNext();
@@ -112,11 +115,17 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
           if (state is IDCashSuccess) {
             responseData = state.response;
             setState(() {
-              balance = state.response.data!.first.saldo.toString();
-              name = state.response.data!.first.nama.toString();
-              email = state.response.data!.first.email.toString();
-              phone = state.response.data!.first.nohp.toString();
+              balance = state.response.data?.first.saldo.toString() ?? "0";
+              name = state.response.data?.first.nama.toString() ?? '-';
+              email = state.response.data?.first.email.toString() ?? '-';
+              phone = state.response.data?.first.nohp.toString() ?? '-';
             });
+            loginCubit.createLog(baseParam.logInfoIdcashPage,
+                baseParam.logInfoIdcashSucc, apiUrl);
+          }
+          if (state is IDCashFailure) {
+            loginCubit.createLog(baseParam.logInfoIdcashPage,
+                '${baseParam.logInfoIdcashFail}${state.message}', apiUrl);
           }
         },
         child: Scaffold(
@@ -130,8 +139,9 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                   return DefaultBottomBarController(child: Ramayana());
                 }), (route) => false);
               },
-              icon: Icon(Icons.arrow_back_ios,
-              color: Colors.white,
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
               ),
             ),
             title: Text(

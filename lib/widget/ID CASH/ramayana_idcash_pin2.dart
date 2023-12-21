@@ -19,6 +19,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
   bool isLoading = false;
   late LoginCubit loginCubit;
   KeyboardUtils keyboardUtils = KeyboardUtils();
+  final apiUrl = '${tipeurl}${basePath.api_login}';
 
   @override
   void initState() {
@@ -63,13 +64,16 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
       SharedPreferences pref = await SharedPreferences.getInstance();
       AndroidDeviceInfo info = await deviceInfo.androidInfo;
       var username = userData.getUsername7();
+      final deviceId = await SharedPref.getDeviceId();
       final phoneSerialNum = pref.getString('serialImei');
       final body = LoginBody(
           username: "${username}",
           password: passwordController.text,
-          deviceId: "${phoneSerialNum}${info.device}");
+          deviceId: "${deviceId}",
+          versi: versi);
       print(username);
       loginCubit.login(loginBody: body);
+
       //     http.Response response =
       //         //  await AuthServices.login(username.text, pass.text);
       //         await AuthServicesLog.login(
@@ -136,19 +140,21 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
               isLoading = false;
             });
             final response = state.response;
-            if (response.userpass == "0") {
-              userData.setUser(data: response.toJson());
-              snackBar("Success!!!");
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        RamayanaBarcode(dataMember: widget.dataMember),
-                  ),
-                  (Route<dynamic> route) => false);
-            }
+            loginCubit.createLog(baseParam.logInfoIdcashPage,
+                baseParam.logInfoLoginSucc, apiUrl);
+            userData.setUser(data: response.toJson());
+            snackBar("Success!!!");
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      RamayanaBarcode(dataMember: widget.dataMember),
+                ),
+                (Route<dynamic> route) => false);
           }
           if (state is LoginFailure) {
+            loginCubit.createLog(baseParam.logInfoIdcashPage,
+                '${baseParam.logInfoLoginFail}${state.message}', apiUrl);
             setState(() {
               isLoading = false;
             });

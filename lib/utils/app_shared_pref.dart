@@ -18,6 +18,24 @@ class SharedPref {
     await prefs.setString(key_user_id, userId);
   }
 
+  static Future<void> setUserToko(String userToko) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString(key_user_toko, userToko);
+  }
+
+  static Future<void> setDeviceId(String deviceId) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString(key_device_id, deviceId);
+  }
+
+  static Future<void> setDeviceName(String deviceName) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString(key_device_name, deviceName);
+  }
+
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -35,10 +53,28 @@ class SharedPref {
     return prefs.getString(key_user_id);
   }
 
+  static Future<String?> getUserToko() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(key_user_toko);
+  }
+
   static Future<String?> getName() async {
     final prefs = await SharedPreferences.getInstance();
 
     return prefs.getString('name');
+  }
+
+  static Future<String?> getDeviceId() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(key_device_id);
+  }
+
+  static Future<String?> getDeviceName() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(key_device_name);
   }
 
   static Future<String?> getRole() async {

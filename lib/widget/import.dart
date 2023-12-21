@@ -63,9 +63,11 @@ import 'package:myactivity_project/service/notification/notification_service.dar
 import 'package:myactivity_project/tools/device_info.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:myactivity_project/widget/VOID/import.dart';
+import 'package:myactivity_project/base/base_params.dart' as baseParam;
 
 import '../cubit/home/home_cubit.dart';
 import '../cubit/id_cash/id_cash_cubit.dart';
+import '../cubit/login/login_cubit.dart';
 import '../data/model/data_member_card_body.dart';
 import '../utils/generate_barcode.dart';
 import 'Berita/import.dart';

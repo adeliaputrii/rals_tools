@@ -64,11 +64,13 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   String formattedTime = DateFormat('HH:mm').format(DateTime.now());
 
   late MyActivityCubit cubit;
+  late LoginCubit loginCubit;
 
   @override
   void initState() {
     super.initState();
     cubit = context.read<MyActivityCubit>();
+    loginCubit = context.read<LoginCubit>();
     iniApiEdit;
     _loadToken();
     if (widget.response == null) {
@@ -666,10 +668,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
           ),
           title: Text('My Activity',
               style: GoogleFonts.plusJakartaSans(
-                fontSize: 23,
-                color: Colors.white
-              )
-              ),
+                  fontSize: 23, color: Colors.white)),
           backgroundColor: Color.fromARGB(255, 255, 17, 17),
           elevation: 5,
           toolbarHeight: 80,
@@ -720,43 +719,37 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Date',
-                            style: GoogleFonts.plusJakartaSans(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500
-                          )
-                          ),
+                          Text('Date',
+                              style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500)),
                           SizedBox(
                             height: 10,
                           ),
                           TextFormField(
                             decoration: InputDecoration(
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                ),
-                                prefixIcon: Icon(
-                                  Icons.date_range_rounded,
-                                  size: 33,
-                                  color: Color.fromARGB(255, 255, 17, 17),
-                                ),
-                                //  labelText: 'Date',
-                                hintText: '${formattedDate}',
-                                hintStyle: GoogleFonts.plusJakartaSans(
-                                  fontSize: 17, 
-                                  color: Colors.black
-                                ),),
+                              border: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              prefixIcon: Icon(
+                                Icons.date_range_rounded,
+                                size: 33,
+                                color: Color.fromARGB(255, 255, 17, 17),
+                              ),
+                              //  labelText: 'Date',
+                              hintText: '${formattedDate}',
+                              hintStyle: GoogleFonts.plusJakartaSans(
+                                  fontSize: 17, color: Colors.black),
+                            ),
                             style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 17, 
-                                  color: Colors.black
-                                ),
+                                fontSize: 17, color: Colors.black),
                             // enabled: false,
                             keyboardType: TextInputType.text,
                             readOnly: true,
@@ -765,7 +758,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               _setDate = val;
                             },
                           ),
-                          
                         ],
                       ),
 
@@ -777,14 +769,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Project',
-                             style: GoogleFonts.plusJakartaSans(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500
-                          )
-                          ),
+                          Text('Project',
+                              style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500)),
                           SizedBox(
                             height: 20,
                           ),
@@ -803,16 +792,12 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                 width: 350,
                                 child: DropdownButton(
                                   style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 17, 
-                                  color: Colors.black
-                                ),
+                                      fontSize: 17, color: Colors.black),
                                   value: selected,
                                   hint: Text(
                                     '${selected}',
                                     style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 17, 
-                                  color: Colors.black
-                                ),
+                                        fontSize: 17, color: Colors.black),
                                   ),
                                   onChanged: (value) {
                                     print(value);
@@ -869,14 +854,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Task',
-                            style: GoogleFonts.plusJakartaSans(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500
-                          )
-                          ),
+                          Text('Task',
+                              style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -893,16 +875,12 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                 width: 350,
                                 child: DropdownButton(
                                   style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 17, 
-                                  color: Colors.black
-                                ),
+                                      fontSize: 17, color: Colors.black),
                                   value: selectedTask,
                                   hint: Text(
                                     '${selectedTask}',
                                     style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 17, 
-                                  color: Colors.black
-                                ),
+                                        fontSize: 17, color: Colors.black),
                                   ),
                                   onChanged: (value) {
                                     print(value);
@@ -977,14 +955,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Time',
-                              style: GoogleFonts.plusJakartaSans(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500
-                          )
-                            ),
+                            Text('Time',
+                                style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500)),
                             SizedBox(
                               height: 10,
                             ),
@@ -997,35 +972,32 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                       validator: RequiredValidator(
                                           errorText: ' Please Enter'),
                                       decoration: InputDecoration(
-                                          border: UnderlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                          focusedBorder: UnderlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                          prefixIcon: Icon(
-                                            Icons.lock_clock,
-                                            size: 30,
-                                            color: Color.fromARGB(
-                                                255, 255, 17, 17),
-                                          ),
-                                          //  labelText: 'Date',
-                                          hintText: '${formattedTime}',
-                                          hintStyle: GoogleFonts.plusJakartaSans(
-                                          fontSize: 17, 
-                                          color: Colors.black
-                                        ),),
-                                      style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 17, 
-                                        color: Colors.black
+                                        border: UnderlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.black),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.black),
+                                        ),
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.black),
+                                        ),
+                                        prefixIcon: Icon(
+                                          Icons.lock_clock,
+                                          size: 30,
+                                          color:
+                                              Color.fromARGB(255, 255, 17, 17),
+                                        ),
+                                        //  labelText: 'Date',
+                                        hintText: '${formattedTime}',
+                                        hintStyle: GoogleFonts.plusJakartaSans(
+                                            fontSize: 17, color: Colors.black),
                                       ),
-                                        // enabled: false,
+                                      style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 17, color: Colors.black),
+                                      // enabled: false,
                                       keyboardType: TextInputType.text,
                                       controller: timeStart,
                                       onTap: () async {
@@ -1111,48 +1083,42 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                           });
                                       }),
                                 ),
-                                Text(
-                                  'to',
-                            style: GoogleFonts.plusJakartaSans(
-                            fontSize: 15,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500
-                          )
-                                ),
+                                Text('to',
+                                    style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500)),
                                 Container(
                                   width: 170,
                                   child: TextFormField(
                                       validator: RequiredValidator(
                                           errorText: ' Please Enter'),
                                       decoration: InputDecoration(
-                                          border: UnderlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                          focusedBorder: UnderlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                          prefixIcon: Icon(
-                                            Icons.lock_clock,
-                                            color: Color.fromARGB(
-                                                255, 255, 17, 17),
-                                            size: 30,
-                                          ),
-                                          //  labelText: 'Date',
-                                          hintText: '${formattedTime}',
-                                          hintStyle: GoogleFonts.plusJakartaSans(
-                                          fontSize: 17, 
-                                          color: Colors.black
-                                        ),),
-                                      style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 17, 
-                                        color: Colors.black
+                                        border: UnderlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.black),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.black),
+                                        ),
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.black),
+                                        ),
+                                        prefixIcon: Icon(
+                                          Icons.lock_clock,
+                                          color:
+                                              Color.fromARGB(255, 255, 17, 17),
+                                          size: 30,
+                                        ),
+                                        //  labelText: 'Date',
+                                        hintText: '${formattedTime}',
+                                        hintStyle: GoogleFonts.plusJakartaSans(
+                                            fontSize: 17, color: Colors.black),
                                       ),
+                                      style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 17, color: Colors.black),
                                       // enabled: false,
                                       keyboardType: TextInputType.text,
                                       controller: timeEnd,
@@ -1245,14 +1211,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Description',
-                           style: GoogleFonts.plusJakartaSans(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500
-                          )
-                          ),
+                          Text('Description',
+                              style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500)),
                           SizedBox(
                             height: 20,
                           ),
@@ -1280,9 +1243,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               ),
                               labelText: 'Deskripsi',
                               labelStyle: GoogleFonts.plusJakartaSans(
-                                  fontSize: 17, 
-                                  color: Colors.red
-                                ),
+                                  fontSize: 17, color: Colors.red),
                               prefixIcon: Icon(
                                 Icons.chrome_reader_mode,
                                 color: Color.fromARGB(255, 255, 17, 17),
@@ -1292,9 +1253,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               filled: true,
                             ),
                             style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 17, 
-                                  color: Colors.black
-                                ),
+                                fontSize: 17, color: Colors.black),
                           ),
                         ],
                       ),
@@ -1377,9 +1336,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               Text(
                                 'Upload Document',
                                 style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 15, 
-                                  color: Colors.black
-                                ),
+                                    fontSize: 15, color: Colors.black),
                               )
                             ],
                           ),
@@ -1432,9 +1389,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               child: Text(
                                 "Edit",
                                 style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 17, 
-                                  color: Colors.white
-                                ),
+                                    fontSize: 17, color: Colors.white),
                               ),
                             ),
                             MaterialButton(
@@ -1520,10 +1475,10 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                           'dokumen': '${dokumenEdit}',
                                           'beforedokumen': '${dokumen}'
                                         });
-
-                                        var response = await dio.post(
-                                            '${tipeurl}v1/activity/updateDailyActivity',
-                                            data: formData);
+                                        var urlEditAct =
+                                            '${tipeurl}v1/activity/updateDailyActivity';
+                                        var response = await dio
+                                            .post(urlEditAct, data: formData);
 
                                         AndroidDeviceInfo info =
                                             await deviceInfo.androidInfo;
@@ -1540,10 +1495,14 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                           ' devicename': '${info.device}',
                                           'TOKEN': 'R4M4Y4N4'
                                         });
+                                        loginCubit.createLog(
+                                            baseParam.logInfoActityEdit,
+                                            '${baseParam.logInfoActitySucc}${idEdit}',
+                                            urlEditAct);
                                         print('berhasil $_udid');
-                                        var responseLog = await dio.post(
-                                            '${tipeurl}v1/activity/createmylog',
-                                            data: formDataLog);
+                                        // var responseLog = await dio.post(
+                                        //     '${tipeurl}v1/activity/createmylog',
+                                        //     data: formDataLog);
                                         print('berhasil $_udid');
                                       }
 
@@ -1572,10 +1531,10 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                                   file!.path,
                                                   filename: '${nameFile}')
                                         });
-
-                                        var response = await dio.post(
-                                            '${tipeurl}v1/activity/create_daily_activity',
-                                            data: formData);
+                                        var urlCreateAct =
+                                            '${tipeurl}v1/activity/create_daily_activity';
+                                        var response = await dio
+                                            .post(urlCreateAct, data: formData);
 
                                         AndroidDeviceInfo info =
                                             await deviceInfo.androidInfo;
@@ -1592,10 +1551,15 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                           ' devicename': '${info.device}',
                                           'TOKEN': 'R4M4Y4N4'
                                         });
+
                                         print('berhasil $_udid');
-                                        var responseLog = await dio.post(
-                                            '${tipeurl}v1/activity/createmylog',
-                                            data: formDataLog);
+                                        loginCubit.createLog(
+                                            baseParam.logInfoActivityPage,
+                                            baseParam.logInfoActivityInputSucc,
+                                            urlCreateAct);
+                                        // var responseLog = await dio.post(
+                                        //     '${tipeurl}v1/activity/createmylog',
+                                        //     data: formDataLog);
                                         print('berhasil $_udid');
                                       } else {
                                         var formData = FormData.fromMap({
@@ -1613,10 +1577,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                           'myactivity_desc': desc.text,
                                           'date_create': dateInput,
                                         });
+                                        var urlCreateAct =
+                                            '${tipeurl}v1/activity/create_daily_activity';
 
-                                        var response = await dio.post(
-                                            '${tipeurl}v1/activity/create_daily_activity',
-                                            data: formData);
+                                        var response = await dio
+                                            .post(urlCreateAct, data: formData);
 
                                         AndroidDeviceInfo info =
                                             await deviceInfo.androidInfo;
@@ -1634,9 +1599,13 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                           'TOKEN': 'R4M4Y4N4'
                                         });
                                         print('berhasil $_udid');
-                                        var responseLog = await dio.post(
-                                            '${tipeurl}v1/activity/createmylog',
-                                            data: formDataLog);
+                                        loginCubit.createLog(
+                                            baseParam.logInfoActivityPage,
+                                            baseParam.logInfoActivityInputSucc,
+                                            urlCreateAct);
+                                        // var responseLog = await dio.post(
+                                        //     '${tipeurl}v1/activity/createmylog',
+                                        //     data: formDataLog);
                                         print('berhasil $_udid');
                                       }
                                     }
@@ -1670,9 +1639,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               child: Text(
                                 "Save",
                                 style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 17, 
-                                  color: Colors.white
-                                ),
+                                    fontSize: 17, color: Colors.white),
                               ),
                             ),
                           ]),

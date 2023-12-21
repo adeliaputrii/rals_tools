@@ -17,10 +17,12 @@ class _RamayanaCekHargaState extends State<RamayanaCekHarga> {
   String? _barcode;
   String _udid = 'Unknown';
   Dio dio = Dio();
+  late LoginCubit loginCubit;
 
   @override
   void initState() {
     super.initState();
+    loginCubit = context.read<LoginCubit>();
     _dateControllerr.text = _formattedDate;
     dateController.text = formattedDate;
     _loadToko();
@@ -81,7 +83,6 @@ class _RamayanaCekHargaState extends State<RamayanaCekHarga> {
               hintColor: Colors.black,
               colorScheme: ColorScheme.light(
                   primary: Color.fromARGB(255, 255, 17, 17),
-                 
                   onSecondary: Colors.black,
                   onPrimary: Colors.white,
                   surface: Colors.black,
@@ -123,7 +124,6 @@ class _RamayanaCekHargaState extends State<RamayanaCekHarga> {
               hintColor: Colors.black,
               colorScheme: ColorScheme.light(
                   primary: Color.fromARGB(255, 255, 17, 17),
-                 
                   onSecondary: Colors.black,
                   onPrimary: Colors.white,
                   surface: Colors.black,
@@ -159,10 +159,10 @@ class _RamayanaCekHargaState extends State<RamayanaCekHarga> {
   fetchHarga({required String para1, required String apara2}) async {
     print('oke');
     try {
+      final url = '${tipeurl}v1/scansku/tbl_store';
       CekHarga.cekharga.clear();
-      final responseku = await http.post(
-          Uri.parse('${tipeurl}v1/scansku/tbl_store'),
-          body: {'para1': para1, 'apara2': apara2});
+      final responseku = await http
+          .post(Uri.parse(url), body: {'para1': para1, 'apara2': apara2});
 
       var data = jsonDecode(responseku.body);
 
@@ -181,9 +181,10 @@ class _RamayanaCekHargaState extends State<RamayanaCekHarga> {
           ' devicename': '${info.device}',
           'TOKEN': 'R4M4Y4N4'
         });
-
-        var response =
-            await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
+        loginCubit.createLog(
+            baseParam.logInfoCekHargaPage, baseParam.logInfoCekHargaSucc, url);
+        // var response =
+        //     await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
         print('berhasil $_udid');
         int count = data['data'].length;
         final Map<String, CekHarga> profileMap = new Map();

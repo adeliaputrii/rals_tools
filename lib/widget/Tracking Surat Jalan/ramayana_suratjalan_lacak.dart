@@ -24,6 +24,8 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
   TextEditingController statusController = TextEditingController();
   late TabController _controller;
   late SuratJalanCubit sjCubit;
+  late LoginCubit loginCubit;
+
   double turns = 0.0;
   var barcodeSj = "";
   bool _flip = false;
@@ -34,6 +36,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
   List<StepperItemData> stepperSJ = [];
   late PopUpWidget popUp;
   KeyboardUtils keyboardUtils = KeyboardUtils();
+  final apiUrl = '${tipeurl}${basePath.api_tracking_scan}';
 
   Future<void> scanBarcodeScan() async {
     String barcodeScanRes;
@@ -110,6 +113,10 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
           }
 
           if (state is SuratJalanSuccess) {
+            loginCubit.createLog(
+                baseParam.logInfoTrackSJPage,
+                '${baseParam.logInfoScanSJSucc} No SJ ${noSjController..text}',
+                apiUrl);
             setState(() {
               isLoading = false;
               _visible = true;
@@ -140,6 +147,10 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
               _visible = false;
               isLoading = false;
             });
+            loginCubit.createLog(
+                baseParam.logInfoTrackSJPage,
+                '${baseParam.logInfoScanSJFail} No SJ ${noSjController..text}',
+                apiUrl);
             popUp.showPopUpError(notFound, state.message);
           }
           if (state is TrackSJSuccess) {
@@ -147,7 +158,11 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
             //   isLoading = false;
             //   _visible = true;
             // });
-            debugPrint('track sj success');
+            loginCubit.createLog(
+                baseParam.logInfoTrackSJPage,
+                '${baseParam.logInfoTrackSJSucc} No SJ ${noSjController..text}',
+                apiUrl);
+
             int index = 0;
             final response = state.response.data;
             debugPrint(state.response.data!.first.remark);
@@ -165,9 +180,13 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                     'date': element.date,
                   })));
             });
-            // for (int i = 0; i < response!.length; i++) {
+          }
 
-            // }
+          if (state is TrackSJFailure) {
+            loginCubit.createLog(
+                baseParam.logInfoTrackSJPage,
+                '${baseParam.logInfoTrackSJFail} No SJ ${noSjController..text} ${state.message}',
+                apiUrl);
           }
         },
         child: DefaultTabController(
@@ -499,7 +518,6 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                                               'assets/sj_lacak_lacakpaket.png')),
                                     );
                                   },
-                                  
                                   stepContentWidget: (_, data) {
                                     final stepData = data as StepperItemData;
                                     return Container(
@@ -517,7 +535,8 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                                         title: Container(
                                           margin: EdgeInsets.only(top: 0),
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
                                                 'Status',
@@ -567,7 +586,9 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                                               height: 10,
                                             ),
                                             Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 const Expanded(
                                                   child: Icon(
@@ -583,14 +604,20 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                                                     style: GoogleFonts
                                                         .plusJakartaSans(
                                                             fontSize: 17,
-                                                            color: Color.fromARGB(
-                                                                255, 87, 87, 87)),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    87,
+                                                                    87,
+                                                                    87)),
                                                   ),
                                                 ),
                                                 Expanded(
                                                   flex: 7,
                                                   child: Text(
-                                                    ':'+stepData.content['date'] ??
+                                                    ':' +
+                                                            stepData.content[
+                                                                'date'] ??
                                                         '',
                                                     style: GoogleFonts
                                                         .plusJakartaSans(
@@ -624,14 +651,20 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                                                     style: GoogleFonts
                                                         .plusJakartaSans(
                                                             fontSize: 17,
-                                                            color: Color.fromARGB(
-                                                                255, 87, 87, 87)),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    87,
+                                                                    87,
+                                                                    87)),
                                                   ),
                                                 ),
                                                 Expanded(
                                                   flex: 7,
                                                   child: Text(
-                                                   ':'+ stepData.content['site'] ??
+                                                    ':' +
+                                                            stepData.content[
+                                                                'site'] ??
                                                         '',
                                                     style: GoogleFonts
                                                         .plusJakartaSans(
@@ -665,15 +698,20 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                                                     style: GoogleFonts
                                                         .plusJakartaSans(
                                                             fontSize: 17,
-                                                            color: Color.fromARGB(
-                                                                255, 87, 87, 87)),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    87,
+                                                                    87,
+                                                                    87)),
                                                   ),
                                                 ),
                                                 Expanded(
                                                   flex: 7,
                                                   child: Text(
-                                                    ':'+stepData.content[
-                                                            'description'] ??
+                                                    ':' +
+                                                            stepData.content[
+                                                                'description'] ??
                                                         '',
                                                     style: GoogleFonts
                                                         .plusJakartaSans(
@@ -707,15 +745,20 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                                                     style: GoogleFonts
                                                         .plusJakartaSans(
                                                             fontSize: 17,
-                                                            color: Color.fromARGB(
-                                                                255, 87, 87, 87)),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    87,
+                                                                    87,
+                                                                    87)),
                                                   ),
                                                 ),
                                                 Expanded(
                                                   flex: 7,
                                                   child: Text(
-                                                    ':'+stepData.content[
-                                                           'remark'] ??
+                                                    ':' +
+                                                            stepData.content[
+                                                                'remark'] ??
                                                         '',
                                                     style: GoogleFonts
                                                         .plusJakartaSans(
@@ -749,14 +792,20 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                                                     style: GoogleFonts
                                                         .plusJakartaSans(
                                                             fontSize: 17,
-                                                            color: Color.fromARGB(
-                                                                255, 87, 87, 87)),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    87,
+                                                                    87,
+                                                                    87)),
                                                   ),
                                                 ),
                                                 Expanded(
                                                   flex: 7,
                                                   child: Text(
-                                                   ':' +stepData.content['pic'] ??
+                                                    ':' +
+                                                            stepData.content[
+                                                                'pic'] ??
                                                         '',
                                                     style: GoogleFonts
                                                         .plusJakartaSans(

@@ -55,6 +55,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     UserData userData = UserData();
     homeCubit = context.read<HomeCubit>();
+
     initPlatformState();
     didPop();
     _checkInternetConnection();

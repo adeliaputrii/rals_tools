@@ -13,12 +13,14 @@ class _RamayanaResetState extends State<RamayanaReset> {
   bool _isLoading = false;
   String _udid = 'Unknown';
   UserData userData = UserData();
+  late LoginCubit loginCubit;
 
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
   @override
   void initState() {
     super.initState();
+    loginCubit = context.read<LoginCubit>();
     initPlatformState();
   }
 
@@ -85,8 +87,8 @@ class _RamayanaResetState extends State<RamayanaReset> {
     }
 
     try {
-      final responseku = await http.post(
-          Uri.parse('${tipeurl}api/v1/auth/reset.password'),
+      final url = '${tipeurl}api/v1/auth/reset.password';
+      final responseku = await http.post(Uri.parse(url),
           body: {'user_name': reset2, 'email': email.text});
 
       var data = jsonDecode(responseku.body);
@@ -150,13 +152,17 @@ class _RamayanaResetState extends State<RamayanaReset> {
           'TOKEN': 'R4M4Y4N4'
         });
 
-        var response =
-            await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
-        print('berhasil $_udid');
+        // var response =
+        //     await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
+        loginCubit.createLog(
+            baseParam.logInfoResetPage, baseParam.logInfoResetSucc, url);
+
         _displayCenterMotionToastSuccess();
         // ResetPassword.hidden.add(username.text);
       } else if (data['status'] != 200) {
         print(message);
+        loginCubit.createLog(baseParam.logInfoResetPage,
+            '${baseParam.logInfoResetFail} ${message}', url);
         print("ini yang salah");
         _displayCenterMotionToastFailed();
       } else {

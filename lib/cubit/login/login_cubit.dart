@@ -4,8 +4,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:myactivity_project/base/base_params.dart';
 import 'package:myactivity_project/data/model/data_customer_response.dart';
 import 'package:myactivity_project/data/model/login_response.dart';
+import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:myactivity_project/utils/app_shared_pref.dart';
 
 import '../../data/model/create_my_log_body.dart';
@@ -51,9 +53,27 @@ class LoginCubit extends Cubit<LoginState> {
     });
   }
 
-  void createLog(CreateLogBody body) async {
+  void createLog(
+      String logInfoScreen, String logInfoDesc, String urlApi) async {
+    final userId = await SharedPref.getUserId();
+    final userToko = await SharedPref.getUserToko();
+    final deviceId = await SharedPref.getDeviceId();
+    final deviceName = await SharedPref.getDeviceName();
+    final currentDt = DateTime.now();
+
+    final bodyLog = CreateLogBody(
+        userid: int.parse(userId ?? "0"),
+        devicename: deviceId,
+        dateRun: currentDt.toString(),
+        info1: logInfoScreen,
+        info2: logInfoDesc,
+        progname: urlApi,
+        token: logToken,
+        toko: userToko,
+        versi: versi);
+
     emit(CreateLogLoading());
-    await repositories.createLog(body).then((value) {
+    await repositories.createLog(bodyLog).then((value) {
       print('Cubit test Failure');
       if (value.isSuccess) {
         emit(CreateLogSuccess());

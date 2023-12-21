@@ -42,7 +42,10 @@ import '../../data/model/data_member_card_body.dart';
 import '../../data/model/data_member_card_response.dart' as memberResponse;
 import '../../data/model/data_member_card_response.dart';
 import '../../data/model/login_body.dart';
+import '../../utils/app_shared_pref.dart';
 import '../../utils/keyboard_utils.dart';
+import 'package:myactivity_project/base/base_paths.dart' as basePath;
+import 'package:myactivity_project/base/base_params.dart' as baseParam;
 
 part 'ramayana_idcash.dart';
 part 'ramayana_id_cash_riwayat.dart';

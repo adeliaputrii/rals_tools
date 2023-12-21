@@ -25,7 +25,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   bool _passwordVisible = false;
   Timer? timer;
   bool _isLoading = true;
-
   final FocusNode _focusNode = FocusNode();
 
   var imei2 = '';
@@ -38,6 +37,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   String? _userId;
   String _password = '';
   String _nativeId = 'Unknown';
+  final urlApi = '${tipeurl}${basePath.api_login}';
 
   final _nativeIdPlugin = NativeId();
   UserData userData = UserData();
@@ -447,7 +447,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         print(ApprovalIdcashCustomer.approvalidcashcust);
       });
 
-      loginCubit.createLog(createLogBody);
       print('check length ${ApprovalIdcashCustomer.approvalidcashcust.length}');
       print(data['data'].toString());
     } else {
@@ -828,9 +827,10 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         ' devicename': '${info.device}',
         'TOKEN': 'R4M4Y4N4'
       });
-
-      var response =
-          await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
+      loginCubit.createLog(
+          baseParam.logInfoResetPage, 'Navigasi ke forgot password', urlApi);
+      // var response =
+      //     await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
       print('berhasil $_udid');
       Navigator.push(
         context,
@@ -846,7 +846,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is LoginLoading || state is CreateLogLoading) {
           setState(() {
             isLoading = true;
@@ -854,17 +854,16 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         }
 
         if (state is LoginSuccess) {
-          createLogBody = CreateLogBody(
-              toko: state.response.data?.toko,
-              userid: state.response.data?.userId,
-              versi: versi,
-              devicename: deviceInfo.brand,
-              progname: logProgname,
-              info1: logInfo1,
-              info2: deviceInfo.serialNumber,
-              dateRun: DateTime.now().toString(),
-              token: logToken);
-          fetchDataNoKartu(id_user: state.response.data!.userId.toString());
+          SharedPref.setUserId(
+              state.response.data?.username7.toString() ?? 'unknown');
+          SharedPref.setUserToko(
+              state.response.data?.toko.toString() ?? 'unknown');
+          await fetchDataNoKartu(
+              id_user: state.response.data!.userId.toString());
+          loginCubit.createLog(
+              logInfoLoginPage, baseParam.logInfoLoginSucc, urlApi);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => Ramayana()));
         }
 
         if (state is LoginFailure) {
@@ -874,19 +873,22 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           if (state.message == pleaseCheckConnection) {
             sweatAlert();
           } else {
+            loginCubit.createLog(logInfoLoginPage,
+                '${baseParam.logInfoLoginFail} ${state.message}', urlApi);
             popUpWidget.showPopUpError(pleaseCheck, state.message);
           }
         }
         if (state is CreateLogSuccess) {
+          setState(() {
+            isLoading = false;
+          });
           pref.setString("waktuLogin", "${formattedDate}");
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (_) => Ramayana()));
         }
         if (state is CreateLogFailure) {
           setState(() {
             isLoading = false;
           });
-          sweatAlert();
+
           // popUpWidget.showPopUpError(state.message, state.message);
         }
       },

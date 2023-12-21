@@ -26,13 +26,15 @@ class _ProfileeState extends State<Profilee> {
   var dio = Dio();
   bool isOn = false;
   bool loading = true;
-
+  late LoginCubit loginCubit;
   late IDCashCubit cubit;
 
   @override
   void initState() {
     super.initState();
+    loginCubit = context.read<LoginCubit>();
     cubit = context.read<IDCashCubit>();
+
     initPlatformState();
     fetchDataCustomer(id_user: '${userData.getUsername7()}');
   }
@@ -234,7 +236,8 @@ class _ProfileeState extends State<Profilee> {
               ' devicename': '${info.device}',
               'TOKEN': 'R4M4Y4N4'
             });
-
+            loginCubit.createLog(
+                baseParam.logInfoProfilePage, baseParam.logInfoProfile, " ");
             var response = await dio.post('${tipeurl}v1/activity/createmylog',
                 data: formData);
             print('berhasil $_udid');
@@ -286,42 +289,41 @@ class _ProfileeState extends State<Profilee> {
             appBar: AppBar(
               centerTitle: true,
               leading: IconButton(
-              onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (_) {
-                  return DefaultBottomBarController(child: Ramayana());
-                }));
-              },
-              icon: Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.white,
-              )),
-          title: Text(
-            'Profile',
-            style: GoogleFonts.plusJakartaSans(
-                textStyle: TextStyle(
-                    fontSize: 25,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500)),
-          ),
-          actions: [
-            Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: IconButton(
                   onPressed: () {
-                    sweatAlert();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (_) {
+                      return DefaultBottomBarController(child: Ramayana());
+                    }));
                   },
                   icon: Icon(
-                    Icons.power_settings_new_rounded,
+                    Icons.arrow_back_ios_new,
                     color: Colors.white,
-                    size: 30,
-                  ),
-                ))
-          ],
+                  )),
+              title: Text(
+                'Profile',
+                style: GoogleFonts.plusJakartaSans(
+                    textStyle: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500)),
+              ),
+              actions: [
+                Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: IconButton(
+                      onPressed: () {
+                        sweatAlert();
+                      },
+                      icon: Icon(
+                        Icons.power_settings_new_rounded,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ))
+              ],
               backgroundColor: Color.fromARGB(255, 210, 14, 0),
               elevation: 0,
             ),
-           
             body: ListView(
               children: [
                 Stack(fit: StackFit.loose, children: <Widget>[
