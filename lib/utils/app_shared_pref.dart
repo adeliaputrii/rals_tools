@@ -94,4 +94,9 @@ class SharedPref {
 
     return prefs.getString('role');
   }
+
+  static Future<void> clearLastLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(key_last_login);
+  }
 }

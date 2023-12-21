@@ -69,6 +69,7 @@ import '../cubit/home/home_cubit.dart';
 import '../cubit/id_cash/id_cash_cubit.dart';
 import '../cubit/login/login_cubit.dart';
 import '../data/model/data_member_card_body.dart';
+import '../utils/app_shared_pref.dart';
 import '../utils/generate_barcode.dart';
 import 'Berita/import.dart';
 

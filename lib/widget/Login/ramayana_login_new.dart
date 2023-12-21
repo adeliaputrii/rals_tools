@@ -457,19 +457,18 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   }
 
   loginPressed() async {
-    FirebaseCrashlytics.instance.crash();
-    // keyboardUtils.dissmissKeyboard(context);
-    // AndroidDeviceInfo info = await devicePlugin.androidInfo;
-    // if (usernameController.text.isNotEmpty &&
-    //     passwordController.text.isNotEmpty) {
-    //   final body = LoginBody(
-    //       username: usernameController.text,
-    //       password: passwordController.text,
-    //       deviceId: "${_nativeId}${info.device}",
-    //       versi: versi);
+    keyboardUtils.dissmissKeyboard(context);
+    AndroidDeviceInfo info = await devicePlugin.androidInfo;
+    if (usernameController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty) {
+      final body = LoginBody(
+          username: usernameController.text,
+          password: passwordController.text,
+          deviceId: "${_nativeId}${info.device}",
+          versi: versi);
 
-    //   loginCubit.login(loginBody: body);
-    // }
+      loginCubit.login(loginBody: body);
+    }
 
     // print(versi);
     // print('daaaaaaamn 23111');

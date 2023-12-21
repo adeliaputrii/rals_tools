@@ -394,6 +394,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
   logoutPressed() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPref.clearLastLogin();
     pref.remove('waktuLogin');
     pref.remove('token');
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
@@ -1445,13 +1446,20 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                   elevation: 0,
                                                                 ),
                                                                 onPressed: () async {
-                                                                  Navigator.pushAndRemoveUntil(
+                                                                  Navigator.push(
                                                                       context,
                                                                       MaterialPageRoute(
-                                                                          builder: (context) =>
-                                                                              RamayanaInformasi()),
-                                                                      (route) =>
-                                                                          false);
+                                                                        builder:
+                                                                            (context) =>
+                                                                                RamayanaInformasi(),
+                                                                      ));
+                                                                  // Navigator.pushAndRemoveUntil(
+                                                                  //     context,
+                                                                  //     MaterialPageRoute(
+                                                                  //         builder: (context) =>
+                                                                  //             RamayanaInformasi()),
+                                                                  //     (route) =>
+                                                                  //         false);
                                                                 },
                                                                 child: Text(
                                                                   'View All',
