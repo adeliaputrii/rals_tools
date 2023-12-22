@@ -375,9 +375,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     for (int code in ascAdel) {
       message += String.fromCharCode(code);
     }
-    print('encode : ${message}');
-    print(str);
-    print('asqi : ${ascAdel}');
+  
   }
 
   Future<void> initPlatformState() async {
