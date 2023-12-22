@@ -73,7 +73,8 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
     loginCubit = context.read<LoginCubit>();
     popUp = PopUpWidget(context);
     if (widget.noSJ != null) {
-      noSjController..text = widget.noSJ!;
+      barcodeSj = widget.noSJ ?? "unknown";
+      noSjController..text = widget.noSJ ?? "unknown";
       trackBySuratJalan(widget.noSJ!);
     }
     _controller = TabController(length: 2, vsync: this)
@@ -114,10 +115,8 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
           }
 
           if (state is SuratJalanSuccess) {
-            loginCubit.createLog(
-                baseParam.logInfoTrackSJPage,
-                '${baseParam.logInfoScanSJSucc} No SJ ${noSjController..text}',
-                apiUrl);
+            loginCubit.createLog(baseParam.logInfoTrackSJPage,
+                '${baseParam.logInfoScanSJSucc} No SJ ${barcodeSj}', apiUrl);
             setState(() {
               isLoading = false;
               _visible = true;
@@ -159,10 +158,8 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
             //   isLoading = false;
             //   _visible = true;
             // });
-            loginCubit.createLog(
-                baseParam.logInfoTrackSJPage,
-                '${baseParam.logInfoTrackSJSucc} No SJ ${noSjController..text}',
-                apiUrl);
+            loginCubit.createLog(baseParam.logInfoTrackSJPage,
+                '${baseParam.logInfoTrackSJSucc} No SJ ${barcodeSj}', apiUrl);
 
             int index = 0;
             final response = state.response.data;

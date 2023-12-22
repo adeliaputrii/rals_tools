@@ -805,7 +805,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   fetchDataCustomer({required String user_name}) async {
     AndroidDeviceInfo info = await devicePlugin.androidInfo;
     final responseku = await http.post(
-        Uri.parse('${tipeurl}api/v1/auth/reset.usernameController'),
+        Uri.parse('${tipeurl}api/v1/auth/reset.password'),
         body: {'user_name': usernameController.text});
 
     var data = jsonDecode(responseku.body);
@@ -876,8 +876,11 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           if (state.message == pleaseCheckConnection) {
             sweatAlert();
           } else {
-            loginCubit.createLog(logInfoLoginPage,
-                '${baseParam.logInfoLoginFail} ${state.message}', urlApi);
+            final username = usernameController.text;
+            loginCubit.createLog(
+                logInfoLoginPage,
+                '${baseParam.logInfoLoginFail} ${state.message} user ${username}',
+                urlApi);
             popUpWidget.showPopUpError(pleaseCheck, state.message);
           }
         }
