@@ -135,7 +135,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     UserData userData = UserData();
 
     var accToken = userData.getUserToken();
-    print('load token ${accToken}');
+ 
     if (isMounted) {
       setState(() {
         token = (prefs.getString('user_token_str') ?? '');
@@ -741,8 +741,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                           }
                           if (_isConnected == true) {
                             print('is connect');
-                            loginCubit.createLog(
-                             '${getName()}', 'Navigasi Menu ${getName()}', urlApi);
+                            loginCubit.createLog('${getName()}',
+                                'Navigasi Menu ${getName()}', urlApi);
 
                             print('berhasil $_udid');
                           } else if (_isConnected == false) {
@@ -1302,7 +1302,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 if (_isConnected == true) {
                                                   print('is connect');
                                                   loginCubit.createLog(
-                                                  '${getName()}', 'Navigasi Menu ${getName()}', urlApi);
+                                                      '${getName()}',
+                                                      'Navigasi Menu ${getName()}',
+                                                      urlApi);
                                                 } else if (_isConnected ==
                                                     false) {
                                                   String format =
@@ -1456,116 +1458,119 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                       }
                                                       if (state
                                                           is HomeSuccess) {
-                                                        return Expanded(
-                                                          child: Column(
-                                                            children: [
-                                                              SingleChildScrollView(
-                                                                scrollDirection:
-                                                                    Axis.horizontal,
-                                                                child: Row(
-                                                                  children: News
-                                                                      .news3
-                                                                      .map((e) {
-                                                                    var stringHtml =
-                                                                        '${e.berita_dtl}';
-                                                                    return InkWell(
-                                                                      onTap:
-                                                                          () {
-                                                                        News.newsDetail
-                                                                            .clear();
-                                                                        setState(
-                                                                            () {
-                                                                          News.newsDetail
-                                                                              .add(e);
-                                                                          print(
-                                                                              News.newsDetail);
-                                                                        });
-                                                                        Navigator.pushAndRemoveUntil(
-                                                                            context,
-                                                                            MaterialPageRoute(builder:
-                                                                                (context) {
-                                                                          return NewsDetail();
-                                                                        }),
-                                                                            (route) =>
-                                                                                false);
-                                                                        print(
-                                                                            'navigator');
-                                                                      },
-                                                                      child:
-                                                                          Container(
-                                                                        width:
-                                                                            400,
-                                                                        margin: EdgeInsets.only(
-                                                                            bottom:
-                                                                                10,
-                                                                            right:
-                                                                                20),
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(10),
-                                                                          color:
-                                                                              Colors.white,
-                                                                        ),
-
-                                                                        // height: 165,
-                                                                        child:
-                                                                            Column(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.start,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.start,
-                                                                          children: [
-                                                                            Container(
-                                                                              // height: 150
-                                                                              child: ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.network('${e.url_photo}', fit: BoxFit.cover)),
-                                                                            ),
-                                                                            Container(
-                                                                              margin: EdgeInsets.fromLTRB(10, 10, 0, 15),
-                                                                              child: Text('${e.berita_hdr}', style: GoogleFonts.plusJakartaSans(fontSize: 17, fontWeight: FontWeight.w600, color: Colors.black)),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                    );
-                                                                  }).toList(),
-                                                                ),
-                                                              ),
-                                                              Row(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
+                                                        return Column(
+                                                          children: [
+                                                            SingleChildScrollView(
+                                                              scrollDirection:
+                                                                  Axis.horizontal,
+                                                              child: Row(
                                                                 children: News
                                                                     .news3
                                                                     .map((e) {
-                                                                  return GestureDetector(
-                                                                    onTap: () =>
-                                                                        _controller
-                                                                            .animateToPage(1),
+                                                                  var stringHtml =
+                                                                      '${e.berita_dtl}';
+                                                                  return InkWell(
+                                                                    onTap: () {
+                                                                      News.newsDetail
+                                                                          .clear();
+                                                                      setState(
+                                                                          () {
+                                                                        News.newsDetail
+                                                                            .add(e);
+                                                                        print(News
+                                                                            .newsDetail);
+                                                                      });
+                                                                      Navigator.pushAndRemoveUntil(
+                                                                          context,
+                                                                          MaterialPageRoute(builder:
+                                                                              (context) {
+                                                                        return NewsDetail();
+                                                                      }),
+                                                                          (route) =>
+                                                                              false);
+                                                                      print(
+                                                                          'navigator');
+                                                                    },
                                                                     child:
                                                                         Container(
                                                                       width:
-                                                                          12.0,
-                                                                      height:
-                                                                          10.0,
-                                                                      margin: EdgeInsets.symmetric(
-                                                                          vertical:
-                                                                              15.0,
-                                                                          horizontal:
-                                                                              4.0),
-                                                                      decoration: BoxDecoration(
-                                                                          // color: Colors.green,
-                                                                          shape: BoxShape.circle,
-                                                                          color: (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black).withOpacity(_current == e ? 0.9 : 0.4)),
+                                                                          400,
+                                                                      margin: EdgeInsets.only(
+                                                                          bottom:
+                                                                              10,
+                                                                          right:
+                                                                              20),
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10),
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+
+                                                                      // height: 165,
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Container(
+                                                                            // height: 150
+                                                                            child:
+                                                                                ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.network('${e.url_photo}', fit: BoxFit.cover)),
+                                                                          ),
+                                                                          Container(
+                                                                            margin: EdgeInsets.fromLTRB(
+                                                                                10,
+                                                                                10,
+                                                                                0,
+                                                                                15),
+                                                                            child:
+                                                                                Text('${e.berita_hdr}', style: GoogleFonts.plusJakartaSans(fontSize: 17, fontWeight: FontWeight.w600, color: Colors.black)),
+                                                                          ),
+                                                                        ],
+                                                                      ),
                                                                     ),
                                                                   );
                                                                 }).toList(),
-                                                              )
-                                                            ],
-                                                          ),
+                                                              ),
+                                                            ),
+                                                            Row(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: News
+                                                                  .news3
+                                                                  .map((e) {
+                                                                return GestureDetector(
+                                                                  onTap: () =>
+                                                                      _controller
+                                                                          .animateToPage(
+                                                                              1),
+                                                                  child:
+                                                                      Container(
+                                                                    width: 12.0,
+                                                                    height:
+                                                                        10.0,
+                                                                    margin: EdgeInsets.symmetric(
+                                                                        vertical:
+                                                                            15.0,
+                                                                        horizontal:
+                                                                            4.0),
+                                                                    decoration: BoxDecoration(
+                                                                        // color: Colors.green,
+                                                                        shape: BoxShape.circle,
+                                                                        color: (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black).withOpacity(_current == e ? 0.9 : 0.4)),
+                                                                  ),
+                                                                );
+                                                              }).toList(),
+                                                            )
+                                                          ],
                                                         );
                                                       }
                                                       return Container();
@@ -1810,103 +1815,118 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                       }
                                                       if (state
                                                           is HomeSuccess) {
-                                                        return Expanded(
-                                                          child: Container(
-                                                            child: ListView
-                                                                .builder(
-                                                              primary: false,
-                                                              shrinkWrap: true,
-                                                              itemCount: 3,
-                                                              itemBuilder:
-                                                                  (BuildContext
-                                                                          context,
-                                                                      int index) {
-                                                                return GestureDetector(
-                                                                  onTap: () {
-                                                                    Navigator.push(
+                                                        return Container(
+                                                          child:
+                                                              ListView.builder(
+                                                            primary: false,
+                                                            shrinkWrap: true,
+                                                            itemCount: 3,
+                                                            itemBuilder:
+                                                                (BuildContext
                                                                         context,
-                                                                        MaterialPageRoute(builder:
-                                                                            (context) {
-                                                                      return RamayanaMyActivity(
-                                                                          response: state
-                                                                              .response
-                                                                              .data?[index]);
-                                                                    }));
-                                                                  },
+                                                                    int index) {
+                                                              return GestureDetector(
+                                                                onTap: () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder:
+                                                                              (context) {
+                                                                    return RamayanaMyActivity(
+                                                                        response: state
+                                                                            .response
+                                                                            .data?[index]);
+                                                                  }));
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  height: 90,
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          bottom:
+                                                                              10),
+                                                                  decoration: BoxDecoration(
+                                                                      boxShadow: <BoxShadow>[
+                                                                        BoxShadow(
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                197,
+                                                                                197,
+                                                                                197),
+                                                                            blurRadius:
+                                                                                1,
+                                                                            spreadRadius:
+                                                                                1,
+                                                                            offset:
+                                                                                Offset(2, 2))
+                                                                      ],
+                                                                      color: Colors
+                                                                          .white,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              10)),
                                                                   child:
-                                                                      Container(
-                                                                    height: 90,
-                                                                    margin: EdgeInsets.only(
-                                                                        bottom:
-                                                                            10),
-                                                                    decoration: BoxDecoration(
-                                                                        boxShadow: <BoxShadow>[
-                                                                          BoxShadow(
-                                                                              color: Color.fromARGB(255, 197, 197, 197),
-                                                                              blurRadius: 1,
-                                                                              spreadRadius: 1,
-                                                                              offset: Offset(2, 2))
-                                                                        ],
-                                                                        color: Colors
-                                                                            .white,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(10)),
-                                                                    child:
-                                                                        ListTile(
-                                                                      leading: CircleAvatar(
-                                                                          backgroundColor: Color.fromARGB(
-                                                                              255,
-                                                                              210,
-                                                                              14,
-                                                                              0),
-                                                                          radius:
-                                                                              30,
-                                                                          backgroundImage:
-                                                                              AssetImage('assets/todolist.png')),
-                                                                      // title: Text('${e.task_desc}', style: GoogleFonts.plusJakartaSans(
-                                                                      //   fontSize: 18, color: Colors.black
-                                                                      // ),),
-                                                                      subtitle:
-                                                                          Column(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.start,
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Container(
-                                                                            margin:
-                                                                                EdgeInsets.only(top: 3),
-                                                                            child:
-                                                                                Text(
-                                                                              '${state.response.data?[index].taskDesc}',
-                                                                              style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
+                                                                      ListTile(
+                                                                    leading: CircleAvatar(
+                                                                        backgroundColor: Color.fromARGB(
+                                                                            255,
+                                                                            210,
+                                                                            14,
+                                                                            0),
+                                                                        radius:
+                                                                            30,
+                                                                        backgroundImage:
+                                                                            AssetImage('assets/todolist.png')),
+                                                                    // title: Text('${e.task_desc}', style: GoogleFonts.plusJakartaSans(
+                                                                    //   fontSize: 18, color: Colors.black
+                                                                    // ),),
+                                                                    subtitle:
+                                                                        Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Container(
+                                                                          margin:
+                                                                              EdgeInsets.only(top: 3),
+                                                                          child:
+                                                                              Text(
+                                                                            '${state.response.data?[index].taskDesc}',
+                                                                            style: GoogleFonts.plusJakartaSans(
+                                                                                fontSize: 18,
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.w500),
+                                                                          ),
+                                                                        ),
+                                                                        Row(
+                                                                          children: [
+                                                                            Container(
+                                                                              width: 80,
+                                                                              child: Text('Status', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
                                                                             ),
-                                                                          ),
-                                                                          Row(
-                                                                            children: [
-                                                                              Container(
-                                                                                width: 80,
-                                                                                child: Text('Status', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
-                                                                              ),
-                                                                              Text('${state.response.data?[index].taskStatus}', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
-                                                                            ],
-                                                                          ),
-                                                                          Row(
-                                                                            children: [
-                                                                              Container(
-                                                                                width: 80,
-                                                                                child: Text('Project ID', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
-                                                                              ),
-                                                                              Text(': ${state.response.data?[index].projectId}', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
-                                                                            ],
-                                                                          ),
-                                                                        ],
-                                                                      ),
+                                                                            Text('${state.response.data?[index].taskStatus}',
+                                                                                style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                          ],
+                                                                        ),
+                                                                        Row(
+                                                                          children: [
+                                                                            Container(
+                                                                              width: 80,
+                                                                              child: Text('Project ID', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                            ),
+                                                                            Text(': ${state.response.data?[index].projectId}',
+                                                                                style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                          ],
+                                                                        ),
+                                                                      ],
                                                                     ),
                                                                   ),
-                                                                );
-                                                              },
-                                                            ),
+                                                                ),
+                                                              );
+                                                            },
                                                           ),
                                                         );
                                                       }

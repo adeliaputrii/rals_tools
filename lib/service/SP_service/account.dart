@@ -117,25 +117,24 @@ class UserData {
     return _listmenu;
   }
 
-  void printdevinfo() {
-    print("\n\n======[info]=======]");
-    print("ID       : $_userID");
-    print("Username : $_userName");
-    print("Name     : $_userFullName");
-    print("token    : $_userToken");
-    print("Toko     : $_userToko");
-    print("Email    : $_userEmail");
-    print("Subdivisi: $_userSubdivisi");
-    print("Role     : $_userRole");
-    print("Akses    : $_userAkses");
-    print("Username7 : $_username7");
-    print("List Menu : $_listmenu");
-    // print("Phone    : $_userPhone");
-    // print("adress   : $_userAdress");
-    // print("Password : $_userPassword");
-    // print("Pic URL  : $_userPicUrl");
-    // print("Log stat : $_statuslog");
-    // print("Admin    : $_isAdmin");
+  void debugPrintdevinfo() {
+    debugPrint("\n\n======[info]=======]");
+    debugPrint("ID       : $_userID");
+    debugPrint("Username : $_userName");
+    debugPrint("Name     : $_userFullName");
+    debugPrint("Toko     : $_userToko");
+    debugPrint("Email    : $_userEmail");
+    debugPrint("Subdivisi: $_userSubdivisi");
+    debugPrint("Role     : $_userRole");
+    debugPrint("Akses    : $_userAkses");
+    debugPrint("Username7 : $_username7");
+    debugPrint("List Menu : $_listmenu");
+    // debugPrint("Phone    : $_userPhone");
+    // debugPrint("adress   : $_userAdress");
+    // debugPrint("Password : $_userPassword");
+    // debugPrint("Pic URL  : $_userPicUrl");
+    // debugPrint("Log stat : $_statuslog");
+    // debugPrint("Admin    : $_isAdmin");
   }
 
   Future<void> logOut() async {
@@ -160,15 +159,15 @@ class UserData {
     pref.setBool(UserData.isAdmin_str, false);
     pref.setBool(UserData.logstatus, false);
     await getPref();
-    print('[Account dev] : Data wiped out');
-    printdevinfo();
+    debugPrint('[Account dev] : Data wiped out');
+    debugPrintdevinfo();
     return;
   }
 
   Future<void> initNotification() async {
     await _firebaseMessaging.requestPermission();
     fcmToken = await _firebaseMessaging.getToken();
-    print('Token kirim api : ${fcmToken}');
+    debugPrint('Token kirim api : ${fcmToken}');
     return fcmToken;
   }
 
@@ -178,9 +177,9 @@ class UserData {
   }
 
   sendTokenFirebase() async {
-    print(getUserToken());
-    print('${fcmToken}');
-    print('${initNotification()}');
+    debugPrint(getUserToken());
+    debugPrint('${fcmToken}');
+    debugPrint('${initNotification()}');
   }
 
   Future<void> setUser({required Map data}) async {
@@ -208,12 +207,8 @@ class UserData {
     // }
     var token = pref.getString('firebaseToken');
     await getPref();
-    print('[LOGIN INFO] : Updated..!');
-    printdevinfo();
-    print('adel manis');
-    print(getUserToken());
-    print(token);
-    print('adelia cantik');
+    debugPrint('[LOGIN INFO] : Updated..!');
+    debugPrintdevinfo();
     try {
       var formData = FormData.fromMap({
         'device_token': '${token}',
@@ -228,10 +223,8 @@ class UserData {
           },
         ),
       );
-      print('send token');
-      print('send token adalah ${token}');
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
     return;
   }
@@ -259,12 +252,8 @@ class UserData {
     // }
     var token = pref.getString('firebaseToken');
     await getPref();
-    print('[LOGIN INFO] : Updated..!');
-    printdevinfo();
-    print('adel manis');
-    print(getUserToken());
-    print(token);
-    print('adelia cantik');
+    debugPrint('[LOGIN INFO] : Updated..!');
+    debugPrintdevinfo();
     try {
       var formData = FormData.fromMap({
         'device_token': '${token}',
@@ -279,10 +268,8 @@ class UserData {
           },
         ),
       );
-      print('send token');
-      print('send token adalah ${token}');
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
     return;
   }

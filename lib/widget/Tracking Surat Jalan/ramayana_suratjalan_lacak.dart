@@ -70,6 +70,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
   void initState() {
     super.initState();
     sjCubit = context.read<SuratJalanCubit>();
+    loginCubit = context.read<LoginCubit>();
     popUp = PopUpWidget(context);
     if (widget.noSJ != null) {
       noSjController..text = widget.noSJ!;
