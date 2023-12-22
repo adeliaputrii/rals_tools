@@ -20,7 +20,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   UserData userData = UserData();
   bool _loadingPath = false;
-  bool _loadingSpinkit = false;
   var apiTask = 'P202300001';
   bool up = false;
   bool sendDataApi = false;
@@ -82,7 +81,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
       initPlatformState();
     } else {
       setData(widget.response);
-    }_loadingSpinkit;
+      taskId;
+      projectId;
+    }
   }
 
   void setData(GetTaskResponse.Data? response) {
@@ -94,42 +95,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
       // timeStart.text = response.taskStart.toString();
       // timeEnd.text = response.taskClose.toString();
     }
-  }
-
-  void _loadData()async {
-    setState(() {
-      _loadingSpinkit = true;
-    });
-    try{
-      popupEdit();
-      await Future.delayed(const Duration(seconds: 3));
-       MyactivityModelTask.myactivitytask.clear();result.clear();
-       fetchEdit(user_create:'${userData.getUsername7()}');
-       fetchProject();
-      result.clear();
-      MyactivityModelTask.addselectTask.clear();
-      resultEdit.clear();
-      MyactivityModelTask.addselectTaskEdit.clear();
-       _loadingPath = false;
-       print(edit);
-       print('iniApiEdit : ${iniApiEdit}');
-        iniApiEdit = false;
-        fetchProject();
-        fetchTask(apiProject: '${apiTask}');
-        print('HasilTask : ${result}');
-        print(
-          'HasilTask2 : ${MyactivityModelTask.addselectTask}');
-          popupEdit();
-    } on PlatformException catch (e) {
-      print("Unsupported operation" + e.toString());
-    } catch (ex) {
-      print(ex);
-    }
-    if (!mounted) return;
-    setState(() {
-      _loadingSpinkit = false;
-      print('delay');
-    });
   }
 
   Future<void> initPlatformState() async {
@@ -303,13 +268,12 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
               ),
               height: 120,
               width: 2000,
-            ),Container(
+            ),
+            Container(
               margin: EdgeInsets.only(),
               // color: Colors.amber,
               height: 450,
-              child: 
-              
-              ListView(
+              child: ListView(
                 children: MyactivityEditModel.myactivityedit.map((e) {
                   var iniIdnya = '${e.task_id}';
                   fetchTask(apiProject: '${e.projek_id}');
@@ -322,9 +286,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                       return text;
                     }
                   }
-
+                  var taskDescId = '';
                   taskIdd() {
-                    var taskDescId = '';
+                    // var taskDescId = '';
                     MyactivityModelTask.myactivitytask.forEach((element) {
                       if (e.task_id == element.task_id) {
                         taskDescId = '${element.task_id}';
@@ -345,9 +309,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                     });
                     print(projectDesc);
                   }
-
+                      var projectDescId = '';
                   projectIdd() {
-                    var projectDescId = '';
+                    
                     MyactivityModel.myactivitymodel.forEach((element) {
                       if (e.projek_id == element.project_id) {
                         projectDescId = '${element.project_id}';
@@ -386,8 +350,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         print(project());
                         timeStart..text = '${e.time_start}';
                         timeEnd..text = '${e.time_end}';
-                        projectId = '${projectIdd()}';
-                        taskId = '${taskIdd()}';
+                        projectId = '${projectDescId}';
+                        taskId = '${taskDescId}';
                         desc..text = '${e.myactivity_desc}';
                         uploadEdit = true;
                         _directoryPath = null;
@@ -1398,7 +1362,32 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               height: 50,
                               color: Color.fromARGB(255, 255, 17, 17),
                               onPressed: () async {
-                                _loadData();
+                                
+                                result.clear();
+                                MyactivityModelTask.addselectTask.clear();
+                                resultEdit.clear();
+                                MyactivityModelTask.addselectTaskEdit.clear();
+                                _loadingPath = false;
+                                print(edit);
+                                print('iniApiEdit : ${iniApiEdit}');
+                                iniApiEdit = false;
+
+                                fetchProject();
+                                fetchTask(apiProject: '${apiTask}');
+                                print('HasilTask : ${result}');
+                                print(
+                                    'HasilTask2 : ${MyactivityModelTask.addselectTask}');
+                                popupEdit();
+
+                                setState(() {
+                                  MyactivityModelTask.myactivitytask.clear();
+                                  result.clear();
+                                  fetchEdit(
+                                      user_create:
+                                          '${userData.getUsername7()}');
+                                  fetchProject();
+                                  
+                                });
                                 
                               },
                               child: Text(
@@ -1432,10 +1421,12 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                               '${userData.getUsername7()}',
                                           'time_start': timeStart.text,
                                           'time_end': timeEnd.text,
-                                          'task_id': taskId == ''
+                                          'task_id': taskId 
+                                          == ''
                                               ? 'P202300001-001'
                                               : taskId,
-                                          'projek_id': projectId == ''
+                                          'projek_id': projectId 
+                                          == ''
                                               ? 'P202300001'
                                               : projectId,
                                           'myactivity_id': idEdit,
@@ -1478,10 +1469,12 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                               '${userData.getUsername7()}',
                                           'time_start': timeStart.text,
                                           'time_end': timeEnd.text,
-                                          'task_id': taskId == ''
+                                          'task_id': taskId 
+                                          == ''
                                               ? 'P202300001-001'
                                               : taskId,
-                                          'projek_id': projectId == ''
+                                          'projek_id': projectId 
+                                          == ''
                                               ? 'P202300001'
                                               : projectId,
                                           'myactivity_id': idEdit,

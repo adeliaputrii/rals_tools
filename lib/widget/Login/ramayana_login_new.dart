@@ -1147,13 +1147,14 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                           fontWeight: FontWeight.bold)),
                                   // color: Colors.red,
                                   onPressed: () {
-                                    if (usernameController.text.isEmpty) {
-                                      _displayCenterMotionUsername();
-                                    } else {
-                                      fetchDataCustomer(
-                                          user_name: usernameController.text);
-                                    }
-                                  }),
+                                    // if (usernameController.text.isEmpty) {
+                                    //   _displayCenterMotionUsername();
+                                    // } else {
+                                    //   fetchDataCustomer(
+                                    //       user_name: usernameController.text);
+                                    // }
+                                  }
+                                  ),
                               // SizedBox(
                               //   height: 70,
                               // ),
