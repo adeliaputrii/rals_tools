@@ -236,8 +236,8 @@ class _ProfileeState extends State<Profilee> {
               ' devicename': '${info.device}',
               'TOKEN': 'R4M4Y4N4'
             });
-            loginCubit.createLog(
-                baseParam.logInfoProfilePage, baseParam.logInfoProfile, " ");
+            loginCubit.createLog(baseParam.logInfoProfilePage,
+                baseParam.logInfoProfile, baseParam.noUrl);
             // var response = await dio.post('${tipeurl}v1/activity/createmylog',
             //     data: formData);
             print('berhasil $_udid');

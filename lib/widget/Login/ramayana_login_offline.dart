@@ -30,6 +30,8 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
   void initState() {
     super.initState();
     popUpWidget = PopUpWidget(context);
+    generateNumber();
+    generateNumberWidget = true;
     init();
   }
 
@@ -342,8 +344,6 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                       borderRadius: BorderRadius.circular(30)),
                                   color: Color.fromARGB(255, 210, 14, 0),
                                   onPressed: () async {
-                                    debugPrint('test generate');
-                                    compareGenerateCodeTest(461024);
                                     if (formKey.currentState!.validate()) {
                                       final isSuccess =
                                           await compareGenerateCode(int.parse(

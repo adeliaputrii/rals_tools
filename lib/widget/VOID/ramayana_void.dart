@@ -20,12 +20,18 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
   UserData userData = UserData();
   bool _isKeptOn = true;
   double _brightness = 1.0;
+  late LoginCubit loginCubit;
   KeyboardUtils keyboardUtils = KeyboardUtils();
+  TextEditingController myController = TextEditingController();
+
+  String _scanBarcode = '';
+  bool _visible = false;
+  bool? _isConnected;
 
   @override
   void initState() {
     super.initState();
-    debugPrint('cek' + widget.isOffline.toString());
+    loginCubit = context.read<LoginCubit>();
     initPlatformState();
     _checkInternetConnection();
     setState(() {
@@ -49,12 +55,6 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
       _udid = udid;
     });
   }
-
-  TextEditingController myController = TextEditingController();
-
-  String _scanBarcode = '';
-  bool _visible = false;
-  bool? _isConnected;
 
   @override
   void didPush() {
@@ -392,22 +392,26 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
                         if (_isConnected == true) {
                           print('is connect');
                           AndroidDeviceInfo info = await deviceInfo.androidInfo;
-                          var formData = FormData.fromMap({
-                            'progname': 'RALS_TOOLS ',
-                            'versi': '${versi}',
-                            'date_run': '${DateTime.now()}',
-                            'info1': 'Aktivitas Void - Menu Void ,',
-                            ' info2': '${_udid} ',
-                            'userid': '${userData.getUsernameID()}',
-                            ' toko': '${userData.getUserToko()}',
-                            ' devicename': '${info.device}',
-                            'TOKEN': 'R4M4Y4N4'
-                          });
+                          // var formData = FormData.fromMap({
+                          //   'progname': 'RALS_TOOLS ',
+                          //   'versi': '${versi}',
+                          //   'date_run': '${DateTime.now()}',
+                          //   'info1': 'Aktivitas Void - Menu Void ,',
+                          //   ' info2': '${_udid} ',
+                          //   'userid': '${userData.getUsernameID()}',
+                          //   ' toko': '${userData.getUserToko()}',
+                          //   ' devicename': '${info.device}',
+                          //   'TOKEN': 'R4M4Y4N4'
+                          // });
 
-                          var response = await dio.post(
-                              '${tipeurl}v1/activity/createmylog',
-                              data: formData);
-
+                          // var response = await dio.post(
+                          //     '${tipeurl}v1/activity/createmylog',
+                          //     data: formData);
+                          final productId = myController.text;
+                          loginCubit.createLog(
+                              baseParam.logInfoVoidPage,
+                              '${baseParam.logInfoVoidSucc}${productId}',
+                              baseParam.noUrl);
                           print('berhasil $_udid');
                         } else if (_isConnected == false) {
                           String format =
