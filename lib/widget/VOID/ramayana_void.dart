@@ -11,6 +11,7 @@ class RamayanaVoid extends StatefulWidget {
 
 class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
   DbHelper db = DbHelper();
+  DbHelperVoidOffline db2 = DbHelperVoidOffline();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -389,24 +390,17 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
                               FlutterWindowManager.FLAG_SECURE);
                         }
                         await _checkInternetConnection();
+                        if (widget.isOffline) {
+                        db2.saveActivityVoidOffline(VoidOffline(
+                            idGenerate: '${logInfoVoidSucc}${myController.text}',
+                            date: '${DateTime.now()}',
+                          ));
+                        debugPrint('login via offline');
+                      } else {
+                        debugPrint('login via online');
                         if (_isConnected == true) {
                           print('is connect');
                           AndroidDeviceInfo info = await deviceInfo.androidInfo;
-                          // var formData = FormData.fromMap({
-                          //   'progname': 'RALS_TOOLS ',
-                          //   'versi': '${versi}',
-                          //   'date_run': '${DateTime.now()}',
-                          //   'info1': 'Aktivitas Void - Menu Void ,',
-                          //   ' info2': '${_udid} ',
-                          //   'userid': '${userData.getUsernameID()}',
-                          //   ' toko': '${userData.getUserToko()}',
-                          //   ' devicename': '${info.device}',
-                          //   'TOKEN': 'R4M4Y4N4'
-                          // });
-
-                          // var response = await dio.post(
-                          //     '${tipeurl}v1/activity/createmylog',
-                          //     data: formData);
                           final productId = myController.text;
                           loginCubit.createLog(
                               baseParam.logInfoVoidPage,
@@ -418,10 +412,12 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
                               DateFormat.Hms().format(DateTime.now());
                           print('not connect');
                           db.saveActivityy(LogOffline(
-                            deskripsi: 'Aktivitas Void - Menu Void',
+                            deskripsi: 'Generate - ${myController.text}',
                             datetime: '${DateTime.now()}',
                           ));
+                           
                         }
+                      }
                       } else {
                         print('required');
                       }
