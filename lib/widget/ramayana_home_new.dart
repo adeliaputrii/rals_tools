@@ -26,6 +26,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   List deskripsi = [];
   List datetime = [];
   DbHelper db = DbHelper();
+  DbHelperVoidOffline db2 = DbHelperVoidOffline();
+  DbHelperLoginOffline db3 = DbHelperLoginOffline();
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   Timer? timer;
   List akses = ["${userData.getUserAkses()}"];
@@ -50,6 +52,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   bool namaUser = false;
   late LoginCubit loginCubit;
   final urlApi = '${tipeurl}${basePath.api_login}';
+  
+  List<Map<String, dynamic>> loginOffline = [];
+  List<Map<String, dynamic>> voidOffline = [];
+  List<Map<String, dynamic>> logOffline = [];
 
   @override
   void initState() {
@@ -144,6 +150,59 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
     return token;
   }
+
+  // Future<void> logLoginOffline() async {
+  //    LoginOffline.listActivity.forEach((element) async{
+  //     loginOffline.add({
+  //       '${element.deskripsi}': '${element.datetime}'
+  //     }); 
+  //     await db3.deleteActivityy(element.id_act!);});
+  //    List<String> uniqueList = [];
+  //    for (var map in loginOffline) {
+  //   for (var entry in map.entries) {
+  //     if (!uniqueList.contains(entry)) {
+  //     loginCubit.createLogVoidOffline(
+  //      logInfoActivityPage, entry.key, urlApi, entry.value);
+  //     print('Deskripsi: ${entry.key}, Datetime: ${entry.value}');
+  //     }}}
+  //     loginOffline.clear();
+  // }
+
+  //  Future<void> logVoidOffline() async {
+  //    VoidOffline.voidOffline.forEach((element) async{
+  //     voidOffline.add({
+  //       '${element.idGenerate}': '${element.date}'
+  //     });
+  //      await db2.deleteVoidOffline(element.id_act!);
+  //      });
+  //    List<String> uniqueList = [];
+  //    for (var map in voidOffline) {
+  //   for (var entry in map.entries) {
+  //     if (!uniqueList.contains(entry)) {
+  //     loginCubit.createLogVoidOffline(
+  //      logInfoActivityPage, entry.key, urlApi, entry.value);
+  //     print('Deskripsi: ${entry.key}, Datetime: ${entry.value}');
+  //     }}}
+  //     voidOffline.clear();
+  // }
+
+  // Future<void> logLogOffline() async {
+  //    LogOffline.listActivity.forEach((element) async{
+  //     logOffline.add({
+  //       '${element.deskripsi}': '${element.datetime}'
+  //     }); 
+  //     await db.deleteActivityy(element.id_act!);
+  //     });
+  //    List<String> uniqueList = [];
+  //    for (var map in logOffline) {
+  //   for (var entry in map.entries) {
+  //     if (!uniqueList.contains(entry)) {
+  //     loginCubit.createLogVoidOffline(
+  //      logInfoActivityPage, entry.key, urlApi, entry.value);
+  //     print('Deskripsi: ${entry.key}, Datetime: ${entry.value}');
+  //     }}}
+  //     logOffline.clear();
+  // }
 
   fetchDataListUser() async {
     _loadToken();
@@ -303,11 +362,15 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   Future<void> _getAllActivity() async {
     //list menampung data dari database
     var list = await db.getAllFormat();
-
+    var listVoidOffline = await db2.getAllFormatVoidOffline();
+    var listLoginOffline= await db3.getAllFormat();
+// 
     if (isMounted) {
       setState(() {
         //hapus data pada listKontak
         LogOffline.listActivity.clear();
+        VoidOffline.voidOffline.clear();
+        LoginOffline.listActivity.clear();
 
         //lakukan perulangan pada variabel list
         list!.forEach((activityy) {
@@ -315,22 +378,21 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           LogOffline.listActivity.add(LogOffline.fromMap(activityy));
           print(LogOffline.listActivity);
         });
+        listVoidOffline!.forEach((activityy) {
+          //masukan data ke listKontak
+          VoidOffline.voidOffline.add(VoidOffline.fromMap(activityy));
+          print(VoidOffline.voidOffline);
+        });
+        listLoginOffline!.forEach((activity) {
+          //masukan data ke listKontak
+          LoginOffline.listActivity.add(LoginOffline.fromMap(activity));
+          print(LoginOffline.listActivity);
+        });
       });
     }
     //ada perubahanan state
   }
 
-  int _selectedIndex = 1;
-  void _onItemTapped(int index) {
-    _selectedIndex = index;
-    if (_selectedIndex == 0) {
-      sweatAlert();
-    } else if (_selectedIndex == 2) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
-        return Profilee();
-      }));
-    }
-  }
 
   Future<void> dapetinData() async {
     UserData userData = UserData();
@@ -437,9 +499,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           color: Colors.green,
           onPressed: () {
             Navigator.pop(context);
-            setState(() {
-              _selectedIndex = 1;
-            });
+           
           },
           child: Text(
             "Cancel",
@@ -779,28 +839,68 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     if (_isConnected == false) {
       // print('not connected');
-      LogOffline.listActivity.forEach((element) async {
-        // print('${element.datetime}');
-      });
     } else {
-      LogOffline.listActivity.forEach((element) async {
-        AndroidDeviceInfo info = await deviceInfo.androidInfo;
-        var formData = FormData.fromMap({
-          'progname': 'RALS_TOOLS ',
-          'versi': '${versi}',
-          'date_run': '${element.datetime}',
-          'info1': '${element.deskripsi}',
-          ' info2': '${imei} ',
-          'userid': '${userData.getUsernameID()}',
-          ' toko': '${userData.getUserToko()}',
-          ' devicename': '${info.device}',
-          'TOKEN': 'R4M4Y4N4'
-        });
-        var response =
-            await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
-        await db.deleteActivityy(element.id_act!);
-      });
+    // VoidOffline.voidOffline.forEach((element) {
+    //   print('element : ${element.idGenerate}');
+    //   loginCubit.createLogVoidOffline(
+    //     logInfoVoidPage, element.idGenerate, urlApi, element.date);
+    // });
+    // LoginOffline.listActivity.forEach((element) async{
+    //   print('element : ${element.deskripsi}');
+    //      loginCubit.createLogVoidOffline(
+    //    logInfoActivityPage, element.deskripsi, urlApi, element.datetime);
+    //  });
+    
+    //  LoginOffline.listActivity.forEach((element) async{
+      // loginOffline.clear();
+    Set<String> uniqueDeskripsi = Set<String>();
+
+  LoginOffline.listActivity.forEach((element) async {
+  if (!uniqueDeskripsi.contains(element.deskripsi)) {
+    uniqueDeskripsi.add('${element.deskripsi}');
+
+    print('Deskripsi: ${element.deskripsi}, Datetime: ${element.datetime}');
+
+   loginCubit.createLogVoidOffline(
+       logInfoActivityPage, element.deskripsi, urlApi, element.datetime);
+
+  } else {
+    print('Deskripsi duplikat ditemukan: ${element.deskripsi}');
+  }
+  await db3.deleteActivityy(element.id_act!);
+});
+      
+    //   print('element : ${element.deskripsi}');
+    //   loginOffline.add(element.deskripsi);
+    //   print('element : ${loginOffline}');
+    //      loginCubit.createLogVoidOffline(
+    //    logInfoActivityPage, element.deskripsi, urlApi, element.datetime);
+    //  });
+    //  List<String> resultEdit = LinkedHashSet<String>.from(
+    //                 loginOffline)
+    //             .toList();
+    //       print('element1 : ${resultEdit}'); 
+    //   resultEdit.forEach((element) {
+    //    print('element111 : ${element}'); 
+    //   });   
+    
+
+
+    //  VoidOffline.voidOffline.forEach((element) async{
+    //  await db2.deleteVoidOffline(element.id_act!);
+    //  print('element1 : ${element.idGenerate}');
+    // });
+    // LogOffline.listActivity.forEach((element) async{
+    //  await db.deleteActivityy(element.id_act!);
+    //  print('element1 : ${element.deskripsi}');
+    // });
+    // LoginOffline.listActivity.forEach((element) async{
+    //  await db3.deleteActivityy(element.id_act!);
+    //   print('element1 : ${element.deskripsi}');
+    // });
+    
     }
+    
     var listmneu = '${userData.getListMenu()}';
     List split = listmneu.split('|');
     double c_width = MediaQuery.of(context).size.width * 0.8;
@@ -1825,16 +1925,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                     int index) {
                                                               return GestureDetector(
                                                                 onTap: () {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder:
-                                                                              (context) {
-                                                                    return RamayanaMyActivity(
-                                                                        response: state
-                                                                            .response
-                                                                            .data?[index]);
-                                                                  }));
+                                                                 
+                                                                  
+                                                                  loginCubit.createLog(
+                                                                    logInfoActivityPage, state.response.data?[index].projectId, urlApi);
                                                                 },
                                                                 child:
                                                                     Container(
@@ -1865,6 +1959,22 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                               10)),
                                                                   child:
                                                                       ListTile(
+                                                                    onTap: () {
+                                                                      Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder:
+                                                                              (context) {
+                                                                    return RamayanaMyActivity(
+                                                                        response: state
+                                                                            .response
+                                                                            .data?[index]);
+                                                                  }));
+                                                                       loginCubit.createLog(
+                                                                    logInfoActivityPage,
+                                                                    '${state.response.data?[index].taskDesc}' + '-'+'${state.response.data?[index].projectId}', 
+                                                                    urlApi);
+                                                                    },
                                                                     leading: CircleAvatar(
                                                                         backgroundColor: Color.fromARGB(
                                                                             255,

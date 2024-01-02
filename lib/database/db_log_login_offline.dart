@@ -1,21 +1,22 @@
-import 'package:myactivity_project/models/Login%20Offline/model_log_void_offline.dart';
+
+import 'package:myactivity_project/models/Login%20Offline/model_log_login_offline.dart';
 import 'package:myactivity_project/models/model_log.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-class DbHelper {
-  static final DbHelper _instance = DbHelper._internal();
+class DbHelperLoginOffline {
+  static final DbHelperLoginOffline _instance = DbHelperLoginOffline._internal();
   static Database? _database;
 
   //inisialisasi beberapa variabel yang dibutuhkan
-  final String tableName = 'tb_act';
+  final String tableName = 'tb_active';
   final String columnId = 'id_act';
   final String columnDeskripsi = 'deskripsi';
   final String columnDatetime = 'datetime';
 
-  DbHelper._internal();
-  factory DbHelper() => _instance;
+  DbHelperLoginOffline._internal();
+  factory DbHelperLoginOffline() => _instance;
 
   //cek apakah database ada
   Future<Database?> get _db async {
@@ -28,7 +29,7 @@ class DbHelper {
 
   Future<Database?> _initDb() async {
     String databasePath = await getDatabasesPath();
-    String path = join(databasePath, 'activity.db');
+    String path = join(databasePath, 'active.db');
 
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
@@ -42,7 +43,7 @@ class DbHelper {
   }
 
   //insert ke database
-  Future<int?> saveActivityy(LogOffline activityy) async {
+  Future<int?> saveActivityy(LoginOffline activityy) async {
     var dbClient = await _db;
     return await dbClient!.insert(tableName, activityy.toMap());
   }

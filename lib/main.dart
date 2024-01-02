@@ -71,16 +71,21 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]).then((value) => runApp(lastLogin == formattedDate
       ? appCubit.initCubit(HomeMainApp())
-      : appCubit.initCubit(SplashHomeMainApp(loginOffline: lastLogin))));
+      : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
 }
 
 Future<void> registerAppServices() async {
   final appUtil = AppUtils();
   appUtil.initNetwork();
   final appServices = AppServices(GetIt.I.get<Dio>());
-  // final url =
-  //     kDebugMode ? '${basePath.base_url_dev}' : '${basePath.base_url_prod}';
+// <<<<<<< HEAD
+//   // final url =
+//   //     kDebugMode ? '${basePath.base_url_dev}' : '${basePath.base_url_prod}';
   final url = '${basePath.base_url_dev}';
+// =======
+//   final url = '${basePath.base_url_dev}';
+//       // kDebugMode ? '${basePath.base_url_dev}' : '${basePath.base_url_prod}';
+// >>>>>>> 08a66259535eb08b256d4c74568fa127c0908ab4
   debugPrint('url' + url);
   await appServices.registerAppServices(url);
 }

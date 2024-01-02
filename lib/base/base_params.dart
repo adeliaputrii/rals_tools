@@ -51,7 +51,10 @@ const String logInfoActitySucc = 'Edit Activity - ';
 //*Log Void Page*//
 const String logInfoVoidPage = 'Void Page';
 const String logInfoVoidSucc = 'Generate Void - ';
-
+//*Login Offline*//
+const String logLoginOfflinePage = 'Login Offline Page';
+const String logSucces = 'Login Offline Sukses';
+const String logCantAccessVoid = 'Login Offline Gagal';
 //Popup Title or Description
 const String pleaseCheck = "Please Check Again";
 const String usernameEmpty = "Username harus diisi";
