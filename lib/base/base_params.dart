@@ -4,6 +4,7 @@ const String auth = 'Authorization';
 const String appJson = 'application/json';
 
 const String dash = '-';
+const String noUrl = 'api url not found';
 
 const String myApproval = 'Approval Title';
 
@@ -32,7 +33,7 @@ const String logInfoTrackSJPage = 'Ramayana Track Surat Jalan Page';
 const String logInfoTrackSJSucc = 'Ramayana Track Surat Berhasil';
 const String logInfoTrackSJFail = 'Ramayana Track Surat Gagal';
 //*Log Profile Page*//
-const String logInfoProfilePage = 'Login Aplikasi RALS';
+const String logInfoProfilePage = 'Profile Page';
 const String logInfoProfile = 'Logout Aplikasi RALS';
 //*Log Cek Harga Page*//
 const String logInfoCekHargaPage = 'Cek Harga Page';
@@ -44,10 +45,19 @@ const String logInfoComCekSucc = 'Com Cek Pengajuan';
 const String logInfoComCekFail = 'Com Cek Fail';
 //*Log Activity Page*//
 const String logInfoActivityPage = 'My Activity Page';
-const String logInfoActivityInputSucc = 'Input Activity Sukses';
+const String logInfoActivityInputSucc = 'Input Activity Project - ';
 const String logInfoActityEdit = 'My Activity - Edit My Activity Page';
-const String logInfoActitySucc = 'My Activity - Edit My Activity';
-
+const String logInfoActitySucc = 'Edit Activity - ';
+//*Log Void Page*//
+const String logInfoVoidPage = 'Void Page';
+const String logInfoVoidOfflinePage = 'Void Offline Page';
+const String logInfoVoidSucc = 'Generate Void - ';
+//*Login Offline*//
+const String logLoginOfflinePage = 'Login Offline Page';
+const String logSucces = 'Login Offline Sukses';
+const String logCantAccessVoid = 'Login Offline Gagal';
+const String logDevice = 'Device tidak ditemukan.Pastikan Anda pernah login pada device ini';
+const String logLoginCode = 'Anda terdeteksi menggunakan device berbeda/Login Code tidak sesuai';
 //Popup Title or Description
 const String pleaseCheck = "Please Check Again";
 const String usernameEmpty = "Username harus diisi";

@@ -25,12 +25,23 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
   var imei2 = '';
   SimData? _simData;
   late CreateLogBody createLogBody;
+  late LoginCubit loginCubit;
+  final urlApi = '${tipeurl}${basePath.api_login}';
+  String _nativeId = 'Unknown';
+  final _nativeIdPlugin = NativeId();
+  String _udid = 'Unknown';
+  DbHelperLoginOffline db3 = DbHelperLoginOffline();
 
   @override
   void initState() {
+    loginCubit = context.read<LoginCubit>();
     super.initState();
     popUpWidget = PopUpWidget(context);
+    generateNumber();
+    
+    generateNumberWidget = true;
     init();
+    initPlatformState();
   }
 
   Future<void> init() async {
@@ -39,10 +50,40 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
     initSim();
   }
 
-  int generateNumber() {
+  Future<void> initPlatformState() async {
+    String udid;
+    String nativeId;
+    String uuid;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    // We also handle the message potentially returning null.
+    try {
+      nativeId = await _nativeIdPlugin.getId() ?? 'Unknown NATIVE_ID';
+    } on PlatformException {
+      nativeId = 'Failed to get native id.';
+    }
+
+    try {
+      uuid = await _nativeIdPlugin.getUUID() ?? 'Unknown UUID';
+    } on PlatformException {
+      uuid = 'Failed to get uuid.';
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _nativeId = nativeId;
+      _udid = uuid;
+    });
+  }
+
+
+
+  int generateNumber()  {
     RandomNumber randomNumber = RandomNumber();
     randomNum = randomNumber.getRandomNumber(111111, 999999);
     numberCodeController.text = randomNum.toString();
+
+ 
     return randomNum;
   }
 
@@ -61,16 +102,29 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
     return numberFromAdmin == uniqueId;
   }
 
-  Future<int> compareGenerateCodeTest(int numberFromAdmin) async {
+    Future<String> getUserId(int numberFromAdmin) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String? imei = pref.getString('serialImei');
-    int idUser = int.parse(userData.getUsername7());
+    int idUser = int.parse(numberCodeController.text) - (randomNum * 5) * 2;
 
-    int uniqueId = idUser + (randomNum * 5) * 2;
-    debugPrint('${uniqueId}');
-
-    return uniqueId;
+    return idUser.toString();
   }
+
+
+  // Future<int> compareGenerateCodeTest() async {
+  //   SharedPreferences pref = await SharedPreferences.getInstance();
+  //   String? imei = pref.getString('serialImei');
+  //   int idUser = int.parse(userData.getUsername7());
+
+  //   // int uniqueId =
+  //   //     idUser + (randomNum * 2) + (AsciiEncoder().convert(imei!+deviceInfo.device)[0] * 10);
+  //   //     debugPrint('${uniqueId}');
+
+  //   int uniqueId = 0460545 + (int.parse(numberCodeController.text) * 5) * 2;
+  //   debugPrint('${uniqueId}');
+  //   print('${uniqueId}');
+
+  //   return uniqueId;
+  // }
 
   Future<void> initSim() async {
     SimData simData;
@@ -296,7 +350,6 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                   color: Color.fromARGB(255, 210, 14, 0),
                                   onPressed: () async {
                                     debugPrint('tes generate');
-                                    compareGenerateCodeTest(941573);
                                     String? serialimei =
                                         pref.getString('serialImei');
                                     debugPrint(userData.getUsername7());
@@ -342,13 +395,26 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                       borderRadius: BorderRadius.circular(30)),
                                   color: Color.fromARGB(255, 210, 14, 0),
                                   onPressed: () async {
-                                    debugPrint('test generate');
-                                    compareGenerateCodeTest(461024);
+                                    var description = "";
+                                    String dateTime = DateTime.now().toString();
+                                    // print(compareGenerateCodeTest());
+                                    try {
                                     if (formKey.currentState!.validate()) {
                                       final isSuccess =
                                           await compareGenerateCode(int.parse(
                                               adminNumberCodeController.text));
-                                      if (isSuccess) {
+                                      String? imei = pref.getString('serialImei');
+                                      AndroidDeviceInfo info = await devicePlugin.androidInfo;
+                                      if (
+                                        "${_nativeId}${info.device}" == "${imei ?? ''}${info.device}" 
+                                      //  getUserId(int.parse(adminNumberCodeController.text)) == userData.getUsername7()
+                                      ){
+                                        // db3.deleteAll();
+                                        
+                                        print(' _nativeId: $_nativeId');
+                                        print('imei $imei');
+                                        print('imei sama');
+                                        if (isSuccess) {
                                         debugPrint(userData.getListMenu());
                                         var listmenu =
                                             '${userData.getListMenu()}';
@@ -359,7 +425,14 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                           pref.setString("waktuLoginOffline",
                                               "${formattedDate}");
                                           debugPrint('user has access void');
-
+                                        // setState(() {
+                                        description = logSucces;
+                                        // });
+                                        // db3.saveActivityy(LoginOffline(
+                                        //   deskripsi: '${logSucces}',
+                                        //   datetime: '${DateTime.now()}'
+                                        // ));
+                                          
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -372,13 +445,68 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                               pleaseCheck, userCantAccessVoid);
                                           debugPrint('user cannot access void');
                                           adminNumberCodeController.clear();
+                                          // setState(() {
+                                          description ='${logCantAccessVoid}-${userCantAccessVoid}';
+                                          // });
+                                        //   db3.saveActivityy(LoginOffline(
+                                        //   deskripsi: '${logCantAccessVoid}-${userCantAccessVoid}',
+                                        //   datetime: '${DateTime.now()}'
+                                        // ));
+                                        //   db3.saveActivityLoginOffline(LoginOfflineVoid(
+                                        //   descLogin: '${logCantAccessVoid}-${userCantAccessVoid}',
+                                        //   dateLogin: '${DateTime.now()}'
+                                        // ));
                                         }
                                       } else {
+                                      
                                         //Action jika nomor yang dikasih admin gagal diberikan, popup harap coba lagi
                                         popUpWidget.showPopUpError(
-                                            pleaseCheck, uniqeNumberAdmin);
-                                        adminNumberCodeController.clear();
+                                            pleaseCheck, logLoginCode);
+                                            // setState(() {
+                                            description = '${logCantAccessVoid}-${logLoginCode}';
+                                            // });
+                                          //   db3.saveActivityy(LoginOffline(
+                                          //   deskripsi: '${logCantAccessVoid}-${uniqeNumberAdmin}',
+                                          //   datetime: '${DateTime.now()}'
+                                          // ));
+                                            adminNumberCodeController.clear();
+                                        
+                                        //  db3.saveActivityLoginOffline(LoginOfflineVoid(
+                                        //   descLogin: '${logCantAccessVoid}-${uniqeNumberAdmin}',
+                                        //   dateLogin: '${DateTime.now()}'
+                                        // ));
                                       }
+                                      }
+                                      else {
+                                        print('imei beda');
+                                        popUpWidget.showPopUpError(pleaseCheck, differentDevice);
+                                        // setState(() {
+                                        description = '${logCantAccessVoid}-${differentDevice}';
+                                        // });
+                                        // db3.saveActivityy(LoginOffline(
+                                        //   deskripsi: '${logCantAccessVoid}-${differentDevice}',
+                                        //   datetime: '${DateTime.now()}'
+                                        // ));
+                                      //   db3.saveActivityLoginOffline(LoginOfflineVoid(
+                                      //     descLogin: '${logCantAccessVoid}-${differentDevice}',
+                                      //     dateLogin: '${DateTime.now()}'
+                                      //   ));
+                                      }
+                                      final deleteResult = db3.deleteAll();
+                                      if(deleteResult != 0){
+                                        debugPrint('sukses delete data');
+                                        db3.saveActivityy(LoginOffline(      
+                                          deskripsi:description,
+                                          datetime: dateTime
+                                        ));
+                                      }else{
+                                        debugPrint('fail delete data');
+                                      }
+                                      // db3.deleteAll()
+                                      
+                                    }
+                                    } on Exception {
+                                      popUpWidget.showPopUpError(pleaseCheck, logDevice);
                                     }
                                   },
                                   child: Text(

@@ -9,6 +9,7 @@ import 'package:myactivity_project/data/model/data_customer_response.dart';
 import 'package:myactivity_project/data/model/login_response.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:myactivity_project/utils/app_shared_pref.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/model/create_my_log_body.dart';
 import '../../data/model/login_body.dart';
@@ -25,13 +26,15 @@ class LoginCubit extends Cubit<LoginState> {
 
   final _repo = LoginRepositories();
   UserData userData = UserData();
+
   void login({required LoginBody loginBody}) async {
     emit(LoginLoading());
     await repositories.login(loginBody).then((value) {
       if (value.isSuccess && value.dataResponse is LoginResponse) {
         final res = value.dataResponse as LoginResponse;
         userData.setDataUser(res);
-        SharedPref.setToken(res.accessToken!);
+        SharedPref.setToken(res.accessToken ?? '');
+
         emit(LoginSuccess(res));
       } else {
         emit(LoginFailure(message: value.dataResponse!));
@@ -53,7 +56,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void createLog(
-      String logInfoScreen, String logInfoDesc, String urlApi) async {
+      String logInfoScreen, String? logInfoDesc, String urlApi) async {
     final userId = await SharedPref.getUserId();
     final userToko = await SharedPref.getUserToko();
     final deviceId = await SharedPref.getDeviceId();
@@ -73,7 +76,34 @@ class LoginCubit extends Cubit<LoginState> {
 
     emit(CreateLogLoading());
     await repositories.createLog(bodyLog).then((value) {
-      print('Cubit test Failure');
+      if (value.isSuccess) {
+        emit(CreateLogSuccess());
+      } else {
+        emit(CreateLogFailure(message: value.dataResponse.toString()));
+      }
+    });
+  }
+
+    void createLogVoidOffline(
+      String? logInfoScreen, String? logInfoDesc, String urlApi, String? currentDt) async {
+    final userId = await SharedPref.getUserId();
+    final userToko = await SharedPref.getUserToko();
+    final deviceId = await SharedPref.getDeviceId();
+    final deviceName = await SharedPref.getDeviceName();
+
+    final bodyLog = CreateLogBody(
+        userid: int.parse(userId ?? "0"),
+        devicename: deviceId,
+        dateRun: currentDt.toString(),
+        info1: logInfoScreen,
+        info2: logInfoDesc,
+        progname: urlApi,
+        token: logToken,
+        toko: userToko,
+        versi: versi);
+
+    emit(CreateLogLoading());
+    await repositories.createLog(bodyLog).then((value) {
       if (value.isSuccess) {
         emit(CreateLogSuccess());
       } else {

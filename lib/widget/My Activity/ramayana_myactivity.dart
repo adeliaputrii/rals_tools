@@ -20,6 +20,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   UserData userData = UserData();
   bool _loadingPath = false;
+  bool _loadingSpinkit = false;
   var apiTask = 'P202300001';
   bool up = false;
   bool sendDataApi = false;
@@ -81,9 +82,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
       initPlatformState();
     } else {
       setData(widget.response);
-      taskId;
-      projectId;
     }
+    _loadingSpinkit;
   }
 
   void setData(GetTaskResponse.Data? response) {
@@ -95,6 +95,42 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
       // timeStart.text = response.taskStart.toString();
       // timeEnd.text = response.taskClose.toString();
     }
+  }
+
+  void _loadData() async {
+    setState(() {
+      _loadingSpinkit = true;
+    });
+    try {
+      popupEdit();
+      await Future.delayed(const Duration(seconds: 3));
+      MyactivityModelTask.myactivitytask.clear();
+      result.clear();
+      fetchEdit(user_create: '${userData.getUsername7()}');
+      fetchProject();
+      result.clear();
+      MyactivityModelTask.addselectTask.clear();
+      resultEdit.clear();
+      MyactivityModelTask.addselectTaskEdit.clear();
+      _loadingPath = false;
+      print(edit);
+      print('iniApiEdit : ${iniApiEdit}');
+      iniApiEdit = false;
+      fetchProject();
+      fetchTask(apiProject: '${apiTask}');
+      print('HasilTask : ${result}');
+      print('HasilTask2 : ${MyactivityModelTask.addselectTask}');
+      // popupEdit();
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    } catch (ex) {
+      print(ex);
+    }
+    if (!mounted) return;
+    setState(() {
+      _loadingSpinkit = false;
+      print('delay');
+    });
   }
 
   Future<void> initPlatformState() async {
@@ -123,8 +159,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   }
 
   //---------------------------------------------------POP UP----------------------------------------------------------
-  popup() {
-    AlertDialog popup1 = AlertDialog(
+  popUpSuccess() {
+    AlertDialog popupSucc = AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -157,7 +193,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
       actionsAlignment: MainAxisAlignment.start,
       actionsPadding: EdgeInsets.only(bottom: 20),
     );
-    showCupertinoModalPopup(context: context, builder: (context) => popup1);
+    showCupertinoModalPopup(context: context, builder: (context) => popupSucc);
   }
 
   popupFormat() {
@@ -286,9 +322,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                       return text;
                     }
                   }
-                  var taskDescId = '';
+
                   taskIdd() {
-                    // var taskDescId = '';
+                    var taskDescId = '';
                     MyactivityModelTask.myactivitytask.forEach((element) {
                       if (e.task_id == element.task_id) {
                         taskDescId = '${element.task_id}';
@@ -309,9 +345,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                     });
                     print(projectDesc);
                   }
-                      var projectDescId = '';
+
                   projectIdd() {
-                    
+                    var projectDescId = '';
                     MyactivityModel.myactivitymodel.forEach((element) {
                       if (e.projek_id == element.project_id) {
                         projectDescId = '${element.project_id}';
@@ -350,8 +386,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         print(project());
                         timeStart..text = '${e.time_start}';
                         timeEnd..text = '${e.time_end}';
-                        projectId = '${projectDescId}';
-                        taskId = '${taskDescId}';
+                        projectId = '${projectIdd()}';
+                        taskId = '${taskIdd()}';
                         desc..text = '${e.myactivity_desc}';
                         uploadEdit = true;
                         _directoryPath = null;
@@ -685,8 +721,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                   setState(() {
                     resultProject.add(element.projectDesc!);
                     if (element.projectId == widget.response!.projectId) {
+                      projectId = element.projectId!;
                       selected = element.projectDesc!;
-                      debugPrint('selected is ' + selected);
+                      debugPrint('selected is ' + projectId);
                     }
                   });
                 });
@@ -699,8 +736,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                   setState(() {
                     result.add(element.taskDesc!);
                     if (element.taskId == widget.response?.taskId) {
+                      taskId = element.taskId!;
                       selectedTask = element.taskDesc!;
-                      // debugPrint('selected is ' + selected);
+                      debugPrint('selected task is ' + taskId);
                     }
                   });
                 });
@@ -1362,33 +1400,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               height: 50,
                               color: Color.fromARGB(255, 255, 17, 17),
                               onPressed: () async {
-                                
-                                result.clear();
-                                MyactivityModelTask.addselectTask.clear();
-                                resultEdit.clear();
-                                MyactivityModelTask.addselectTaskEdit.clear();
-                                _loadingPath = false;
-                                print(edit);
-                                print('iniApiEdit : ${iniApiEdit}');
-                                iniApiEdit = false;
-
-                                fetchProject();
-                                fetchTask(apiProject: '${apiTask}');
-                                print('HasilTask : ${result}');
-                                print(
-                                    'HasilTask2 : ${MyactivityModelTask.addselectTask}');
-                                popupEdit();
-
-                                setState(() {
-                                  MyactivityModelTask.myactivitytask.clear();
-                                  result.clear();
-                                  fetchEdit(
-                                      user_create:
-                                          '${userData.getUsername7()}');
-                                  fetchProject();
-                                  
-                                });
-                                
+                                _loadData();
                               },
                               child: Text(
                                 "Edit",
@@ -1421,12 +1433,10 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                               '${userData.getUsername7()}',
                                           'time_start': timeStart.text,
                                           'time_end': timeEnd.text,
-                                          'task_id': taskId 
-                                          == ''
+                                          'task_id': taskId == ''
                                               ? 'P202300001-001'
                                               : taskId,
-                                          'projek_id': projectId 
-                                          == ''
+                                          'projek_id': projectId == ''
                                               ? 'P202300001'
                                               : projectId,
                                           'myactivity_id': idEdit,
@@ -1469,12 +1479,10 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                               '${userData.getUsername7()}',
                                           'time_start': timeStart.text,
                                           'time_end': timeEnd.text,
-                                          'task_id': taskId 
-                                          == ''
+                                          'task_id': taskId == ''
                                               ? 'P202300001-001'
                                               : taskId,
-                                          'projek_id': projectId 
-                                          == ''
+                                          'projek_id': projectId == ''
                                               ? 'P202300001'
                                               : projectId,
                                           'myactivity_id': idEdit,
@@ -1505,12 +1513,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                         });
                                         loginCubit.createLog(
                                             baseParam.logInfoActityEdit,
-                                            '${baseParam.logInfoActitySucc}${idEdit}',
+                                            '${baseParam.logInfoActitySucc} ${projectId}',
                                             urlEditAct);
                                         print('berhasil $_udid');
-                                        // var responseLog = await dio.post(
-                                        //     '${tipeurl}v1/activity/createmylog',
-                                        //     data: formDataLog);
                                         print('berhasil $_udid');
                                       }
 
@@ -1563,7 +1568,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                         print('berhasil $_udid');
                                         loginCubit.createLog(
                                             baseParam.logInfoActivityPage,
-                                            baseParam.logInfoActivityInputSucc,
+                                            '${baseParam.logInfoActivityInputSucc}${projectId}',
                                             urlCreateAct);
                                         // var responseLog = await dio.post(
                                         //     '${tipeurl}v1/activity/createmylog',
@@ -1609,17 +1614,14 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                         print('berhasil $_udid');
                                         loginCubit.createLog(
                                             baseParam.logInfoActivityPage,
-                                            baseParam.logInfoActivityInputSucc,
+                                            '${baseParam.logInfoActivityInputSucc}${projectId}',
                                             urlCreateAct);
-                                        // var responseLog = await dio.post(
-                                        //     '${tipeurl}v1/activity/createmylog',
-                                        //     data: formDataLog);
                                         print('berhasil $_udid');
                                       }
                                     }
                                     print(
                                         'Berhasil ${dokumen} ${dokumenEdit}, ${selectedTask}, ${timeStart.text}, ${timeStart.text}, ${timeStart.text},');
-                                    popup();
+                                    popUpSuccess();
                                     iniApiSave = true;
                                     apiTask = 'P202300001';
                                     fetchProject();
@@ -1651,7 +1653,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               ),
                             ),
                           ]),
-                          SizedBox(height: 30,)
+                      SizedBox(
+                        height: 30,
+                      )
                     ],
                   ),
                 ),

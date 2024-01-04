@@ -51,7 +51,8 @@ void main() async {
       Permission.notification.request();
     }
   });
-  firebaseInit();
+  await Firebase.initializeApp();
+  await FirebaseApiNew().initNotification();
   registerAppServices();
   initPlatformState();
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -70,23 +71,26 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]).then((value) => runApp(lastLogin == formattedDate
       ? appCubit.initCubit(HomeMainApp())
-      : appCubit.initCubit(SplashHomeMainApp(loginOffline: lastLogin))));
+      : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
 }
 
 Future<void> registerAppServices() async {
   final appUtil = AppUtils();
   appUtil.initNetwork();
   final appServices = AppServices(GetIt.I.get<Dio>());
+// <<<<<<< HEAD
+//   // final url =
+//   //     kDebugMode ? '${basePath.base_url_dev}' : '${basePath.base_url_prod}';
   final url = '${basePath.base_url_dev}';
-      // kDebugMode ? '${basePath.base_url_dev}' : '${basePath.base_url_prod}';
+// =======
+//   final url = '${basePath.base_url_dev}';
+//       // kDebugMode ? '${basePath.base_url_dev}' : '${basePath.base_url_prod}';
+// >>>>>>> 08a66259535eb08b256d4c74568fa127c0908ab4
   debugPrint('url' + url);
   await appServices.registerAppServices(url);
 }
 
-void firebaseInit() async {
-  await Firebase.initializeApp();
-  await FirebaseApiNew().initNotification();
-}
+void firebaseInit() async {}
 
 Future<void> initPlatformState() async {
   DeviceInfoPlugin devicePlugin = DeviceInfoPlugin();
@@ -109,6 +113,7 @@ Future<void> initPlatformState() async {
   }
   SharedPref.setDeviceId('${nativeId}${info.device}');
   SharedPref.setDeviceName('${info.brand}');
+  debugPrint('device id ${nativeId}${info.device}');
 }
 
 class HomeMainApp extends StatelessWidget {

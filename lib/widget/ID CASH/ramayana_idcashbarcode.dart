@@ -21,6 +21,7 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
   @override
   void initState() {
     super.initState();
+    loginCubit = context.read<LoginCubit>();
     initPlatformState();
     _secureScreen();
     didPush();
@@ -75,15 +76,17 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
         leading: IconButton(
           onPressed: () async {
             _unsecureScreen();
-           loginCubit.createLog(baseParam.logInfoIdcashPage,
+            loginCubit.createLog(baseParam.logInfoIdcashPage,
                 baseParam.logInfoIdcashBarcode, apiUrl);
             Navigator.pushAndRemoveUntil(context,
                 MaterialPageRoute(builder: (context) {
               return RamayanaIDCash();
             }), (route) => false);
           },
-          icon: Icon(Icons.arrow_back_ios,
-              color: Colors.white,),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
         ),
         title: Container(
             margin: EdgeInsets.only(left: 100, right: 115),
@@ -244,8 +247,8 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
                         color: Color.fromARGB(255, 255, 17, 17),
                         onPressed: () async {
                           _unsecureScreen();
-                         loginCubit.createLog(baseParam.logInfoIdcashPage,
-                         baseParam.logInfoIdcashBarcode, apiUrl);
+                          loginCubit.createLog(baseParam.logInfoIdcashPage,
+                              baseParam.logInfoIdcashBarcode, apiUrl);
                           Navigator.pushAndRemoveUntil(context,
                               MaterialPageRoute(builder: (context) {
                             return RamayanaIDCash();

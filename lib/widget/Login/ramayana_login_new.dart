@@ -121,7 +121,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           for (var s in simData.cards) {
             imei2 = s.serialNumber;
             if (s.slotIndex == 1) {
-              pref.setString('serialImei', '${s.serialNumber}');
+              // pref.setString('serialImei', '${s.serialNumber}');
             }
             print('Serial number: ${s.serialNumber}');
             print('Data Roaming: ${s.isNetworkRoaming}');
@@ -169,6 +169,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
 
     setState(() {
       _nativeId = nativeId;
+     
       _udid = uuid;
     });
   }
@@ -459,6 +460,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   loginPressed() async {
     keyboardUtils.dissmissKeyboard(context);
     AndroidDeviceInfo info = await devicePlugin.androidInfo;
+     pref.setString('serialImei', '${_nativeId}');
     if (usernameController.text.isNotEmpty &&
         passwordController.text.isNotEmpty) {
       final body = LoginBody(
@@ -805,7 +807,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   fetchDataCustomer({required String user_name}) async {
     AndroidDeviceInfo info = await devicePlugin.androidInfo;
     final responseku = await http.post(
-        Uri.parse('${tipeurl}api/v1/auth/reset.usernameController'),
+        Uri.parse('${tipeurl}api/v1/auth/reset.password'),
         body: {'user_name': usernameController.text});
 
     var data = jsonDecode(responseku.body);
@@ -876,8 +878,11 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           if (state.message == pleaseCheckConnection) {
             sweatAlert();
           } else {
-            loginCubit.createLog(logInfoLoginPage,
-                '${baseParam.logInfoLoginFail} ${state.message}', urlApi);
+            final username = usernameController.text;
+            loginCubit.createLog(
+                logInfoLoginPage,
+                '${baseParam.logInfoLoginFail} ${state.message} user ${username}',
+                urlApi);
             popUpWidget.showPopUpError(pleaseCheck, state.message);
           }
         }
@@ -1147,14 +1152,13 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                           fontWeight: FontWeight.bold)),
                                   // color: Colors.red,
                                   onPressed: () {
-                                    // if (usernameController.text.isEmpty) {
-                                    //   _displayCenterMotionUsername();
-                                    // } else {
-                                    //   fetchDataCustomer(
-                                    //       user_name: usernameController.text);
-                                    // }
-                                  }
-                                  ),
+                                    if (usernameController.text.isEmpty) {
+                                      _displayCenterMotionUsername();
+                                    } else {
+                                      fetchDataCustomer(
+                                          user_name: usernameController.text);
+                                    }
+                                  }),
                               // SizedBox(
                               //   height: 70,
                               // ),

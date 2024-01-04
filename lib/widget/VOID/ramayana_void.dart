@@ -2,7 +2,7 @@ part of 'import.dart';
 
 class RamayanaVoid extends StatefulWidget {
   static const routeName = '/RamayanaVoid';
-   RamayanaVoid({super.key, required this.isOffline});
+  RamayanaVoid({super.key, required this.isOffline});
   final bool isOffline;
 
   @override
@@ -11,6 +11,7 @@ class RamayanaVoid extends StatefulWidget {
 
 class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
   DbHelper db = DbHelper();
+  DbHelperVoidOffline db2 = DbHelperVoidOffline();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -20,15 +21,18 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
   UserData userData = UserData();
   bool _isKeptOn = true;
   double _brightness = 1.0;
-  KeyboardUtils keyboardUtils = KeyboardUtils();
   late LoginCubit loginCubit;
-  final urlApi = '${tipeurl}${basePath.api_login}';
+  KeyboardUtils keyboardUtils = KeyboardUtils();
+  TextEditingController myController = TextEditingController();
+
+  String _scanBarcode = '';
+  bool _visible = false;
+  bool? _isConnected;
 
   @override
   void initState() {
-    loginCubit = context.read<LoginCubit>();
     super.initState();
-    debugPrint('cek'+widget.isOffline.toString());
+    loginCubit = context.read<LoginCubit>();
     initPlatformState();
     _checkInternetConnection();
     setState(() {
@@ -53,12 +57,6 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
     });
   }
 
-  TextEditingController myController = TextEditingController();
-
-  String _scanBarcode = '';
-  bool _visible = false;
-  bool? _isConnected;
-
   @override
   void didPush() {
     super.didPush();
@@ -72,19 +70,18 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
   }
 
   Future<bool> _willPopCallback() async {
-  if(!widget.isOffline){
-  debugPrint('to home');
-  Navigator.pushAndRemoveUntil(
-   context,
-   MaterialPageRoute(
-   builder: (context) =>
-    DefaultBottomBarController(child: Ramayana()),
-     ),
-     (Route<dynamic> route) => false);
-  }else{
-    exit(0);
-}
-return Future.value(false);
+    if (!widget.isOffline) {
+      debugPrint('to home');
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DefaultBottomBarController(child: Ramayana()),
+          ),
+          (Route<dynamic> route) => false);
+    } else {
+      exit(0);
+    }
+    return Future.value(false);
   }
 
   @override
@@ -93,15 +90,13 @@ return Future.value(false);
     ScreenBrightness().setScreenBrightness(1.0);
   }
 
-  
-
   _checkInternetConnection() async {
     try {
       final response = await InternetAddress.lookup('www.kindacode.com');
       if (response.isNotEmpty) {
         setState(() {
           _isConnected = true;
-          print(_isConnected);
+          print(_isConnected.toString());
         });
       }
     } on Exception catch (err) {
@@ -150,8 +145,6 @@ return Future.value(false);
           color: Colors.green,
           onPressed: () {
             Navigator.pop(context);
-            
-            
           },
           child: Text(
             "Cancel",
@@ -163,9 +156,11 @@ return Future.value(false);
           radius: BorderRadius.circular(20),
           color: Color.fromARGB(255, 210, 14, 0),
           onPressed: () async {
-          logoutPressed();
-           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: 
-           (context)=> RamayanaLogin()), (route) => false);
+            logoutPressed();
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => RamayanaLogin()),
+                (route) => false);
           },
           child: Text(
             "Log Out",
@@ -256,19 +251,18 @@ return Future.value(false);
             onPressed: () async {
               await FlutterWindowManager.clearFlags(
                   FlutterWindowManager.FLAG_SECURE);
-                  if(!widget.isOffline){
-                    debugPrint('to home');
-                  Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        DefaultBottomBarController(child: Ramayana()),
-                  ),
-                  (Route<dynamic> route) => false);
-                  }else{
-                    sweatAlert();
-                  }
-           
+              if (!widget.isOffline) {
+                debugPrint('to home');
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          DefaultBottomBarController(child: Ramayana()),
+                    ),
+                    (Route<dynamic> route) => false);
+              } else {
+                sweatAlert();
+              }
             },
             icon: Icon(
               Icons.arrow_back_ios,
@@ -379,6 +373,7 @@ return Future.value(false);
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500))),
                     onPressed: () async {
+
                       keyboardUtils.dissmissKeyboard(context);
                       if (_formKey.currentState!.validate()) {
                         didPush();
@@ -396,19 +391,41 @@ return Future.value(false);
                               FlutterWindowManager.FLAG_SECURE);
                         }
                         await _checkInternetConnection();
+                        if (widget.isOffline) {
+                         db2.saveActivityVoidOffline(VoidOffline(
+                                        idGenerate: '${logInfoVoidSucc}${myController.text}',
+                                        date: '${DateTime.now()}',
+                                      ));
+                          //  if(deleteResult != 0){
+                          //               debugPrint('sukses delete data');
+                                       
+                          //             }else{
+                          //               debugPrint('fail delete data');
+                          //             }
+                       
+                        debugPrint('login via offline');
+                      } else {
+                        debugPrint('login via online');
                         if (_isConnected == true) {
                           print('is connect');
-                         loginCubit.createLog(
-                          'VOID', 'Aktivitas Void', urlApi);
+                          AndroidDeviceInfo info = await deviceInfo.androidInfo;
+                          final productId = myController.text;
+                          loginCubit.createLog(
+                              baseParam.logInfoVoidPage,
+                              '${baseParam.logInfoVoidSucc}${productId}',
+                              baseParam.noUrl);
+                          print('berhasil $_udid');
                         } else if (_isConnected == false) {
                           String format =
                               DateFormat.Hms().format(DateTime.now());
                           print('not connect');
                           db.saveActivityy(LogOffline(
-                            deskripsi: 'Aktivitas Void - Menu Void',
+                            deskripsi: 'Generate - ${myController.text}',
                             datetime: '${DateTime.now()}',
                           ));
+                           
                         }
+                      }
                       } else {
                         print('required');
                       }
@@ -448,17 +465,15 @@ return Future.value(false);
                               // ),
 
                               Container(
-                                margin: EdgeInsets.fromLTRB(10, 0,10, 0),
+                                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 height: 110,
                                 child: SfBarcodeGenerator(
-                                 value:
-                                 '$data',
-                                  backgroundColor:
-                                  Colors.white,
-                                  barColor:Colors.black,
-                                  symbology:Code128()),
+                                    value: '$data',
+                                    backgroundColor: Colors.white,
+                                    barColor: Colors.black,
+                                    symbology: Code128()),
                               ),
-              
+
                               Container(
                                 margin: EdgeInsets.fromLTRB(100, 30, 100, 0),
                                 child: PrettyQr(
