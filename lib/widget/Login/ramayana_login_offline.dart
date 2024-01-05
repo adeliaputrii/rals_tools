@@ -25,14 +25,23 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
   var imei2 = '';
   SimData? _simData;
   late CreateLogBody createLogBody;
+  late LoginCubit loginCubit;
+  final urlApi = '${tipeurl}${basePath.api_login}';
+  String _nativeId = 'Unknown';
+  final _nativeIdPlugin = NativeId();
+  String _udid = 'Unknown';
+  DbHelperLoginOffline db3 = DbHelperLoginOffline();
 
   @override
   void initState() {
+    loginCubit = context.read<LoginCubit>();
     super.initState();
     popUpWidget = PopUpWidget(context);
     generateNumber();
+
     generateNumberWidget = true;
     init();
+    initPlatformState();
   }
 
   Future<void> init() async {
@@ -41,10 +50,37 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
     initSim();
   }
 
+  Future<void> initPlatformState() async {
+    String udid;
+    String nativeId;
+    String uuid;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    // We also handle the message potentially returning null.
+    try {
+      nativeId = await _nativeIdPlugin.getId() ?? 'Unknown NATIVE_ID';
+    } on PlatformException {
+      nativeId = 'Failed to get native id.';
+    }
+
+    try {
+      uuid = await _nativeIdPlugin.getUUID() ?? 'Unknown UUID';
+    } on PlatformException {
+      uuid = 'Failed to get uuid.';
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _nativeId = nativeId;
+      _udid = uuid;
+    });
+  }
+
   int generateNumber() {
     RandomNumber randomNumber = RandomNumber();
     randomNum = randomNumber.getRandomNumber(111111, 999999);
     numberCodeController.text = randomNum.toString();
+
     return randomNum;
   }
 
@@ -63,16 +99,28 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
     return numberFromAdmin == uniqueId;
   }
 
-  Future<int> compareGenerateCodeTest(int numberFromAdmin) async {
+  Future<String> getUserId(int numberFromAdmin) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String? imei = pref.getString('serialImei');
-    int idUser = int.parse(userData.getUsername7());
+    int idUser = int.parse(numberCodeController.text) - (randomNum * 5) * 2;
 
-    int uniqueId = idUser + (randomNum * 5) * 2;
-    debugPrint('${uniqueId}');
-
-    return uniqueId;
+    return idUser.toString();
   }
+
+  // Future<int> compareGenerateCodeTest() async {
+  //   SharedPreferences pref = await SharedPreferences.getInstance();
+  //   String? imei = pref.getString('serialImei');
+  //   int idUser = int.parse(userData.getUsername7());
+
+  //   // int uniqueId =
+  //   //     idUser + (randomNum * 2) + (AsciiEncoder().convert(imei!+deviceInfo.device)[0] * 10);
+  //   //     debugPrint('${uniqueId}');
+
+  //   int uniqueId = 0460545 + (int.parse(numberCodeController.text) * 5) * 2;
+  //   debugPrint('${uniqueId}');
+  //   print('${uniqueId}');
+
+  //   return uniqueId;
+  // }
 
   Future<void> initSim() async {
     SimData simData;
@@ -298,7 +346,6 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                   color: Color.fromARGB(255, 210, 14, 0),
                                   onPressed: () async {
                                     debugPrint('tes generate');
-                                    compareGenerateCodeTest(941573);
                                     String? serialimei =
                                         pref.getString('serialImei');
                                     debugPrint(userData.getUsername7());
@@ -311,21 +358,6 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                       debugPrint(
                                           'genrate number button ${generateNumberWidget}');
                                     });
-                                    // if (formKey.currentState!.validate()) {
-                                    //   UserData userData = UserData();
-                                    //   if (userData.getListMenu
-                                    //       .toString()
-                                    //       .contains('void')) {
-                                    //     debugPrint('user has access void');
-                                    //     Navigator.pushAndRemoveUntil(
-                                    //         context,
-                                    //         MaterialPageRoute(
-                                    //             builder: (context) => RamayanaVoid()),
-                                    //         (Route<dynamic> route) => false);
-                                    //   } else {
-                                    //     debugPrint('user cannot access void');
-                                    //   }
-                                    // }sss
                                   },
                                   child: Text(
                                     'Generate Number',
@@ -344,41 +376,87 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                       borderRadius: BorderRadius.circular(30)),
                                   color: Color.fromARGB(255, 210, 14, 0),
                                   onPressed: () async {
-                                    if (formKey.currentState!.validate()) {
-                                      final isSuccess =
-                                          await compareGenerateCode(int.parse(
-                                              adminNumberCodeController.text));
-                                      if (isSuccess) {
-                                        debugPrint(userData.getListMenu());
-                                        var listmenu =
-                                            '${userData.getListMenu()}';
-                                        debugPrint('${listmenu}');
+                                    var description = "";
+                                    String dateTime = DateTime.now().toString();
+                                    // print(compareGenerateCodeTest());
+                                    try {
+                                      if (formKey.currentState!.validate()) {
+                                        final isSuccess =
+                                            await compareGenerateCode(int.parse(
+                                                adminNumberCodeController
+                                                    .text));
+                                        String? imei =
+                                            pref.getString('serialImei');
+                                        AndroidDeviceInfo info =
+                                            await devicePlugin.androidInfo;
+                                        if ("${_nativeId}${info.device}" ==
+                                                "${imei ?? ''}${info.device}"
+                                            //  getUserId(int.parse(adminNumberCodeController.text)) == userData.getUsername7()
+                                            ) {
+                                          // db3.deleteAll();
+                                          if (isSuccess) {
+                                            debugPrint(userData.getListMenu());
+                                            var listmenu =
+                                                '${userData.getListMenu()}';
+                                            debugPrint('${listmenu}');
 
-                                        if (listmenu
-                                            .contains('mastervoid.void')) {
-                                          pref.setString("waktuLoginOffline",
-                                              "${formattedDate}");
-                                          debugPrint('user has access void');
+                                            if (listmenu
+                                                .contains('mastervoid.void')) {
+                                              pref.setString(
+                                                  "waktuLoginOffline",
+                                                  "${formattedDate}");
+                                              debugPrint(
+                                                  'user has access void');
+                                              description = logSucces;
 
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    RamayanaVoid(
-                                                        isOffline: true)),
-                                          );
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        RamayanaVoid(
+                                                            isOffline: true)),
+                                              );
+                                            } else {
+                                              popUpWidget.showPopUpError(
+                                                  pleaseCheck,
+                                                  userCantAccessVoid);
+                                              debugPrint(
+                                                  'user cannot access void');
+                                              adminNumberCodeController.clear();
+
+                                              description =
+                                                  '${logCantAccessVoid}-${userCantAccessVoid}';
+                                            }
+                                          } else {
+                                            //Action jika nomor yang dikasih admin gagal diberikan, popup harap coba lagi
+                                            popUpWidget.showPopUpError(
+                                                pleaseCheck, logLoginCode);
+                                            description =
+                                                '${logCantAccessVoid}-${logLoginCode}';
+
+                                            adminNumberCodeController.clear();
+                                          }
                                         } else {
+                                          print('imei beda');
                                           popUpWidget.showPopUpError(
-                                              pleaseCheck, userCantAccessVoid);
-                                          debugPrint('user cannot access void');
-                                          adminNumberCodeController.clear();
+                                              pleaseCheck, differentDevice);
+
+                                          description =
+                                              '${logCantAccessVoid}-${differentDevice}';
                                         }
-                                      } else {
-                                        //Action jika nomor yang dikasih admin gagal diberikan, popup harap coba lagi
-                                        popUpWidget.showPopUpError(
-                                            pleaseCheck, uniqeNumberAdmin);
-                                        adminNumberCodeController.clear();
+                                        final deleteResult = db3.deleteAll();
+                                        if (deleteResult != 0) {
+                                          debugPrint('sukses delete data');
+                                          db3.saveActivityy(LoginOffline(
+                                              deskripsi: description,
+                                              datetime: dateTime));
+                                        } else {
+                                          debugPrint('fail delete data');
+                                        }
                                       }
+                                    } on Exception {
+                                      popUpWidget.showPopUpError(
+                                          pleaseCheck, logDevice);
                                     }
                                   },
                                   child: Text(

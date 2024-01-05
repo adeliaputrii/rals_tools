@@ -21,6 +21,7 @@ import 'package:myactivity_project/widget/VOID/import.dart';
 import 'package:myactivity_project/widget/import.dart';
 import 'package:native_id/native_id.dart';
 import 'package:notification_permissions/notification_permissions.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,7 +33,6 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:myactivity_project/base/base_paths.dart' as basePath;
-
 import 'firebase/firebase_api_new.dart';
 import 'firebase_options.dart';
 import 'utils/app_cubit.dart';
@@ -42,8 +42,17 @@ import 'utils/app_utils.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 String _nativeId = 'Unknown';
 final _nativeIdPlugin = NativeId();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+  String appName = packageInfo.appName;
+  String packageName = packageInfo.packageName;
+  String version = packageInfo.version;
+  String buildNumber = packageInfo.buildNumber;
+
+  debugPrint('appVersion ' + version);
   await NotificationPermissions.requestNotificationPermissions;
   await NotificationPermissions.getNotificationPermissionStatus();
   await Permission.notification.isDenied.then((value) {
@@ -71,7 +80,8 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]).then((value) => runApp(lastLogin == formattedDate
       ? appCubit.initCubit(HomeMainApp())
-      : appCubit.initCubit(SplashHomeMainApp(loginOffline: lastLogin))));
+      : appCubit
+          .initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
 }
 
 Future<void> registerAppServices() async {

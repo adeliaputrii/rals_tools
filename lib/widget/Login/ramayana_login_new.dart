@@ -1116,12 +1116,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                                         });
                                                       }
                                                     : () async {
-                                                        // getFile
-                                                        //     .writeUUIDToFile();
-                                                        // final uuidFile =
-                                                        //     await getFile
-                                                        //         .readUUIDFromFile();
-                                                        // debugPrint(uuidFile);
                                                         if (_formKey
                                                             .currentState!
                                                             .validate()) {

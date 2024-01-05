@@ -26,6 +26,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   List deskripsi = [];
   List datetime = [];
   DbHelper db = DbHelper();
+  DbHelperVoidOffline db2 = DbHelperVoidOffline();
+  DbHelperLoginOffline db3 = DbHelperLoginOffline();
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   Timer? timer;
   List akses = ["${userData.getUserAkses()}"];
@@ -50,6 +52,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   bool namaUser = false;
   late LoginCubit loginCubit;
   final urlApi = '${tipeurl}${basePath.api_login}';
+  
+  List<Map<String, dynamic>> loginOffline = [];
+  List<Map<String, dynamic>> voidOffline = [];
+  List<Map<String, dynamic>> logOffline = [];
 
   @override
   void initState() {
@@ -58,12 +64,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     UserData userData = UserData();
     homeCubit = context.read<HomeCubit>();
-
     initPlatformState();
     didPop();
     _checkInternetConnection();
-    _getAllActivity();
-    didPushNext(); //ulang lagi dell sorry license okay
+    didPushNext(); 
     ApprovalReturnMenu.approvalmenu.clear();
     ApprovalReturnMenu.idcashmenu.clear();
     ApprovalIdcash.approvalidcash.clear();
@@ -80,6 +84,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     fetchDataJumlahTask();
     _unsecureScreen();
     fetchBerita();
+    _getAllActivity();
   }
 
   @override
@@ -133,15 +138,13 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   _loadToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     UserData userData = UserData();
-
     var accToken = userData.getUserToken();
- 
+    print('load token ${accToken}');
     if (isMounted) {
       setState(() {
         token = (prefs.getString('user_token_str') ?? '');
       });
     }
-
     return token;
   }
 
@@ -172,14 +175,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           print('false');
         }
       }
-
       final Map<String, TaskHome> profileMap = new Map();
       TaskHome.taskhome.forEach((element) {
         profileMap[element.task_id] = element;
-
         TaskHome.taskhome = profileMap.values.toList();
       });
-      print('check length ${TaskHome.taskhome.length}');
       print(data['data'].toString());
     } else {
       print(data['status']);
@@ -197,12 +197,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     });
 
     var data = jsonDecode(responseku.body);
-
     if (data['status'] == 200) {
-      print("API Success oooo");
-      print(data);
       int count = data['data'].length;
-
       for (int i = 0; i < count; i++) {
         News.news.add(News.fromjson(data['data'][i]));
       }
@@ -214,10 +210,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       final Map<String, News> profileMap = new Map();
       News.news.forEach((element) {
         profileMap[element.berita_hdr] = element;
-
         News.news = profileMap.values.toList();
       });
-      print('check length ${News.news.length}');
       print(data['data'].toString());
     } else {
       print(data['status']);
@@ -236,7 +230,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     });
 
     var data = jsonDecode(responseku.body);
-
     if (data['status'] == 200) {
       print("API Success oooo");
       print(data);
@@ -248,10 +241,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           total_task = value;
         }
       });
-
-      print('count : $count');
-      print(count.keys);
-      print(count.values);
       print(data['data'].toString());
     } else {
       print('NO DATA');
@@ -302,12 +291,16 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
   Future<void> _getAllActivity() async {
     //list menampung data dari database
-    var list = await db.getAllFormat();
-
+    var list = await db.getAllFormat();  
+    var listVoidOffline = await db2.getAllFormatVoidOffline();
+    var listLoginOffline= await db3.getAllFormat(); // 
+  
     if (isMounted) {
       setState(() {
         //hapus data pada listKontak
         LogOffline.listActivity.clear();
+        VoidOffline.voidOffline.clear();
+        LoginOffline.listActivity.clear();
 
         //lakukan perulangan pada variabel list
         list!.forEach((activityy) {
@@ -316,21 +309,47 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           print(LogOffline.listActivity);
         });
       });
+    if (listVoidOffline != null) {
+    final String columnId = 'id_act';
+    final String columnIdGenerate = 'idGenerate';
+    final String columnDate = 'date';
+    // Iterate through the result and print attributes
+    for (var activityy in listVoidOffline) {
+      var id = activityy[columnId];
+      var idGenerate = activityy[columnIdGenerate];
+      var date = activityy[columnDate];
+      loginCubit.createLogVoidOffline(
+       logInfoVoidOfflinePage, idGenerate, urlApi, date); 
+      print('ID: $id, ID Generate: $idGenerate, Date: $date');
+      await db2.deleteVoidOffline(id);
     }
-    //ada perubahanan state
+     }
+    if (listLoginOffline != null) {
+    final String columnId = 'id_act';
+    final String columnDeskripsi = 'deskripsi';
+    final String columnDatetime = 'datetime';
+    // Iterate through the result and print attributes
+    for (var activity in listLoginOffline) {
+      var id = activity[columnId];
+      var deskripsi = activity[columnDeskripsi];
+      var datetime = activity[columnDatetime];
+      loginCubit.createLogVoidOffline(
+       logLoginOfflinePage, deskripsi, urlApi, datetime); 
+      print('ID: $id, Deskripsi: $deskripsi, Datetime: $datetime');
+      await db3.deleteActivityy(id);
+    }
+
+    db3.deleteAll();
+     }
+    }
+  // LoginOffline.listActivity.forEach((element) async{
+  //   await db3.deleteActivityy(element.id_act!);
+  // });
+  // VoidOffline.voidOffline.forEach((element) async{
+  //   await db3.deleteActivityy(element.id_act!);
+  // });
   }
 
-  int _selectedIndex = 1;
-  void _onItemTapped(int index) {
-    _selectedIndex = index;
-    if (_selectedIndex == 0) {
-      sweatAlert();
-    } else if (_selectedIndex == 2) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
-        return Profilee();
-      }));
-    }
-  }
 
   Future<void> dapetinData() async {
     UserData userData = UserData();
@@ -437,9 +456,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           color: Colors.green,
           onPressed: () {
             Navigator.pop(context);
-            setState(() {
-              _selectedIndex = 1;
-            });
+           
           },
           child: Text(
             "Cancel",
@@ -778,29 +795,13 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     if (_isConnected == false) {
-      // print('not connected');
-      LogOffline.listActivity.forEach((element) async {
-        // print('${element.datetime}');
-      });
+      print('not connected');
     } else {
-      LogOffline.listActivity.forEach((element) async {
-        AndroidDeviceInfo info = await deviceInfo.androidInfo;
-        var formData = FormData.fromMap({
-          'progname': 'RALS_TOOLS ',
-          'versi': '${versi}',
-          'date_run': '${element.datetime}',
-          'info1': '${element.deskripsi}',
-          ' info2': '${imei} ',
-          'userid': '${userData.getUsernameID()}',
-          ' toko': '${userData.getUserToko()}',
-          ' devicename': '${info.device}',
-          'TOKEN': 'R4M4Y4N4'
-        });
-        var response =
-            await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
-        await db.deleteActivityy(element.id_act!);
-      });
+   print('connected');
+  //  _getAllActivity();
+  
     }
+    
     var listmneu = '${userData.getListMenu()}';
     List split = listmneu.split('|');
     double c_width = MediaQuery.of(context).size.width * 0.8;
@@ -1813,118 +1814,103 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                       }
                                                       if (state
                                                           is HomeSuccess) {
-                                                        return Container(
-                                                          child:
-                                                              ListView.builder(
-                                                            primary: false,
-                                                            shrinkWrap: true,
-                                                            itemCount: 3,
-                                                            itemBuilder:
-                                                                (BuildContext
+                                                        return Expanded(
+                                                          child: Container(
+                                                            child: ListView
+                                                                .builder(
+                                                              primary: false,
+                                                              shrinkWrap: true,
+                                                              itemCount: 3,
+                                                              itemBuilder:
+                                                                  (BuildContext
+                                                                          context,
+                                                                      int index) {
+                                                                return GestureDetector(
+                                                                  onTap: () {
+                                                                    Navigator.push(
                                                                         context,
-                                                                    int index) {
-                                                              return GestureDetector(
-                                                                onTap: () {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder:
-                                                                              (context) {
-                                                                    return RamayanaMyActivity(
-                                                                        response: state
-                                                                            .response
-                                                                            .data?[index]);
-                                                                  }));
-                                                                },
-                                                                child:
-                                                                    Container(
-                                                                  height: 90,
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          bottom:
-                                                                              10),
-                                                                  decoration: BoxDecoration(
-                                                                      boxShadow: <BoxShadow>[
-                                                                        BoxShadow(
-                                                                            color: Color.fromARGB(
-                                                                                255,
-                                                                                197,
-                                                                                197,
-                                                                                197),
-                                                                            blurRadius:
-                                                                                1,
-                                                                            spreadRadius:
-                                                                                1,
-                                                                            offset:
-                                                                                Offset(2, 2))
-                                                                      ],
-                                                                      color: Colors
-                                                                          .white,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10)),
+                                                                        MaterialPageRoute(builder:
+                                                                            (context) {
+                                                                      return RamayanaMyActivity(
+                                                                          response: state
+                                                                              .response
+                                                                              .data?[index]);
+                                                                    }));
+                                                                  },
                                                                   child:
-                                                                      ListTile(
-                                                                    leading: CircleAvatar(
-                                                                        backgroundColor: Color.fromARGB(
-                                                                            255,
-                                                                            210,
-                                                                            14,
-                                                                            0),
-                                                                        radius:
-                                                                            30,
-                                                                        backgroundImage:
-                                                                            AssetImage('assets/todolist.png')),
-                                                                    // title: Text('${e.task_desc}', style: GoogleFonts.plusJakartaSans(
-                                                                    //   fontSize: 18, color: Colors.black
-                                                                    // ),),
-                                                                    subtitle:
-                                                                        Column(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .start,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        Container(
-                                                                          margin:
-                                                                              EdgeInsets.only(top: 3),
-                                                                          child:
-                                                                              Text(
-                                                                            '${state.response.data?[index].taskDesc}',
-                                                                            style: GoogleFonts.plusJakartaSans(
-                                                                                fontSize: 18,
-                                                                                color: Colors.black,
-                                                                                fontWeight: FontWeight.w500),
+                                                                      Container(
+                                                                    height: 90,
+                                                                    margin: EdgeInsets.only(
+                                                                        bottom:
+                                                                            10),
+                                                                    decoration: BoxDecoration(
+                                                                        boxShadow: <BoxShadow>[
+                                                                          BoxShadow(
+                                                                              color: Color.fromARGB(255, 197, 197, 197),
+                                                                              blurRadius: 1,
+                                                                              spreadRadius: 1,
+                                                                              offset: Offset(2, 2))
+                                                                        ],
+                                                                        color: Colors
+                                                                            .white,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10)),
+                                                                    child:
+                                                                        ListTile(
+                                                                      leading: CircleAvatar(
+                                                                          backgroundColor: Color.fromARGB(
+                                                                              255,
+                                                                              210,
+                                                                              14,
+                                                                              0),
+                                                                          radius:
+                                                                              30,
+                                                                          backgroundImage:
+                                                                              AssetImage('assets/todolist.png')),
+                                                                      // title: Text('${e.task_desc}', style: GoogleFonts.plusJakartaSans(
+                                                                      //   fontSize: 18, color: Colors.black
+                                                                      // ),),
+                                                                      subtitle:
+                                                                          Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Container(
+                                                                            margin:
+                                                                                EdgeInsets.only(top: 3),
+                                                                            child:
+                                                                                Text(
+                                                                              '${state.response.data?[index].taskDesc}',
+                                                                              style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
+                                                                            ),
                                                                           ),
-                                                                        ),
-                                                                        Row(
-                                                                          children: [
-                                                                            Container(
-                                                                              width: 80,
-                                                                              child: Text('Status', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
-                                                                            ),
-                                                                            Text('${state.response.data?[index].taskStatus}',
-                                                                                style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
-                                                                          ],
-                                                                        ),
-                                                                        Row(
-                                                                          children: [
-                                                                            Container(
-                                                                              width: 80,
-                                                                              child: Text('Project ID', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
-                                                                            ),
-                                                                            Text(': ${state.response.data?[index].projectId}',
-                                                                                style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
-                                                                          ],
-                                                                        ),
-                                                                      ],
+                                                                          Row(
+                                                                            children: [
+                                                                              Container(
+                                                                                width: 80,
+                                                                                child: Text('Status', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                              ),
+                                                                              Text('${state.response.data?[index].taskStatus}', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            children: [
+                                                                              Container(
+                                                                                width: 80,
+                                                                                child: Text('Project ID', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                              ),
+                                                                              Text(': ${state.response.data?[index].projectId}', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              );
-                                                            },
+                                                                );
+                                                              },
+                                                            ),
                                                           ),
                                                         );
                                                       }
@@ -1996,6 +1982,7 @@ class _FadeInImageWidgetState extends State<FadeInImageWidget>
       parent: _controller,
       curve: Curves.easeIn,
     );
+    
     _controller.forward();
   }
 

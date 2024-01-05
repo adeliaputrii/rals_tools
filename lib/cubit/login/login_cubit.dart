@@ -56,12 +56,41 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void createLog(
-      String logInfoScreen, String logInfoDesc, String urlApi) async {
+      String logInfoScreen, String? logInfoDesc, String urlApi) async {
     final userId = await SharedPref.getUserId();
     final userToko = await SharedPref.getUserToko();
     final deviceId = await SharedPref.getDeviceId();
     final deviceName = await SharedPref.getDeviceName();
     final currentDt = DateTime.now();
+
+    final bodyLog = CreateLogBody(
+        userid: int.parse(userId ?? "0"),
+        devicename: deviceId,
+        dateRun: currentDt.toString(),
+        info1: logInfoScreen,
+        info2: logInfoDesc,
+        progname: urlApi,
+        token: logToken,
+        toko: userToko,
+        versi: versi);
+
+    emit(CreateLogLoading());
+    await repositories.createLog(bodyLog).then((value) {
+      print('Cubit test Failure');
+      if (value.isSuccess) {
+        emit(CreateLogSuccess());
+      } else {
+        emit(CreateLogFailure(message: value.dataResponse.toString()));
+      }
+    });
+  }
+
+  void createLogVoidOffline(String? logInfoScreen, String? logInfoDesc,
+      String urlApi, String? currentDt) async {
+    final userId = await SharedPref.getUserId();
+    final userToko = await SharedPref.getUserToko();
+    final deviceId = await SharedPref.getDeviceId();
+    final deviceName = await SharedPref.getDeviceName();
 
     final bodyLog = CreateLogBody(
         userid: int.parse(userId ?? "0"),

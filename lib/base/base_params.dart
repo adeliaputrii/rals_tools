@@ -47,10 +47,12 @@ const String logInfoComCekFail = 'Com Cek Fail';
 const String logInfoActivityPage = 'My Activity Page';
 const String logInfoActivityInputSucc = 'Input Activity Project - ';
 const String logInfoActityEdit = 'My Activity - Edit My Activity Page';
-const String logInfoActitySucc = 'Edit Activity - ';
+const String logInfoActitySucc = 'My Activity - Edit My Activity';
+
 //*Log Void Page*//
 const String logInfoVoidPage = 'Void Page';
 const String logInfoVoidSucc = 'Generate Void - ';
+const String logInfoVoidOfflinePage = 'Void Offline Page';
 
 //Popup Title or Description
 const String pleaseCheck = "Please Check Again";
@@ -63,6 +65,15 @@ const String uniqeNumberAdmin = "Nomor unik admin salah. Harap coba lagi";
 const String differentDevice =
     "Anda terdeteksi menggunakan device berbeda! Jika anda merasa tidak menggunakan device berbeda silahkan hubungi IT Helpdesk untuk dapat kembali login.";
 const String pleaseCheckConnection = 'Please check your connection..';
+
+//Login Offline//
+const String logLoginOfflinePage = 'Login Offline Page';
+const String logSucces = 'Login Offline Sukses';
+const String logCantAccessVoid = 'Login Offline Gagal';
+const String logDevice =
+    'Device tidak ditemukan.Pastikan Anda pernah login pada device ini';
+const String logLoginCode =
+    'Anda terdeteksi menggunakan device berbeda/Login Code tidak sesuai';
 
 //Popup SJ Title or Description
 const String notFound = "Not Found";

@@ -12,6 +12,8 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
   bool isLoading = false;
   bool isMounted = true;
   late HomeCubit homeCubit;
+  late LoginCubit loginCubit;
+  final urlApi = '${tipeurl}${basePath.api_login}';
   @override
   void initState() {
     super.initState();
@@ -166,6 +168,19 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10)),
                       child: ListTile(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return RamayanaMyActivity(
+                                response: state.response.data?[index]);
+                          }));
+                          loginCubit.createLog(
+                              logInfoActivityPage,
+                              '${state.response.data?[index].taskDesc}' +
+                                  '-' +
+                                  '${state.response.data?[index].projectId}',
+                              urlApi);
+                        },
                         leading: CircleAvatar(
                             backgroundColor: Color.fromARGB(255, 210, 14, 0),
                             radius: 30,

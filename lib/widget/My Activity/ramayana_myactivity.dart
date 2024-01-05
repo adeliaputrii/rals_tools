@@ -721,8 +721,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                   setState(() {
                     resultProject.add(element.projectDesc!);
                     if (element.projectId == widget.response!.projectId) {
+                      projectId = element.projectId!;
                       selected = element.projectDesc!;
-                      debugPrint('selected is ' + selected);
+                      debugPrint('selected is ' + projectId);
                     }
                   });
                 });
@@ -735,8 +736,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                   setState(() {
                     result.add(element.taskDesc!);
                     if (element.taskId == widget.response?.taskId) {
+                      taskId = element.taskId!;
                       selectedTask = element.taskDesc!;
-                      // debugPrint('selected is ' + selected);
+                      debugPrint('selected task is ' + taskId);
                     }
                   });
                 });

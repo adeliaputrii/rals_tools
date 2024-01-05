@@ -12,6 +12,7 @@ class _ProfileeState extends State<Profilee> {
   TextEditingController myControllerDivisi = TextEditingController();
   TextEditingController myControllerID = TextEditingController();
   TextEditingController myControllerEmail = TextEditingController();
+  DbHelperLoginOffline db3 = DbHelperLoginOffline();
 
   static UserData userData = UserData();
 
@@ -170,6 +171,9 @@ class _ProfileeState extends State<Profilee> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     SharedPref.clearLastLogin();
     pref.remove('waktuLogin');
+     LoginOffline.listActivity.forEach((element) async{
+     await db3.deleteActivityy(element.id_act!);
+    });
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
       return RamayanaLogin();
     }));
