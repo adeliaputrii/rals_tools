@@ -96,7 +96,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
       //     if (responseMap['userpass'] == "0") {
       //       await userData.setUser(data: responseMap);
       //       var formData = FormData.fromMap({
-      //         'progname': 'RALS_TOOLS ',
+      //         'progname': '${app_name} ',
       //         'versi': '${versi}',
       //         'date_run': '${DateTime.now()}',
       //         'info1': 'Enter PIN ID CASH',

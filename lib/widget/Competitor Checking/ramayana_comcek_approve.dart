@@ -125,7 +125,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
     } else {
       AndroidDeviceInfo info = await deviceInfo.androidInfo;
       var formData = FormData.fromMap({
-        'progname': 'RALS_TOOLS ',
+        'progname': '${app_name} ',
         'versi': '${versi}',
         'date_run': '${DateTime.now()}',
         'info1': 'Competitor Checking - Approve',

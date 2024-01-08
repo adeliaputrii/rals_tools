@@ -24,6 +24,7 @@ import 'package:notification_permissions/notification_permissions.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
+import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:path_provider/path_provider.dart';
@@ -45,14 +46,15 @@ final _nativeIdPlugin = NativeId();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-  String appName = packageInfo.appName;
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  app_name = packageInfo.appName;
   String packageName = packageInfo.packageName;
-  String version = packageInfo.version;
+  // String version = packageInfo.version;
+  versi = packageInfo.version;
   String buildNumber = packageInfo.buildNumber;
 
-  debugPrint('appVersion ' + version);
+  debugPrint('appVersion ' + versi);
   await NotificationPermissions.requestNotificationPermissions;
   await NotificationPermissions.getNotificationPermissionStatus();
   await Permission.notification.isDenied.then((value) {
@@ -72,6 +74,8 @@ void main() async {
   var waktuLoginOffline = prefs.getString("waktuLoginOffline");
   final lastLogin = await SharedPref.getLastLogin();
   final deviceId = await SharedPref.getDeviceId();
+  // final versionApp = prefs.setString("versionApp", version);
+  // final applicationName = prefs.setString("applicationName", appName);
 
   await NotificationService.initializeNotification();
   final appCubit = AppCubit();
@@ -143,7 +147,7 @@ class HomeMainApp extends StatelessWidget {
         RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()),
         RamayanaLogin.route: ((context) => const RamayanaLogin())
       },
-      title: 'Rtools',
+      title: '${app_name}',
       debugShowCheckedModeBanner: false,
       home: DefaultBottomBarController(child: Ramayana()),
       // home: RamayanaLoginOffline(),
@@ -172,7 +176,7 @@ class SplashHomeMainApp extends StatelessWidget {
               ],
             ),
         navigatorKey: navigatorKey,
-        title: 'Rtools',
+        title: '${app_name}',
         debugShowCheckedModeBanner: false,
         routes: {
           RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()),

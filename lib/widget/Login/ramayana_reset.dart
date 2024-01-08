@@ -141,7 +141,7 @@ class _RamayanaResetState extends State<RamayanaReset> {
         print("API Success oooo");
         print(data);
         var formData = FormData.fromMap({
-          'progname': 'RALS_TOOLS ',
+          'progname': '${app_name} ',
           'versi': '${versi}',
           'date_run': '${DateTime.now()}',
           'info1': 'Forget Password Aplikasi RALS',

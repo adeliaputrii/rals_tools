@@ -59,6 +59,18 @@ class SharedPref {
     return prefs.getString(key_user_id);
   }
 
+  // static Future<String?> getVersion() async {
+  //   final prefs = await SharedPreferences.getInstance();
+
+  //   return prefs.getString(version);
+  // }
+
+  // static Future<String?> getAppName() async {
+  //   final prefs = await SharedPreferences.getInstance();
+
+  //   return prefs.getString(appName);
+  // }
+
   static Future<String?> getUserToko() async {
     final prefs = await SharedPreferences.getInstance();
 

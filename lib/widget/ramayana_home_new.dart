@@ -301,14 +301,22 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
         LogOffline.listActivity.clear();
         VoidOffline.voidOffline.clear();
         LoginOffline.listActivity.clear();
-
-        //lakukan perulangan pada variabel list
-        list!.forEach((activityy) {
-          //masukan data ke listKontak
-          LogOffline.listActivity.add(LogOffline.fromMap(activityy));
-          print(LogOffline.listActivity);
-        });
       });
+     if (list != null) {
+    final String columnId = 'id_act';
+    final String columnIdGenerate = 'deskripsi';
+    final String columnDate = 'datetime';
+    // Iterate through the result and print attributes
+    for (var activityy in list) {
+      var id = activityy[columnId];
+      var deskripsi = activityy[columnIdGenerate];
+      var datetime = activityy[columnDate];
+      loginCubit.createLogVoidOffline(
+       logInfoVoidOfflinePage, deskripsi, urlApi, datetime); 
+      print('ID: $id, ID Generate: $deskripsi, Date: $datetime');
+      await db.deleteActivityy(id);
+    }
+     }
     if (listVoidOffline != null) {
     final String columnId = 'id_act';
     final String columnIdGenerate = 'idGenerate';
@@ -342,12 +350,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     db3.deleteAll();
      }
     }
-  // LoginOffline.listActivity.forEach((element) async{
-  //   await db3.deleteActivityy(element.id_act!);
-  // });
-  // VoidOffline.voidOffline.forEach((element) async{
-  //   await db3.deleteActivityy(element.id_act!);
-  // });
   }
 
 
@@ -470,7 +472,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           onPressed: () async {
             AndroidDeviceInfo info = await deviceInfo.androidInfo;
             var formData = FormData.fromMap({
-              'progname': 'RALS_TOOLS ',
+              'progname': '${app_name} ',
               'versi': '${versi}',
               'date_run': '${DateTime.now()}',
               'info1': 'Logout Aplikasi RALS',

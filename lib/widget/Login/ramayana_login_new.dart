@@ -58,7 +58,14 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     super.initState();
     _passwordVisible = false;
     deleteUserData();
+    _unsecureScreen();
   }
+
+  _unsecureScreen() async {
+    await FlutterWindowManager.clearFlags(FlutterWindowManager
+        .FLAG_SECURE); // Mengaktifkan kembali tangkapan layar
+  }
+
 
   Future<void> init() async {
     deviceInfo = await devicePlugin.androidInfo;
@@ -386,7 +393,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           onPressed: () async {
             AndroidDeviceInfo info = await devicePlugin.androidInfo;
             var formData = FormData.fromMap({
-              'progname': 'RALS_TOOLS ',
+              'progname': '${app_name} ',
               'versi': '${versi}',
               'date_run': '${DateTime.now()}',
               'info1': 'Pop Up Update Aplikasi',
@@ -508,7 +515,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     //         pref.setString("token", "${responseMap['access_token']}");
     //         pref.setString("waktuLogin", "${formattedDate}");
     //         var formData = FormData.fromMap({
-    //           'progname': 'RALS_TOOLS ',
+    //           'progname': '${app_name} ',
     //           'versi': '${versi}',
     //           'date_run': '${DateTime.now()}',
     //           'info1': 'Login Aplikasi RALS',
@@ -817,7 +824,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       final SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString("Reset Username", "${usernameController.text}");
       var formData = FormData.fromMap({
-        'progname': 'RALS_TOOLS ',
+        'progname': '${app_name} ',
         'versi': '${versi}',
         'date_run': '${DateTime.now()}',
         'info1': 'Forgot Password Aplikasi RALS',

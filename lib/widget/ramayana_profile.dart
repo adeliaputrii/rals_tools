@@ -229,7 +229,7 @@ class _ProfileeState extends State<Profilee> {
           onPressed: () async {
             AndroidDeviceInfo info = await deviceInfo.androidInfo;
             var formData = FormData.fromMap({
-              'progname': 'RALS_TOOLS ',
+              'progname': '${app_name} ',
               'versi': '${versi}',
               'date_run': '${DateTime.now()}',
               'info1': 'Logout Aplikasi RALS',
@@ -242,8 +242,6 @@ class _ProfileeState extends State<Profilee> {
             });
             loginCubit.createLog(baseParam.logInfoProfilePage,
                 baseParam.logInfoProfile, baseParam.noUrl);
-            // var response = await dio.post('${tipeurl}v1/activity/createmylog',
-            //     data: formData);
             print('berhasil $_udid');
             logoutPressed();
             Navigator.pop(context);
