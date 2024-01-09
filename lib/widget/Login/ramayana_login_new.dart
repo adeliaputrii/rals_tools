@@ -812,7 +812,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   fetchDataCustomer({required String user_name}) async {
     AndroidDeviceInfo info = await devicePlugin.androidInfo;
     final responseku = await http.post(
-        Uri.parse('${tipeurl}api/v1/auth/reset.password'),
+        Uri.parse('${tipeurl}api/v1/auth/reset.username'),
         body: {'user_name': usernameController.text});
 
     var data = jsonDecode(responseku.body);

@@ -181,10 +181,19 @@ class _RamayanaResetState extends State<RamayanaReset> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed : () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
+        return RamayanaLogin();
+      }));
+          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white,)
+          ),
         backgroundColor: Color.fromARGB(255, 238, 34, 34),
         title: Center(
           child: Text(
             "Forgot Password",
+            style: TextStyle(color: Colors.white),
           ),
         ),
       ),
