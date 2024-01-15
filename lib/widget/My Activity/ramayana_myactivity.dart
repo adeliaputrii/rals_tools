@@ -829,15 +829,17 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                 width: 30,
                               ),
                               Container(
+                                // margin: EdgeInsets.only(right: 20),
                                 width: 350,
                                 child: DropdownButton(
+                                     isExpanded: true,
                                   style: GoogleFonts.plusJakartaSans(
                                       fontSize: 17, color: Colors.black),
                                   value: selected,
                                   hint: Text(
                                     '${selected}',
                                     style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 17, color: Colors.black) ,overflow: TextOverflow.ellipsis
+                                        fontSize: 17, color: Colors.black) ,overflow: TextOverflow.ellipsis,
                                   ),
                                   onChanged: (value) {
                                     print(value);
@@ -912,15 +914,18 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               ),
                               Container(
                                 // margin: EdgeInsets.only(right: 30),
-                                width: 350,
+                                width: 250,
                                 child: DropdownButton(
+                                  isExpanded: true,
                                   style: GoogleFonts.plusJakartaSans(
                                       fontSize: 17, color: Colors.black),
                                   value: selectedTask,
                                   hint: Text(
                                     '${selectedTask}',
                                     style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 17, color: Colors.black),overflow: TextOverflow.ellipsis,
+                                        fontSize: 17, color: Colors.black),
+                                        overflow: TextOverflow.ellipsis,
+                                        // textScaler: TextScaler.noScaling,
                                   ),
                                   onChanged: (value) {
                                     print(value);
@@ -952,7 +957,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                                   });
                                                 },
                                                 value: e,
-                                                child: Text('${e}'),
+                                                child: Text('${e}', style: TextStyle(overflow: TextOverflow.ellipsis),),
                                               ))
                                           .toList()
                                       : result

@@ -19,7 +19,7 @@ class _RamayanaInformasiState extends State<RamayanaInformasi> {
               return DefaultBottomBarController(child: Ramayana());
             }), (route) => false);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white,),
         ),
         toolbarHeight: 75,
           title: Text('Ramayana Update',

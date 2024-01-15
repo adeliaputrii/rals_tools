@@ -34,4 +34,5 @@ import 'package:myactivity_project/base/base_params.dart' as baseParam;
 import 'package:myactivity_project/base/base_paths.dart' as basePath;
 import '../../cubit/login/login_cubit.dart';
 import '../../cubit/myactivity/myactivity_cubit.dart';
+import '../../utils/app_media_query.dart';
 part 'ramayana_myactivity.dart';

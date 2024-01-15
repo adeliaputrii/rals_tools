@@ -1007,7 +1007,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                   color: Color.fromARGB(
                                                       255, 71, 70, 70))),
                                         ),
-                                        data.length > 4
+                                        data.length > 3
                                             ? Container(
                                                 height: 40,
                                                 decoration: BoxDecoration(
@@ -1885,6 +1885,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                               Text(
                                                                             '${state.response.data?[index].taskDesc}',
                                                                             style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
+                                                                            overflow: TextOverflow.ellipsis,
                                                                           ),
                                                                         ),
                                                                         Row(
