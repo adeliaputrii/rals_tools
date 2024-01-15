@@ -837,7 +837,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                   hint: Text(
                                     '${selected}',
                                     style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 17, color: Colors.black),
+                                        fontSize: 17, color: Colors.black) ,overflow: TextOverflow.ellipsis
                                   ),
                                   onChanged: (value) {
                                     print(value);
@@ -877,7 +877,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                               });
                                             },
                                             value: e,
-                                            child: Text('${e}'),
+                                            child: Text('${e}',style:TextStyle(overflow: TextOverflow.ellipsis)),
                                           ))
                                       .toList(),
                                 ),
@@ -920,7 +920,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                   hint: Text(
                                     '${selectedTask}',
                                     style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 17, color: Colors.black),
+                                        fontSize: 17, color: Colors.black),overflow: TextOverflow.ellipsis,
                                   ),
                                   onChanged: (value) {
                                     print(value);
@@ -978,7 +978,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                                   });
                                                 },
                                                 value: e,
-                                                child: Text('${e}'),
+                                                child: Text('${e}',style:TextStyle(overflow: TextOverflow.ellipsis)),
                                               ))
                                           .toList(),
                                 ),

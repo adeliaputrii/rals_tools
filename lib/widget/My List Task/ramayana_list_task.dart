@@ -199,7 +199,7 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
                                 style: GoogleFonts.plusJakartaSans(
                                     fontSize: 18,
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500),overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             Row(
@@ -208,12 +208,12 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
                                   width: 80,
                                   child: Text('Status',
                                       style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 15, color: Colors.grey)),
+                                          fontSize: 15, color: Colors.grey),overflow: TextOverflow.ellipsis),
                                 ),
                                 Text(
                                     '${state.response.data?[index].taskStatus}',
                                     style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 15, color: Colors.grey)),
+                                        fontSize: 15, color: Colors.grey),overflow: TextOverflow.ellipsis),
                               ],
                             ),
                             Row(
@@ -227,7 +227,7 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
                                 Text(
                                     ': ${state.response.data?[index].projectId}',
                                     style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 15, color: Colors.grey)),
+                                        fontSize: 15, color: Colors.grey),overflow: TextOverflow.ellipsis),
                               ],
                             ),
                           ],
