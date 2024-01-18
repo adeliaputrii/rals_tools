@@ -89,10 +89,6 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
     String? imei = pref.getString('serialImei');
     int idUser = int.parse(userData.getUsername7());
 
-    // int uniqueId =
-    //     idUser + (randomNum * 2) + (AsciiEncoder().convert(imei!+deviceInfo.device)[0] * 10);
-    //     debugPrint('${uniqueId}');
-
     int uniqueId = idUser + (randomNum * 5) * 2;
     debugPrint('${uniqueId}');
 

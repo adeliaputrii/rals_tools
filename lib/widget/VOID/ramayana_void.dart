@@ -9,7 +9,8 @@ class RamayanaVoid extends StatefulWidget {
   State<RamayanaVoid> createState() => _RamayanaVoidState();
 }
 
-class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
+class _RamayanaVoidState extends State<RamayanaVoid>
+    with RouteAware, WidgetsBindingObserver {
   DbHelper db = DbHelper();
   DbHelperVoidOffline db2 = DbHelperVoidOffline();
 
@@ -33,6 +34,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
   void initState() {
     super.initState();
     loginCubit = context.read<LoginCubit>();
+    WidgetsBinding.instance.addObserver(this);
     initPlatformState();
     _checkInternetConnection();
     setState(() {
@@ -40,7 +42,37 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
     });
     print('123');
   }
-//adel kalo void apa?
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    final session = await sessionEnd();
+    if (state == AppLifecycleState.resumed) {
+      if (session) {
+        Navigator.pushAndRemoveUntil<dynamic>(
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => RamayanaLogin(),
+          ),
+          (route) => false, //if you want to disable back feature set to false
+        );
+      }
+    }
+    if (state == AppLifecycleState.paused) {}
+    if (state == AppLifecycleState.inactive) {
+      debugPrint('inactive');
+    }
+  }
+
+  Future<bool> sessionEnd() async {
+    CheckSession session = CheckSession();
+    return await session.checkSession();
+  }
 
   Future<void> initPlatformState() async {
     String udid;
