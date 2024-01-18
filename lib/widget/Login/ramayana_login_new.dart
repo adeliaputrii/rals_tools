@@ -74,7 +74,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     checkForUpdate();
     initPlatformState();
     initNotification();
-    initSimData();
     deviceInfo = await devicePlugin.androidInfo;
     debugPrint('device info manufacturer ' + deviceInfo.manufacturer);
     debugPrint('device info device ' + deviceInfo.device);
@@ -108,46 +107,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     return token;
   }
 
-  Future<void> initSimData() async {
-    SimData simData;
-    try {
-      var status = await Permission.phone.status;
-      if (!status.isGranted) {
-        bool isGranted = await Permission.phone.request().isGranted;
-        if (!isGranted) return;
-      }
-      simData = await SimDataPlugin.getSimData();
-      setState(() {
-        _isLoading = false;
-        _simData = simData;
-      });
-      void printSimCardsData() async {
-        try {
-          SimData simData = await SimDataPlugin.getSimData();
-          SharedPreferences pref = await SharedPreferences.getInstance();
-          for (var s in simData.cards) {
-            imei2 = s.serialNumber;
-            if (s.slotIndex == 1) {
-              pref.setString('serialImei', '${s.serialNumber}');
-            }
-            print('Serial number: ${s.serialNumber}');
-            print('Data Roaming: ${s.isNetworkRoaming}');
-          }
-        } on PlatformException catch (e) {
-          debugPrint("error! code: ${e.code} - message: ${e.message}");
-        }
-      }
-
-      printSimCardsData();
-    } catch (e) {
-      debugPrint(e.toString());
-      setState(() {
-        _isLoading = false;
-        _simData = null;
-      });
-    }
-  }
-
   Future<void> deleteUserData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.remove('Reset Username');
@@ -176,6 +135,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
 
     setState(() {
       _nativeId = nativeId;
+      pref.setString('serialImei', nativeId);
       _udid = uuid;
     });
   }
@@ -249,7 +209,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           radius: BorderRadius.circular(20),
           color: Colors.green,
           onPressed: () async {
-            initSimData();
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => RamayanaLoginOffline()),

@@ -35,6 +35,7 @@ import 'package:myactivity_project/widget/Cek%20Harga/import.dart';
 import 'package:myactivity_project/widget/Competitor%20Checking/import.dart';
 import 'package:myactivity_project/widget/ID%20CASH/import.dart';
 import 'package:myactivity_project/widget/Login/import.dart';
+import 'package:myactivity_project/widget/Membercard/import.dart';
 import 'package:myactivity_project/widget/My%20Activity/import.dart';
 import 'package:myactivity_project/widget/My%20List%20Task/import.dart';
 import 'package:myactivity_project/widget/Tracking%20Surat%20Jalan/import.dart';

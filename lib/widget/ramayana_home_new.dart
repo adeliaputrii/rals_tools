@@ -468,7 +468,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
         ),
         DialogButton(
           radius: BorderRadius.circular(20),
-          color: Color.fromARGB(255, 210, 14, 0),
+          color: Color.fromARGB(255, 82, 74, 156),
           onPressed: () async {
             AndroidDeviceInfo info = await deviceInfo.androidInfo;
             var formData = FormData.fromMap({
@@ -727,7 +727,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                           } else if (e == 'tukarpoin.tukarpoin') {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return RamayanaTukarPoin();
+                              return RamayanaMembercardAuthentication();
                             }));
                           } else if (e == 'myactivity.activity') {
                             Navigator.push(context,
@@ -1264,7 +1264,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                   Navigator.push(context,
                                                       MaterialPageRoute(
                                                           builder: (context) {
-                                                    return RamayanaTukarPoin();
+                                                    return RamayanaMembercardAuthentication();
                                                   }));
                                                 } else if (e ==
                                                     'myactivity.activity') {
