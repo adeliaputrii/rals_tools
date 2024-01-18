@@ -66,7 +66,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         .FLAG_SECURE); // Mengaktifkan kembali tangkapan layar
   }
 
-
   Future<void> init() async {
     deviceInfo = await devicePlugin.androidInfo;
 

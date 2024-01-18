@@ -389,61 +389,48 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                                             pref.getString('serialImei');
                                         AndroidDeviceInfo info =
                                             await devicePlugin.androidInfo;
-                                        if ("${_nativeId}${info.device}" ==
-                                                "${imei ?? ''}${info.device}"
-                                            //  getUserId(int.parse(adminNumberCodeController.text)) == userData.getUsername7()
-                                            ) {
-                                          // db3.deleteAll();
-                                          if (isSuccess) {
-                                            debugPrint(userData.getListMenu());
-                                            var listmenu =
-                                                '${userData.getListMenu()}';
-                                            debugPrint('${listmenu}');
+                                        // db3.deleteAll();
+                                        if (isSuccess) {
+                                          debugPrint(userData.getListMenu());
+                                          var listmenu =
+                                              '${userData.getListMenu()}';
+                                          debugPrint('${listmenu}');
 
-                                            if (listmenu
-                                                .contains('mastervoid.void')) {
-                                              pref.setString(
-                                                  "waktuLoginOffline",
-                                                  "${formattedDate}");
-                                              debugPrint(
-                                                  'user has access void');
-                                              description = logSucces;
+                                          if (listmenu
+                                              .contains('mastervoid.void')) {
+                                            pref.setString("waktuLoginOffline",
+                                                "${formattedDate}");
+                                            debugPrint('user has access void');
+                                            description = logSucces;
 
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        RamayanaVoid(
-                                                            isOffline: true)),
-                                              );
-                                            } else {
-                                              popUpWidget.showPopUpError(
-                                                  pleaseCheck,
-                                                  userCantAccessVoid);
-                                              debugPrint(
-                                                  'user cannot access void');
-                                              adminNumberCodeController.clear();
-
-                                              description =
-                                                  '${logCantAccessVoid}-${userCantAccessVoid}';
-                                            }
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      RamayanaVoid(
+                                                          isOffline: true)),
+                                            );
                                           } else {
-                                            //Action jika nomor yang dikasih admin gagal diberikan, popup harap coba lagi
                                             popUpWidget.showPopUpError(
-                                                pleaseCheck, logLoginCode);
-                                            description =
-                                                '${logCantAccessVoid}-${logLoginCode}';
-
+                                                pleaseCheck,
+                                                userCantAccessVoid);
+                                            debugPrint(
+                                                'user cannot access void');
                                             adminNumberCodeController.clear();
+
+                                            description =
+                                                '${logCantAccessVoid}-${userCantAccessVoid}';
                                           }
                                         } else {
-                                          print('imei beda');
+                                          //Action jika nomor yang dikasih admin gagal diberikan, popup harap coba lagi
                                           popUpWidget.showPopUpError(
-                                              pleaseCheck, differentDevice);
-
+                                              pleaseCheck, logLoginCode);
                                           description =
-                                              '${logCantAccessVoid}-${differentDevice}';
+                                              '${logCantAccessVoid}-${logLoginCode}';
+
+                                          adminNumberCodeController.clear();
                                         }
+
                                         final deleteResult = db3.deleteAll();
                                         if (deleteResult != 0) {
                                           debugPrint('sukses delete data');
@@ -475,7 +462,6 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text('Version ${versi} Copyright RALS',
-                                    // ini pak?
                                     style: GoogleFonts.plusJakartaSans(
                                       fontSize: 18,
                                       color: Colors.black,
