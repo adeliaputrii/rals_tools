@@ -73,7 +73,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     checkForUpdate();
     initPlatformState();
     initNotification();
-    initSimData();
+    // initSimData();
     deviceInfo = await devicePlugin.androidInfo;
     debugPrint('device info manufacturer ' + deviceInfo.manufacturer);
     debugPrint('device info device ' + deviceInfo.device);
