@@ -19,6 +19,7 @@ import 'package:myactivity_project/database/db_log.dart';
 import 'package:myactivity_project/service/SP_service/SP_service.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:myactivity_project/utils/app_shared_pref.dart';
+import 'package:myactivity_project/utils/format_number.dart';
 import 'package:myactivity_project/utils/keyboard_utils.dart';
 import 'package:myactivity_project/utils/popup_widget.dart';
 import 'package:myactivity_project/widget/import.dart';
@@ -29,9 +30,16 @@ import 'package:screen_brightness/screen_brightness.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 
+import '../../cubit/company_card/company_card_cubit.dart';
+import '../../cubit/id_cash/id_cash_cubit.dart';
+import '../../data/model/company_card_response.dart' as ResponseCompany;
+import '../../data/model/data_member_card_body.dart';
+import '../../utils/app_media_query.dart';
+import '../../utils/app_widgets.dart';
+import 'package:myactivity_project/base/base_colors.dart' as baseColor;
+
 part 'ramayana_membercard_authentication.dart';
 part 'ramayana_membercard_card.dart';
 part 'ramayana_membercard_trr.dart';
-part 'ramayana_membercard_rms.dart';
+part 'ramayana_membercard_detail.dart';
 part 'ramayana_membercard_qr.dart';
-

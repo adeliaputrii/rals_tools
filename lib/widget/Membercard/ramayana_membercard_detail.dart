@@ -1,15 +1,25 @@
 part of 'import.dart';
 
-class RamayanaMembercardTrr extends StatefulWidget {
-  const RamayanaMembercardTrr({super.key});
+class RamayanaMemberCardDetail extends StatefulWidget {
+  RamayanaMemberCardDetail(
+      {super.key, required this.typeCard, required this.data});
+  final String typeCard;
+  final ResponseCompany.DataCompany data;
 
   @override
-  State<RamayanaMembercardTrr> createState() => _RamayanaMembercardTrrState();
+  State<RamayanaMemberCardDetail> createState() =>
+      _RamayanaMemberCardDetailState();
 }
 
-class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
+class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
   static UserData userData = UserData();
   bool isOn = false;
+  DeviceMediaQuery mediaQuery = DeviceMediaQuery();
+
+  @override
+  void initState() {
+    super.initState;
+  }
 
   Widget myWidget = Center(
     child: Container(
@@ -34,24 +44,25 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                 offset: Offset(2, 4))
           ],
           image: DecorationImage(
-              image: AssetImage('assets/tropikana.png'), fit: BoxFit.fill),
+              image: AssetImage('assets/rms.png'), fit: BoxFit.fill),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
+            Container(
+              margin: EdgeInsets.only(top: 130, left: 20),
               child: Text('Rp.25.000.000',
                   style: GoogleFonts.plusJakartaSans(
-                      fontSize: 25,
+                      fontSize: 28,
                       fontWeight: FontWeight.bold,
                       color: Colors.white)),
             ),
             Container(
-              margin: EdgeInsets.only(bottom: 10, right: 10, top: 10),
+              margin: EdgeInsets.only(bottom: 20, left: 20),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('${userData.getFullname()}',
                       style: GoogleFonts.plusJakartaSans(
@@ -75,6 +86,11 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RamayanaMembercardCard()),
+                  (Route<dynamic> route) => false);
             },
             icon: Icon(
               Icons.arrow_back_ios,
@@ -99,7 +115,79 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           AnimatedSwitcher(
-                            child: myWidget,
+                            child: Center(
+                              child: Container(
+                                key: ValueKey(2),
+                                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                child: Container(
+                                  width: 700,
+                                  height: 280,
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 235, 227, 227),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Color.fromARGB(
+                                              255, 136, 131, 131),
+                                          spreadRadius: 2,
+                                          blurRadius: 5,
+                                          offset: Offset(2, 4))
+                                    ],
+                                    image: DecorationImage(
+                                        image: typeCard()
+                                            ? AssetImage('assets/rms.png')
+                                            : AssetImage(
+                                                'assets/tropikana.png'),
+                                        fit: BoxFit.fill),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin:
+                                            EdgeInsets.only(top: 130, left: 20),
+                                        child: Text(
+                                            '${int.tryParse(widget.data.saldo ?? '0')?.toIdr() ?? "-"}',
+                                            style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 28,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            bottom: 20, left: 20),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text('${widget.data.nama}',
+                                                style:
+                                                    GoogleFonts.plusJakartaSans(
+                                                        fontSize: 16,
+                                                        color: Colors.white)),
+                                            Text('${widget.data.nokartu}',
+                                                style:
+                                                    GoogleFonts.plusJakartaSans(
+                                                        fontSize: 16,
+                                                        color: Colors.white)),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                             duration: Duration(seconds: 1),
                             transitionBuilder: (child, animation) =>
                                 FadeTransition(
@@ -146,8 +234,11 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                                                     offset: Offset(2, 4))
                                               ],
                                               image: DecorationImage(
-                                                  image: AssetImage(
-                                                      'assets/tropikana.png'),
+                                                  image: typeCard()
+                                                      ? AssetImage(
+                                                          'assets/rms.png')
+                                                      : AssetImage(
+                                                          'assets/tropikana.png'),
                                                   fit: BoxFit.fill),
                                             ),
                                             child: Container(
@@ -200,21 +291,26 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                                                   offset: Offset(2, 4))
                                             ],
                                             image: DecorationImage(
-                                                image: AssetImage(
-                                                    'assets/tropikana.png'),
+                                                image: widget.typeCard == '6'
+                                                    ? AssetImage(
+                                                        'assets/rms.png')
+                                                    : AssetImage(
+                                                        'assets/tropikana.png'),
                                                 fit: BoxFit.fill),
                                           ),
                                           child: Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.end,
+                                                MainAxisAlignment.spaceBetween,
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.end,
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              Center(
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    top: 130, left: 20),
                                                 child: Text('Rp.25.000.000',
                                                     style: GoogleFonts
                                                         .plusJakartaSans(
-                                                            fontSize: 25,
+                                                            fontSize: 28,
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             color:
@@ -222,14 +318,12 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                                               ),
                                               Container(
                                                 margin: EdgeInsets.only(
-                                                    bottom: 10,
-                                                    right: 10,
-                                                    top: 10),
+                                                    bottom: 20, left: 20),
                                                 child: Column(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment.end,
+                                                      MainAxisAlignment.start,
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
                                                         '${userData.getFullname()}',
@@ -266,27 +360,17 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                                   width: 170,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: Color.fromARGB(255, 82, 74, 156)),
-                                  child: MaterialButton(
-                                    onPressed: () {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) {
-                                        return RamayanaMembercardQr();
-                                      }));
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset('assets/qr.png'),
-                                        Text(
-                                          'Payment',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 18,
-                                              color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
+                                      color: Color.fromARGB(255, 197, 18, 19)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset('assets/qr.png'),
+                                      Text(
+                                        'Payment',
+                                        style: GoogleFonts.plusJakartaSans(
+                                            fontSize: 18, color: Colors.white),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 Container(
@@ -294,8 +378,9 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                                   width: 170,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: const Color.fromARGB(
-                                        255, 240, 133, 179),
+                                    color: typeCard()
+                                        ? baseColor.rmsColor
+                                        : baseColor.trrColor,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -317,6 +402,7 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                             // color: Colors.black,
                           ),
                           Container(
+                            height: mediaQuery.screnHeight(context, 2),
                             width: 500,
                             margin: EdgeInsets.fromLTRB(5, 20, 5, 0),
                             decoration: BoxDecoration(
@@ -324,7 +410,9 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                                 topLeft: Radius.circular(20),
                                 topRight: Radius.circular(20),
                               ),
-                              color: Color.fromARGB(255, 240, 133, 179),
+                              color: typeCard()
+                                  ? baseColor.rmsColor
+                                  : baseColor.trrColor,
                             ),
                             child: Column(
                               children: [
@@ -333,15 +421,15 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                                         EdgeInsets.only(top: 20, bottom: 30),
                                     child: Text('Transaksi',
                                         style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w500,
-                                          color:
-                                              Color.fromARGB(255, 82, 74, 156),
-                                        ))),
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w500,
+                                            color: Color.fromARGB(
+                                                255, 197, 18, 19)))),
                                 Container(
                                     margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                                     decoration: BoxDecoration(
-                                        color: Colors.white70,
+                                        color: const Color.fromARGB(
+                                            179, 232, 232, 232),
                                         borderRadius:
                                             BorderRadius.circular(20)),
                                     height: 70,
@@ -350,36 +438,31 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                                         leading: Icon(
                                           IconlyBold.bag,
                                           color:
-                                              Color.fromARGB(255, 82, 74, 156),
+                                              Color.fromARGB(255, 197, 18, 19),
                                           size: 28,
                                         ),
                                         title: Text(
                                           'Tropikana Drink',
                                           style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         subtitle: Text(
                                           '17/12/2023',
                                           style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
+                                              fontSize: 15,
+                                              color: Colors.black),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         trailing: Text(
                                           'RP. 20.000.000',
                                           style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromARGB(
+                                                  255, 197, 18, 19)),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
@@ -387,7 +470,8 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                                 Container(
                                     margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                                     decoration: BoxDecoration(
-                                        color: Colors.white70,
+                                        color: const Color.fromARGB(
+                                            179, 232, 232, 232),
                                         borderRadius:
                                             BorderRadius.circular(20)),
                                     height: 70,
@@ -396,36 +480,31 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                                         leading: Icon(
                                           IconlyBold.bag,
                                           color:
-                                              Color.fromARGB(255, 82, 74, 156),
+                                              Color.fromARGB(255, 197, 18, 19),
                                           size: 28,
                                         ),
                                         title: Text(
                                           'Tropikana Drink',
                                           style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         subtitle: Text(
                                           '17/12/2023',
                                           style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
+                                              fontSize: 15,
+                                              color: Colors.black),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         trailing: Text(
                                           'RP. 20.000.000',
                                           style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromARGB(
+                                                  255, 197, 18, 19)),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
@@ -433,7 +512,8 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                                 Container(
                                     margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                                     decoration: BoxDecoration(
-                                        color: Colors.white70,
+                                        color: const Color.fromARGB(
+                                            179, 232, 232, 232),
                                         borderRadius:
                                             BorderRadius.circular(20)),
                                     height: 70,
@@ -442,220 +522,31 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                                         leading: Icon(
                                           IconlyBold.bag,
                                           color:
-                                              Color.fromARGB(255, 82, 74, 156),
+                                              Color.fromARGB(255, 197, 18, 19),
                                           size: 28,
                                         ),
                                         title: Text(
                                           'Tropikana Drink',
                                           style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         subtitle: Text(
                                           '17/12/2023',
                                           style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
+                                              fontSize: 15,
+                                              color: Colors.black),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         trailing: Text(
                                           'RP. 20.000.000',
                                           style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    )),
-                                Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white70,
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color:
-                                              Color.fromARGB(255, 82, 74, 156),
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    )),
-                                Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white70,
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color:
-                                              Color.fromARGB(255, 82, 74, 156),
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    )),
-                                Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white70,
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color:
-                                              Color.fromARGB(255, 82, 74, 156),
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    )),
-                                Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white70,
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color:
-                                              Color.fromARGB(255, 82, 74, 156),
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 82, 74, 156),
-                                          ),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromARGB(
+                                                  255, 197, 18, 19)),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
@@ -668,5 +559,9 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
             ),
           ],
         ));
+  }
+
+  bool typeCard() {
+    return widget.typeCard == '6';
   }
 }

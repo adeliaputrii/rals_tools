@@ -16,3 +16,5 @@ const String api_tracking_update_supplier =
 const String api_tracking_update_tracking = 'v1/tracking/update-tracking';
 const String api_tracking_sj = 'v1/tracking/track-sj?no_sj=';
 const String api_comcheck_approve = 'activity/updateApproveCommcheck';
+
+const String api_get_company_card = 'v1/membercards/tbl_companyCard';

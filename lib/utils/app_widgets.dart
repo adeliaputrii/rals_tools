@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class AppWidget {
   Widget TextFieldSJ(TextEditingController controller) {
@@ -27,6 +28,13 @@ class AppWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget LoadingWidget() {
+    return SpinKitThreeBounce(
+      color: Color.fromARGB(255, 230, 0, 0),
+      size: 50.0,
     );
   }
 }

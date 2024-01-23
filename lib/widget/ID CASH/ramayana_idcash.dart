@@ -344,8 +344,10 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                                   borderRadius: BorderRadius.circular(50)),
                               color: Colors.white,
                               onPressed: () async {
-                               loginCubit.createLog(baseParam.logInfoIdcashPage,
-                              baseParam.logInfoIdcashHistory, apiUrl);
+                                loginCubit.createLog(
+                                    baseParam.logInfoIdcashPage,
+                                    baseParam.logInfoIdcashHistory,
+                                    apiUrl);
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
                                   return RamayanaRiwayatIDCash(
