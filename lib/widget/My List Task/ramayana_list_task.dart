@@ -126,7 +126,7 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
           margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
           // color: Colors.green,
           height: 100,
-          child: Text('My List Task',
+          child: Text('Tugas saya',
               style: GoogleFonts.rubik(
                   fontSize: 35,
                   color: Color.fromARGB(255, 230, 0, 0),

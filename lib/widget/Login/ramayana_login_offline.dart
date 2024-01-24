@@ -474,7 +474,7 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text('Version ${versi} Copyright RALS',
+                                Text('Versi ${versi} Hak Cipta RALS',
                                     // ini pak?
                                     style: GoogleFonts.plusJakartaSans(
                                       fontSize: 18,

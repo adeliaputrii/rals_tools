@@ -53,7 +53,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
               color: Colors.white,
             ),
           ),
-          title: Text('Company Card',
+          title: Text('Kartu Tambahan',
               style: GoogleFonts.plusJakartaSans(
                   fontSize: 23, color: Colors.white)),
           backgroundColor: Color.fromARGB(255, 210, 14, 0),
@@ -88,7 +88,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 30),
                                       child: Center(
-                                        child: Text('Choose Card',
+                                        child: Text('Pilih Kartu',
                                             style: GoogleFonts.plusJakartaSans(
                                                 fontSize: 26,
                                                 fontWeight: FontWeight.w500,
@@ -190,43 +190,79 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                       mainAxisAlignment:
                                                           MainAxisAlignment.end,
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
+                                                          state
+                                                            .response
+                                                            .data?[index]
+                                                            .typeMc ==6
+                                                             ?
+                                                             CrossAxisAlignment.start
+                                                             :
+                                                             CrossAxisAlignment.end,
                                                       children: [
-                                                        Center(
-                                                          child: Text(
-                                                              '${int.tryParse(state.response.data?[index].saldo ?? '0')?.toIdr() ?? "-"}',
-                                                              style: GoogleFonts.plusJakartaSans(
-                                                                  fontSize: 25,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  color: Colors
-                                                                      .white)),
-                                                        ),
+                                                        state
+                                                            .response
+                                                            .data?[index]
+                                                            .typeMc ==6
+                                                             ?
+                                                              Text(
+                                                                  '  ${int.tryParse(state.response.data?[index].saldo ?? '0')?.toIdr() ?? "-"}',
+                                                                  style: GoogleFonts.plusJakartaSans(
+                                                                      fontSize: 25,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .white))
+                                                             :
+                                                             Center(
+                                                               child: Text(
+                                                                '${int.tryParse(state.response.data?[index].saldo ?? '0')?.toIdr() ?? "-"}',
+                                                                style: GoogleFonts.plusJakartaSans(
+                                                                    fontSize: 25,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .white)),
+                                                             ),
+                                                       
                                                         Container(
                                                           margin:
                                                               EdgeInsets.only(
                                                                   bottom: 10,
                                                                   right: 10,
-                                                                  top: 10),
+                                                                  top: 
+                                                                  state
+                                                            .response
+                                                            .data?[index]
+                                                            .typeMc ==6
+                                                             ?
+                                                             50
+                                                             :
+                                                             10),
                                                           child: Column(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
-                                                                    .end,
+                                                                    .start,
                                                             crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .end,
+                                                            state
+                                                            .response
+                                                            .data?[index]
+                                                            .typeMc ==6
+                                                             ?
+                                                             CrossAxisAlignment.start
+                                                             :
+                                                             CrossAxisAlignment.end,
                                                             children: [
                                                               Text(
-                                                                  '${state.response.data?[index].nama ?? '-'}',
+                                                                  '  ${state.response.data?[index].nama ?? '-'}',
                                                                   style: GoogleFonts.plusJakartaSans(
                                                                       fontSize:
                                                                           16,
                                                                       color: Colors
                                                                           .white)),
                                                               Text(
-                                                                  '${state.response.data?[index].nokartu ?? '-'}',
+                                                                  '  ${state.response.data?[index].nokartu ?? '-'}',
                                                                   style: GoogleFonts.plusJakartaSans(
                                                                       fontSize:
                                                                           16,

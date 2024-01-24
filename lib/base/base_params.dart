@@ -15,6 +15,10 @@ const String logToken = 'R4M4Y4N4';
 const String logInfoLoginPage = 'Login Aplikasi RALS';
 const String logInfoLoginSucc = 'Login Sukses';
 const String logInfoLoginFail = 'Login Gagal';
+//*Log Membercard //
+const String logMembercardPage = 'Ramayana Membercard Page';
+const String logAuthenticationSucc = 'Enter Password Membercard Success';
+const String logAuthenticationfail = 'Enter Password Membercard Failed';
 //*Log Reset Password Page*//
 const String logInfoResetPage = 'Ramayana Reset Page';
 const String logInfoResetSucc = 'Reset Password Sukses';
@@ -55,10 +59,11 @@ const String logInfoVoidSucc = 'Generate Void - ';
 const String logInfoVoidOfflinePage = 'Void Offline Page';
 
 //Popup Title or Description
-const String pleaseCheck = "Please Check Again";
+const String pleaseCheck = "Mohon Cek Kembali";
 const String usernameEmpty = "Username harus diisi";
-const String usernameNotFound = "Username/Password not found";
-const String usernameNotFoundDescription = "Username/Password not found";
+const String passwordEmpty = "Password harus diisi";
+const String usernameNotFound = "Username/Password tidak ditemukan";
+const String usernameNotFoundDescription = "Username/Password tidak ditemukan";
 const String usernameNotRegistered = "Username tidak terdaftar";
 const String userCantAccessVoid = "User tidak memiliki akses void";
 const String uniqeNumberAdmin = "Nomor unik admin salah. Harap coba lagi";
@@ -76,7 +81,7 @@ const String logLoginCode =
     'Anda terdeteksi menggunakan device berbeda/Login Code tidak sesuai';
 
 //Popup SJ Title or Description
-const String notFound = "Not Found";
-const String failed = "Failed";
+const String notFound = "Tidak ditemukan";
+const String failed = "Gagal";
 const String trackSJSuccess = 'Track Surat Jalan Sukses';
 const String trackSJNavigate = 'Lihat Track SJ';

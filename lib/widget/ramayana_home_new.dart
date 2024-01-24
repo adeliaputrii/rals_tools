@@ -461,7 +461,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
            
           },
           child: Text(
-            "Cancel",
+            "Kembali",
             style:
                 GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
           ),
@@ -534,7 +534,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
             Navigator.pop(context);
           },
           child: Text(
-            "Cancel",
+            "Kembali",
             style:
                 GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.white),
           ),
@@ -655,7 +655,20 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                         ),
                         visible: true,
                       );
-                    } else {
+                    }
+                    else if (icon == "kartu.kartutambahan") {
+                      return Visibility(
+                        child: CircleAvatar(
+                          backgroundColor: Color.fromARGB(255, 207, 11, 11),
+                          radius: 30,
+                          backgroundImage: AssetImage(
+                            'assets/card.png',
+                          ),
+                        ),
+                        visible: true,
+                      );
+                    }
+                     else {
                       Visibility(
                         child: CircleAvatar(
                           backgroundColor: Color.fromARGB(255, 207, 11, 11),
@@ -684,10 +697,14 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                     } else if (icon == "myactivity.activity") {
                       return 'My Activity';
                     } else if (icon == "suratjalan.trackingsj") {
-                      return 'Tracking SJ';
+                      return 'Lacak SJ';
                     } else if (icon == "comchek.approvedcomchek") {
                       return 'Com. Checking';
-                    } else {
+                    }
+                     else if (icon == "kartu.kartutambahan") {
+                      return 'Kartu Tambahan';
+                    }
+                     else {
                       print(e);
                       print('no menu');
                     }
@@ -753,7 +770,14 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                             //   var hakAkses = pref.setString('hakAkses', '${e}');
                             //   print('hak akses : ${e}}');
                             //   print('hak akses : ${hakAkses}');
-                          } else {
+                          }
+                          else if (e == 'kartu.kartutambahan') {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return RamayanaMembercardAuthentication();
+                            }));
+                          }
+                           else {
                             print('e');
                           }
                           if (_isConnected == true) {
@@ -815,28 +839,32 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       if (element == 'mastervoid.void') {
         data.add(element);
       }
-      // if (element == 'approvalreturn.approvalreturn') {
-      //   data.add(element);
-      // }
-      // if (element == 'cekprice.cekprice') {
-      //   data.add(element);
-      // }
+      if (element == 'approvalreturn.approvalreturn') {
+        data.add(element);
+      }
+      if (element == 'cekprice.cekprice') {
+        data.add(element);
+      }
       if (element == 'tukarpoin.tukarpoin') {
         data.add(element);
       }
       if (element == 'myactivity.activity') {
         data.add(element);
       }
-      // if (element == 'suratjalan.trackingsj') {
-      //   data.add(element);
-      // }
-      // if (element == 'comchek.approvedcomchek') {
-      //   data.add(element);
-      //   HakAkses.hakaksesSubmenuComcek.add(element);
-      // }
-      // if (element == 'comchek.historycomchek') {
-      //   HakAkses.hakaksesSubmenuComcek.add(element);
-      // }
+      if (element == 'suratjalan.trackingsj') {
+        data.add(element);
+      }
+      if (element == 'kartu.kartutambahan') {
+        data.add(element);
+      }
+      if (element == 'comchek.approvedcomchek') {
+        data.add(element);
+        HakAkses.hakaksesSubmenuComcek.add(element);
+      }
+      if (element == 'comchek.historycomchek') {
+        HakAkses.hakaksesSubmenuComcek.add(element);
+      }
+      
       if (element == 'homepage.news') {
         setState(() {
           news = true;
@@ -897,10 +925,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                 Container(
                                   margin: EdgeInsets.only(top: 0, left: 20),
                                   child: Text(
-                                    'Welcome',
+                                    'Selamat Datang',
                                     style: GoogleFonts.plusJakartaSans(
                                         textStyle: TextStyle(
-                                            fontSize: 30,
+                                            fontSize: 27,
                                             fontWeight: FontWeight.w600,
                                             color: Colors.white)),
                                   ),
@@ -1042,7 +1070,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                       alertMenu();
                                                     },
                                                     child: Text(
-                                                      'More >>>',
+                                                      'Lihat Semua',
                                                       style: GoogleFonts
                                                           .plusJakartaSans(
                                                               fontSize: 15,
@@ -1172,7 +1200,22 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                               ),
                                               visible: true,
                                             );
-                                          } else {
+                                          }
+                                          else if (icon ==
+                                              "kartu.kartutambahan") {
+                                            return Visibility(
+                                              child: CircleAvatar(
+                                                backgroundColor: Color.fromARGB(
+                                                    255, 207, 11, 11),
+                                                radius: 30,
+                                                backgroundImage: AssetImage(
+                                                  'assets/card.png',
+                                                ),
+                                              ),
+                                              visible: true,
+                                            );
+                                          }
+                                           else {
                                             Visibility(
                                               child: CircleAvatar(
                                                 backgroundColor: Color.fromARGB(
@@ -1208,11 +1251,16 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             return 'My Activity';
                                           } else if (icon ==
                                               "suratjalan_trackingsj") {
-                                            return 'Tracking SJ';
+                                            return 'Lacak SJ';
                                           } else if (icon ==
                                               "comchek.approvedcomchek") {
                                             return 'Com. Checking';
-                                          } else {
+                                          }
+                                          else if (icon ==
+                                              "kartu.kartutambahan") {
+                                            return 'Kartu Tambahan';
+                                          }
+                                           else {
                                             print(e);
                                             print('no menu');
                                           }
@@ -1297,7 +1345,16 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                   //   var hakAkses = pref.setString('hakAkses', '${e}');
                                                   //   print('hak akses : ${e}}');
                                                   //   print('hak akses : ${hakAkses}');
-                                                } else {
+                                                }
+                                                else if (e ==
+                                                    'kartu.kartutambahan') {
+                                                  Navigator.push(context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) {
+                                                    return RamayanaMembercardAuthentication();
+                                                  }));
+                                                }
+                                                 else {
                                                   print('e');
                                                 }
                                                 if (_isConnected == true) {
@@ -1430,7 +1487,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                   //         false);
                                                                 },
                                                                 child: Text(
-                                                                  'View All',
+                                                                  'Lihat Semua',
                                                                   style: GoogleFonts.plusJakartaSans(
                                                                       fontSize:
                                                                           15,
@@ -1604,7 +1661,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            'My List Task',
+                                                            'Tugas Saya',
                                                             style: GoogleFonts.plusJakartaSans(
                                                                 textStyle: TextStyle(
                                                                     fontSize:
@@ -1699,7 +1756,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                     //     (Route<dynamic> route) => false);
                                                                   },
                                                                   child: Text(
-                                                                    'View All',
+                                                                    'Lihat Semua',
                                                                     style: GoogleFonts.plusJakartaSans(
                                                                         fontSize:
                                                                             15,
@@ -1763,7 +1820,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                         //     (Route<dynamic> route) => false);
                                                                       },
                                                                       child: Text(
-                                                                        'View All',
+                                                                        'Lihat Semua',
                                                                         style: GoogleFonts.plusJakartaSans(
                                                                             fontSize:
                                                                                 15,

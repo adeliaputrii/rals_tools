@@ -1,8 +1,8 @@
 part of 'import.dart';
 
 class RamayanaMembercardQr extends StatefulWidget {
-  static const routeName = '/RamayanaVoid';
-  const RamayanaMembercardQr({super.key});
+  const RamayanaMembercardQr({super.key,required this.icon});
+  final bool icon;
 
   @override
   State<RamayanaMembercardQr> createState() => _RamayanaMembercardQrState();
@@ -176,13 +176,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
               onPressed: () async {
                 await FlutterWindowManager.clearFlags(
                     FlutterWindowManager.FLAG_SECURE);
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          RamayanaMembercardTrr()
-                    ),
-                    (Route<dynamic> route) => false);
+                Navigator.pop(context);
               },
               icon: Icon(
                 Icons.arrow_back_ios,
@@ -191,7 +185,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
               ),
             ),
             centerTitle: true,
-            title: Text('Company Card',
+            title: Text('Kartu Tambahan',
                 style: GoogleFonts.plusJakartaSans(
                     fontSize: 23, color: Colors.white)),
             backgroundColor: Color.fromARGB(255, 210, 14, 0),
@@ -206,13 +200,21 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                     color: Color.fromARGB(255, 253, 249, 249)),
                 Container(
                   margin: EdgeInsets.only(top: 20),
-                  height: 300,
+                  height: 250,
                   // color: Colors.green,
                   child: Center(
-                    child: Image.asset(
-                      'assets/tp_tukarpoin.png',
+                    child: 
+                    widget.icon
+                    ?
+                    Image.asset(
+                      'assets/payment_rms.png',
                       fit: BoxFit.cover,
-                    ),
+                    )
+                    :
+                    Image.asset(
+                      'assets/payment_trr.png',
+                      fit: BoxFit.cover,
+                    )
                   ),
                 ),
                 Container(
@@ -271,7 +273,12 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                             height: 50,
                             width: 10000,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 210, 14, 0),
+                              color:
+                              widget.icon
+                              ?
+                               Color.fromARGB(255, 210, 14, 0)
+                               :
+                               Color.fromARGB(255, 240, 133, 179),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: MaterialButton(
@@ -310,7 +317,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                 }
                               },
                               child: Text(
-                                'Send',
+                                'Kirim',
                                 style: GoogleFonts.plusJakartaSans(
                                     fontSize: 18, color: Colors.white),
                               ),
@@ -323,7 +330,12 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                               ? Container(
                                   margin: EdgeInsets.only(top: 100),
                                   child: SpinKitThreeBounce(
-                                    color: Color.fromARGB(255, 210, 14, 0),
+                                    color: 
+                                    widget.icon
+                                    ?
+                                    Color.fromARGB(255, 210, 14, 0)
+                                    :
+                                    Color.fromARGB(255,82,74,156),
                                     size: 50.0,
                                   ),
                                 )
@@ -335,7 +347,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Barcode Payment',
+                                          'Barcode Pembayaran',
                                           style: GoogleFonts.plusJakartaSans(
                                               fontSize: 23,
                                               fontWeight: FontWeight.w600,
@@ -354,8 +366,14 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(35),
-                                            color: Color.fromARGB(
-                                                255, 214, 210, 210),
+                                            color: 
+                                            widget.icon
+                                            ?
+                                            Color.fromARGB(
+                                                255,190,215,44)
+                                            :
+                                            Color.fromARGB(
+                                                255, 240, 133, 179),
                                           ),
                                           child: Row(
                                             mainAxisAlignment:
@@ -376,11 +394,20 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                                               30)),
                                                   minWidth: 225,
                                                   height: 50,
-                                                  color: _barcode
+                                                  color: 
+                                                  widget.icon
+                                                  ?
+                                                  _barcode
                                                       ? Color.fromARGB(
-                                                          255, 210, 14, 0)
+                                                          255,197,18,19)
                                                       : Color.fromARGB(
-                                                          255, 214, 210, 210),
+                                                          255,190,215,44)
+                                                  :
+                                                  _barcode
+                                                      ? Color.fromARGB(
+                                                          255,82,74,156)
+                                                      : Color.fromARGB(
+                                                          255, 240, 133, 179),
                                                   onPressed: () {
                                                     setState(() {
                                                       _barcode = true;
@@ -412,11 +439,20 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                                               30)),
                                                   minWidth: 225,
                                                   height: 50,
-                                                  color: _barcode
+                                                  color: 
+                                                  widget.icon
+                                                  ?
+                                                  _barcode
                                                       ? Color.fromARGB(
-                                                          255, 214, 210, 210)
+                                                          255,190,215,44)
                                                       : Color.fromARGB(
-                                                          255, 210, 14, 0),
+                                                          255,197,18,19)
+                                                  :
+                                                    _barcode
+                                                      ? Color.fromARGB(
+                                                          255, 240, 133, 179)
+                                                      : Color.fromARGB(
+                                                          255,82,74,156),
                                                   onPressed: () {
                                                     setState(() {
                                                       _barcode = false;
@@ -458,12 +494,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                                                           .black,
                                                                   symbology:
                                                                       Code128()))),
-                                                      Text('${hasilAkhir}',
-                                                          style: GoogleFonts
-                                                              .plusJakartaSans(
-                                                                  fontSize: 18,
-                                                                  color: Colors
-                                                                      .black))
+                                                      
                                                     ],
                                                   )
                                                 : Column(
@@ -490,12 +521,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                                       SizedBox(
                                                         height: 10,
                                                       ),
-                                                      Text('${hasilAkhir}',
-                                                          style: GoogleFonts
-                                                              .plusJakartaSans(
-                                                                  fontSize: 18,
-                                                                  color: Colors
-                                                                      .black))
+                                                      
                                                     ],
                                                   )),
                                       ]),

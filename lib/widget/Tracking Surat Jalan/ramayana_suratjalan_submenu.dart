@@ -21,7 +21,7 @@ class _RamayanaSuratJalanState extends State<RamayanaSuratJalan> {
         leading: SizedBox(width: 10),
         centerTitle: true,
         title: Text(
-          'Tracking Surat Jalan',
+          'Lacak Surat Jalan',
           style: GoogleFonts.plusJakartaSans(fontSize: 23, color: Colors.white)
         ),
         backgroundColor: Color.fromARGB(255, 210, 14, 0),

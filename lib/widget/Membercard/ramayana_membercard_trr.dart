@@ -82,7 +82,7 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
               color: Colors.white,
             ),
           ),
-          title: Text('Company Card',
+          title: Text('Kartu Tambahan',
               style: GoogleFonts.plusJakartaSans(
                   fontSize: 23, color: Colors.white)),
           backgroundColor: Color.fromARGB(255, 210, 14, 0),
@@ -271,7 +271,7 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                                     onPressed: () {
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {
-                                        return RamayanaMembercardQr();
+                                        return RamayanaMembercardQr(icon: false,);
                                       }));
                                     },
                                     child: Row(

@@ -134,7 +134,7 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
                 color: Colors.white,
               ),
             ),
-            title: Text('Company Card',
+            title: Text('Kartu Tambahan',
                 style: GoogleFonts.plusJakartaSans(
                     fontSize: 23, 
                     color: Colors.white)),
@@ -169,7 +169,7 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
                         // height: 200,
                         width: 3500,
                         child: Text(
-                          'Enter your login password',
+                          'Masukkan password Anda',
                           style: GoogleFonts.plusJakartaSans(
                           fontSize: 20, 
                           color: Colors.white)
@@ -190,6 +190,7 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
                               left: 20, right: 20, bottom: 10
                             ),
                             child: TextFormField(
+                              // validator: RequiredValidator(errorText: 'Wajib diisi'),
                               controller: passwordController,
                               style: GoogleFonts.plusJakartaSans(
                               fontSize: 18, 
@@ -213,12 +214,15 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
                           borderRadius: BorderRadius.circular(20)
                         ),
                          onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                           loginPressed();
+                          if (passwordController.text.isEmpty) {
+                            print('null');
+                             popUpWidget.showPopUpError(baseParam.pleaseCheck, baseParam.passwordEmpty);
+                          } else {
+                             loginPressed();
                           }
                          },
                          child: Text(
-                           'Confirm',
+                           'Konfirmasi',
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 20, 
                             color: Color.fromARGB(255, 210, 14, 0))
@@ -237,7 +241,7 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
                           child:  Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text('Version ${versi} Copyright RALS',
+                              Text('Versi ${versi} Hak Cipta RALS',
                                   // ini pak?
                                   style: GoogleFonts.plusJakartaSans(
                                     fontSize: 18,

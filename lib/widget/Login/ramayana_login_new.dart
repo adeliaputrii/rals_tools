@@ -66,7 +66,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         .FLAG_SECURE); // Mengaktifkan kembali tangkapan layar
   }
 
-
   Future<void> init() async {
     deviceInfo = await devicePlugin.androidInfo;
 
@@ -74,6 +73,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     checkForUpdate();
     initPlatformState();
     initNotification();
+    // initSimData();
     deviceInfo = await devicePlugin.androidInfo;
     debugPrint('device info manufacturer ' + deviceInfo.manufacturer);
     debugPrint('device info device ' + deviceInfo.device);
@@ -238,7 +238,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       backgroundType: BackgroundType.lighter,
       height: 100,
       description: const Text(
-        'Please Check Again',
+        '${baseParam.pleaseCheck}',
         style: TextStyle(fontSize: 15),
       ),
       //description: "Center displayed motion toast",
@@ -259,7 +259,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       backgroundType: BackgroundType.lighter,
       height: 100,
       description: const Text(
-        'Please Check Again',
+        '${baseParam.pleaseCheck}',
         style: TextStyle(fontSize: 15),
       ),
       //description: "Center displayed motion toast",
@@ -280,7 +280,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       backgroundType: BackgroundType.lighter,
       height: 100,
       description: const Text(
-        'Please Check Again',
+        '${baseParam.pleaseCheck}',
         style: TextStyle(fontSize: 15),
       ),
       //description: "Center displayed motion toast",
@@ -903,18 +903,18 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                           Container(
                             margin: EdgeInsets.only(top: 35),
                             child: Center(
-                                child: Text('Welcome!',
+                                child: Text('Selamat Datang di Rtools',
                                     style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 35,
+                                        fontSize: 24,
                                         color: Colors.black,
                                         fontWeight: FontWeight.w600))),
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 10),
                             child: Center(
-                                child: Text('Login to Continue',
+                                child: Text('Masuk untuk melanjutkan',
                                     style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 20, color: Colors.black))),
+                                        fontSize: 18, color: Colors.black))),
                           ),
                           SizedBox(
                             height: 70,
@@ -925,7 +925,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                               cursorColor: Colors.black,
                               controller: usernameController,
                               validator:
-                                  RequiredValidator(errorText: 'Please Enter'),
+                                  RequiredValidator(errorText: 'Wajib diisi'),
                               keyboardType: TextInputType.multiline,
                               style: GoogleFonts.plusJakartaSans(
                                   color: Colors.black, fontSize: 18),
@@ -972,7 +972,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                     color: Colors.black, fontSize: 18),
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return "Please Enter";
+                                    return "Wajib diisi";
                                   }
                                 },
                                 obscureText: _passwordVisible ? false : true,
@@ -1052,7 +1052,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                                   borderRadius:
                                                       BorderRadius.circular(15),
                                                 ),
-                                                child: Text('LOGIN',
+                                                child: Text('MASUK',
                                                     style: GoogleFonts
                                                         .plusJakartaSans(
                                                             color: Colors.white,
@@ -1102,7 +1102,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  child: Text('Forgot Password?',
+                                  child: Text('Lupa Password?',
                                       style: GoogleFonts.plusJakartaSans(
                                           fontSize: 18,
                                           color:
@@ -1130,7 +1130,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text('Version ${versi} Copyright RALS',
+                      Text('Versi ${versi}  Hak Cipta RALS',
                           // ini pak?
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 18,

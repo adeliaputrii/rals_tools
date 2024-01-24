@@ -192,7 +192,7 @@ class _RamayanaResetState extends State<RamayanaReset> {
         backgroundColor: Color.fromARGB(255, 238, 34, 34),
         title: Center(
           child: Text(
-            "Forgot Password",
+            "Lupa Password",
             style: TextStyle(color: Colors.white),
           ),
         ),
