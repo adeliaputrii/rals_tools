@@ -7,3 +7,9 @@ extension IntExt on int {
         .format(this);
   }
 }
+
+extension StringExt on String {
+  double toDouble() {
+    return double.tryParse(this) ?? 0.0;
+  }
+}
