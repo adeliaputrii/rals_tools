@@ -269,10 +269,10 @@ class _RamayanaMembercardTrrState extends State<RamayanaMembercardTrr> {
                                       color: Color.fromARGB(255, 82, 74, 156)),
                                   child: MaterialButton(
                                     onPressed: () {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) {
-                                        return RamayanaMembercardQr(icon: false,);
-                                      }));
+                                      // Navigator.push(context,
+                                      //     MaterialPageRoute(builder: (context) {
+                                      //   return RamayanaMembercardQr(icon: false,);
+                                      // }));
                                     },
                                     child: Row(
                                       mainAxisAlignment:

@@ -85,3 +85,6 @@ const String notFound = "Tidak ditemukan";
 const String failed = "Gagal";
 const String trackSJSuccess = 'Track Surat Jalan Sukses';
 const String trackSJNavigate = 'Lihat Track SJ';
+
+//Popup Kartu Tambahan
+const String cantempty = "Masukkan 6 digit kode POS";

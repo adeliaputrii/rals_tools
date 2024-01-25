@@ -78,6 +78,114 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                   :
                   Color.fromARGB(255,82,74,156)
                 ),
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                                    decoration: BoxDecoration(
+                                    color: 
+                                    widget.color
+                                    ?
+                                    Color.fromARGB(255,190,215,44)
+                                    :
+                                    Color.fromARGB(255, 255, 207, 228),
+                                    borderRadius: BorderRadius.circular(20)
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                            leading: Text(
+                                              'ID.1234567890.745353',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                   color: widget.color
+                                                  ? Colors.black
+                                                  : baseColor.trrColor,),
+                                            ),
+                                            trailing: Container(
+                                              width: 100,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: widget.color
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '4 Poin',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                     color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        Container(
+                                            height: 1,
+                                            color: widget.color
+                                              ? baseColor.primaryColor
+                                              : baseColor.trrColor,
+                                          ),
+                                        Center(
+                                          child: ListTile(
+                                            leading: Icon(
+                                              IconlyBold.bag,
+                                              color: 
+                                              widget.color
+                                              ?
+                                              Color.fromARGB(255,197,18,19)
+                                              :
+                                              Color.fromARGB(255,82,74,156),
+                                              size: 28,
+                                            ),
+                                            title: Text(
+                                              'Tropikana Drink',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 16, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                widget.color
+                                                ?
+                                                Colors.black
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            trailing: Text(
+                                              'RP. 20.000.000',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 15, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                 widget.color
+                                                ?
+                                                Color.fromARGB(255,197,18,19)
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            ),
+                                        ),
+                                      Padding(
+                                            padding: const EdgeInsets.only(bottom: 10),
+                                            child: Center(
+                                              child: Text(
+                                                  '17/12/2023',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                      fontSize: 15,
+                                                      color: widget.color
+                                                      ? Colors.black
+                                                      : baseColor.trrColor,),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                            ),
+                                          ),
+                                      ],
+                                    )
+                                  ),
+// ===========================================================================================================================
                                    Container(
                                     margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                                     decoration: BoxDecoration(
@@ -89,61 +197,103 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                                     Color.fromARGB(255, 255, 207, 228),
                                     borderRadius: BorderRadius.circular(20)
                                     ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                            leading: Text(
+                                              'ID.1234567890.745353',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                   color: widget.color
+                                                  ? Colors.black
+                                                  : baseColor.trrColor,),
+                                            ),
+                                            trailing: Container(
+                                              width: 100,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: widget.color
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '4 Poin',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                     color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        Container(
+                                            height: 1,
+                                            color: widget.color
+                                              ? baseColor.primaryColor
+                                              : baseColor.trrColor,
+                                          ),
+                                        Center(
+                                          child: ListTile(
+                                            leading: Icon(
+                                              IconlyBold.bag,
+                                              color: 
+                                              widget.color
+                                              ?
+                                              Color.fromARGB(255,197,18,19)
+                                              :
+                                              Color.fromARGB(255,82,74,156),
+                                              size: 28,
+                                            ),
+                                            title: Text(
+                                              'Tropikana Drink',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 16, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                widget.color
+                                                ?
+                                                Colors.black
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            trailing: Text(
+                                              'RP. 20.000.000',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 15, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                 widget.color
+                                                ?
+                                                Color.fromARGB(255,197,18,19)
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            ),
                                         ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
+                                      Padding(
+                                            padding: const EdgeInsets.only(bottom: 10),
+                                            child: Center(
+                                              child: Text(
+                                                  '17/12/2023',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                      fontSize: 15,
+                                                      color: widget.color
+                                                      ? Colors.black
+                                                      : baseColor.trrColor,),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                            ),
+                                          ),
+                                      ],
                                     )
                                   ),
-                                  Container(
+                                   Container(
                                     margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                                     decoration: BoxDecoration(
                                     color: 
@@ -154,61 +304,103 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                                     Color.fromARGB(255, 255, 207, 228),
                                     borderRadius: BorderRadius.circular(20)
                                     ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                            leading: Text(
+                                              'ID.1234567890.745353',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                   color: widget.color
+                                                  ? Colors.black
+                                                  : baseColor.trrColor,),
+                                            ),
+                                            trailing: Container(
+                                              width: 100,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: widget.color
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '4 Poin',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                     color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        Container(
+                                            height: 1,
+                                            color: widget.color
+                                              ? baseColor.primaryColor
+                                              : baseColor.trrColor,
+                                          ),
+                                        Center(
+                                          child: ListTile(
+                                            leading: Icon(
+                                              IconlyBold.bag,
+                                              color: 
+                                              widget.color
+                                              ?
+                                              Color.fromARGB(255,197,18,19)
+                                              :
+                                              Color.fromARGB(255,82,74,156),
+                                              size: 28,
+                                            ),
+                                            title: Text(
+                                              'Tropikana Drink',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 16, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                widget.color
+                                                ?
+                                                Colors.black
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            trailing: Text(
+                                              'RP. 20.000.000',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 15, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                 widget.color
+                                                ?
+                                                Color.fromARGB(255,197,18,19)
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            ),
                                         ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
+                                      Padding(
+                                            padding: const EdgeInsets.only(bottom: 10),
+                                            child: Center(
+                                              child: Text(
+                                                  '17/12/2023',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                      fontSize: 15,
+                                                      color: widget.color
+                                                      ? Colors.black
+                                                      : baseColor.trrColor,),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                            ),
+                                          ),
+                                      ],
                                     )
                                   ),
-                                  Container(
+                                   Container(
                                     margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                                     decoration: BoxDecoration(
                                     color: 
@@ -219,61 +411,103 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                                     Color.fromARGB(255, 255, 207, 228),
                                     borderRadius: BorderRadius.circular(20)
                                     ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                            leading: Text(
+                                              'ID.1234567890.745353',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                   color: widget.color
+                                                  ? Colors.black
+                                                  : baseColor.trrColor,),
+                                            ),
+                                            trailing: Container(
+                                              width: 100,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: widget.color
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '4 Poin',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                     color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        Container(
+                                            height: 1,
+                                            color: widget.color
+                                              ? baseColor.primaryColor
+                                              : baseColor.trrColor,
+                                          ),
+                                        Center(
+                                          child: ListTile(
+                                            leading: Icon(
+                                              IconlyBold.bag,
+                                              color: 
+                                              widget.color
+                                              ?
+                                              Color.fromARGB(255,197,18,19)
+                                              :
+                                              Color.fromARGB(255,82,74,156),
+                                              size: 28,
+                                            ),
+                                            title: Text(
+                                              'Tropikana Drink',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 16, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                widget.color
+                                                ?
+                                                Colors.black
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            trailing: Text(
+                                              'RP. 20.000.000',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 15, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                 widget.color
+                                                ?
+                                                Color.fromARGB(255,197,18,19)
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            ),
                                         ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
+                                      Padding(
+                                            padding: const EdgeInsets.only(bottom: 10),
+                                            child: Center(
+                                              child: Text(
+                                                  '17/12/2023',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                      fontSize: 15,
+                                                      color: widget.color
+                                                      ? Colors.black
+                                                      : baseColor.trrColor,),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                            ),
+                                          ),
+                                      ],
                                     )
                                   ),
-                                  Container(
+                                   Container(
                                     margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                                     decoration: BoxDecoration(
                                     color: 
@@ -284,61 +518,103 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                                     Color.fromARGB(255, 255, 207, 228),
                                     borderRadius: BorderRadius.circular(20)
                                     ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                            leading: Text(
+                                              'ID.1234567890.745353',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                   color: widget.color
+                                                  ? Colors.black
+                                                  : baseColor.trrColor,),
+                                            ),
+                                            trailing: Container(
+                                              width: 100,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: widget.color
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '4 Poin',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                     color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        Container(
+                                            height: 1,
+                                            color: widget.color
+                                              ? baseColor.primaryColor
+                                              : baseColor.trrColor,
+                                          ),
+                                        Center(
+                                          child: ListTile(
+                                            leading: Icon(
+                                              IconlyBold.bag,
+                                              color: 
+                                              widget.color
+                                              ?
+                                              Color.fromARGB(255,197,18,19)
+                                              :
+                                              Color.fromARGB(255,82,74,156),
+                                              size: 28,
+                                            ),
+                                            title: Text(
+                                              'Tropikana Drink',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 16, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                widget.color
+                                                ?
+                                                Colors.black
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            trailing: Text(
+                                              'RP. 20.000.000',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 15, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                 widget.color
+                                                ?
+                                                Color.fromARGB(255,197,18,19)
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            ),
                                         ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
+                                      Padding(
+                                            padding: const EdgeInsets.only(bottom: 10),
+                                            child: Center(
+                                              child: Text(
+                                                  '17/12/2023',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                      fontSize: 15,
+                                                      color: widget.color
+                                                      ? Colors.black
+                                                      : baseColor.trrColor,),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                            ),
+                                          ),
+                                      ],
                                     )
                                   ),
-                                  Container(
+                                   Container(
                                     margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                                     decoration: BoxDecoration(
                                     color: 
@@ -349,61 +625,103 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                                     Color.fromARGB(255, 255, 207, 228),
                                     borderRadius: BorderRadius.circular(20)
                                     ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                            leading: Text(
+                                              'ID.1234567890.745353',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                   color: widget.color
+                                                  ? Colors.black
+                                                  : baseColor.trrColor,),
+                                            ),
+                                            trailing: Container(
+                                              width: 100,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: widget.color
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '4 Poin',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                     color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        Container(
+                                            height: 1,
+                                            color: widget.color
+                                              ? baseColor.primaryColor
+                                              : baseColor.trrColor,
+                                          ),
+                                        Center(
+                                          child: ListTile(
+                                            leading: Icon(
+                                              IconlyBold.bag,
+                                              color: 
+                                              widget.color
+                                              ?
+                                              Color.fromARGB(255,197,18,19)
+                                              :
+                                              Color.fromARGB(255,82,74,156),
+                                              size: 28,
+                                            ),
+                                            title: Text(
+                                              'Tropikana Drink',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 16, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                widget.color
+                                                ?
+                                                Colors.black
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            trailing: Text(
+                                              'RP. 20.000.000',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 15, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                 widget.color
+                                                ?
+                                                Color.fromARGB(255,197,18,19)
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            ),
                                         ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
+                                      Padding(
+                                            padding: const EdgeInsets.only(bottom: 10),
+                                            child: Center(
+                                              child: Text(
+                                                  '17/12/2023',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                      fontSize: 15,
+                                                      color: widget.color
+                                                      ? Colors.black
+                                                      : baseColor.trrColor,),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                            ),
+                                          ),
+                                      ],
                                     )
                                   ),
-                                  Container(
+                                   Container(
                                     margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                                     decoration: BoxDecoration(
                                     color: 
@@ -414,61 +732,103 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                                     Color.fromARGB(255, 255, 207, 228),
                                     borderRadius: BorderRadius.circular(20)
                                     ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                            leading: Text(
+                                              'ID.1234567890.745353',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                   color: widget.color
+                                                  ? Colors.black
+                                                  : baseColor.trrColor,),
+                                            ),
+                                            trailing: Container(
+                                              width: 100,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: widget.color
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '4 Poin',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                     color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        Container(
+                                            height: 1,
+                                            color: widget.color
+                                              ? baseColor.primaryColor
+                                              : baseColor.trrColor,
+                                          ),
+                                        Center(
+                                          child: ListTile(
+                                            leading: Icon(
+                                              IconlyBold.bag,
+                                              color: 
+                                              widget.color
+                                              ?
+                                              Color.fromARGB(255,197,18,19)
+                                              :
+                                              Color.fromARGB(255,82,74,156),
+                                              size: 28,
+                                            ),
+                                            title: Text(
+                                              'Tropikana Drink',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 16, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                widget.color
+                                                ?
+                                                Colors.black
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            trailing: Text(
+                                              'RP. 20.000.000',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 15, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                 widget.color
+                                                ?
+                                                Color.fromARGB(255,197,18,19)
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            ),
                                         ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
+                                      Padding(
+                                            padding: const EdgeInsets.only(bottom: 10),
+                                            child: Center(
+                                              child: Text(
+                                                  '17/12/2023',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                      fontSize: 15,
+                                                      color: widget.color
+                                                      ? Colors.black
+                                                      : baseColor.trrColor,),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                            ),
+                                          ),
+                                      ],
                                     )
                                   ),
-                                  Container(
+                                   Container(
                                     margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                                     decoration: BoxDecoration(
                                     color: 
@@ -479,255 +839,103 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                                     Color.fromARGB(255, 255, 207, 228),
                                     borderRadius: BorderRadius.circular(20)
                                     ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                            leading: Text(
+                                              'ID.1234567890.745353',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                   color: widget.color
+                                                  ? Colors.black
+                                                  : baseColor.trrColor,),
+                                            ),
+                                            trailing: Container(
+                                              width: 100,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: widget.color
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '4 Poin',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                     color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        Container(
+                                            height: 1,
+                                            color: widget.color
+                                              ? baseColor.primaryColor
+                                              : baseColor.trrColor,
+                                          ),
+                                        Center(
+                                          child: ListTile(
+                                            leading: Icon(
+                                              IconlyBold.bag,
+                                              color: 
+                                              widget.color
+                                              ?
+                                              Color.fromARGB(255,197,18,19)
+                                              :
+                                              Color.fromARGB(255,82,74,156),
+                                              size: 28,
+                                            ),
+                                            title: Text(
+                                              'Tropikana Drink',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 16, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                widget.color
+                                                ?
+                                                Colors.black
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            trailing: Text(
+                                              'RP. 20.000.000',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 15, 
+                                                fontWeight: FontWeight.bold,
+                                                color: 
+                                                 widget.color
+                                                ?
+                                                Color.fromARGB(255,197,18,19)
+                                                :
+                                                Color.fromARGB(255,82,74,156),),
+                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            ),
                                         ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
+                                      Padding(
+                                            padding: const EdgeInsets.only(bottom: 10),
+                                            child: Center(
+                                              child: Text(
+                                                  '17/12/2023',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                      fontSize: 15,
+                                                      color: widget.color
+                                                      ? Colors.black
+                                                      : baseColor.trrColor,),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                            ),
+                                          ),
+                                      ],
                                     )
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                    decoration: BoxDecoration(
-                                    color: 
-                                    widget.color
-                                    ?
-                                    Color.fromARGB(255,190,215,44)
-                                    :
-                                    Color.fromARGB(255, 255, 207, 228),
-                                    borderRadius: BorderRadius.circular(20)
-                                    ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
-                                    )
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                    decoration: BoxDecoration(
-                                    color: 
-                                    widget.color
-                                    ?
-                                    Color.fromARGB(255,190,215,44)
-                                    :
-                                    Color.fromARGB(255, 255, 207, 228),
-                                    borderRadius: BorderRadius.circular(20)
-                                    ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
-                                    )
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                    decoration: BoxDecoration(
-                                    color: 
-                                    widget.color
-                                    ?
-                                    Color.fromARGB(255,190,215,44)
-                                    :
-                                    Color.fromARGB(255, 255, 207, 228),
-                                    borderRadius: BorderRadius.circular(20)
-                                    ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
-                                    )
-                                  ),
+                                  
                                                             
                                     
               ],

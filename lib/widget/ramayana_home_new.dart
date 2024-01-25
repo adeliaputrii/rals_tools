@@ -969,13 +969,16 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                             ),
                             namaUser
                                 ? Container(
-                                    margin: EdgeInsets.only(top: 75, left: 20),
+                                    margin: EdgeInsets.only(top: 75, left: 20, right: 120),
+                                    // color: Colors.green,
                                     child: Text(
                                       'Halo ${userData.getFullname()}',
                                       style: GoogleFonts.mukta(
                                           textStyle: TextStyle(
                                               fontSize: 20,
-                                              color: Colors.white)),
+                                              color: Colors.white,
+                                              overflow: TextOverflow.ellipsis,
+                                              )),
                                     ))
                                 : Container(
                                     margin: EdgeInsets.only(top: 75, left: 20),

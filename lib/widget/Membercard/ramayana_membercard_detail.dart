@@ -19,6 +19,9 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
   @override
   void initState() {
     super.initState;
+     FlutterWindowManager.clearFlags(
+      FlutterWindowManager.FLAG_SECURE);
+      ScreenBrightness().resetScreenBrightness();
   }
 
   Widget myWidget = Center(
@@ -277,13 +280,15 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                       Navigator.push(
                                   context, MaterialPageRoute(
                                     builder: (context){
-                                      return RamayanaMembercardQr(icon: 
+                                      return RamayanaMembercardQr(
+                                        icon: 
                                       typeCard()
                                       ?
                                       true
                                       :
                                       false
-                                      ,);
+                                      ,
+                                      nokartu: '${widget.data.nokartu}',);
                               }));
                                   },
                                   child: Container(
@@ -352,7 +357,6 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                             // color: Colors.black,
                           ),
                           Container(
-                            height: mediaQuery.screnHeight(context, 2),
                             width: 500,
                             margin: EdgeInsets.fromLTRB(5, 20, 5, 0),
                             decoration: BoxDecoration(
@@ -385,141 +389,283 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                             179, 232, 232, 232),
                                         borderRadius:
                                             BorderRadius.circular(20)),
-                                    height: 70,
                                     child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: typeCard()
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          ListTile(
+                                            leading: Text(
+                                              'ID.1234567890.745353',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                   color: typeCard()
+                                                  ? Colors.black
+                                                  : baseColor.trrColor,),
+                                            ),
+                                            trailing: Container(
+                                              width: 100,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: typeCard()
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '4 Poin',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                     color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 1,
+                                            color: typeCard()
                                               ? baseColor.primaryColor
                                               : baseColor.trrColor,
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                               color: typeCard()
-                                              ? Colors.black
-                                              : baseColor.trrColor,),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 15,
+                                          ),
+                                          ListTile(
+                                            leading: Icon(
+                                              IconlyBold.bag,
                                               color: typeCard()
-                                              ? Colors.black
-                                              : baseColor.trrColor,),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: typeCard()
-                                              ? baseColor.primaryColor
-                                              : baseColor.trrColor,),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,
+                                              size: 28,
+                                            ),
+                                            title: Text(
+                                              'Penukaran poin dengan kode referal',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                   color: typeCard()
+                                                  ? Colors.black
+                                                  : baseColor.trrColor,),
+                                              overflow: TextOverflow.visible, 
+                                              maxLines: 10,
+                                            ),
+                                            trailing: Text(
+                                              '-RP. 20.000',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: typeCard()
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(bottom: 10),
+                                            child: Center(
+                                              child: Text(
+                                                  '17/12/2023',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                      fontSize: 15,
+                                                      color: typeCard()
+                                                      ? Colors.black
+                                                      : baseColor.trrColor,),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     )),
-                                Container(
+                            // ======================================================================================================================================
+                               Container(
                                     margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                                     decoration: BoxDecoration(
                                         color: const Color.fromARGB(
                                             179, 232, 232, 232),
                                         borderRadius:
                                             BorderRadius.circular(20)),
-                                    height: 70,
                                     child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: typeCard()
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          ListTile(
+                                            leading: Text(
+                                              'ID.1234567890.745353',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                   color: typeCard()
+                                                  ? Colors.black
+                                                  : baseColor.trrColor,),
+                                            ),
+                                            trailing: Container(
+                                              width: 100,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: typeCard()
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '4 Poin',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                     color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 1,
+                                            color: typeCard()
                                               ? baseColor.primaryColor
                                               : baseColor.trrColor,
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                               color: typeCard()
-                                              ? Colors.black
-                                              : baseColor.trrColor,),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 15,
+                                          ),
+                                          ListTile(
+                                            leading: Icon(
+                                              IconlyBold.bag,
                                               color: typeCard()
-                                              ? Colors.black
-                                              : baseColor.trrColor,),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: typeCard()
-                                              ? baseColor.primaryColor
-                                              : baseColor.trrColor,),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,
+                                              size: 28,
+                                            ),
+                                            title: Text(
+                                              'Penukaran poin dengan kode referal',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                   color: typeCard()
+                                                  ? Colors.black
+                                                  : baseColor.trrColor,),
+                                              overflow: TextOverflow.visible, 
+                                              maxLines: 10,
+                                            ),
+                                            trailing: Text(
+                                              '-RP. 20.000',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: typeCard()
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(bottom: 10),
+                                            child: Center(
+                                              child: Text(
+                                                  '17/12/2023',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                      fontSize: 15,
+                                                      color: typeCard()
+                                                      ? Colors.black
+                                                      : baseColor.trrColor,),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     )),
-                                    Container(
+                                     Container(
                                     margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                                     decoration: BoxDecoration(
                                         color: const Color.fromARGB(
                                             179, 232, 232, 232),
                                         borderRadius:
                                             BorderRadius.circular(20)),
-                                    height: 70,
                                     child: Center(
-                                      child: ListTile(
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: typeCard()
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          ListTile(
+                                            leading: Text(
+                                              'ID.1234567890.745353',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                   color: typeCard()
+                                                  ? Colors.black
+                                                  : baseColor.trrColor,),
+                                            ),
+                                            trailing: Container(
+                                              width: 100,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: typeCard()
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '4 Poin',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                     color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 1,
+                                            color: typeCard()
                                               ? baseColor.primaryColor
                                               : baseColor.trrColor,
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          'Tropikana Drink',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                               color: typeCard()
-                                              ? Colors.black
-                                              : baseColor.trrColor,),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        subtitle: Text(
-                                          '17/12/2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 15,
+                                          ),
+                                          ListTile(
+                                            leading: Icon(
+                                              IconlyBold.bag,
                                               color: typeCard()
-                                              ? Colors.black
-                                              : baseColor.trrColor,),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: typeCard()
-                                              ? baseColor.primaryColor
-                                              : baseColor.trrColor,),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,
+                                              size: 28,
+                                            ),
+                                            title: Text(
+                                              'Penukaran poin dengan kode referal',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                   color: typeCard()
+                                                  ? Colors.black
+                                                  : baseColor.trrColor,),
+                                              overflow: TextOverflow.visible, 
+                                              maxLines: 10,
+                                            ),
+                                            trailing: Text(
+                                              '-RP. 20.000',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: typeCard()
+                                                  ? baseColor.primaryColor
+                                                  : baseColor.trrColor,),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(bottom: 10),
+                                            child: Center(
+                                              child: Text(
+                                                  '17/12/2023',
+                                                  style: GoogleFonts.plusJakartaSans(
+                                                      fontSize: 15,
+                                                      color: typeCard()
+                                                      ? Colors.black
+                                                      : baseColor.trrColor,),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     )),
                               ],

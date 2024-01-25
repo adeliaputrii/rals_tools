@@ -1,8 +1,13 @@
 part of 'import.dart';
 
 class RamayanaMembercardQr extends StatefulWidget {
-  const RamayanaMembercardQr({super.key,required this.icon});
+  const RamayanaMembercardQr({
+    super.key,
+    required this.icon,
+    required this.nokartu
+    });
   final bool icon;
+  final String nokartu;
 
   @override
   State<RamayanaMembercardQr> createState() => _RamayanaMembercardQrState();
@@ -23,6 +28,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
   bool _barcode = true;
   Color _containerColorSj = Color.fromARGB(255, 210, 14, 0);
   Color _containerColorLacak = Color.fromARGB(255, 201, 201, 201);
+  late PopUpWidget popUpWidget;
 
   @override
   void didPush() {
@@ -37,6 +43,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
   @override
   void initState() {
     super.initState();
+    popUpWidget = PopUpWidget(context);
   }
 
   @override
@@ -61,110 +68,53 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
   bool? _isConnected;
 
   
-  Future<String> step1() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // user id
-    UserData userData = UserData();
-    await userData.getPref();
-    var member = prefs.getString('noMember');
-    String userId = '${member}';
-    String? randomAngka = myController.text;
-    print('grgr 123');
-    print(member);
-    print(userId);
-    List noMember = userId.split('');
-    print(noMember);
-    print(noMember);
-    print(noMember[0]);
-    print(noMember[15]);
-    int current = 1;
-
-    for (int i = 0; i < noMember.length; i++) {
-      current = i + 1;
-      print(current);
-      if (current.isEven) {
-        genap.add(noMember[i]);
-        print('valuegenap : ${noMember[i]}');
-      } else if (current.isOdd) {
-        ganjil.add(noMember[i]);
-        print('valueganjil : ${noMember[i]}');
-      }
+ Future<String>logic() async {
+  //Step 1 get device ID
+  String getDeviceId = userData.getImei();
+  String deviceIdStart = getDeviceId.substring(0,5);
+  String deviceIdEnd = getDeviceId.substring(getDeviceId.length - 5,getDeviceId.length);
+  
+  // Step2 no kartu
+  String noKartu = '${widget.nokartu}';
+  int digitSum = 0;
+  for (int i = 0; i < noKartu.length; i++) {
+    digitSum += int.parse(noKartu[i]);
     }
-
-    print('ganjil : $ganjil');
-    print('genap : $genap');
-
-    var sum = 0;
-    ganjil.forEach((val) {
-      sum += int.parse(val);
-    });
-    print('jumlah ganjil $sum');
-
-    var sum2 = 0;
-    genap.forEach((val2) {
-      sum2 += int.parse(val2);
-    });
-    print('jumlah genap $sum2');
-
-    var perhitunganGanjil = (sum + 5) * int.parse(myController.text);
-    var perhitunganGenap = (sum2 - 5) * int.parse(myController.text);
-    // var perhitunganGenap = -32;
-
-    if (perhitunganGanjil < 0) {
-      perhitunganGanjil = perhitunganGanjil * -1;
-    }
-
-    if (perhitunganGenap < 0) {
-      perhitunganGenap = perhitunganGenap * -1;
-    }
-
-    print('Plus 5 Ganjil $perhitunganGanjil');
-    print('Minus 5 Genap $perhitunganGenap');
-
-    var hasilGanjil = perhitunganGanjil.toString();
-    var hasilGenap = perhitunganGenap.toString();
-
-    hasilAkhir = hasilGanjil + hasilGenap;
-    print(hasilAkhir);
-    return hasilAkhir;
+  if (digitSum < 1) {
+    digitSum = 1;
+  } else {
+    digitSum;
   }
 
-  Future<void> popup() async {
-    AlertDialog popup1 = AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+  //Step 3 random number
+  String randomNum = '${myController.text}';
+  String randomNumStart = randomNum.substring(0,3);
+  String randomNumEnd = randomNum.substring(randomNum.length - 3,randomNum.length);
 
-      // shadowColor: Colors.black,
-      titlePadding: EdgeInsets.all(0),
-      title: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          height: 170,
-          width: 2000,
-          child: Image.asset(
-            'assets/omaigat.png',
-          )),
-      content: Container(
-        margin: EdgeInsets.only(bottom: 10),
-        height: 30,
-        child: Center(
-          child: Text(
-            'Masukkan 4 digit kode pada mesin kassa',
-            style:
-                GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
-          ),
-        ),
-      ),
-      actionsAlignment: MainAxisAlignment.start,
-      actionsPadding: EdgeInsets.only(bottom: 20),
-    );
-    showCupertinoModalPopup(context: context, builder: (context) => popup1);
-  }
+  //Step 4 Perkalian
+  int resultLeft = int.parse(randomNumStart) * digitSum;
+  int resultRight= int.parse(randomNumEnd) * digitSum;
+  String resTostr = resultLeft.toString();
+  String result = resTostr + resultRight.toString();
+
+  //Step 5 Join Result
+  String joinResult = deviceIdStart + result + deviceIdEnd;
+
+  // Print the result
+  debugPrint("device id: $getDeviceId");
+  debugPrint("Sum of digits: $digitSum");
+  debugPrint("Random Number: $randomNum");
+  debugPrint("5 digit awal device id: $deviceIdStart");
+  debugPrint("5 digit akhir device id: $deviceIdEnd");
+  debugPrint("3 digit awal random number: $randomNumStart");
+  debugPrint("3 digit akhirrandom number: $randomNumEnd");
+  debugPrint("Result left: $resultLeft");
+  debugPrint("Result right: $resultRight");
+  debugPrint("Result: $result");
+  debugPrint("Result Join: $joinResult");
+  
+  return joinResult;
+ }
 
   @override
   Widget build(BuildContext context) {
@@ -177,6 +127,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                 await FlutterWindowManager.clearFlags(
                     FlutterWindowManager.FLAG_SECURE);
                 Navigator.pop(context);
+                // print(logic());
               },
               icon: Icon(
                 Icons.arrow_back_ios,
@@ -284,7 +235,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                             child: MaterialButton(
                               onPressed: () async {
                                 if (myController.text == '') {
-                                  popup();
+                                  popUpWidget.showPopUpError(baseParam.pleaseCheck, baseParam.cantempty);
                                 } else {
                                   didPush();
                                   didPopNext();
@@ -293,7 +244,8 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                   ganjil.clear();
                                   genap.clear();
 
-                                  data = await step1();
+                                  data = await logic();
+                                  // print(step1);
 
                                   setState(() {
                                     isLoading = true;
@@ -314,6 +266,13 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                   setState(() {
                                     isLoading = false;
                                   });
+                                  Future.delayed(Duration(minutes: 1), () {
+                                  if (mounted) {
+                                    setState(() {
+                                      Navigator.pop(context);
+                                    });
+                                  }
+                                });
                                 }
                               },
                               child: Text(
@@ -479,21 +438,22 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                                 ? Column(
                                                     children: [
                                                       Container(
-                                                        height: 100,
+                                                        height: 120,
                                                           margin:
                                                               EdgeInsets.fromLTRB(10, 40, 10, 0),
                                                           child: Center(
                                                               child:SfBarcodeGenerator(
                                                                   value:
-                                                                      '123456',
+                                                                      '$data'
+'',
                                                                   backgroundColor:
                                                                       Colors
                                                                           .white,
                                                                   barColor:
-                                                                      Colors
+                                                                     Colors
                                                                           .black,
                                                                   symbology:
-                                                                      Code128()))),
+                                                                      Code128A()))),
                                                       
                                                     ],
                                                   )
