@@ -54,17 +54,31 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
     super.dispose();
   }
 
+  void buildBarcode(
+  Barcode bc,
+  String data, {
+  String? filename,
+  double? width,
+  double? height,
+  double? fontHeight,
+}) {
+  /// Create the Barcode
+  final svg = bc.toSvg(
+    data,
+    width: width ?? 200,
+    height: height ?? 80,
+    fontHeight: fontHeight,
+  );
+
+  // Save the image
+  filename ??= bc.name.replaceAll(RegExp(r'\s'), '-').toLowerCase();
+}
+
   TextEditingController myController = TextEditingController();
 
   String _scanBarcode = '';
   bool _visible = false;
-
-  List length = [];
-  List ganjil = [];
-  List genap = [];
   String data = '';
-  // String nokartu = '${ApprovalIdcashCustomer.noMember[0]}';
-  String hasilAkhir = '';
   bool? _isConnected;
 
   
@@ -239,14 +253,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                 } else {
                                   didPush();
                                   didPopNext();
-                                 
-                                  length.clear;
-                                  ganjil.clear();
-                                  genap.clear();
-
                                   data = await logic();
-                                  // print(step1);
-
                                   setState(() {
                                     isLoading = true;
                                     container = false;
@@ -415,9 +422,6 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                                   onPressed: () {
                                                     setState(() {
                                                       _barcode = false;
-                                                      length.clear();
-                                                      ganjil.clear();
-                                                      genap.clear();
                                                     });
                                                   },
                                                   child: Text("QR Code",
@@ -442,20 +446,27 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                                           margin:
                                                               EdgeInsets.fromLTRB(10, 40, 10, 0),
                                                           child: Center(
-                                                              child:SfBarcodeGenerator(
-                                                                  value:
-                                                                      '$data'
-'',
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  barColor:
-                                                                     Colors
-                                                                          .black,
-                                                                  symbology:
-                                                                      Code128A()))),
+                                                              child:
+                                                              // SfBarcodeGenerator(
+                                                              //   textSpacing: 10,
+                                                              //     value:
+                                                              //         '$data',
+                                                              //     backgroundColor:
+                                                              //         Colors
+                                                              //             .white,
+                                                              //     barColor:
+                                                              //        Colors
+                                                              //             .black,
+                                                              //     symbology:
+                                                              //         Code128())
+                                                             BarcodeWidget(
+                                                              data: '$data', // Your barcode data
+                                                              barcode: Barcode.code128(), // Specify the barcode type
+                                                              height: 300,
+                                                              drawText: false,
+                                                                      )),)
                                                       
-                                                    ],
+                                                    ], 
                                                   )
                                                 : Column(
                                                     children: [
