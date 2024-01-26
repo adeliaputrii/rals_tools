@@ -33,7 +33,7 @@ class _RamayanaMembercardHistoryMState
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, '${widget.nokartu}');
           },
           icon: Icon(
             Icons.arrow_back_ios,

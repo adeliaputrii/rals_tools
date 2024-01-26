@@ -15,11 +15,28 @@ class _RamayanaMembercardHistoryYState
     extends State<RamayanaMembercardHistoryY> {
   late CompanyCardCubit cubit;
   AppWidget appWidget = AppWidget();
+
   @override
   void initState() {
     super.initState();
 
     cubit = context.read<CompanyCardCubit>();
+    cubit.getHistoryMemberYear(widget.nokartu);
+  }
+
+  Future<void> navigateToHistoryMonth(String year) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    debugPrint('navigator push');
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => RamayanaMembercardHistoryM(
+              color: widget.color, nokartu: widget.nokartu, year: year)),
+    );
+    debugPrint('navigator pop' + result);
+    if (!mounted) return;
+
     cubit.getHistoryMemberYear(widget.nokartu);
   }
 
@@ -29,7 +46,7 @@ class _RamayanaMembercardHistoryYState
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, '${widget.nokartu}');
           },
           icon: Icon(
             Icons.arrow_back_ios,
@@ -92,15 +109,9 @@ class _RamayanaMembercardHistoryYState
                               child: Center(
                                 child: ListTile(
                                   onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return RamayanaMembercardHistoryM(
-                                          color: widget.color,
-                                          nokartu: widget.nokartu,
-                                          year: state.response.data?[index]
-                                                  .datePart ??
-                                              '0');
-                                    }));
+                                    navigateToHistoryMonth(
+                                        state.response.data?[index].datePart ??
+                                            '0');
                                   },
                                   leading: Icon(
                                     IconlyBold.bag,

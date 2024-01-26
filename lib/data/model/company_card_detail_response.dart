@@ -44,8 +44,8 @@ class Data {
   int? anakPria;
   int? anakWanita;
   int? kebangsaan;
-  Null? custBangsa;
-  Null? kelurahan;
+  String? custBangsa;
+  String? kelurahan;
   String? poin;
   String? noktp;
   String? notelpon;
@@ -61,32 +61,32 @@ class Data {
   String? kodepost;
   int? kota;
   int? agama;
-  Null? custAgama;
+  String? custAgama;
   String? tlprm;
   String? email;
   int? pendapatan;
   int? informasi;
-  Null? custInfo;
+  String? custInfo;
   int? pendidikan;
-  Null? custPendidikan;
-  Null? koran;
-  Null? custKoran;
-  Null? radio;
-  Null? custRadio;
+  String? custPendidikan;
+  String? koran;
+  String? custKoran;
+  String? radio;
+  String? custRadio;
   int? typeMc;
   String? saldo;
   String? pemakaian;
-  Null? divisi;
+  String? divisi;
   String? several;
-  Null? custApps;
-  Null? nopin;
+  String? custApps;
+  String? nopin;
   String? personId;
   String? rmyId;
   String? tglKaryAktif;
   String? idLama;
   String? nomorHape;
-  Null? userUpdate1;
-  Null? dateUpdate1;
+  String? userUpdate1;
+  String? dateUpdate1;
 
   Data(
       {this.nokartu,

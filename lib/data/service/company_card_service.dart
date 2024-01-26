@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import '../model/company_card_detail_response.dart';
 import '../model/company_card_history_body.dart';
 import '../model/company_card_history_days_response.dart';
 import '../model/company_card_history_month_response.dart';
@@ -20,7 +21,7 @@ abstract class CompanyCardService {
   Future<CompanyCardResponse> getDataMember(@Body() String noKartu);
 
   @POST(basePath.api_get_company_card_detail)
-  Future<CompanyCardResponse> getDetailCard(@Body() String noKartu);
+  Future<CompanyCardDetailResponse> getDetailCard(@Body() String noKartu);
 
   @POST(basePath.api_get_company_card_history)
   Future<CompanyCardHistoryResponse> getHistoryMember(

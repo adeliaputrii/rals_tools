@@ -46,13 +46,13 @@ class _CompanyCardService implements CompanyCardService {
   }
 
   @override
-  Future<CompanyCardResponse> getDetailCard(String noKartu) async {
+  Future<CompanyCardDetailResponse> getDetailCard(String noKartu) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = noKartu;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CompanyCardResponse>(Options(
+        _setStreamType<CompanyCardDetailResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -68,7 +68,7 @@ class _CompanyCardService implements CompanyCardService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = CompanyCardResponse.fromJson(_result.data!);
+    final value = CompanyCardDetailResponse.fromJson(_result.data!);
     return value;
   }
 

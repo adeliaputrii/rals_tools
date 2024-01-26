@@ -28,6 +28,22 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
     cubit.getDetailCard(cardNumber);
   }
 
+  Future<void> navigateToHistoryYear() async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    debugPrint('navigator push');
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => RamayanaMembercardHistoryY(
+              color: typeCard() ? true : false, nokartu: cardNumber)),
+    );
+    debugPrint('navigator pop');
+    if (!mounted) return;
+
+    cubit.getDetailCard('$result');
+  }
+
   Widget myWidget = Center(
     child: Container(
       key: ValueKey(2),
@@ -284,15 +300,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     MaterialButton(
-                                      onPressed: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return RamayanaMembercardQr(
-                                            icon: typeCard() ? true : false,
-                                          );
-                                        }));
-                                      },
+                                      onPressed: () {},
                                       child: Container(
                                         height: 50,
                                         width: 190,
@@ -321,13 +329,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                     ),
                                     MaterialButton(
                                       onPressed: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return RamayanaMembercardHistoryY(
-                                              color: typeCard() ? true : false,
-                                              nokartu: cardNumber);
-                                        }));
+                                        navigateToHistoryYear();
                                       },
                                       child: Container(
                                         height: 50,
