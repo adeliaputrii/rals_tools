@@ -106,6 +106,7 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
     return idUser.toString();
   }
 
+  //test
   // Future<int> compareGenerateCodeTest() async {
   //   SharedPreferences pref = await SharedPreferences.getInstance();
   //   String? imei = pref.getString('serialImei');
