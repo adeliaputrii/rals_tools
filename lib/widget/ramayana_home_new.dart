@@ -653,6 +653,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                         visible: true,
                       );
                     } else if (icon == "kartu.kartutambahan") {
+                    } else if (icon == "kartutambahantrr&rms.kartutambahan") {
                       return Visibility(
                         child: CircleAvatar(
                           backgroundColor: Color.fromARGB(255, 207, 11, 11),
@@ -696,6 +697,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                     } else if (icon == "comchek.approvedcomchek") {
                       return 'Com. Checking';
                     } else if (icon == "kartu.kartutambahan") {
+                    } else if (icon == "kartutambahantrr&rms.kartutambahan") {
                       return 'Kartu Tambahan';
                     } else {
                       print(e);
@@ -764,6 +766,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                             //   print('hak akses : ${e}}');
                             //   print('hak akses : ${hakAkses}');
                           } else if (e == 'kartu.kartutambahan') {
+                          } else if (e ==
+                              'kartutambahantrr&rms.kartutambahan') {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                               return RamayanaMembercardAuthentication();
@@ -844,7 +848,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       if (element == 'suratjalan.trackingsj') {
         data.add(element);
       }
-      if (element == 'kartu.kartutambahan') {
+      if (element == 'kartutambahantrr&rms.kartutambahan') {
         data.add(element);
       }
       if (element == 'comchek.approvedcomchek') {
@@ -959,16 +963,17 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                             ),
                             namaUser
                                 ? Container(
-                                    margin: EdgeInsets.only(top: 75, left: 20, right: 120),
+                                    margin: EdgeInsets.only(
+                                        top: 75, left: 20, right: 120),
                                     // color: Colors.green,
                                     child: Text(
                                       'Halo ${userData.getFullname()}',
                                       style: GoogleFonts.mukta(
                                           textStyle: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                              overflow: TextOverflow.ellipsis,
-                                              )),
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        overflow: TextOverflow.ellipsis,
+                                      )),
                                     ))
                                 : Container(
                                     margin: EdgeInsets.only(top: 75, left: 20),
@@ -1195,6 +1200,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             );
                                           } else if (icon ==
                                               "kartu.kartutambahan") {
+                                          } else if (icon ==
+                                              "kartutambahantrr&rms.kartutambahan") {
                                             return Visibility(
                                               child: CircleAvatar(
                                                 backgroundColor: Color.fromARGB(
@@ -1248,6 +1255,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             return 'Com. Checking';
                                           } else if (icon ==
                                               "kartu.kartutambahan") {
+                                          } else if (icon ==
+                                              "kartutambahantrr&rms.kartutambahan") {
                                             return 'Kartu Tambahan';
                                           } else {
                                             print(e);
@@ -1336,6 +1345,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                   //   print('hak akses : ${hakAkses}');
                                                 } else if (e ==
                                                     'kartu.kartutambahan') {
+                                                } else if (e ==
+                                                    'kartutambahantrr&rms.kartutambahan') {
                                                   Navigator.push(context,
                                                       MaterialPageRoute(
                                                           builder: (context) {

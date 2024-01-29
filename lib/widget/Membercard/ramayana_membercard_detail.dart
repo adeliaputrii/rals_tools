@@ -56,6 +56,22 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
     ScreenBrightness().resetScreenBrightness();
   }
 
+  Future<void> navigateToPayment() async {
+  
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => RamayanaMembercardQr(
+              icon: typeCard(widget.typeCard), nokartu: cardNumber)),
+    );
+    if (!mounted) return;
+
+    cubit.getDetailCard('$result');
+    cubit.getHistoryMember('$result');
+    FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+    ScreenBrightness().resetScreenBrightness();
+  }
+
   Widget myWidget = Center(
     child: Container(
       key: ValueKey(2),
@@ -319,7 +335,9 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 MaterialButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    navigateToPayment();
+                                  },
                                   child: Container(
                                     height: 50,
                                     width: 190,

@@ -1,11 +1,8 @@
 part of 'import.dart';
 
 class RamayanaMembercardQr extends StatefulWidget {
-  const RamayanaMembercardQr({
-    super.key,
-    required this.icon,
-    required this.nokartu
-    });
+  const RamayanaMembercardQr(
+      {super.key, required this.icon, required this.nokartu});
   final bool icon;
   final String nokartu;
 
@@ -55,24 +52,24 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
   }
 
   void buildBarcode(
-  Barcode bc,
-  String data, {
-  String? filename,
-  double? width,
-  double? height,
-  double? fontHeight,
-}) {
-  /// Create the Barcode
-  final svg = bc.toSvg(
-    data,
-    width: width ?? 200,
-    height: height ?? 80,
-    fontHeight: fontHeight,
-  );
+    Barcode bc,
+    String data, {
+    String? filename,
+    double? width,
+    double? height,
+    double? fontHeight,
+  }) {
+    /// Create the Barcode
+    final svg = bc.toSvg(
+      data,
+      width: width ?? 200,
+      height: height ?? 80,
+      fontHeight: fontHeight,
+    );
 
-  // Save the image
-  filename ??= bc.name.replaceAll(RegExp(r'\s'), '-').toLowerCase();
-}
+    // Save the image
+    filename ??= bc.name.replaceAll(RegExp(r'\s'), '-').toLowerCase();
+  }
 
   TextEditingController myController = TextEditingController();
 
@@ -81,54 +78,60 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
   String data = '';
   bool? _isConnected;
 
-  
- Future<String>logic() async {
-  //Step 1 get device ID
-  String getDeviceId = userData.getImei();
-  String deviceIdStart = getDeviceId.substring(0,5);
-  String deviceIdEnd = getDeviceId.substring(getDeviceId.length - 5,getDeviceId.length);
-  
-  // Step2 no kartu
-  String noKartu = '${widget.nokartu}';
-  int digitSum = 0;
-  for (int i = 0; i < noKartu.length; i++) {
-    digitSum += int.parse(noKartu[i]);
+  Future<String> logic() async {
+    //Step 1 get device ID
+    String getDeviceId = userData.getImei();
+    String deviceIdStart = getDeviceId.substring(0, 5);
+    String deviceIdEnd =
+        getDeviceId.substring(getDeviceId.length - 5, getDeviceId.length);
+
+    // Step2 no kartu
+    String noKartu = '${widget.nokartu}';
+    int digitSum = 0;
+    for (int i = 0; i < noKartu.length; i++) {
+      digitSum += int.parse(noKartu[i]);
     }
-  if (digitSum < 1) {
-    digitSum = 1;
-  } else {
-    digitSum;
+    if (digitSum < 1) {
+      digitSum = 1;
+    } else {
+      digitSum;
+    }
+
+    //Step 3 random number
+    String randomNum = '${myController.text}';
+    String randomNumStart = randomNum.substring(0, 3);
+    String randomNumEnd =
+        randomNum.substring(randomNum.length - 3, randomNum.length);
+
+    //Step 4 Perkalian
+    int resultLeft = int.parse(randomNumStart) * digitSum;
+    int resultRight = int.parse(randomNumEnd) * digitSum;
+    String resTostr = resultLeft.toString();
+    String result = resTostr + resultRight.toString();
+
+    //Step 5 Join Result
+    String joinResult = deviceIdStart + result + deviceIdEnd;
+
+    // Print the result
+    debugPrint("device id: $getDeviceId");
+    debugPrint("Sum of digits: $digitSum");
+    debugPrint("Random Number: $randomNum");
+    debugPrint("5 digit awal device id: $deviceIdStart");
+    debugPrint("5 digit akhir device id: $deviceIdEnd");
+    debugPrint("3 digit awal random number: $randomNumStart");
+    debugPrint("3 digit akhirrandom number: $randomNumEnd");
+    debugPrint("Result left: $resultLeft");
+    debugPrint("Result right: $resultRight");
+    debugPrint("Result: $result");
+    debugPrint("Result Join: $joinResult");
+
+    return joinResult;
   }
 
-  //Step 3 random number
-  String randomNum = '${myController.text}';
-  String randomNumStart = randomNum.substring(0,3);
-  String randomNumEnd = randomNum.substring(randomNum.length - 3,randomNum.length);
-
-  //Step 4 Perkalian
-  int resultLeft = int.parse(randomNumStart) * digitSum;
-  int resultRight= int.parse(randomNumEnd) * digitSum;
-  String resTostr = resultLeft.toString();
-  String result = resTostr + resultRight.toString();
-
-  //Step 5 Join Result
-  String joinResult = deviceIdStart + result + deviceIdEnd;
-
-  // Print the result
-  debugPrint("device id: $getDeviceId");
-  debugPrint("Sum of digits: $digitSum");
-  debugPrint("Random Number: $randomNum");
-  debugPrint("5 digit awal device id: $deviceIdStart");
-  debugPrint("5 digit akhir device id: $deviceIdEnd");
-  debugPrint("3 digit awal random number: $randomNumStart");
-  debugPrint("3 digit akhirrandom number: $randomNumEnd");
-  debugPrint("Result left: $resultLeft");
-  debugPrint("Result right: $resultRight");
-  debugPrint("Result: $result");
-  debugPrint("Result Join: $joinResult");
-  
-  return joinResult;
- }
+  Future<void> _onBackPressed() async {
+    await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+    Navigator.pop(context, '${widget.nokartu}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,10 +141,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
           appBar: AppBar(
             leading: IconButton(
               onPressed: () async {
-                await FlutterWindowManager.clearFlags(
-                    FlutterWindowManager.FLAG_SECURE);
-                Navigator.pop(context);
-                // print(logic());
+                _onBackPressed();
               },
               icon: Icon(
                 Icons.arrow_back_ios,
@@ -168,19 +168,15 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                   height: 250,
                   // color: Colors.green,
                   child: Center(
-                    child: 
-                    widget.icon
-                    ?
-                    Image.asset(
-                      'assets/payment_rms.png',
-                      fit: BoxFit.cover,
-                    )
-                    :
-                    Image.asset(
-                      'assets/payment_trr.png',
-                      fit: BoxFit.cover,
-                    )
-                  ),
+                      child: widget.icon
+                          ? Image.asset(
+                              'assets/payment_rms.png',
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              'assets/payment_trr.png',
+                              fit: BoxFit.cover,
+                            )),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 280),
@@ -206,7 +202,8 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 25, left: 10, right: 10),
+                            margin:
+                                EdgeInsets.only(top: 25, left: 10, right: 10),
                             child: PinCodeFields(
                               controller: myController,
                               length: 6,
@@ -238,18 +235,17 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                             height: 50,
                             width: 10000,
                             decoration: BoxDecoration(
-                              color:
-                              widget.icon
-                              ?
-                               Color.fromARGB(255, 210, 14, 0)
-                               :
-                               Color.fromARGB(255, 240, 133, 179),
+                              color: widget.icon
+                                  ? Color.fromARGB(255, 210, 14, 0)
+                                  : Color.fromARGB(255, 240, 133, 179),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: MaterialButton(
                               onPressed: () async {
                                 if (myController.text == '') {
-                                  popUpWidget.showPopUpError(baseParam.pleaseCheck, baseParam.cantempty);
+                                  popUpWidget.showPopUpError(
+                                      baseParam.pleaseCheck,
+                                      baseParam.cantempty);
                                 } else {
                                   didPush();
                                   didPopNext();
@@ -274,12 +270,12 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                     isLoading = false;
                                   });
                                   Future.delayed(Duration(minutes: 1), () {
-                                  if (mounted) {
-                                    setState(() {
-                                      Navigator.pop(context);
-                                    });
-                                  }
-                                });
+                                    if (mounted) {
+                                      setState(() {
+                                        Navigator.pop(context);
+                                      });
+                                    }
+                                  });
                                 }
                               },
                               child: Text(
@@ -296,12 +292,9 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                               ? Container(
                                   margin: EdgeInsets.only(top: 100),
                                   child: SpinKitThreeBounce(
-                                    color: 
-                                    widget.icon
-                                    ?
-                                    Color.fromARGB(255, 210, 14, 0)
-                                    :
-                                    Color.fromARGB(255,82,74,156),
+                                    color: widget.icon
+                                        ? Color.fromARGB(255, 210, 14, 0)
+                                        : Color.fromARGB(255, 82, 74, 156),
                                     size: 50.0,
                                   ),
                                 )
@@ -332,14 +325,11 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(35),
-                                            color: 
-                                            widget.icon
-                                            ?
-                                            Color.fromARGB(
-                                                255,190,215,44)
-                                            :
-                                            Color.fromARGB(
-                                                255, 240, 133, 179),
+                                            color: widget.icon
+                                                ? Color.fromARGB(
+                                                    255, 190, 215, 44)
+                                                : Color.fromARGB(
+                                                    255, 240, 133, 179),
                                           ),
                                           child: Row(
                                             mainAxisAlignment:
@@ -360,20 +350,17 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                                               30)),
                                                   minWidth: 225,
                                                   height: 50,
-                                                  color: 
-                                                  widget.icon
-                                                  ?
-                                                  _barcode
-                                                      ? Color.fromARGB(
-                                                          255,197,18,19)
-                                                      : Color.fromARGB(
-                                                          255,190,215,44)
-                                                  :
-                                                  _barcode
-                                                      ? Color.fromARGB(
-                                                          255,82,74,156)
-                                                      : Color.fromARGB(
-                                                          255, 240, 133, 179),
+                                                  color: widget.icon
+                                                      ? _barcode
+                                                          ? Color.fromARGB(
+                                                              255, 197, 18, 19)
+                                                          : Color.fromARGB(
+                                                              255, 190, 215, 44)
+                                                      : _barcode
+                                                          ? Color.fromARGB(
+                                                              255, 82, 74, 156)
+                                                          : Color.fromARGB(255,
+                                                              240, 133, 179),
                                                   onPressed: () {
                                                     setState(() {
                                                       _barcode = true;
@@ -405,20 +392,17 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                                               30)),
                                                   minWidth: 225,
                                                   height: 50,
-                                                  color: 
-                                                  widget.icon
-                                                  ?
-                                                  _barcode
-                                                      ? Color.fromARGB(
-                                                          255,190,215,44)
-                                                      : Color.fromARGB(
-                                                          255,197,18,19)
-                                                  :
-                                                    _barcode
-                                                      ? Color.fromARGB(
-                                                          255, 240, 133, 179)
-                                                      : Color.fromARGB(
-                                                          255,82,74,156),
+                                                  color: widget.icon
+                                                      ? _barcode
+                                                          ? Color.fromARGB(
+                                                              255, 190, 215, 44)
+                                                          : Color.fromARGB(
+                                                              255, 197, 18, 19)
+                                                      : _barcode
+                                                          ? Color.fromARGB(255,
+                                                              240, 133, 179)
+                                                          : Color.fromARGB(
+                                                              255, 82, 74, 156),
                                                   onPressed: () {
                                                     setState(() {
                                                       _barcode = false;
@@ -443,30 +427,33 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                                     children: [
                                                       Container(
                                                         height: 120,
-                                                          margin:
-                                                              EdgeInsets.fromLTRB(10, 40, 10, 0),
-                                                          child: Center(
-                                                              child:
-                                                              // SfBarcodeGenerator(
-                                                              //   textSpacing: 10,
-                                                              //     value:
-                                                              //         '$data',
-                                                              //     backgroundColor:
-                                                              //         Colors
-                                                              //             .white,
-                                                              //     barColor:
-                                                              //        Colors
-                                                              //             .black,
-                                                              //     symbology:
-                                                              //         Code128())
-                                                             BarcodeWidget(
-                                                              data: '$data', // Your barcode data
-                                                              barcode: Barcode.code128(), // Specify the barcode type
-                                                              height: 300,
-                                                              drawText: false,
-                                                                      )),)
-                                                      
-                                                    ], 
+                                                        margin:
+                                                            EdgeInsets.fromLTRB(
+                                                                10, 40, 10, 0),
+                                                        child: Center(
+                                                            child:
+                                                                // SfBarcodeGenerator(
+                                                                //   textSpacing: 10,
+                                                                //     value:
+                                                                //         '$data',
+                                                                //     backgroundColor:
+                                                                //         Colors
+                                                                //             .white,
+                                                                //     barColor:
+                                                                //        Colors
+                                                                //             .black,
+                                                                //     symbology:
+                                                                //         Code128())
+                                                                BarcodeWidget(
+                                                          data:
+                                                              '$data', // Your barcode data
+                                                          barcode: Barcode
+                                                              .code128(), // Specify the barcode type
+                                                          height: 300,
+                                                          drawText: false,
+                                                        )),
+                                                      )
+                                                    ],
                                                   )
                                                 : Column(
                                                     children: [
@@ -492,7 +479,6 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                                       SizedBox(
                                                         height: 10,
                                                       ),
-                                                      
                                                     ],
                                                   )),
                                       ]),
