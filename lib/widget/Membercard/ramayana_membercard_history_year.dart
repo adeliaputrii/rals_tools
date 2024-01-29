@@ -1,31 +1,67 @@
 part of 'import.dart';
 
 class RamayanaMembercardHistoryY extends StatefulWidget {
-  const RamayanaMembercardHistoryY({super.key, required this.color});
+  RamayanaMembercardHistoryY(
+      {super.key,
+      required this.color,
+      required this.nokartu,
+      required this.typeCard});
   final bool color;
+  final String nokartu;
+  final String typeCard;
 
   @override
-  State<RamayanaMembercardHistoryY> createState() => _RamayanaMembercardHistoryYState();
+  State<RamayanaMembercardHistoryY> createState() =>
+      _RamayanaMembercardHistoryYState();
 }
 
-class _RamayanaMembercardHistoryYState extends State<RamayanaMembercardHistoryY> {
+class _RamayanaMembercardHistoryYState
+    extends State<RamayanaMembercardHistoryY> {
+  late CompanyCardCubit cubit;
+  AppWidget appWidget = AppWidget();
+  String noKartu = "";
+
+  @override
+  void initState() {
+    super.initState();
+
+    cubit = context.read<CompanyCardCubit>();
+    cubit.getHistoryMemberYear(widget.nokartu);
+  }
+
+  Future<void> navigateToHistoryMonth(String year) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => RamayanaMembercardHistoryM(
+              color: widget.color,
+              nokartu: widget.nokartu,
+              year: year,
+              typeCard: widget.typeCard)),
+    );
+    if (!mounted) return;
+    noKartu = result;
+    cubit.getHistoryMemberYear(widget.nokartu);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-                  onPressed: () {
-        Navigator.pop(context);
-                  },
-                  icon: Icon(
-        Icons.arrow_back_ios,
-        color: Color.fromARGB(255, 230, 0, 0),
-                  ),
-                ),
+          onPressed: () {
+            Navigator.pop(context, '${widget.nokartu}');
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color.fromARGB(255, 230, 0, 0),
+          ),
+        ),
         title: Text('Kembali',
             style: GoogleFonts.rubik(
               fontSize: 23,
-              color: Color.fromARGB(255, 230, 0, 0),)),
+              color: Color.fromARGB(255, 230, 0, 0),
+            )),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
@@ -44,320 +80,80 @@ class _RamayanaMembercardHistoryYState extends State<RamayanaMembercardHistoryY>
                   child: Text('Riwayat Transaksi',
                       style: GoogleFonts.rubik(
                           fontSize: 31,
-                          color: 
-                          widget.color
-                          ?
-                          Color.fromARGB(255,197,18,19)
-                          :
-                          Color.fromARGB(255,82,74,156),
+                          color: widget.color
+                              ? Color.fromARGB(255, 197, 18, 19)
+                              : Color.fromARGB(255, 82, 74, 156),
                           fontWeight: FontWeight.w500)),
                 ),
-                
-                                   Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                    decoration: BoxDecoration(
-                                    color: 
-                                    widget.color
-                                    ?
-                                    Color.fromARGB(255,190,215,44)
-                                    :
-                                    Color.fromARGB(255, 255, 207, 228),
-                                    borderRadius: BorderRadius.circular(20)
-                                    ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        onTap: () {
-                                          Navigator.push(
-                                          context, MaterialPageRoute(builder: 
-                                          (context){
-                                            return RamayanaMembercardHistoryM(color: widget.color,);
-                                          }));
-                                        },
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          '2024',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
-                                    )
+                BlocBuilder<CompanyCardCubit, CompanyCardState>(
+                    builder: (context, state) {
+                  if (state is CompanyCardLoading) {
+                    return Center(child: appWidget.LoadingWidget());
+                  }
+                  if (state is CompanyCardHistoryYearSuccess) {
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: state.response.data!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          String? totalHarga =
+                              state.response.data?[index].totalHarga;
+                          debugPrint(totalHarga);
+                          String formattedTotalHarga = totalHarga != null
+                              ? (int.tryParse(totalHarga)?.toIdr() ?? "-")
+                              : "-";
+                          debugPrint(formattedTotalHarga);
+                          return Container(
+                              margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                              decoration: BoxDecoration(
+                                  color: widget.color
+                                      ? Color.fromARGB(255, 190, 215, 44)
+                                      : Color.fromARGB(255, 255, 207, 228),
+                                  borderRadius: BorderRadius.circular(20)),
+                              height: 70,
+                              child: Center(
+                                child: ListTile(
+                                  onTap: () {
+                                    navigateToHistoryMonth(
+                                        state.response.data?[index].datePart ??
+                                            '0');
+                                  },
+                                  leading: Icon(
+                                    IconlyBold.bag,
+                                    color: widget.color
+                                        ? Color.fromARGB(255, 197, 18, 19)
+                                        : Color.fromARGB(255, 82, 74, 156),
+                                    size: 28,
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                    decoration: BoxDecoration(
-                                    color: 
-                                    widget.color
-                                    ?
-                                    Color.fromARGB(255,190,215,44)
-                                    :
-                                    Color.fromARGB(255, 255, 207, 228),
-                                    borderRadius: BorderRadius.circular(20)
+                                  title: Text(
+                                    '${state.response.data?[index].datePart ?? '-'}',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: widget.color
+                                          ? Colors.black
+                                          : Color.fromARGB(255, 82, 74, 156),
                                     ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        onTap: () {
-                                          Navigator.push(
-                                          context, MaterialPageRoute(builder: 
-                                          (context){
-                                            return RamayanaMembercardHistoryM(color: widget.color,);
-                                          }));
-                                        },
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          '2023',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
-                                    )
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                    decoration: BoxDecoration(
-                                    color: 
-                                    widget.color
-                                    ?
-                                    Color.fromARGB(255,190,215,44)
-                                    :
-                                    Color.fromARGB(255, 255, 207, 228),
-                                    borderRadius: BorderRadius.circular(20)
+                                  trailing: Text(
+                                    '${int.tryParse(state.response.data?[index].totalHarga ?? '0')?.toIdr()}',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: widget.color
+                                          ? Color.fromARGB(255, 197, 18, 19)
+                                          : Color.fromARGB(255, 82, 74, 156),
                                     ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        onTap: () {
-                                          Navigator.push(
-                                          context, MaterialPageRoute(builder: 
-                                          (context){
-                                            return RamayanaMembercardHistoryM(color: widget.color,);
-                                          }));
-                                        },
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          '2022',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
-                                    )
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                    decoration: BoxDecoration(
-                                    color: 
-                                    widget.color
-                                    ?
-                                    Color.fromARGB(255,190,215,44)
-                                    :
-                                    Color.fromARGB(255, 255, 207, 228),
-                                    borderRadius: BorderRadius.circular(20)
-                                    ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        onTap: () {
-                                          Navigator.push(
-                                          context, MaterialPageRoute(builder: 
-                                          (context){
-                                            return RamayanaMembercardHistoryM(color: widget.color,);
-                                          }));
-                                        },
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          '2021',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
-                                    )
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                    decoration: BoxDecoration(
-                                    color: 
-                                    widget.color
-                                    ?
-                                    Color.fromARGB(255,190,215,44)
-                                    :
-                                    Color.fromARGB(255, 255, 207, 228),
-                                    borderRadius: BorderRadius.circular(20)
-                                    ),
-                                    height: 70,
-                                    child: Center(
-                                      child: ListTile(
-                                        onTap: () {
-                                          Navigator.push(
-                                          context, MaterialPageRoute(builder: 
-                                          (context){
-                                            return RamayanaMembercardHistoryM(color: widget.color,);
-                                          }));
-                                        },
-                                        leading: Icon(
-                                          IconlyBold.bag,
-                                          color: 
-                                          widget.color
-                                          ?
-                                          Color.fromARGB(255,197,18,19)
-                                          :
-                                          Color.fromARGB(255,82,74,156),
-                                          size: 28,
-                                        ),
-                                        title: Text(
-                                          '2020',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                            widget.color
-                                            ?
-                                            Colors.black
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        trailing: Text(
-                                          'RP. 20.000.000',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15, 
-                                            fontWeight: FontWeight.bold,
-                                            color: 
-                                             widget.color
-                                            ?
-                                            Color.fromARGB(255,197,18,19)
-                                            :
-                                            Color.fromARGB(255,82,74,156),),
-                                            overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ),
-                                    )
-                                  ),
-                                                            
-                                    
+                                ),
+                              ));
+                        });
+                  }
+                  return Center(child: appWidget.LoadingWidget());
+                }),
               ],
             ),
-            
           ]),
         ],
       ),

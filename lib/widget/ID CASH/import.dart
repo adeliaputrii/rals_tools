@@ -25,7 +25,7 @@ import 'package:myactivity_project/service/API_service/API_service.dart';
 import 'package:myactivity_project/tools/keyboard.dart';
 import 'package:myactivity_project/models/model_log.dart';
 import 'package:myactivity_project/tools/device_info.dart';
-import 'package:myactivity_project/utils/format_number.dart';
+import 'package:myactivity_project/utils/extension.dart';
 import 'package:myactivity_project/widget/import.dart';
 import 'package:myactivity_project/service/SP_service/SP_service.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';

@@ -88,3 +88,13 @@ const String trackSJNavigate = 'Lihat Track SJ';
 
 //Popup Kartu Tambahan
 const String cantempty = "Masukkan 6 digit kode POS";
+
+//Tipe Transaksi Payment
+const String typeA = "Transaksi Apps";
+const String typeP = "Transaksi Poin POS";
+const String typeT = "Tukar Poin";
+const String typeC = "Sistem CRON/POS";
+const String typeS = "Saldo Awal";
+const String typeB = "Koreksi/Bonus Poin";
+const String typeJ = "Penyesuaian Poin";
+const String typeV = "Pembayaran dengan Poin";

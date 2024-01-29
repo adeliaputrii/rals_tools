@@ -19,6 +19,51 @@ class CompanyCardSuccess extends CompanyCardState {
   List<Object?> get props => [response];
 }
 
+class CompanyCardDetailSuccess extends CompanyCardState {
+  final CompanyCardDetailResponse response;
+
+  const CompanyCardDetailSuccess(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
+class CompanyCardHistorySuccess extends CompanyCardState {
+  final CompanyCardHistoryResponse response;
+
+  const CompanyCardHistorySuccess(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
+class CompanyCardHistoryYearSuccess extends CompanyCardState {
+  final CompanyCardHistoryYearResponse response;
+
+  const CompanyCardHistoryYearSuccess(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
+class CompanyCardHistoryMonthSuccess extends CompanyCardState {
+  final CompanyCardHistoryMonthResponse response;
+
+  const CompanyCardHistoryMonthSuccess(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
+class CompanyCardHistoryDaySuccess extends CompanyCardState {
+  final CompanyCardHistoryResponse response;
+
+  const CompanyCardHistoryDaySuccess(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
 class CompanyCardLoading extends CompanyCardState {}
 
 class CompanyCardFailure extends CompanyCardState {
