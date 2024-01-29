@@ -26,6 +26,8 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
   Color _containerColorSj = Color.fromARGB(255, 210, 14, 0);
   Color _containerColorLacak = Color.fromARGB(255, 201, 201, 201);
   late PopUpWidget popUpWidget;
+  late LoginCubit loginCubit;
+  final urlApi = '${tipeurl}${basePath.api_login}';
 
   @override
   void didPush() {
@@ -41,6 +43,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
   void initState() {
     super.initState();
     popUpWidget = PopUpWidget(context);
+    loginCubit = context.read<LoginCubit>();
   }
 
   @override
@@ -142,6 +145,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
             leading: IconButton(
               onPressed: () async {
                 _onBackPressed();
+                print(userData.getImei());
               },
               icon: Icon(
                 Icons.arrow_back_ios,
@@ -250,6 +254,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                   didPush();
                                   didPopNext();
                                   data = await logic();
+                                  print(logic());
                                   setState(() {
                                     isLoading = true;
                                     container = false;
@@ -269,11 +274,20 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                   setState(() {
                                     isLoading = false;
                                   });
+                                  loginCubit.createLog(
+                                      widget.icon
+                                      ?
+                                      baseParam.paymentRmsPage
+                                      :
+                                      baseParam.paymentTrrPage,
+                                      baseParam.posCode+'${myController.text}',
+                                      urlApi);
                                   Future.delayed(Duration(minutes: 1), () {
                                     if (mounted) {
                                       setState(() {
                                         Navigator.pop(context);
                                       });
+                                    
                                     }
                                   });
                                 }

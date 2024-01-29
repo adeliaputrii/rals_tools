@@ -11,14 +11,17 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
   UserData userData = UserData();
   late CompanyCardCubit companyCardCubit;
   late IDCashCubit idCashCubit;
+  late LoginCubit loginCubit;
   bool isLoading = true;
   AppWidget appWidget = AppWidget();
+  final urlApi = '${tipeurl}${basePath.api_login}';
 
   @override
   void initState() {
     super.initState();
     companyCardCubit = context.read<CompanyCardCubit>();
     idCashCubit = context.read<IDCashCubit>();
+    loginCubit = context.read<LoginCubit>();
     getUserCard();
   }
 
@@ -96,6 +99,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                       ),
                                     ),
                                     ListView.builder(
+                                      primary:false,
                                         shrinkWrap: true,
                                         itemCount: state.response.data!.length,
                                         itemBuilder:
@@ -126,6 +130,17 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                               ),
                                               MaterialButton(
                                                 onPressed: () {
+                                                  loginCubit.createLog(
+                                                   baseParam.chooseCard,
+                                                   state
+                                                   .response
+                                                   .data?[index]
+                                                   .typeMc ==6
+                                                  ?
+                                                  baseParam.rmsCard
+                                                  :
+                                                  baseParam.trrCard
+                                                   , urlApi);
                                                   Navigator.push(context,
                                                       MaterialPageRoute(
                                                           builder: (context) {

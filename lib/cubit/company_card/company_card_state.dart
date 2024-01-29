@@ -66,6 +66,8 @@ class CompanyCardHistoryDaySuccess extends CompanyCardState {
 
 class CompanyCardLoading extends CompanyCardState {}
 
+
+
 class CompanyCardFailure extends CompanyCardState {
   final String message;
 

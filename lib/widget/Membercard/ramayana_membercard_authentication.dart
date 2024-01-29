@@ -81,7 +81,7 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
 
         if (state is LoginSuccess) {
           loginCubit.createLog(
-              baseParam.logInfoLoginPage, baseParam.logInfoLoginSucc, urlApi);
+              baseParam.page, baseParam.cardSuccess, urlApi);
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => RamayanaMembercardCard()));
         }
@@ -95,8 +95,8 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
           } else {
             final username = '${userData.getUsername7()}';
             loginCubit.createLog(
-                baseParam.logInfoLoginPage,
-                '${baseParam.logInfoLoginFail} ${state.message} user ${username}',
+                baseParam.page,
+                '${baseParam.cardFailed} ${state.message} user ${username}',
                 urlApi);
             popUpWidget.showPopUpError(baseParam.pleaseCheck, state.message);
           }
@@ -225,7 +225,7 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
                            'Konfirmasi',
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 20, 
-                            color: Color.fromARGB(255, 210, 14, 0))
+                            color: Colors.red)
                          ),
                         )
                       ),

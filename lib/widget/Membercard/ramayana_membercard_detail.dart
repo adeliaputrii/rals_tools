@@ -17,16 +17,18 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
   DeviceMediaQuery mediaQuery = DeviceMediaQuery();
   String cardNumber = "";
   late CompanyCardCubit cubit;
+  late LoginCubit loginCubit;
   AppWidget appWidget = AppWidget();
   var balance = 0;
   List<DataHistory> historyResponse = [];
+  final urlApi = '${tipeurl}${basePath.api_login}';
   @override
   void initState() {
     super.initState;
 
     cubit = context.read<CompanyCardCubit>();
     cardNumber = widget.data.nokartu ?? '';
-
+    loginCubit = context.read<LoginCubit>();
     cubit.getDetailCard(cardNumber);
   }
 
@@ -39,6 +41,14 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
     debugPrint('navigator push');
+    loginCubit.createLog(
+      typeCard(widget.typeCard)
+      ?
+      baseParam.rmsCardPage
+      :
+      baseParam.trrCardPage,
+      baseParam.navigateHistory,
+      urlApi);
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -64,6 +74,14 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
           builder: (context) => RamayanaMembercardQr(
               icon: typeCard(widget.typeCard), nokartu: cardNumber)),
     );
+    loginCubit.createLog(
+      typeCard(widget.typeCard)
+      ?
+      baseParam.rmsCardPage
+      :
+      baseParam.trrCardPage,
+      baseParam.navigatePayment,
+      urlApi);
     if (!mounted) return;
 
     cubit.getDetailCard('$result');
@@ -573,7 +591,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 MaterialButton(
-                                  onPressed: () {},
+                                  onPressed: () {navigateToPayment();},
                                   child: Container(
                                     height: 50,
                                     width: 190,
@@ -680,7 +698,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                           'ID: ${historyResponse.data?[index].notrx ?? '-'}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.plusJakartaSans(
-                            fontSize: 16,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,
                             color: typeCard(widget.typeCard)
                                 ? Colors.black

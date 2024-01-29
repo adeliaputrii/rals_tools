@@ -168,7 +168,7 @@ class _CompanyCardService implements CompanyCardService {
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CompanyCardHistoryDaysResponse>(Options(
+        _setStreamType<CompanyCardHistoryResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,

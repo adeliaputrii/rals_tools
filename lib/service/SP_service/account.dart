@@ -22,7 +22,6 @@ class UserData {
   static const String user_subdivisi_str = "user_subdivisi_str";
   static const String username7_str = "username7_str";
   static const String listmenu_str = "listmenu_str";
-  static const String user_deviceid = "user_device_id";
   static const String imei_str = "imei_str";
 
   static bool _isAdmin = false;
@@ -39,7 +38,6 @@ class UserData {
   static String _userID = '';
   static String _userRole = '';
   static String _listmenu = '';
-  static String _userDeviceId = '';
   static String _imei = '';
   static late String _userToken = '';
   static late String _userToko = '';
@@ -243,20 +241,18 @@ class UserData {
   Future<void> setDataUser(LoginResponse data) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setBool(UserData.logstatus, true);
-    pref.setString(UserData.user_id_str, data.data?.userId.toString() ?? '0');
-    pref.setString(UserData.username_str, data.data?.username ?? '-');
-    pref.setString(UserData.user_fullname_str, data.data?.name ?? '-');
-    pref.setString(UserData.user_email_str, data.data?.email ?? '-');
+    pref.setString(UserData.user_id_str, data.data!.userId.toString());
+    pref.setString(UserData.username_str, data.data!.username.toString());
+    pref.setString(UserData.user_fullname_str, data.data!.name.toString());
+    pref.setString(UserData.user_email_str, data.data!.email.toString());
     pref.setString(
-        UserData.user_subdivisi_str, data.data?.idSubDivisi.toString() ?? '0');
+        UserData.user_subdivisi_str, data.data!.idSubDivisi.toString());
     pref.setString(UserData.user_token_str, data.accessToken.toString());
-    pref.setString(UserData.user_toko_str, data.data?.toko ?? '-');
+    pref.setString(UserData.user_toko_str, data.data!.toko.toString());
     pref.setString(UserData.user_role_str, "Admin");
-    pref.setString(UserData.user_akses_str, data.data?.aksesMenu ?? '-');
-    pref.setString(UserData.username7_str, data.data?.username7 ?? '-');
-    pref.setString(UserData.listmenu_str, data.data?.listMenu ?? '-');
-    pref.setString(
-        UserData.user_deviceid, data.data?.imei ?? 'unknown device id');
+    pref.setString(UserData.user_akses_str, data.data!.aksesMenu.toString());
+    pref.setString(UserData.username7_str, data.data!.username7.toString());
+    pref.setString(UserData.listmenu_str, data.data!.listMenu.toString());
     pref.setString(UserData.imei_str, data.data!.imei.toString());
     // pref.getString('tokenApi', data['access_token'].toString());
     // if (data['akses'] == 'adm') {
@@ -306,6 +302,7 @@ class UserData {
     _userAkses = pref.getString(user_akses_str).toString();
     _username7 = pref.getString(username7_str).toString();
     _listmenu = pref.getString(listmenu_str).toString();
+    _imei = pref.getString(imei_str).toString();
     if (pref.getBool(logstatus) == null || pref.getBool(logstatus) == false) {
       _statuslog = false;
     } else {
