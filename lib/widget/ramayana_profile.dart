@@ -205,8 +205,8 @@ class _ProfileeState extends State<Profilee> {
       style: alertStyle,
       context: context,
       image: FadeInImageWidget(imageUrl: "assets/logout.png"),
-      title: 'Log Out',
-      desc: "Are you sure you want to log out?",
+      title: 'Keluar',
+      desc: "Apakah Anda yakin ingin keluar dari aplikasi?",
       buttons: [
         DialogButton(
           radius: BorderRadius.circular(20),
@@ -218,7 +218,7 @@ class _ProfileeState extends State<Profilee> {
             });
           },
           child: Text(
-            "Cancel",
+            "Kembali",
             style:
                 GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
           ),
@@ -247,7 +247,7 @@ class _ProfileeState extends State<Profilee> {
             Navigator.pop(context);
           },
           child: Text(
-            "Log Out",
+            "Keluar",
             style:
                 GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
           ),
@@ -302,7 +302,7 @@ class _ProfileeState extends State<Profilee> {
                     color: Colors.white,
                   )),
               title: Text(
-                'Profile',
+                'Profil',
                 style: GoogleFonts.plusJakartaSans(
                     textStyle: TextStyle(
                         fontSize: 25,
@@ -379,7 +379,7 @@ class _ProfileeState extends State<Profilee> {
                                       Container(
                                         margin: EdgeInsets.only(left: 20),
                                         child: Text(
-                                          'Fullname',
+                                          'Nama',
                                           style: GoogleFonts.plusJakartaSans(
                                               textStyle: TextStyle(
                                                   fontSize: 19,
@@ -584,7 +584,7 @@ class _ProfileeState extends State<Profilee> {
                             child: Container(
                               margin: EdgeInsets.only(top: 10, bottom: 30),
                               child: Text(
-                                'Version ${versi} Copyright RALS@2023',
+                                'Versi ${versi} Hak Cipta RALS@2023',
                                 style: GoogleFonts.plusJakartaSans(
                                     textStyle: TextStyle(
                                         fontSize: 17,

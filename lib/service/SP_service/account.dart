@@ -23,6 +23,7 @@ class UserData {
   static const String username7_str = "username7_str";
   static const String listmenu_str = "listmenu_str";
   static const String user_deviceid = "user_device_id";
+  static const String imei_str = "imei_str";
 
   static bool _isAdmin = false;
   static bool _statuslog = false;
@@ -39,6 +40,7 @@ class UserData {
   static String _userRole = '';
   static String _listmenu = '';
   static String _userDeviceId = '';
+  static String _imei = '';
   static late String _userToken = '';
   static late String _userToko = '';
   static late String _userAkses = '';
@@ -119,6 +121,10 @@ class UserData {
     return _listmenu;
   }
 
+  String getImei() {
+    return _imei;
+  }
+
   void debugPrintdevinfo() {
     debugPrint("\n\n======[info]=======]");
     debugPrint("ID       : $_userID");
@@ -131,6 +137,7 @@ class UserData {
     debugPrint("Akses    : $_userAkses");
     debugPrint("Username7 : $_username7");
     debugPrint("List Menu : $_listmenu");
+    debugPrint("Imei      : $_imei");
     // debugPrint("Phone    : $_userPhone");
     // debugPrint("adress   : $_userAdress");
     // debugPrint("Password : $_userPassword");
@@ -158,6 +165,7 @@ class UserData {
     pref.setString(UserData.user_akses_str, nodata);
     pref.setString(UserData.username7_str, nodata);
     pref.setString(UserData.listmenu_str, nodata);
+    pref.setString(UserData.imei_str, nodata);
     pref.setBool(UserData.isAdmin_str, false);
     pref.setBool(UserData.logstatus, false);
     await getPref();
@@ -201,6 +209,7 @@ class UserData {
     pref.setString(
         UserData.username7_str, data['data']['username7'].toString());
     pref.setString(UserData.listmenu_str, data['data']['list_menu'].toString());
+    pref.setString(UserData.imei_str, data['data']['imei'].toString());
     // pref.getString('tokenApi', data['access_token'].toString());
     // if (data['akses'] == 'adm') {
     //   pref.setBool(UserData.isAdmin_str, true);
@@ -248,6 +257,7 @@ class UserData {
     pref.setString(UserData.listmenu_str, data.data?.listMenu ?? '-');
     pref.setString(
         UserData.user_deviceid, data.data?.imei ?? 'unknown device id');
+    pref.setString(UserData.imei_str, data.data!.imei.toString());
     // pref.getString('tokenApi', data['access_token'].toString());
     // if (data['akses'] == 'adm') {
     //   pref.setBool(UserData.isAdmin_str, true);
@@ -296,8 +306,6 @@ class UserData {
     _userAkses = pref.getString(user_akses_str).toString();
     _username7 = pref.getString(username7_str).toString();
     _listmenu = pref.getString(listmenu_str).toString();
-    _userDeviceId = pref.getString(user_deviceid).toString();
-
     if (pref.getBool(logstatus) == null || pref.getBool(logstatus) == false) {
       _statuslog = false;
     } else {

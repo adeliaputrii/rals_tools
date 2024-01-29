@@ -264,7 +264,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                         // }
                       },
                       child: Text(
-                        'Search',
+                        'Cari',
                         style: GoogleFonts.plusJakartaSans(
                             fontSize: 15,
                             color: Colors.white,
@@ -496,7 +496,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                                 ),
                               ),
                             ),
-                            child: Text('Submit',
+                            child: Text('Kirim',
                                 style: GoogleFonts.plusJakartaSans(
                                     fontSize: 18,
                                     color: baseColor.primaryColor)),
@@ -556,7 +556,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                             ),
                           ),
                         ),
-                        child: Text('Submit',
+                        child: Text('Kirim',
                             style: GoogleFonts.plusJakartaSans(
                                 fontSize: 18, color: baseColor.primaryColor)),
                       ),
@@ -574,9 +574,9 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
     CoolAlert.show(
       context: context,
       type: CoolAlertType.confirm,
-      text: 'Submit tracking?',
-      confirmBtnText: 'Yes',
-      cancelBtnText: 'No',
+      text: 'Kirim Pelacakan?',
+      confirmBtnText: 'Ya',
+      cancelBtnText: 'Tidak',
       confirmBtnColor: Colors.green,
       onConfirmBtnTap: () {
         switch (type) {

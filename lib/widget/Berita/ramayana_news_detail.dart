@@ -38,9 +38,9 @@ class _NewsDetailState extends State<NewsDetail> {
                       ),
                     Container(
                       margin: EdgeInsets.only(left: 20),
-                      child: Text('Breaking News',
+                      child: Text('Ramayana Update',
                       style: GoogleFonts.mukta(
-                        fontSize: 37,
+                        fontSize: 35,
                         color:Color.fromARGB(255, 199, 0, 0),
                         fontWeight: FontWeight.w500
                       ), 

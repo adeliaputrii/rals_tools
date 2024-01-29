@@ -330,7 +330,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak>
                             // }
                           },
                           child: Text(
-                            'Search',
+                            'Cari',
                             style: GoogleFonts.plusJakartaSans(
                                 fontSize: 15,
                                 color: Colors.white,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:myactivity_project/cubit/company_card/company_card_cubit.dart';
 import 'package:myactivity_project/cubit/home/home_cubit.dart';
 import 'package:myactivity_project/cubit/id_cash/id_cash_cubit.dart';
 import 'package:myactivity_project/cubit/login/login_cubit.dart';
@@ -23,6 +24,9 @@ class AppCubit {
       ),
       BlocProvider<MyActivityCubit>(
         create: (BuildContext context) => MyActivityCubit(),
+      ),
+      BlocProvider<CompanyCardCubit>(
+        create: (BuildContext context) => CompanyCardCubit(),
       ),
     ], child: widget);
   }

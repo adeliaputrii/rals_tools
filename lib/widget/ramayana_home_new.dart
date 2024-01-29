@@ -52,7 +52,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   bool namaUser = false;
   late LoginCubit loginCubit;
   final urlApi = '${tipeurl}${basePath.api_login}';
-  
+
   List<Map<String, dynamic>> loginOffline = [];
   List<Map<String, dynamic>> voidOffline = [];
   List<Map<String, dynamic>> logOffline = [];
@@ -67,7 +67,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     initPlatformState();
     didPop();
     _checkInternetConnection();
-    didPushNext(); 
+    didPushNext();
     ApprovalReturnMenu.approvalmenu.clear();
     ApprovalReturnMenu.idcashmenu.clear();
     ApprovalIdcash.approvalidcash.clear();
@@ -291,10 +291,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
   Future<void> _getAllActivity() async {
     //list menampung data dari database
-    var list = await db.getAllFormat();  
+    var list = await db.getAllFormat();
     var listVoidOffline = await db2.getAllFormatVoidOffline();
-    var listLoginOffline= await db3.getAllFormat(); // 
-  
+    var listLoginOffline = await db3.getAllFormat(); //
+
     if (isMounted) {
       setState(() {
         //hapus data pada listKontak
@@ -302,56 +302,55 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
         VoidOffline.voidOffline.clear();
         LoginOffline.listActivity.clear();
       });
-     if (list != null) {
-    final String columnId = 'id_act';
-    final String columnIdGenerate = 'deskripsi';
-    final String columnDate = 'datetime';
-    // Iterate through the result and print attributes
-    for (var activityy in list) {
-      var id = activityy[columnId];
-      var deskripsi = activityy[columnIdGenerate];
-      var datetime = activityy[columnDate];
-      loginCubit.createLogVoidOffline(
-       logInfoVoidOfflinePage, deskripsi, urlApi, datetime); 
-      print('ID: $id, ID Generate: $deskripsi, Date: $datetime');
-      await db.deleteActivityy(id);
-    }
-     }
-    if (listVoidOffline != null) {
-    final String columnId = 'id_act';
-    final String columnIdGenerate = 'idGenerate';
-    final String columnDate = 'date';
-    // Iterate through the result and print attributes
-    for (var activityy in listVoidOffline) {
-      var id = activityy[columnId];
-      var idGenerate = activityy[columnIdGenerate];
-      var date = activityy[columnDate];
-      loginCubit.createLogVoidOffline(
-       logInfoVoidOfflinePage, idGenerate, urlApi, date); 
-      print('ID: $id, ID Generate: $idGenerate, Date: $date');
-      await db2.deleteVoidOffline(id);
-    }
-     }
-    if (listLoginOffline != null) {
-    final String columnId = 'id_act';
-    final String columnDeskripsi = 'deskripsi';
-    final String columnDatetime = 'datetime';
-    // Iterate through the result and print attributes
-    for (var activity in listLoginOffline) {
-      var id = activity[columnId];
-      var deskripsi = activity[columnDeskripsi];
-      var datetime = activity[columnDatetime];
-      loginCubit.createLogVoidOffline(
-       logLoginOfflinePage, deskripsi, urlApi, datetime); 
-      print('ID: $id, Deskripsi: $deskripsi, Datetime: $datetime');
-      await db3.deleteActivityy(id);
-    }
+      if (list != null) {
+        final String columnId = 'id_act';
+        final String columnIdGenerate = 'deskripsi';
+        final String columnDate = 'datetime';
+        // Iterate through the result and print attributes
+        for (var activityy in list) {
+          var id = activityy[columnId];
+          var deskripsi = activityy[columnIdGenerate];
+          var datetime = activityy[columnDate];
+          loginCubit.createLogVoidOffline(
+              logInfoVoidOfflinePage, deskripsi, urlApi, datetime);
+          print('ID: $id, ID Generate: $deskripsi, Date: $datetime');
+          await db.deleteActivityy(id);
+        }
+      }
+      if (listVoidOffline != null) {
+        final String columnId = 'id_act';
+        final String columnIdGenerate = 'idGenerate';
+        final String columnDate = 'date';
+        // Iterate through the result and print attributes
+        for (var activityy in listVoidOffline) {
+          var id = activityy[columnId];
+          var idGenerate = activityy[columnIdGenerate];
+          var date = activityy[columnDate];
+          loginCubit.createLogVoidOffline(
+              logInfoVoidOfflinePage, idGenerate, urlApi, date);
+          print('ID: $id, ID Generate: $idGenerate, Date: $date');
+          await db2.deleteVoidOffline(id);
+        }
+      }
+      if (listLoginOffline != null) {
+        final String columnId = 'id_act';
+        final String columnDeskripsi = 'deskripsi';
+        final String columnDatetime = 'datetime';
+        // Iterate through the result and print attributes
+        for (var activity in listLoginOffline) {
+          var id = activity[columnId];
+          var deskripsi = activity[columnDeskripsi];
+          var datetime = activity[columnDatetime];
+          loginCubit.createLogVoidOffline(
+              logLoginOfflinePage, deskripsi, urlApi, datetime);
+          print('ID: $id, Deskripsi: $deskripsi, Datetime: $datetime');
+          await db3.deleteActivityy(id);
+        }
 
-    db3.deleteAll();
-     }
+        db3.deleteAll();
+      }
     }
   }
-
 
   Future<void> dapetinData() async {
     UserData userData = UserData();
@@ -396,7 +395,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     for (int code in ascAdel) {
       message += String.fromCharCode(code);
     }
-  
   }
 
   Future<void> initPlatformState() async {
@@ -458,17 +456,16 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           color: Colors.green,
           onPressed: () {
             Navigator.pop(context);
-           
           },
           child: Text(
-            "Cancel",
+            "Kembali",
             style:
                 GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
           ),
         ),
         DialogButton(
           radius: BorderRadius.circular(20),
-          color: Color.fromARGB(255, 210, 14, 0),
+          color: Color.fromARGB(255, 82, 74, 156),
           onPressed: () async {
             AndroidDeviceInfo info = await deviceInfo.androidInfo;
             var formData = FormData.fromMap({
@@ -534,7 +531,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
             Navigator.pop(context);
           },
           child: Text(
-            "Cancel",
+            "Kembali",
             style:
                 GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.white),
           ),
@@ -655,6 +652,17 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                         ),
                         visible: true,
                       );
+                    } else if (icon == "kartu.kartutambahan") {
+                      return Visibility(
+                        child: CircleAvatar(
+                          backgroundColor: Color.fromARGB(255, 207, 11, 11),
+                          radius: 30,
+                          backgroundImage: AssetImage(
+                            'assets/card.png',
+                          ),
+                        ),
+                        visible: true,
+                      );
                     } else {
                       Visibility(
                         child: CircleAvatar(
@@ -684,9 +692,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                     } else if (icon == "myactivity.activity") {
                       return 'My Activity';
                     } else if (icon == "suratjalan.trackingsj") {
-                      return 'Tracking SJ';
+                      return 'Lacak SJ';
                     } else if (icon == "comchek.approvedcomchek") {
                       return 'Com. Checking';
+                    } else if (icon == "kartu.kartutambahan") {
+                      return 'Kartu Tambahan';
                     } else {
                       print(e);
                       print('no menu');
@@ -727,7 +737,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                           } else if (e == 'tukarpoin.tukarpoin') {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return RamayanaTukarPoin();
+                              return RamayanaMembercardAuthentication();
                             }));
                           } else if (e == 'myactivity.activity') {
                             Navigator.push(context,
@@ -753,6 +763,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                             //   var hakAkses = pref.setString('hakAkses', '${e}');
                             //   print('hak akses : ${e}}');
                             //   print('hak akses : ${hakAkses}');
+                          } else if (e == 'kartu.kartutambahan') {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return RamayanaMembercardAuthentication();
+                            }));
                           } else {
                             print('e');
                           }
@@ -799,11 +814,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     if (_isConnected == false) {
       print('not connected');
     } else {
-   print('connected');
-  //  _getAllActivity();
-  
+      print('connected');
+      //  _getAllActivity();
     }
-    
+
     var listmneu = '${userData.getListMenu()}';
     List split = listmneu.split('|');
     double c_width = MediaQuery.of(context).size.width * 0.8;
@@ -815,28 +829,32 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       if (element == 'mastervoid.void') {
         data.add(element);
       }
-      // if (element == 'approvalreturn.approvalreturn') {
-      //   data.add(element);
-      // }
-      // if (element == 'cekprice.cekprice') {
-      //   data.add(element);
-      // }
+      if (element == 'approvalreturn.approvalreturn') {
+        data.add(element);
+      }
+      if (element == 'cekprice.cekprice') {
+        data.add(element);
+      }
       if (element == 'tukarpoin.tukarpoin') {
         data.add(element);
       }
       if (element == 'myactivity.activity') {
         data.add(element);
       }
-      // if (element == 'suratjalan.trackingsj') {
-      //   data.add(element);
-      // }
-      // if (element == 'comchek.approvedcomchek') {
-      //   data.add(element);
-      //   HakAkses.hakaksesSubmenuComcek.add(element);
-      // }
-      // if (element == 'comchek.historycomchek') {
-      //   HakAkses.hakaksesSubmenuComcek.add(element);
-      // }
+      if (element == 'suratjalan.trackingsj') {
+        data.add(element);
+      }
+      if (element == 'kartu.kartutambahan') {
+        data.add(element);
+      }
+      if (element == 'comchek.approvedcomchek') {
+        data.add(element);
+        HakAkses.hakaksesSubmenuComcek.add(element);
+      }
+      if (element == 'comchek.historycomchek') {
+        HakAkses.hakaksesSubmenuComcek.add(element);
+      }
+
       if (element == 'homepage.news') {
         setState(() {
           news = true;
@@ -897,10 +915,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                 Container(
                                   margin: EdgeInsets.only(top: 0, left: 20),
                                   child: Text(
-                                    'Welcome',
+                                    'Selamat Datang',
                                     style: GoogleFonts.plusJakartaSans(
                                         textStyle: TextStyle(
-                                            fontSize: 30,
+                                            fontSize: 27,
                                             fontWeight: FontWeight.w600,
                                             color: Colors.white)),
                                   ),
@@ -941,13 +959,16 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                             ),
                             namaUser
                                 ? Container(
-                                    margin: EdgeInsets.only(top: 75, left: 20),
+                                    margin: EdgeInsets.only(top: 75, left: 20, right: 120),
+                                    // color: Colors.green,
                                     child: Text(
                                       'Halo ${userData.getFullname()}',
                                       style: GoogleFonts.mukta(
                                           textStyle: TextStyle(
                                               fontSize: 20,
-                                              color: Colors.white)),
+                                              color: Colors.white,
+                                              overflow: TextOverflow.ellipsis,
+                                              )),
                                     ))
                                 : Container(
                                     margin: EdgeInsets.only(top: 75, left: 20),
@@ -1042,7 +1063,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                       alertMenu();
                                                     },
                                                     child: Text(
-                                                      'More >>>',
+                                                      'Lihat Semua',
                                                       style: GoogleFonts
                                                           .plusJakartaSans(
                                                               fontSize: 15,
@@ -1172,6 +1193,19 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                               ),
                                               visible: true,
                                             );
+                                          } else if (icon ==
+                                              "kartu.kartutambahan") {
+                                            return Visibility(
+                                              child: CircleAvatar(
+                                                backgroundColor: Color.fromARGB(
+                                                    255, 207, 11, 11),
+                                                radius: 30,
+                                                backgroundImage: AssetImage(
+                                                  'assets/card.png',
+                                                ),
+                                              ),
+                                              visible: true,
+                                            );
                                           } else {
                                             Visibility(
                                               child: CircleAvatar(
@@ -1208,10 +1242,13 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             return 'My Activity';
                                           } else if (icon ==
                                               "suratjalan_trackingsj") {
-                                            return 'Tracking SJ';
+                                            return 'Lacak SJ';
                                           } else if (icon ==
                                               "comchek.approvedcomchek") {
                                             return 'Com. Checking';
+                                          } else if (icon ==
+                                              "kartu.kartutambahan") {
+                                            return 'Kartu Tambahan';
                                           } else {
                                             print(e);
                                             print('no menu');
@@ -1264,7 +1301,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                   Navigator.push(context,
                                                       MaterialPageRoute(
                                                           builder: (context) {
-                                                    return RamayanaTukarPoin();
+                                                    return RamayanaMembercardAuthentication();
                                                   }));
                                                 } else if (e ==
                                                     'myactivity.activity') {
@@ -1297,6 +1334,13 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                   //   var hakAkses = pref.setString('hakAkses', '${e}');
                                                   //   print('hak akses : ${e}}');
                                                   //   print('hak akses : ${hakAkses}');
+                                                } else if (e ==
+                                                    'kartu.kartutambahan') {
+                                                  Navigator.push(context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) {
+                                                    return RamayanaMembercardAuthentication();
+                                                  }));
                                                 } else {
                                                   print('e');
                                                 }
@@ -1430,7 +1474,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                   //         false);
                                                                 },
                                                                 child: Text(
-                                                                  'View All',
+                                                                  'Lihat Semua',
                                                                   style: GoogleFonts.plusJakartaSans(
                                                                       fontSize:
                                                                           15,
@@ -1604,7 +1648,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            'My List Task',
+                                                            'Tugas Saya',
                                                             style: GoogleFonts.plusJakartaSans(
                                                                 textStyle: TextStyle(
                                                                     fontSize:
@@ -1699,7 +1743,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                     //     (Route<dynamic> route) => false);
                                                                   },
                                                                   child: Text(
-                                                                    'View All',
+                                                                    'Lihat Semua',
                                                                     style: GoogleFonts.plusJakartaSans(
                                                                         fontSize:
                                                                             15,
@@ -1763,7 +1807,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                         //     (Route<dynamic> route) => false);
                                                                       },
                                                                       child: Text(
-                                                                        'View All',
+                                                                        'Lihat Semua',
                                                                         style: GoogleFonts.plusJakartaSans(
                                                                             fontSize:
                                                                                 15,
@@ -1817,8 +1861,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                       if (state
                                                           is HomeSuccess) {
                                                         return Container(
-                                                          child: ListView
-                                                              .builder(
+                                                          child:
+                                                              ListView.builder(
                                                             primary: false,
                                                             shrinkWrap: true,
                                                             itemCount: 3,
@@ -1830,8 +1874,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                 onTap: () {
                                                                   Navigator.push(
                                                                       context,
-                                                                      MaterialPageRoute(builder:
-                                                                          (context) {
+                                                                      MaterialPageRoute(
+                                                                          builder:
+                                                                              (context) {
                                                                     return RamayanaMyActivity(
                                                                         response: state
                                                                             .response
@@ -1841,21 +1886,30 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                 child:
                                                                     Container(
                                                                   height: 90,
-                                                                  margin: EdgeInsets.only(
-                                                                      bottom:
-                                                                          10),
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          bottom:
+                                                                              10),
                                                                   decoration: BoxDecoration(
                                                                       boxShadow: <BoxShadow>[
                                                                         BoxShadow(
-                                                                            color: Color.fromARGB(255, 197, 197, 197),
-                                                                            blurRadius: 1,
-                                                                            spreadRadius: 1,
-                                                                            offset: Offset(2, 2))
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                197,
+                                                                                197,
+                                                                                197),
+                                                                            blurRadius:
+                                                                                1,
+                                                                            spreadRadius:
+                                                                                1,
+                                                                            offset:
+                                                                                Offset(2, 2))
                                                                       ],
                                                                       color: Colors
                                                                           .white,
                                                                       borderRadius:
-                                                                          BorderRadius.circular(10)),
+                                                                          BorderRadius.circular(
+                                                                              10)),
                                                                   child:
                                                                       ListTile(
                                                                     leading: CircleAvatar(
@@ -1874,9 +1928,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                     subtitle:
                                                                         Column(
                                                                       mainAxisAlignment:
-                                                                          MainAxisAlignment.start,
+                                                                          MainAxisAlignment
+                                                                              .start,
                                                                       crossAxisAlignment:
-                                                                          CrossAxisAlignment.start,
+                                                                          CrossAxisAlignment
+                                                                              .start,
                                                                       children: [
                                                                         Container(
                                                                           margin:
@@ -1884,8 +1940,12 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                           child:
                                                                               Text(
                                                                             '${state.response.data?[index].taskDesc}',
-                                                                            style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
-                                                                            overflow: TextOverflow.ellipsis,
+                                                                            style: GoogleFonts.plusJakartaSans(
+                                                                                fontSize: 18,
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.w500),
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
                                                                           ),
                                                                         ),
                                                                         Row(
@@ -1894,7 +1954,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                               width: 80,
                                                                               child: Text('Status', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
                                                                             ),
-                                                                            Text('${state.response.data?[index].taskStatus}', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                            Text('${state.response.data?[index].taskStatus}',
+                                                                                style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
                                                                           ],
                                                                         ),
                                                                         Row(
@@ -1903,7 +1964,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                               width: 80,
                                                                               child: Text('Project ID', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
                                                                             ),
-                                                                            Text(': ${state.response.data?[index].projectId}', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                            Text(': ${state.response.data?[index].projectId}',
+                                                                                style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
                                                                           ],
                                                                         ),
                                                                       ],
@@ -1983,7 +2045,7 @@ class _FadeInImageWidgetState extends State<FadeInImageWidget>
       parent: _controller,
       curve: Curves.easeIn,
     );
-    
+
     _controller.forward();
   }
 

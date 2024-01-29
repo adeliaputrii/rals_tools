@@ -208,7 +208,7 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('Copyright RALS',
+                                    Text('Hak Cipta RALS',
                                         style: GoogleFonts.plusJakartaSans(
                                             textStyle: TextStyle(
                                                 fontSize: 17,

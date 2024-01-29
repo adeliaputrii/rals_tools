@@ -356,7 +356,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                                       color: Color.fromARGB(255, 255, 17, 17),
                                       height: 50,
                                       minWidth: 200,
-                                      child: Text('Submit',
+                                      child: Text('Kirim',
                                           style: GoogleFonts.plusJakartaSans(
                                               textStyle: TextStyle(
                                             fontSize: 18,
@@ -374,7 +374,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Copyright RALS',
+                            Text('Hak Cipta RALS',
                                 style: GoogleFonts.plusJakartaSans(
                                     textStyle: TextStyle(
                                         fontSize: 18, color: Colors.black))),

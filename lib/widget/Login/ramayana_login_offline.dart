@@ -106,6 +106,7 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
     return idUser.toString();
   }
 
+  //test
   // Future<int> compareGenerateCodeTest() async {
   //   SharedPreferences pref = await SharedPreferences.getInstance();
   //   String? imei = pref.getString('serialImei');
@@ -461,7 +462,8 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text('Version ${versi} Copyright RALS',
+                                Text('Versi ${versi} Hak Cipta RALS',
+                                    // ini pak?
                                     style: GoogleFonts.plusJakartaSans(
                                       fontSize: 18,
                                       color: Colors.black,
