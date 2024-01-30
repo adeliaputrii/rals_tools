@@ -650,7 +650,8 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                           ),
                           Padding(
                               padding: EdgeInsets.only(top: 35, bottom: 30),
-                              child: Text('Transaksi Terakhir',
+                              child: 
+                              Text('Transaksi Terakhir',
                                   style: GoogleFonts.plusJakartaSans(
                                     fontSize: 22,
                                     fontWeight: FontWeight.w500,
@@ -658,8 +659,9 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                         ? baseColor.primaryColor
                                         : baseColor.trrColor,
                                   ))),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 25.0),
+                          Container(
+                            // color: Colors.amber,
+                            margin: EdgeInsets.only(top: 150),
                             child: Text(baseParam.notFoundTransaction,
                                 style: GoogleFonts.rubik(
                                     fontSize: 18,

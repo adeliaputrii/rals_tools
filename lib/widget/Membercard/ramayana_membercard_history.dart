@@ -90,26 +90,30 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                         ? Color.fromARGB(255, 197, 18, 19)
                         : Color.fromARGB(255, 82, 74, 156)),
 // ===========================================================================================================================
-                BlocBuilder<CompanyCardCubit, CompanyCardState>(
-                    builder: (context, state) {
-                  if (state is CompanyCardLoading) {
+                Center(
+                  child: BlocBuilder<CompanyCardCubit, CompanyCardState>(
+                      builder: (context, state) {
+                    if (state is CompanyCardLoading) {
+                      return appWidget.LoadingWidget();
+                    }
+                    if (state is CompanyCardHistoryDaySuccess) {
+                      int lengthData = state.response.data?.length ?? 0;
+                  
+                      return lengthData != 0
+                          ? listHistory(state.response)
+                          : Center(
+                            child: Text(baseParam.notFoundTransaction,
+                                style: GoogleFonts.rubik(
+                                    fontSize: 22,
+                                    color: typeCard(widget.typeCard)
+                                        ? Color.fromARGB(255, 197, 18, 19)
+                                        : Color.fromARGB(255, 82, 74, 156))),
+                          );
+                    }
+                  
                     return appWidget.LoadingWidget();
-                  }
-                  if (state is CompanyCardHistoryDaySuccess) {
-                    int lengthData = state.response.data?.length ?? 0;
-
-                    return lengthData != 0
-                        ? listHistory(state.response)
-                        : Text(baseParam.notFoundTransaction,
-                            style: GoogleFonts.rubik(
-                                fontSize: 22,
-                                color: typeCard(widget.typeCard)
-                                    ? Color.fromARGB(255, 197, 18, 19)
-                                    : Color.fromARGB(255, 82, 74, 156)));
-                  }
-
-                  return appWidget.LoadingWidget();
-                })
+                  }),
+                )
               ],
             ),
           ]),

@@ -77,6 +77,14 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                         return appWidget.LoadingWidget();
                       }
                       if (state is CompanyCardSuccess) {
+                        List<ResponseCompany.DataCompany> cardActive = [];
+                        DateTime currentDay = DateTime.now();
+                        state.response.data?.forEach((element) {
+                          DateTime parsedDate = DateTime.parse(element.tglinaktif ?? '2023-01-01');
+                          if(element.status == 1 && currentDay.isBefore(parsedDate)){
+                            cardActive.add(element);
+                          }
+                        });
                         return ListView(
                           children: [
                             Stack(
@@ -98,7 +106,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                     ListView.builder(
                                         primary: false,
                                         shrinkWrap: true,
-                                        itemCount: state.response.data!.length,
+                                        itemCount: cardActive.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           return Column(
@@ -109,10 +117,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                 ),
                                                 child: Center(
                                                   child: Text(
-                                                      state
-                                                              .response
-                                                              .data?[index]
-                                                              .nama ??
+                                                      cardActive[index].nama ??
                                                           '-',
                                                       style: GoogleFonts
                                                           .plusJakartaSans(
@@ -232,10 +237,10 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                             : Center(
                                                                 child: Text(
                                                                     totalBalance(
-                                                                      int.tryParse(state.response.data?[index].saldo ??
+                                                                      int.tryParse(cardActive[index].saldo ??
                                                                               '0') ??
                                                                           0,
-                                                                      int.tryParse(state.response.data?[index].pemakaian ??
+                                                                      int.tryParse(cardActive[index].pemakaian ??
                                                                               '0') ??
                                                                           0,
                                                                     ),
@@ -276,14 +281,14 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                                     .end,
                                                             children: [
                                                               Text(
-                                                                  '  ${state.response.data?[index].nama ?? '-'}',
+                                                                  '  ${cardActive[index].nama ?? '-'}',
                                                                   style: GoogleFonts.plusJakartaSans(
                                                                       fontSize:
                                                                           16,
                                                                       color: Colors
                                                                           .white)),
                                                               Text(
-                                                                  '  ${state.response.data?[index].nokartu ?? '-'}',
+                                                                  '  ${cardActive[index].nokartu ?? '-'}',
                                                                   style: GoogleFonts.plusJakartaSans(
                                                                       fontSize:
                                                                           16,

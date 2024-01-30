@@ -380,47 +380,53 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     return;
   }
 
-  fetchDataNoKartu({required String id_user}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    print('${userData.getUsername7()}');
-    print(tipeurl);
-    ApprovalIdcashCustomer.approvalidcashcust.clear();
-    final responseku = await http.post(
-        Uri.parse('${tipeurl}v1/membercards/tbl_customer'),
-        body: {'id_user': '${userData.getUsername7()}'});
+  // fetchDataNoKartu({required String id_user}) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   print('${userData.getUsername7()}');
+  //   print(tipeurl);
+  //   final tokenApi =   SharedPref.getToken()
+  //       .then((value) => value);
+  //   ApprovalIdcashCustomer.approvalidcashcust.clear();
+  //   final responseku = await http.post(
+  //       Uri.parse('${tipeurl}v1/membercards/tbl_customer'),
+  //       headers: {
+  //         'Authorization' : 'Bearer $tokenApi',//isi acces token mbaa
+  //         'Accept' : 'application/json'
+  //       },
+  //       body: {'id_user': '${userData.getUsername7()}'});
 
-    var data = jsonDecode(responseku.body);
+  //   var data = jsonDecode(responseku.body);
 
-    if (data['status'] == 200) {
-      print("API Success oooo");
-      print(data);
-      int count = data['data'].length;
-      final Map<String, ApprovalIdcashCustomer> profileMap = new Map();
-      for (int i = 0; i < count; i++) {
-        ApprovalIdcashCustomer.approvalidcashcust
-            .add(ApprovalIdcashCustomer.fromjson(data['data'][i]));
-      }
-      ApprovalIdcashCustomer.approvalidcashcust.forEach((element) {
-        print('oke');
-        if (ApprovalIdcashCustomer.noMember.isEmpty) {
-          ApprovalIdcashCustomer.noMember.add(element.nokartu);
-          prefs.setString('noMember', '${element.nokartu}');
-          print('empty');
-          print(ApprovalIdcashCustomer.noMember);
-        }
-        profileMap[element.nokartu] = element;
-        ApprovalIdcashCustomer.approvalidcashcust = profileMap.values.toList();
-        print(ApprovalIdcashCustomer.approvalidcashcust);
-      });
+  //   if (data['status'] == 200) {
+  //     print("API Success oooo");
+  //     print(data);
+  //     int count = data['data'].length;
+  //     final Map<String, ApprovalIdcashCustomer> profileMap = new Map();
+  //     for (int i = 0; i < count; i++) {
+  //       ApprovalIdcashCustomer.approvalidcashcust
+  //           .add(ApprovalIdcashCustomer.fromjson(data['data'][i]));
+  //     }
+  //     ApprovalIdcashCustomer.approvalidcashcust.forEach((element) {
+  //       print('oke');
+  //       if (ApprovalIdcashCustomer.noMember.isEmpty) {
+  //         ApprovalIdcashCustomer.noMember.add(element.nokartu);
+  //         prefs.setString('noMember', '${element.nokartu}');
+  //         print('empty');
+  //         print(ApprovalIdcashCustomer.noMember);
+  //       }
+  //       profileMap[element.nokartu] = element;
+  //       ApprovalIdcashCustomer.approvalidcashcust = profileMap.values.toList();
+  //       print(ApprovalIdcashCustomer.approvalidcashcust);
+  //     });
 
-      print('check length ${ApprovalIdcashCustomer.approvalidcashcust.length}');
-      print(data['data'].toString());
-    } else {
-      print('NO DATA');
-    }
+  //     print('check length ${ApprovalIdcashCustomer.approvalidcashcust.length}');
+  //     print(data['data'].toString());
+  //   } else {
+  //     print('NO DATA');
+  //   }
 
-    setState(() {});
-  }
+  //   setState(() {});
+  // }
 
   loginPressed() async {
     keyboardUtils.dissmissKeyboard(context);
@@ -827,8 +833,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           SharedPref.setUserToko(
               state.response.data?.toko.toString() ?? 'unknown');
 
-          await fetchDataNoKartu(
-              id_user: state.response.data!.userId.toString());
+          // await fetchDataNoKartu(
+          //     id_user: state.response.data!.userId.toString());
           loginCubit.createLog(
               logInfoLoginPage, baseParam.logInfoLoginSucc, urlApi);
           Navigator.pushReplacement(

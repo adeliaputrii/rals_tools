@@ -155,12 +155,14 @@ class _RamayanaMembercardHistoryMState
                                     ),
                                   ));
                             })
-                        : Text(baseParam.notFoundTransaction,
-                            style: GoogleFonts.rubik(
-                                fontSize: 22,
-                                color: typeCard(widget.typeCard)
-                                    ? Color.fromARGB(255, 197, 18, 19)
-                                    : Color.fromARGB(255, 82, 74, 156)));
+                        : Center(
+                          child: Text(baseParam.notFoundTransaction,
+                              style: GoogleFonts.rubik(
+                                  fontSize: 22,
+                                  color: typeCard(widget.typeCard)
+                                      ? Color.fromARGB(255, 197, 18, 19)
+                                      : Color.fromARGB(255, 82, 74, 156))),
+                        );
                   }
                   return Center(child: appWidget.LoadingWidget());
                 }),

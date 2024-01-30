@@ -154,27 +154,30 @@ class _RamayanaMembercardHistoryYState
                                     ),
                                   ));
                             })
-                        : Text(baseParam.notFoundTransaction,
-                            style: GoogleFonts.rubik(
-                                fontSize: 22,
-                                color: typeCard(widget.typeCard)
-                                    ? Color.fromARGB(255, 197, 18, 19)
-                                    : Color.fromARGB(255, 82, 74, 156)));
-                  }
-                  if (state is CompanyCardFailure) {
-                    debugPrint('failed history year');
-                    return Center(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(baseParam.notFoundTransaction,
+                        : Center(
+                          child: Container(
+                            color: Colors.amber,
+                            child: Text(baseParam.notFoundTransaction,
                                 style: GoogleFonts.rubik(
-                                    fontSize: 16,
+                                    fontSize: 22,
                                     color: typeCard(widget.typeCard)
                                         ? Color.fromARGB(255, 197, 18, 19)
                                         : Color.fromARGB(255, 82, 74, 156))),
-                          ]),
+                          ),
+                        );
+                  }
+                  if (state is CompanyCardFailure) {
+                    debugPrint('failed history year');
+                    return Container(
+                      height: MediaQuery.of(context).size.height - 350,
+                      child: Center(
+                        child: Text(baseParam.notFoundTransaction,
+                            style: GoogleFonts.rubik(
+                                fontSize: 16,
+                                color: typeCard(widget.typeCard)
+                                    ? Color.fromARGB(255, 197, 18, 19)
+                                    : Color.fromARGB(255, 82, 74, 156))),
+                      ),
                     );
                   }
                   return Center(child: appWidget.LoadingWidget());

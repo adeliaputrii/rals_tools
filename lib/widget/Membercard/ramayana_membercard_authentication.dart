@@ -13,6 +13,7 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
   DeviceInfoPlugin devicePlugin = DeviceInfoPlugin();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController passwordController = TextEditingController();
+  bool _passwordVisible = false;
 
   String _nativeId = 'Unknown';
   final _nativeIdPlugin = NativeId();
@@ -29,6 +30,7 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
     loginCubit = context.read<LoginCubit>();
     popUpWidget = PopUpWidget(context);
     initPlatformState();
+    _passwordVisible = false;
   }
 
   Future<void> initPlatformState() async {
@@ -187,9 +189,11 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(
-                              left: 20, right: 20, bottom: 10
+                              left: 20, right: 20, bottom: 0
                             ),
                             child: TextFormField(
+                              
+                              obscureText: _passwordVisible ? false : true,
                               // validator: RequiredValidator(errorText: 'Wajib diisi'),
                               controller: passwordController,
                               style: GoogleFonts.plusJakartaSans(
@@ -197,6 +201,21 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
                               color: Colors.black),
                               decoration: InputDecoration(
                                 border: InputBorder.none,
+                                suffixIcon: IconButton(
+                                      icon: Icon(
+                                        // Based on passwordVisible state choose the icon
+                                        _passwordVisible
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: Color.fromARGB(255, 255, 17, 17),
+                                      ),
+                                      onPressed: () {
+                                        // Update the state i.e. toogle the state of passwordVisible variable
+                                        setState(() {
+                                          _passwordVisible = !_passwordVisible;
+                                        });
+                                      },
+                                    ),
                               ),
                             ),
                           ),
