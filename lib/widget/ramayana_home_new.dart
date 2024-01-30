@@ -1540,7 +1540,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                           context,
                                                                           MaterialPageRoute(builder:
                                                                               (context) {
-                                                                        return NewsDetail();
+                                                                        return NewsDetail(
+                                                                            newsUrl:
+                                                                                e.berita_dtl,
+                                                                            fromHome: true);
                                                                       }),
                                                                           (route) =>
                                                                               false);

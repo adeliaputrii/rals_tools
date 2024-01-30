@@ -1,7 +1,9 @@
 part of 'import.dart';
 
 class NewsDetail extends StatefulWidget {
-  const NewsDetail({super.key});
+  const NewsDetail({super.key, required this.newsUrl, required this.fromHome});
+  final String newsUrl;
+  final bool fromHome;
 
   @override
   State<NewsDetail> createState() => _NewsDetailState();
@@ -9,112 +11,88 @@ class NewsDetail extends StatefulWidget {
 
 class _NewsDetailState extends State<NewsDetail> {
   TransformationController controller = TransformationController();
+  late final WebViewController _controller;
+  String urlDetail = "";
+
+  @override
+  void initState() {
+    super.initState();
+    urlDetail = widget.newsUrl;
+    debugPrint('url detial' + urlDetail);
+    print('initstate');
+    if (urlDetail != "") {
+      _controller = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(const Color(0x00000000))
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onProgress: (int progress) {
+              // Update loading bar.
+            },
+            onPageStarted: (String url) {},
+            onPageFinished: (String url) {},
+            onWebResourceError: (WebResourceError error) {},
+            onNavigationRequest: (NavigationRequest request) {
+              if (request.url.startsWith('https://www.youtube.com/')) {
+                return NavigationDecision.prevent;
+              }
+              return NavigationDecision.navigate;
+            },
+          ),
+        )
+        ..loadRequest(Uri.parse(urlDetail));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: InteractiveViewer(
-        child: ListView(
-          children: [
-            Stack(
-              children: [
-                Container(color: Colors.white,),
-                Container(
-                margin: EdgeInsets.only(left: 10),
-                child: 
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pushAndRemoveUntil(context, 
-                         MaterialPageRoute(builder: (context){
-                         return DefaultBottomBarController(child: Ramayana());
-                         }), (route) => false);
-                      },
-                      icon: Icon(Icons.arrow_back_ios,
-                      color: Color.fromARGB(255, 210, 14, 0),
-                      ),
-                      ),
-                    Container(
-                      margin: EdgeInsets.only(left: 20),
-                      child: Text('Ramayana Update',
-                      style: GoogleFonts.mukta(
-                        fontSize: 35,
-                        color:Color.fromARGB(255, 199, 0, 0),
-                        fontWeight: FontWeight.w500
-                      ), 
-                      ),
-                    ),
-                    Column(
-                      children: News.newsDetail.map((e) {
-                        return
-                        Container(
-                          margin: EdgeInsets.only(left: 10, top: 10, right: 20),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.network(e.url_photo)),
-                        );
-                      }).toList()
-                    ),
-                    Column(
-                      children: News.newsDetail.map((e) {
-                        return
-                        Container(
-                          margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-                          child: Text('${e.berita_hdr}',
-                          style: GoogleFonts.mukta(
-                            fontSize: 25,
-                            color:Colors.black,
-                            fontWeight: FontWeight.w500
-                          ), 
-                           )
-                          );
-                      }).toList()
-                    ),
-                     Column(
-                      children: News.newsDetail.map((e) {
-                        var stringHtml = '${e.berita_dtl}';
-                        return
-                        Container(
-                          margin: EdgeInsets.only(left: 20, right: 20, top: 30),
-                          child: 
-                          Row(children: [
-                            CircleAvatar(
-                              backgroundImage: AssetImage('assets/ramay.png')),
-                              SizedBox(width: 10,),
-                            Text('Ramayana Information System',
-                            style: GoogleFonts.rubik(fontSize: 17, color: Color.fromARGB(255, 123, 122, 122)),
-                            )
-                          ],)
-                          );
-                      }).toList()
-                    ),
-                     Column(
-                      children: News.newsDetail.map((e) {
-                        var stringHtml = '${e.berita_dtl}';
-                        return
-                        Container(
-                          margin: EdgeInsets.only(left: 20, right: 20, top: 30),
-                          child: 
-                          Html(data: stringHtml, 
-                          style: {
-                          'p': Style(
-                           fontSize: FontSize(20.0) ,
-                           fontFamily: GoogleFonts.mukta(
-                           color: Colors.black).fontFamily
-                            ),
-                            },
-                            ),
-                          );
-                      }).toList()
-                    )
-                  ],
-                ),)
-            ]),
-          ],
-        ),
-      ),
+    return WillPopScope(
+      onWillPop: () async {
+        if (true) {
+          if (!widget.fromHome) {
+            Navigator.pop(context);
+          } else {
+            Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (context) {
+              return DefaultBottomBarController(child: Ramayana());
+            }), (route) => false);
+          }
+          return true;
+        }
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                if (!widget.fromHome) {
+                  Navigator.pop(context);
+                } else {
+                  Navigator.pushAndRemoveUntil(context,
+                      MaterialPageRoute(builder: (context) {
+                    return DefaultBottomBarController(child: Ramayana());
+                  }), (route) => false);
+                }
+              },
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+              ),
+            ),
+            title: Text(
+              'Berita',
+              style: GoogleFonts.plusJakartaSans(
+                  textStyle: TextStyle(
+                      fontSize: 23,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500)),
+            ),
+            backgroundColor: Color.fromARGB(255, 210, 14, 0),
+            elevation: 5,
+            toolbarHeight: 90,
+          ),
+          body: urlDetail != ""
+              ? WebViewWidget(controller: _controller)
+              : Text('Empty url detail')),
     );
   }
 }

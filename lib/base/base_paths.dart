@@ -27,3 +27,5 @@ const String api_get_company_card_history_month =
     'v1/membercards/history_companyCardMM';
 const String api_get_company_card_history_day =
     'v1/membercards/history_companyCardDD';
+
+const String api_get_news_list = 'v1/news/get';

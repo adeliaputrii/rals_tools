@@ -98,6 +98,7 @@ dependencies:
   package_info_plus: ^4.1.0
   flip_card: ^0.7.0
   barcode_widget: ^2.0.4
+  webview_flutter: ^4.4.4
 
 dev_dependencies:
   build_runner: ^2.1.4

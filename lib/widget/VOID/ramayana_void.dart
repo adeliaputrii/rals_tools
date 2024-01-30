@@ -71,7 +71,6 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
 
   Future<bool> _willPopCallback() async {
     if (!widget.isOffline) {
-      debugPrint('to home');
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -210,6 +209,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware {
         print(current);
       } else {
         print('catch 2');
+
         print('current = $current * ${int.parse(input[i])}');
         current = current * int.parse(input[i]);
         print('coba current else');
