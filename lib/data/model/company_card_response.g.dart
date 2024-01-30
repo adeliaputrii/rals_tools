@@ -22,26 +22,3 @@ Map<String, dynamic> _$CompanyCardResponseToJson(
       'message': instance.message,
       'data': instance.data,
     };
-
-DataCompany _$DataCompanyFromJson(Map<String, dynamic> json) => DataCompany(
-      nokartu: json['nokartu'] as String?,
-      nama: json['nama'] as String?,
-      poin: json['poin'] as String?,
-      status: json['status'] as int?,
-      saldo: json['saldo'] as String?,
-      rmyId: json['rmy_id'] as String?,
-      typeMc: json['type_mc'] as int?,
-      tglinaktif: json['tglinaktif'] as String?,
-    );
-
-Map<String, dynamic> _$DataCompanyToJson(DataCompany instance) =>
-    <String, dynamic>{
-      'nokartu': instance.nokartu,
-      'nama': instance.nama,
-      'poin': instance.poin,
-      'status': instance.status,
-      'saldo': instance.saldo,
-      'rmy_id': instance.rmyId,
-      'type_mc': instance.typeMc,
-      'tglinaktif': instance.tglinaktif,
-    };

@@ -11,17 +11,14 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
   UserData userData = UserData();
   late CompanyCardCubit companyCardCubit;
   late IDCashCubit idCashCubit;
-  late LoginCubit loginCubit;
   bool isLoading = true;
   AppWidget appWidget = AppWidget();
-  final urlApi = '${tipeurl}${basePath.api_login}';
 
   @override
   void initState() {
     super.initState();
     companyCardCubit = context.read<CompanyCardCubit>();
     idCashCubit = context.read<IDCashCubit>();
-    loginCubit = context.read<LoginCubit>();
     getUserCard();
   }
 
@@ -99,7 +96,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                       ),
                                     ),
                                     ListView.builder(
-                                      primary:false,
+                                        primary: false,
                                         shrinkWrap: true,
                                         itemCount: state.response.data!.length,
                                         itemBuilder:
@@ -130,17 +127,6 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                               ),
                                               MaterialButton(
                                                 onPressed: () {
-                                                  loginCubit.createLog(
-                                                   baseParam.chooseCard,
-                                                   state
-                                                   .response
-                                                   .data?[index]
-                                                   .typeMc ==6
-                                                  ?
-                                                  baseParam.rmsCard
-                                                  :
-                                                  baseParam.trrCard
-                                                   , urlApi);
                                                   Navigator.push(context,
                                                       MaterialPageRoute(
                                                           builder: (context) {
@@ -204,70 +190,90 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                     child: Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment.end,
-                                                      crossAxisAlignment:
-                                                          state
-                                                            .response
-                                                            .data?[index]
-                                                            .typeMc ==6
-                                                             ?
-                                                             CrossAxisAlignment.start
-                                                             :
-                                                             CrossAxisAlignment.end,
+                                                      crossAxisAlignment: state
+                                                                  .response
+                                                                  .data?[index]
+                                                                  .typeMc ==
+                                                              6
+                                                          ? CrossAxisAlignment
+                                                              .start
+                                                          : CrossAxisAlignment
+                                                              .end,
                                                       children: [
                                                         state
-                                                            .response
-                                                            .data?[index]
-                                                            .typeMc ==6
-                                                             ?
-                                                              Text(
-                                                                  '  ${int.tryParse(state.response.data?[index].saldo ?? '0')?.toIdr() ?? "-"}',
-                                                                  style: GoogleFonts.plusJakartaSans(
-                                                                      fontSize: 25,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color: Colors
-                                                                          .white))
-                                                             :
-                                                             Center(
-                                                               child: Text(
-                                                                '${int.tryParse(state.response.data?[index].saldo ?? '0')?.toIdr() ?? "-"}',
+                                                                    .response
+                                                                    .data?[
+                                                                        index]
+                                                                    .typeMc ==
+                                                                6
+                                                            ? Text(
+                                                                totalBalance(
+                                                                  int.tryParse(state
+                                                                              .response
+                                                                              .data?[index]
+                                                                              .saldo ??
+                                                                          '0') ??
+                                                                      0,
+                                                                  int.tryParse(state
+                                                                              .response
+                                                                              .data?[index]
+                                                                              .pemakaian ??
+                                                                          '0') ??
+                                                                      0,
+                                                                ),
                                                                 style: GoogleFonts.plusJakartaSans(
-                                                                    fontSize: 25,
+                                                                    fontSize:
+                                                                        25,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold,
                                                                     color: Colors
-                                                                        .white)),
-                                                             ),
-                                                       
+                                                                        .white))
+                                                            : Center(
+                                                                child: Text(
+                                                                    totalBalance(
+                                                                      int.tryParse(state.response.data?[index].saldo ??
+                                                                              '0') ??
+                                                                          0,
+                                                                      int.tryParse(state.response.data?[index].pemakaian ??
+                                                                              '0') ??
+                                                                          0,
+                                                                    ),
+                                                                    style: GoogleFonts.plusJakartaSans(
+                                                                        fontSize:
+                                                                            25,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: Colors
+                                                                            .white)),
+                                                              ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  bottom: 10,
-                                                                  right: 10,
-                                                                  top: 
-                                                                  state
-                                                            .response
-                                                            .data?[index]
-                                                            .typeMc ==6
-                                                             ?
-                                                             50
-                                                             :
-                                                             10),
+                                                          margin: EdgeInsets.only(
+                                                              bottom: 10,
+                                                              right: 10,
+                                                              top: state
+                                                                          .response
+                                                                          .data?[
+                                                                              index]
+                                                                          .typeMc ==
+                                                                      6
+                                                                  ? 50
+                                                                  : 10),
                                                           child: Column(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .start,
-                                                            crossAxisAlignment:
-                                                            state
-                                                            .response
-                                                            .data?[index]
-                                                            .typeMc ==6
-                                                             ?
-                                                             CrossAxisAlignment.start
-                                                             :
-                                                             CrossAxisAlignment.end,
+                                                            crossAxisAlignment: state
+                                                                        .response
+                                                                        .data?[
+                                                                            index]
+                                                                        .typeMc ==
+                                                                    6
+                                                                ? CrossAxisAlignment
+                                                                    .start
+                                                                : CrossAxisAlignment
+                                                                    .end,
                                                             children: [
                                                               Text(
                                                                   '  ${state.response.data?[index].nama ?? '-'}',
@@ -305,5 +311,10 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                       return Container();
                     },
                   )));
+  }
+
+  String totalBalance(int saldo, int pemakaian) {
+    final balance = saldo - pemakaian;
+    return balance.toIdr();
   }
 }

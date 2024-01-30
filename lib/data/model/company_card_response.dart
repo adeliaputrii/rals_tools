@@ -32,13 +32,13 @@ class CompanyCardResponse {
   }
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake)
 class DataCompany {
   String? nokartu;
   String? nama;
   String? poin;
   int? status;
   String? saldo;
+  String? pemakaian;
   String? rmyId;
   int? typeMc;
   String? tglinaktif;
@@ -49,6 +49,7 @@ class DataCompany {
       this.poin,
       this.status,
       this.saldo,
+      this.pemakaian,
       this.rmyId,
       this.typeMc,
       this.tglinaktif});
@@ -59,6 +60,7 @@ class DataCompany {
     poin = json['poin'];
     status = json['status'];
     saldo = json['saldo'];
+    pemakaian = json['pemakaian'];
     rmyId = json['rmy_id'];
     typeMc = json['type_mc'];
     tglinaktif = json['tglinaktif'];
@@ -71,6 +73,7 @@ class DataCompany {
     data['poin'] = this.poin;
     data['status'] = this.status;
     data['saldo'] = this.saldo;
+    data['pemakaian'] = this.pemakaian;
     data['rmy_id'] = this.rmyId;
     data['type_mc'] = this.typeMc;
     data['tglinaktif'] = this.tglinaktif;

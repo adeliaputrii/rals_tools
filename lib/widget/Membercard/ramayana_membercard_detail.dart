@@ -42,13 +42,11 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
     // Navigator.pop on the Selection Screen.
     debugPrint('navigator push');
     loginCubit.createLog(
-      typeCard(widget.typeCard)
-      ?
-      baseParam.rmsCardPage
-      :
-      baseParam.trrCardPage,
-      baseParam.navigateHistory,
-      urlApi);
+        typeCard(widget.typeCard)
+            ? baseParam.rmsCardPage
+            : baseParam.trrCardPage,
+        baseParam.navigateHistory,
+        urlApi);
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -67,7 +65,6 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
   }
 
   Future<void> navigateToPayment() async {
-  
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -75,13 +72,11 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
               icon: typeCard(widget.typeCard), nokartu: cardNumber)),
     );
     loginCubit.createLog(
-      typeCard(widget.typeCard)
-      ?
-      baseParam.rmsCardPage
-      :
-      baseParam.trrCardPage,
-      baseParam.navigatePayment,
-      urlApi);
+        typeCard(widget.typeCard)
+            ? baseParam.rmsCardPage
+            : baseParam.trrCardPage,
+        baseParam.navigatePayment,
+        urlApi);
     if (!mounted) return;
 
     cubit.getDetailCard('$result');
@@ -416,7 +411,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                             // color: Colors.black,
                           ),
                           Padding(
-                              padding: EdgeInsets.only(top: 20, bottom: 30),
+                              padding: EdgeInsets.only(top: 35, bottom: 30),
                               child: Text('Transaksi Terakhir',
                                   style: GoogleFonts.plusJakartaSans(
                                     fontSize: 22,
@@ -429,7 +424,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                               ? listHistory(state.response)
                               : Text(baseParam.notFoundTransaction,
                                   style: GoogleFonts.rubik(
-                                      fontSize: 22,
+                                      fontSize: 16,
                                       color: typeCard(widget.typeCard)
                                           ? Color.fromARGB(255, 197, 18, 19)
                                           : Color.fromARGB(255, 82, 74, 156)))
@@ -591,7 +586,9 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 MaterialButton(
-                                  onPressed: () {navigateToPayment();},
+                                  onPressed: () {
+                                    navigateToPayment();
+                                  },
                                   child: Container(
                                     height: 50,
                                     width: 190,
@@ -652,7 +649,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                             // color: Colors.black,
                           ),
                           Padding(
-                              padding: EdgeInsets.only(top: 20, bottom: 30),
+                              padding: EdgeInsets.only(top: 35, bottom: 30),
                               child: Text('Transaksi Terakhir',
                                   style: GoogleFonts.plusJakartaSans(
                                     fontSize: 22,
@@ -661,12 +658,15 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                         ? baseColor.primaryColor
                                         : baseColor.trrColor,
                                   ))),
-                          Text(baseParam.notFoundTransaction,
-                              style: GoogleFonts.rubik(
-                                  fontSize: 22,
-                                  color: typeCard(widget.typeCard)
-                                      ? Color.fromARGB(255, 197, 18, 19)
-                                      : Color.fromARGB(255, 82, 74, 156)))
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25.0),
+                            child: Text(baseParam.notFoundTransaction,
+                                style: GoogleFonts.rubik(
+                                    fontSize: 18,
+                                    color: typeCard(widget.typeCard)
+                                        ? Color.fromARGB(255, 197, 18, 19)
+                                        : Color.fromARGB(255, 82, 74, 156))),
+                          )
                         ])),
               ],
             );
