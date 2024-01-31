@@ -17,15 +17,15 @@ const String api_tracking_update_tracking = 'v1/tracking/update-tracking';
 const String api_tracking_sj = 'v1/tracking/track-sj?no_sj=';
 const String api_comcheck_approve = 'activity/updateApproveCommcheck';
 
-const String api_get_company_card = 'v1/membercards/tbl_companyCard';
-const String api_get_company_card_detail = 'v1/membercards/detail_companyCard';
+const String api_get_company_card = 'v1/companycard/tbl_companyCard';
+const String api_get_company_card_detail = 'v1/companycard/detail_companyCard';
 const String api_get_company_card_history =
-    'v1/membercards/history_companyCard';
+    'v1/companycard/history_companyCard';
 const String api_get_company_card_history_year =
-    'v1/membercards/history_companyCardYY';
+    'v1/companycard/history_companyCardYY';
 const String api_get_company_card_history_month =
-    'v1/membercards/history_companyCardMM';
+    'v1/companycard/history_companyCardMM';
 const String api_get_company_card_history_day =
-    'v1/membercards/history_companyCardDD';
+    'v1/companycard/history_companyCardDD';
 
 const String api_get_news_list = 'v1/news/get';

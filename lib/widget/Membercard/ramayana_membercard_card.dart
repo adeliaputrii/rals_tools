@@ -80,8 +80,10 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                         List<ResponseCompany.DataCompany> cardActive = [];
                         DateTime currentDay = DateTime.now();
                         state.response.data?.forEach((element) {
-                          DateTime parsedDate = DateTime.parse(element.tglinaktif ?? '2023-01-01');
-                          if(element.status == 1 && currentDay.isBefore(parsedDate)){
+                          DateTime parsedDate = DateTime.parse(
+                              element.tglinaktif ?? '2023-01-01');
+                          if (element.status == 1 &&
+                              currentDay.isBefore(parsedDate)) {
                             cardActive.add(element);
                           }
                         });
@@ -187,9 +189,9 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                                       .typeMc ==
                                                                   6
                                                               ? AssetImage(
-                                                                  'assets/rms.png')
+                                                                  'assets/tropikana.png')
                                                               : AssetImage(
-                                                                  'assets/tropikana.png'),
+                                                                  'assets/rms.png'),
                                                           fit: BoxFit.fill),
                                                     ),
                                                     child: Column(

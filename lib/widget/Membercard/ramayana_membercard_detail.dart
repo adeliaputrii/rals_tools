@@ -184,7 +184,9 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
           }
           if (state is CompanyCardHistorySuccess) {
             state.response.data?.forEach((element) {
-              historyResponse.add(element);
+              if (element.status != '7') {
+                historyResponse.add(element);
+              }
             });
           }
         }, child: BlocBuilder<CompanyCardCubit, CompanyCardState>(
@@ -650,8 +652,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                           ),
                           Padding(
                               padding: EdgeInsets.only(top: 35, bottom: 30),
-                              child: 
-                              Text('Transaksi Terakhir',
+                              child: Text('Transaksi Terakhir',
                                   style: GoogleFonts.plusJakartaSans(
                                     fontSize: 22,
                                     fontWeight: FontWeight.w500,
@@ -697,7 +698,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                     children: [
                       ListTile(
                         leading: Text(
-                          'ID: ${historyResponse.data?[index].notrx ?? '-'}',
+                          'Tanggal Transaksi: ${historyResponse.data?[index].tanggal ?? '-'}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 15,
@@ -705,25 +706,6 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                             color: typeCard(widget.typeCard)
                                 ? Colors.black
                                 : baseColor.trrColor,
-                          ),
-                        ),
-                        trailing: Container(
-                          width: 100,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: typeCard(widget.typeCard)
-                                ? baseColor.primaryColor
-                                : baseColor.trrColor,
-                          ),
-                          child: Center(
-                            child: Text(
-                              '${historyResponse.data?[index].poin ?? '-'} Poin',
-                              style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
                           ),
                         ),
                       ),
@@ -743,8 +725,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                             size: 28,
                           ),
                           title: Text(
-                            typeTransaction(
-                                historyResponse.data?[index].type ?? ''),
+                            'ID: ${historyResponse.data?[index].nostruk}',
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -755,7 +736,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           trailing: Text(
-                            '${int.tryParse(historyResponse.data?[index].totalHarga ?? '0')?.toIdr()}',
+                            '${int.tryParse(historyResponse.data?[index].nilai ?? '0')?.toIdr()}',
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -765,19 +746,6 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Text(
-                          '${(historyResponse.data?[index].createdDate)?.formatDate()}',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 15,
-                            color: typeCard(widget.typeCard)
-                                ? Colors.black
-                                : baseColor.trrColor,
-                          ),
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
@@ -790,34 +758,36 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
 
 String typeTransaction(String type) {
   String description = "";
-  if (type == 'A') {
-    description = baseParam.typeA;
+  if (type == '1') {
+    description = "Berhasil";
+  } else {
+    description = "Gagal";
   }
-  if (type == 'P') {
-    description = baseParam.typeP;
-  }
-  if (type == 'T') {
-    description = baseParam.typeA;
-  }
-  if (type == 'C') {
-    description = baseParam.typeP;
-  }
-  if (type == 'S') {
-    description = baseParam.typeA;
-  }
-  if (type == 'B') {
-    description = baseParam.typeP;
-  }
-  if (type == 'J') {
-    description = baseParam.typeA;
-  }
-  if (type == 'V') {
-    description = baseParam.typeP;
-  }
+  // if (type == 'P') {
+  //   description = baseParam.typeP;
+  // }
+  // if (type == 'T') {
+  //   description = baseParam.typeA;
+  // }
+  // if (type == 'C') {
+  //   description = baseParam.typeP;
+  // }
+  // if (type == 'S') {
+  //   description = baseParam.typeA;
+  // }
+  // if (type == 'B') {
+  //   description = baseParam.typeP;
+  // }
+  // if (type == 'J') {
+  //   description = baseParam.typeA;
+  // }
+  // if (type == 'V') {
+  //   description = baseParam.typeP;
+  // }
 
   return description;
 }
 
 bool typeCard(typeCard) {
-  return typeCard == '6';
+  return typeCard == '7';
 }

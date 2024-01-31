@@ -32,7 +32,7 @@ class _CompanyCardService implements CompanyCardService {
     )
             .compose(
               _dio.options,
-              'v1/membercards/tbl_companyCard',
+              'v1/companycard/tbl_companyCard',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -59,7 +59,7 @@ class _CompanyCardService implements CompanyCardService {
     )
             .compose(
               _dio.options,
-              'v1/membercards/detail_companyCard',
+              'v1/companycard/detail_companyCard',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -88,7 +88,7 @@ class _CompanyCardService implements CompanyCardService {
     )
             .compose(
               _dio.options,
-              'v1/membercards/history_companyCard',
+              'v1/companycard/history_companyCard',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -117,7 +117,7 @@ class _CompanyCardService implements CompanyCardService {
     )
             .compose(
               _dio.options,
-              'v1/membercards/history_companyCardYY',
+              'v1/companycard/history_companyCardYY',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -146,7 +146,7 @@ class _CompanyCardService implements CompanyCardService {
     )
             .compose(
               _dio.options,
-              'v1/membercards/history_companyCardMM',
+              'v1/companycard/history_companyCardMM',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -175,7 +175,7 @@ class _CompanyCardService implements CompanyCardService {
     )
             .compose(
               _dio.options,
-              'v1/membercards/history_companyCardDD',
+              'v1/companycard/history_companyCardDD',
               queryParameters: queryParameters,
               data: _data,
             )

@@ -98,19 +98,19 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                     }
                     if (state is CompanyCardHistoryDaySuccess) {
                       int lengthData = state.response.data?.length ?? 0;
-                  
+
                       return lengthData != 0
                           ? listHistory(state.response)
                           : Center(
-                            child: Text(baseParam.notFoundTransaction,
-                                style: GoogleFonts.rubik(
-                                    fontSize: 22,
-                                    color: typeCard(widget.typeCard)
-                                        ? Color.fromARGB(255, 197, 18, 19)
-                                        : Color.fromARGB(255, 82, 74, 156))),
-                          );
+                              child: Text(baseParam.notFoundTransaction,
+                                  style: GoogleFonts.rubik(
+                                      fontSize: 22,
+                                      color: typeCard(widget.typeCard)
+                                          ? Color.fromARGB(255, 197, 18, 19)
+                                          : Color.fromARGB(255, 82, 74, 156))),
+                            );
                     }
-                  
+
                     return appWidget.LoadingWidget();
                   }),
                 )
@@ -142,33 +142,14 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                     children: [
                       ListTile(
                         leading: Text(
-                          'ID: ${historyResponse.data?[index].notrx ?? '-'}',
+                          '${historyResponse.data?[index].tanggal ?? '-'}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.plusJakartaSans(
-                            fontSize: 16,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,
                             color: typeCard(widget.typeCard)
                                 ? Colors.black
                                 : baseColor.trrColor,
-                          ),
-                        ),
-                        trailing: Container(
-                          width: 100,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: typeCard(widget.typeCard)
-                                ? baseColor.primaryColor
-                                : baseColor.trrColor,
-                          ),
-                          child: Center(
-                            child: Text(
-                              '${historyResponse.data?[index].poin ?? '-'} Poin',
-                              style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
                           ),
                         ),
                       ),
@@ -188,8 +169,7 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                             size: 28,
                           ),
                           title: Text(
-                            typeTransaction(
-                                historyResponse.data?[index].type ?? ''),
+                            'ID: ${historyResponse.data?[index].nostruk}',
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -200,7 +180,7 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           trailing: Text(
-                            '${int.tryParse(historyResponse.data?[index].totalHarga ?? '0')?.toIdr()}',
+                            '${int.tryParse(historyResponse.data?[index].nilai ?? '0')?.toIdr()}',
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -210,19 +190,6 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Text(
-                          '${(historyResponse.data?[index].createdDate)?.formatDate()}',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 15,
-                            color: typeCard(widget.typeCard)
-                                ? Colors.black
-                                : baseColor.trrColor,
-                          ),
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],

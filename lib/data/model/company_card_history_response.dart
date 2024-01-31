@@ -32,79 +32,48 @@ class CompanyCardHistoryResponse {
   }
 }
 
+@JsonSerializable(fieldRename: FieldRename.snake)
 class DataHistory {
-  String? nokartu;
-  String? notrx;
-  String? kodetoko;
-  String? type;
-  String? poin;
-  String? kodekasir;
-  String? totalHarga;
-  String? totalQty;
   String? tanggal;
-  String? tglupd;
-  String? userupd;
-  String? flag;
-  String? keterangan;
-  String? ambilhadiah;
-  String? createdDate;
-  String? createdUser;
+  String? toko;
+  String? nokartu;
+  String? nostruk;
+  String? nocp;
+  String? nilai;
+  String? status;
+  String? kasir;
 
   DataHistory(
-      {this.nokartu,
-      this.notrx,
-      this.kodetoko,
-      this.type,
-      this.poin,
-      this.kodekasir,
-      this.totalHarga,
-      this.totalQty,
-      this.tanggal,
-      this.tglupd,
-      this.userupd,
-      this.flag,
-      this.keterangan,
-      this.ambilhadiah,
-      this.createdDate,
-      this.createdUser});
+      {this.tanggal,
+      this.toko,
+      this.nokartu,
+      this.nostruk,
+      this.nocp,
+      this.nilai,
+      this.status,
+      this.kasir});
 
   DataHistory.fromJson(Map<String, dynamic> json) {
-    nokartu = json['nokartu'];
-    notrx = json['notrx'];
-    kodetoko = json['kodetoko'];
-    type = json['type'];
-    poin = json['poin'];
-    kodekasir = json['kodekasir'];
-    totalHarga = json['total_harga'];
-    totalQty = json['total_qty'];
     tanggal = json['tanggal'];
-    tglupd = json['tglupd'];
-    userupd = json['userupd'];
-    flag = json['flag'];
-    keterangan = json['keterangan'];
-    ambilhadiah = json['ambilhadiah'];
-    createdDate = json['created_date'];
-    createdUser = json['created_user'];
+    toko = json['toko'];
+    nokartu = json['nokartu'];
+    nostruk = json['nostruk'];
+    nocp = json['nocp'];
+    nilai = json['nilai'];
+    status = json['status'];
+    kasir = json['kasir'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['nokartu'] = this.nokartu;
-    data['notrx'] = this.notrx;
-    data['kodetoko'] = this.kodetoko;
-    data['type'] = this.type;
-    data['poin'] = this.poin;
-    data['kodekasir'] = this.kodekasir;
-    data['total_harga'] = this.totalHarga;
-    data['total_qty'] = this.totalQty;
     data['tanggal'] = this.tanggal;
-    data['tglupd'] = this.tglupd;
-    data['userupd'] = this.userupd;
-    data['flag'] = this.flag;
-    data['keterangan'] = this.keterangan;
-    data['ambilhadiah'] = this.ambilhadiah;
-    data['created_date'] = this.createdDate;
-    data['created_user'] = this.createdUser;
+    data['toko'] = this.toko;
+    data['nokartu'] = this.nokartu;
+    data['nostruk'] = this.nostruk;
+    data['nocp'] = this.nocp;
+    data['nilai'] = this.nilai;
+    data['status'] = this.status;
+    data['kasir'] = this.kasir;
     return data;
   }
 }
