@@ -656,8 +656,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                         ),
                         visible: true,
                       );
-                    } else if (icon == "kartu.kartutambahan") {
-                    } else if (icon == "kartutambahantrr&rms.kartutambahan") {
+                    }  else if (icon == "kartu.kartuperusahaan") {
                       return Visibility(
                         child: CircleAvatar(
                           backgroundColor: Color.fromARGB(255, 207, 11, 11),
@@ -700,7 +699,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                       return 'Lacak SJ';
                     } else if (icon == "comchek.approvedcomchek") {
                       return 'Com. Checking';
-                    } else if (icon == "kartutambahantrr&rms.kartutambahan") {
+                    } else if (icon == "kartu.kartuperusahaan") {
                       return 'Kartu Tambahan';
                     } else {
                       print(e);
@@ -768,9 +767,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                             //   var hakAkses = pref.setString('hakAkses', '${e}');
                             //   print('hak akses : ${e}}');
                             //   print('hak akses : ${hakAkses}');
-                          } else if (e == 'kartu.kartutambahan') {
-                          } else if (e ==
-                              'kartutambahantrr&rms.kartutambahan') {
+                          }  else if (e ==
+                              'kartu.kartuperusahaan') {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                               return RamayanaMembercardAuthentication();
@@ -851,7 +849,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       if (element == 'suratjalan.trackingsj') {
         data.add(element);
       }
-      if (element == 'kartutambahantrr&rms.kartutambahan') {
+      if (element == 'kartu.kartuperusahaan') {
         data.add(element);
       }
       if (element == 'comchek.approvedcomchek') {
@@ -1210,10 +1208,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 ),
                                                 visible: true,
                                               );
-                                            } else if (icon ==
-                                                "kartu.kartutambahan") {
-                                            } else if (icon ==
-                                                "kartutambahantrr&rms.kartutambahan") {
+                                            }else if (icon ==
+                                                "kartu.kartuperusahaan") {
                                               return Visibility(
                                                 child: CircleAvatar(
                                                   backgroundColor: Color.fromARGB(
@@ -1265,10 +1261,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             } else if (icon ==
                                                 "comchek.approvedcomchek") {
                                               return 'Com. Checking';
-                                            } else if (icon ==
-                                                "kartu.kartutambahan") {
-                                            } else if (icon ==
-                                                "kartutambahantrr&rms.kartutambahan") {
+                                            }  else if (icon ==
+                                                "kartu.kartuperusahaan") {
                                               return 'Kartu Tambahan';
                                             } else {
                                               print(e);
@@ -1356,9 +1350,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                     //   print('hak akses : ${e}}');
                                                     //   print('hak akses : ${hakAkses}');
                                                   } else if (e ==
-                                                      'kartu.kartutambahan') {
-                                                  } else if (e ==
-                                                      'kartutambahantrr&rms.kartutambahan') {
+                                                      'kartu.kartuperusahaan') {
                                                     Navigator.push(context,
                                                         MaterialPageRoute(
                                                             builder: (context) {

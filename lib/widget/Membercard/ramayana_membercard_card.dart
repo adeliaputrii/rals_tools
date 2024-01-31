@@ -143,7 +143,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                                 .data?[index]
                                                                 .typeMc
                                                                 .toString() ??
-                                                            '6',
+                                                            '7',
                                                         data: state.response
                                                             .data![index]);
                                                   }));
@@ -182,12 +182,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                                 Offset(2, 4))
                                                       ],
                                                       image: DecorationImage(
-                                                          image: state
-                                                                      .response
-                                                                      .data?[
-                                                                          index]
-                                                                      .typeMc ==
-                                                                  6
+                                                          image: typeCard(state.response.data?[index].typeMc)
                                                               ? AssetImage(
                                                                   'assets/tropikana.png')
                                                               : AssetImage(
@@ -201,18 +196,13 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                                   .response
                                                                   .data?[index]
                                                                   .typeMc ==
-                                                              6
+                                                              7
                                                           ? CrossAxisAlignment
                                                               .start
                                                           : CrossAxisAlignment
                                                               .end,
                                                       children: [
-                                                        state
-                                                                    .response
-                                                                    .data?[
-                                                                        index]
-                                                                    .typeMc ==
-                                                                6
+                                                        typeCard(state.response.data?[index].typeMc)
                                                             ? Text(
                                                                 totalBalance(
                                                                   int.tryParse(state
@@ -259,24 +249,14 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                           margin: EdgeInsets.only(
                                                               bottom: 10,
                                                               right: 10,
-                                                              top: state
-                                                                          .response
-                                                                          .data?[
-                                                                              index]
-                                                                          .typeMc ==
-                                                                      6
+                                                              top: typeCard(state.response.data?[index].typeMc)
                                                                   ? 50
                                                                   : 10),
                                                           child: Column(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .start,
-                                                            crossAxisAlignment: state
-                                                                        .response
-                                                                        .data?[
-                                                                            index]
-                                                                        .typeMc ==
-                                                                    6
+                                                            crossAxisAlignment: typeCard(state.response.data?[index].typeMc)
                                                                 ? CrossAxisAlignment
                                                                     .start
                                                                 : CrossAxisAlignment
