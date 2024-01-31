@@ -304,8 +304,10 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                     },
                   )));
   }
+  //testestes
 
   String totalBalance(int saldo, int pemakaian) {
+    String test="";
     final balance = saldo - pemakaian;
     return balance.toIdr();
   }
