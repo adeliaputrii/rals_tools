@@ -138,14 +138,11 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                       MaterialPageRoute(
                                                           builder: (context) {
                                                     return RamayanaMemberCardDetail(
-                                                        typeCard: state
-                                                                .response
-                                                                .data?[index]
+                                                        typeCard: cardActive[index]
                                                                 .typeMc
                                                                 .toString() ??
                                                             '6',
-                                                        data: state.response
-                                                            .data![index]);
+                                                        data: cardActive[index]);
                                                   }));
                                                 },
                                                 child: Container(
@@ -182,9 +179,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                                 Offset(2, 4))
                                                       ],
                                                       image: DecorationImage(
-                                                          image: typeCardImage(state
-                                                                      .response
-                                                                      .data?[
+                                                          image: typeCardImage(cardActive[
                                                                           index]
                                                                       .typeMc ??
                                                                   0)
@@ -198,9 +193,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                       mainAxisAlignment:
                                                           MainAxisAlignment.end,
                                                       crossAxisAlignment: typeCardImage(
-                                                              state
-                                                                      .response
-                                                                      .data?[
+                                                              cardActive[
                                                                           index]
                                                                       .typeMc ??
                                                                   0)
@@ -209,23 +202,17 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                           : CrossAxisAlignment
                                                               .end,
                                                       children: [
-                                                        typeCardImage(state
-                                                                    .response
-                                                                    .data?[
+                                                        typeCardImage(cardActive[
                                                                         index]
                                                                     .typeMc ??
                                                                 0)
                                                             ? Text(
                                                                 totalBalance(
-                                                                  int.tryParse(state
-                                                                              .response
-                                                                              .data?[index]
+                                                                  int.tryParse(cardActive[index]
                                                                               .saldo ??
                                                                           '0') ??
                                                                       0,
-                                                                  int.tryParse(state
-                                                                              .response
-                                                                              .data?[index]
+                                                                  int.tryParse(cardActive[index]
                                                                               .pemakaian ??
                                                                           '0') ??
                                                                       0,
@@ -261,9 +248,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                           margin: EdgeInsets.only(
                                                               bottom: 10,
                                                               right: 10,
-                                                              top: typeCardImage(state
-                                                                          .response
-                                                                          .data?[
+                                                              top: typeCardImage(cardActive[
                                                                               index]
                                                                           .typeMc ??
                                                                       0)
@@ -273,16 +258,14 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .start,
-                                                            crossAxisAlignment: state
-                                                                        .response
-                                                                        .data?[
+                                                            crossAxisAlignment:cardActive[
                                                                             index]
                                                                         .typeMc ==
                                                                     6
                                                                 ? CrossAxisAlignment
-                                                                    .start
+                                                                    .end
                                                                 : CrossAxisAlignment
-                                                                    .end,
+                                                                    .start,
                                                             children: [
                                                               Text(
                                                                   '  ${cardActive[index].nama ?? '-'}',
@@ -328,6 +311,6 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
   }
 
   bool typeCardImage(int type) {
-    return type != 7;
+    return type == 7;
   }
 }

@@ -789,5 +789,5 @@ String typeTransaction(String type) {
 }
 
 bool typeCard(typeCard) {
-  return typeCard != '7';
+  return typeCard == '7';
 }
