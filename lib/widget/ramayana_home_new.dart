@@ -87,7 +87,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     _unsecureScreen();
     fetchBerita();
     _getAllActivity();
-    
   }
 
   @override
@@ -656,7 +655,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                         ),
                         visible: true,
                       );
-                    }  else if (icon == "kartu.kartuperusahaan") {
+                    } else if (icon == "kartu.kartuperusahaan") {
                       return Visibility(
                         child: CircleAvatar(
                           backgroundColor: Color.fromARGB(255, 207, 11, 11),
@@ -700,7 +699,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                     } else if (icon == "comchek.approvedcomchek") {
                       return 'Com. Checking';
                     } else if (icon == "kartu.kartuperusahaan") {
-                      return 'Kartu Tambahan';
+                      return baseParam.companyCardTitle;
                     } else {
                       print(e);
                       print('no menu');
@@ -767,8 +766,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                             //   var hakAkses = pref.setString('hakAkses', '${e}');
                             //   print('hak akses : ${e}}');
                             //   print('hak akses : ${hakAkses}');
-                          }  else if (e ==
-                              'kartu.kartuperusahaan') {
+                          } else if (e == 'kartu.kartuperusahaan') {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                               return RamayanaMembercardAuthentication();
@@ -878,8 +876,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     }
 
     return RelativeBuilder(builder: (context, height, width, sy, sx) {
-      return 
-      BlocListener<IDCashCubit, IDCashState>(
+      return BlocListener<IDCashCubit, IDCashState>(
         listener: (context, state) {
           if (state is IDCashSuccess) {
             member = state.response.data!.first.nokartu.toString();
@@ -924,7 +921,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                 ),
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
                                     margin: EdgeInsets.only(top: 0, left: 20),
@@ -938,7 +936,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                     ),
                                   ),
                                   Container(
-                                      margin: EdgeInsets.only(top: 10, right: 20),
+                                      margin:
+                                          EdgeInsets.only(top: 10, right: 20),
                                       child: InkWell(
                                         onTap: () {
                                           print('klik');
@@ -986,7 +985,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                         )),
                                       ))
                                   : Container(
-                                      margin: EdgeInsets.only(top: 75, left: 20),
+                                      margin:
+                                          EdgeInsets.only(top: 75, left: 20),
                                       child: AnimatedTextKit(
                                         totalRepeatCount: 2,
                                         onFinished: () {
@@ -1030,7 +1030,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.fromLTRB(20, 10, 0, 10),
+                                      margin:
+                                          EdgeInsets.fromLTRB(20, 10, 0, 10),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -1050,11 +1051,12 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                       gradient: LinearGradient(
                                                           colors: [
                                                             Colors.red,
-                                                            Color.fromARGB(
-                                                                255, 103, 94, 94)
+                                                            Color.fromARGB(255,
+                                                                103, 94, 94)
                                                           ],
-                                                          begin: FractionalOffset(
-                                                              0.0, 0.0),
+                                                          begin:
+                                                              FractionalOffset(
+                                                                  0.0, 0.0),
                                                           end: FractionalOffset(
                                                               1.5, 0.0),
                                                           stops: [0.0, 1.0],
@@ -1063,8 +1065,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               90)),
-                                                  margin:
-                                                      EdgeInsets.only(right: 10),
+                                                  margin: EdgeInsets.only(
+                                                      right: 10),
                                                   child: ElevatedButton(
                                                       style: ElevatedButton
                                                           .styleFrom(
@@ -1082,34 +1084,37 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                         style: GoogleFonts
                                                             .plusJakartaSans(
                                                                 fontSize: 15,
-                                                                color:
-                                                                    Colors.white),
+                                                                color: Colors
+                                                                    .white),
                                                       )))
                                               : Container()
                                         ],
                                       ),
                                     ),
-        
+
                                     // ),
                                     Container(
-                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+                                      margin:
+                                          EdgeInsets.fromLTRB(10, 0, 10, 20),
                                       child: Wrap(
                                         // spacing: 0.5,
                                         // runSpacing: 1.0,
                                         alignment: WrapAlignment.spaceBetween,
-                                        runAlignment: WrapAlignment.spaceBetween,
+                                        runAlignment:
+                                            WrapAlignment.spaceBetween,
                                         //adel ini gausah di masukin ke model bisa gaa? langsung aja dia pake api nya nembak langsung
                                         children: data3Menu.map((e) {
                                           // ${e.nsadssaame_menu}
                                           print(e);
-        
+
                                           getIcon() {
                                             var icon = '${e}';
                                             if (icon == 'mastervoid.void') {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(
-                                                      255, 207, 11, 11),
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/void.png',
@@ -1121,8 +1126,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 "masteridcash.idcash") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(
-                                                      255, 207, 11, 11),
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/ic_idcash.png',
@@ -1134,8 +1140,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 "approvalreturn.approvalreturn") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(
-                                                      255, 207, 11, 11),
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/approval.png',
@@ -1147,8 +1154,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 "cekprice.cekprice") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(
-                                                      255, 207, 11, 11),
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/cekharga.png',
@@ -1160,8 +1168,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 "tukarpoin.tukarpoin") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(
-                                                      255, 207, 11, 11),
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/tukarpoin.png',
@@ -1173,8 +1182,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 "myactivity.activity") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(
-                                                      255, 207, 11, 11),
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/myactivity.png',
@@ -1186,8 +1196,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 "suratjalan.trackingsj") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(
-                                                      255, 207, 11, 11),
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/sjalan.png',
@@ -1199,8 +1210,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 "comchek.approvedcomchek") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(
-                                                      255, 207, 11, 11),
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/comcek.png',
@@ -1208,12 +1220,13 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 ),
                                                 visible: true,
                                               );
-                                            }else if (icon ==
+                                            } else if (icon ==
                                                 "kartu.kartuperusahaan") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(
-                                                      255, 207, 11, 11),
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/card.png',
@@ -1224,8 +1237,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             } else {
                                               Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(
-                                                      255, 207, 11, 11),
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/cekharga.png',
@@ -1235,7 +1249,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                               );
                                             }
                                           }
-        
+
                                           getName() {
                                             var icon = '${e}';
                                             if (icon == 'mastervoid.void') {
@@ -1261,15 +1275,15 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             } else if (icon ==
                                                 "comchek.approvedcomchek") {
                                               return 'Com. Checking';
-                                            }  else if (icon ==
+                                            } else if (icon ==
                                                 "kartu.kartuperusahaan") {
-                                              return 'Kartu Tambahan';
+                                              return baseParam.companyCardTitle;
                                             } else {
                                               print(e);
                                               print('no menu');
                                             }
                                           }
-        
+
                                           return Column(children: [
                                             ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
@@ -1341,7 +1355,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                     }));
                                                     print(HakAkses
                                                         .hakaksesSubmenuComcek);
-        
+
                                                     // } else if(e == 'idcash.ramayanariwayattransaksi'){
                                                     // Navigator.push(context, MaterialPageRoute(builder: (context){
                                                     //   return Anakan(); }));
@@ -1372,7 +1386,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                             DateTime.now());
                                                     print('not connect');
                                                     db.saveActivityy(LogOffline(
-                                                      deskripsi: '${getName()} ',
+                                                      deskripsi:
+                                                          '${getName()} ',
                                                       datetime:
                                                           '${DateTime.now()}',
                                                     ));
@@ -1383,12 +1398,17 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             ),
                                             Text(
                                               '${getName()}',
-                                              style: GoogleFonts.plusJakartaSans(
-                                                  fontWeight: FontWeight.w500,
-                                                  textStyle: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Color.fromARGB(
-                                                          255, 71, 70, 70))),
+                                              style:
+                                                  GoogleFonts.plusJakartaSans(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      textStyle: TextStyle(
+                                                          fontSize: 15,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              71,
+                                                              70,
+                                                              70))),
                                             )
                                           ]);
                                         }).toList(),
@@ -1422,7 +1442,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                             'Informasi Update Ramayana',
                                                             style: GoogleFonts.plusJakartaSans(
                                                                 textStyle: TextStyle(
-                                                                    fontSize: 20,
+                                                                    fontSize:
+                                                                        20,
                                                                     color: Colors
                                                                         .black,
                                                                     fontWeight:
@@ -1442,12 +1463,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                             94,
                                                                             94)
                                                                       ],
-                                                                      begin:
-                                                                          FractionalOffset(
-                                                                              0.0,
-                                                                              0.0),
+                                                                      begin: FractionalOffset(
+                                                                          0.0, 0.0),
                                                                       end: FractionalOffset(
-                                                                          1.5, 0.0),
+                                                                          1.5,
+                                                                          0.0),
                                                                       stops: [
                                                                         0.0,
                                                                         1.0
@@ -1456,11 +1476,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                           TileMode
                                                                               .clamp),
                                                                   borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              90)),
-                                                              margin:
-                                                                  EdgeInsets.only(
+                                                                      BorderRadius.circular(
+                                                                          90)),
+                                                              margin: EdgeInsets
+                                                                  .only(
                                                                       right: 10),
                                                               child: ElevatedButton(
                                                                   style: ElevatedButton.styleFrom(
@@ -1470,15 +1489,15 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                     foregroundColor:
                                                                         Colors
                                                                             .black,
-                                                                    elevation: 0,
+                                                                    elevation:
+                                                                        0,
                                                                   ),
                                                                   onPressed: () async {
                                                                     Navigator.push(
                                                                         context,
                                                                         MaterialPageRoute(
-                                                                          builder:
-                                                                              (context) =>
-                                                                                  RamayanaInformasi(),
+                                                                          builder: (context) =>
+                                                                              RamayanaInformasi(),
                                                                         ));
                                                                     // Navigator.pushAndRemoveUntil(
                                                                     //     context,
@@ -1501,8 +1520,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                     ),
                                                   ),
                                                   Container(
-                                                      margin: EdgeInsets.fromLTRB(
-                                                          20, 0, 20, 0),
+                                                      margin:
+                                                          EdgeInsets.fromLTRB(
+                                                              20, 0, 20, 0),
                                                       child: BlocBuilder<
                                                               HomeCubit,
                                                               HomeState>(
@@ -1511,8 +1531,12 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                         if (state
                                                             is HomeLoading) {
                                                           return SpinKitThreeBounce(
-                                                            color: Color.fromARGB(
-                                                                255, 230, 0, 0),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    230,
+                                                                    0,
+                                                                    0),
                                                             size: 50.0,
                                                           );
                                                         }
@@ -1530,23 +1554,23 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                     var stringHtml =
                                                                         '${e.berita_dtl}';
                                                                     return InkWell(
-                                                                      onTap: () {
+                                                                      onTap:
+                                                                          () {
                                                                         News.newsDetail
                                                                             .clear();
                                                                         setState(
                                                                             () {
                                                                           News.newsDetail
                                                                               .add(e);
-                                                                          print(News
-                                                                              .newsDetail);
+                                                                          print(
+                                                                              News.newsDetail);
                                                                         });
                                                                         Navigator.pushAndRemoveUntil(
                                                                             context,
                                                                             MaterialPageRoute(builder:
                                                                                 (context) {
                                                                           return NewsDetail(
-                                                                              newsUrl:
-                                                                                  e.berita_dtl,
+                                                                              newsUrl: e.berita_dtl,
                                                                               fromHome: true);
                                                                         }),
                                                                             (route) =>
@@ -1567,10 +1591,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                             BoxDecoration(
                                                                           borderRadius:
                                                                               BorderRadius.circular(10),
-                                                                          color: Colors
-                                                                              .white,
+                                                                          color:
+                                                                              Colors.white,
                                                                         ),
-        
+
                                                                         // height: 165,
                                                                         child:
                                                                             Column(
@@ -1581,17 +1605,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                           children: [
                                                                             Container(
                                                                               // height: 150
-                                                                              child:
-                                                                                  ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.network('${e.url_photo}', fit: BoxFit.cover)),
+                                                                              child: ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.network('${e.url_photo}', fit: BoxFit.cover)),
                                                                             ),
                                                                             Container(
-                                                                              margin: EdgeInsets.fromLTRB(
-                                                                                  10,
-                                                                                  10,
-                                                                                  0,
-                                                                                  15),
-                                                                              child:
-                                                                                  Text('${e.berita_hdr}', style: GoogleFonts.plusJakartaSans(fontSize: 17, fontWeight: FontWeight.w600, color: Colors.black)),
+                                                                              margin: EdgeInsets.fromLTRB(10, 10, 0, 15),
+                                                                              child: Text('${e.berita_hdr}', style: GoogleFonts.plusJakartaSans(fontSize: 17, fontWeight: FontWeight.w600, color: Colors.black)),
                                                                             ),
                                                                           ],
                                                                         ),
@@ -1613,11 +1631,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                   return GestureDetector(
                                                                     onTap: () =>
                                                                         _controller
-                                                                            .animateToPage(
-                                                                                1),
+                                                                            .animateToPage(1),
                                                                     child:
                                                                         Container(
-                                                                      width: 12.0,
+                                                                      width:
+                                                                          12.0,
                                                                       height:
                                                                           10.0,
                                                                       margin: EdgeInsets.symmetric(
@@ -1712,7 +1730,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                               94)
                                                                         ],
                                                                         begin: FractionalOffset(
-                                                                            0.0, 0.0),
+                                                                            0.0,
+                                                                            0.0),
                                                                         end: FractionalOffset(
                                                                             1.5,
                                                                             0.0),
@@ -1720,16 +1739,13 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                           0.0,
                                                                           1.0
                                                                         ],
-                                                                        tileMode:
-                                                                            TileMode
-                                                                                .clamp),
+                                                                        tileMode: TileMode
+                                                                            .clamp),
                                                                     borderRadius:
                                                                         BorderRadius.circular(
                                                                             90)),
-                                                                margin:
-                                                                    EdgeInsets.only(
-                                                                        right:
-                                                                            10),
+                                                                margin: EdgeInsets.only(
+                                                                    right: 10),
                                                                 child: ElevatedButton(
                                                                     style: ElevatedButton.styleFrom(
                                                                       backgroundColor:
@@ -1765,76 +1781,64 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                       style: GoogleFonts.plusJakartaSans(
                                                                           fontSize:
                                                                               15,
-                                                                          color: Colors
-                                                                              .white),
+                                                                          color:
+                                                                              Colors.white),
                                                                     )))
                                                             : badge.Badge(
-                                                                child: Container(
-                                                                    height: 38,
-                                                                    decoration: BoxDecoration(
-                                                                        gradient: LinearGradient(
-                                                                            colors: [
-                                                                              Colors.red,
-                                                                              Color.fromARGB(
-                                                                                  255,
-                                                                                  103,
-                                                                                  94,
-                                                                                  94)
-                                                                            ],
-                                                                            begin: FractionalOffset(
-                                                                                0.0,
-                                                                                0.0),
-                                                                            end: FractionalOffset(
-                                                                                1.5,
-                                                                                0.0),
-                                                                            stops: [
-                                                                              0.0,
-                                                                              1.0
-                                                                            ],
-                                                                            tileMode: TileMode
-                                                                                .clamp),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
+                                                                child:
+                                                                    Container(
+                                                                        height:
+                                                                            38,
+                                                                        decoration: BoxDecoration(
+                                                                            gradient: LinearGradient(
+                                                                                colors: [
+                                                                                  Colors.red,
+                                                                                  Color.fromARGB(255, 103, 94, 94)
+                                                                                ],
+                                                                                begin: FractionalOffset(0.0,
+                                                                                    0.0),
+                                                                                end: FractionalOffset(1.5,
+                                                                                    0.0),
+                                                                                stops: [
+                                                                                  0.0,
+                                                                                  1.0
+                                                                                ],
+                                                                                tileMode: TileMode
+                                                                                    .clamp),
+                                                                            borderRadius: BorderRadius.circular(
                                                                                 90)),
-                                                                    margin:
-                                                                        EdgeInsets.only(
+                                                                        margin: EdgeInsets.only(
                                                                             right:
                                                                                 10),
-                                                                    child: ElevatedButton(
-                                                                        style: ElevatedButton.styleFrom(
-                                                                          backgroundColor:
-                                                                              Colors.transparent,
-                                                                          foregroundColor:
-                                                                              Colors.black,
-                                                                          elevation:
-                                                                              0,
-                                                                        ),
-                                                                        onPressed: () async {
-                                                                          await read_task();
-                                                                          Navigator.push(
-                                                                              context,
-                                                                              MaterialPageRoute(
-                                                                                builder: (context) => RamayanaMyListTask(),
-                                                                              ));
-                                                                          // Navigator.pushAndRemoveUntil(
-                                                                          //     context,
-                                                                          //     MaterialPageRoute(
-                                                                          //       builder: (context) =>
-                                                                          //           RamayanaMyListTask(),
-                                                                          //     ),
-                                                                          //     (Route<dynamic> route) => false);
-                                                                        },
-                                                                        child: Text(
-                                                                          'Lihat Semua',
-                                                                          style: GoogleFonts.plusJakartaSans(
-                                                                              fontSize:
-                                                                                  15,
-                                                                              color:
-                                                                                  Colors.white),
-                                                                        ))),
+                                                                        child: ElevatedButton(
+                                                                            style: ElevatedButton.styleFrom(
+                                                                              backgroundColor: Colors.transparent,
+                                                                              foregroundColor: Colors.black,
+                                                                              elevation: 0,
+                                                                            ),
+                                                                            onPressed: () async {
+                                                                              await read_task();
+                                                                              Navigator.push(
+                                                                                  context,
+                                                                                  MaterialPageRoute(
+                                                                                    builder: (context) => RamayanaMyListTask(),
+                                                                                  ));
+                                                                              // Navigator.pushAndRemoveUntil(
+                                                                              //     context,
+                                                                              //     MaterialPageRoute(
+                                                                              //       builder: (context) =>
+                                                                              //           RamayanaMyListTask(),
+                                                                              //     ),
+                                                                              //     (Route<dynamic> route) => false);
+                                                                            },
+                                                                            child: Text(
+                                                                              'Lihat Semua',
+                                                                              style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+                                                                            ))),
                                                                 badgeContent:
                                                                     SizedBox(
-                                                                        width: 18,
+                                                                        width:
+                                                                            18,
                                                                         height:
                                                                             20, //badge size
                                                                         child:
@@ -1871,16 +1875,20 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                         if (state
                                                             is HomeLoading) {
                                                           return SpinKitThreeBounce(
-                                                            color: Color.fromARGB(
-                                                                255, 230, 0, 0),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    230,
+                                                                    0,
+                                                                    0),
                                                             size: 50.0,
                                                           );
                                                         }
                                                         if (state
                                                             is HomeSuccess) {
                                                           return Container(
-                                                            child:
-                                                                ListView.builder(
+                                                            child: ListView
+                                                                .builder(
                                                               primary: false,
                                                               shrinkWrap: true,
                                                               itemCount: 3,
@@ -1892,9 +1900,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                   onTap: () {
                                                                     Navigator.push(
                                                                         context,
-                                                                        MaterialPageRoute(
-                                                                            builder:
-                                                                                (context) {
+                                                                        MaterialPageRoute(builder:
+                                                                            (context) {
                                                                       return RamayanaMyActivity(
                                                                           response: state
                                                                               .response
@@ -1904,30 +1911,21 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                   child:
                                                                       Container(
                                                                     height: 90,
-                                                                    margin: EdgeInsets
-                                                                        .only(
-                                                                            bottom:
-                                                                                10),
+                                                                    margin: EdgeInsets.only(
+                                                                        bottom:
+                                                                            10),
                                                                     decoration: BoxDecoration(
                                                                         boxShadow: <BoxShadow>[
                                                                           BoxShadow(
-                                                                              color: Color.fromARGB(
-                                                                                  255,
-                                                                                  197,
-                                                                                  197,
-                                                                                  197),
-                                                                              blurRadius:
-                                                                                  1,
-                                                                              spreadRadius:
-                                                                                  1,
-                                                                              offset:
-                                                                                  Offset(2, 2))
+                                                                              color: Color.fromARGB(255, 197, 197, 197),
+                                                                              blurRadius: 1,
+                                                                              spreadRadius: 1,
+                                                                              offset: Offset(2, 2))
                                                                         ],
                                                                         color: Colors
                                                                             .white,
                                                                         borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                10)),
+                                                                            BorderRadius.circular(10)),
                                                                     child:
                                                                         ListTile(
                                                                       leading: CircleAvatar(
@@ -1946,11 +1944,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                       subtitle:
                                                                           Column(
                                                                         mainAxisAlignment:
-                                                                            MainAxisAlignment
-                                                                                .start,
+                                                                            MainAxisAlignment.start,
                                                                         crossAxisAlignment:
-                                                                            CrossAxisAlignment
-                                                                                .start,
+                                                                            CrossAxisAlignment.start,
                                                                         children: [
                                                                           Container(
                                                                             margin:
@@ -1958,12 +1954,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                             child:
                                                                                 Text(
                                                                               '${state.response.data?[index].taskDesc}',
-                                                                              style: GoogleFonts.plusJakartaSans(
-                                                                                  fontSize: 18,
-                                                                                  color: Colors.black,
-                                                                                  fontWeight: FontWeight.w500),
-                                                                              overflow:
-                                                                                  TextOverflow.ellipsis,
+                                                                              style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
+                                                                              overflow: TextOverflow.ellipsis,
                                                                             ),
                                                                           ),
                                                                           Row(
@@ -1972,8 +1964,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                                 width: 80,
                                                                                 child: Text('Status', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
                                                                               ),
-                                                                              Text('${state.response.data?[index].taskStatus}',
-                                                                                  style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                              Text('${state.response.data?[index].taskStatus}', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
                                                                             ],
                                                                           ),
                                                                           Row(
@@ -1982,8 +1973,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                                 width: 80,
                                                                                 child: Text('Project ID', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
                                                                               ),
-                                                                              Text(': ${state.response.data?[index].projectId}',
-                                                                                  style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                              Text(': ${state.response.data?[index].projectId}', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
                                                                             ],
                                                                           ),
                                                                         ],
@@ -1995,7 +1985,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                             ),
                                                           );
                                                         }
-        
+
                                                         return Container();
                                                       })),
                                                 ],
@@ -2064,7 +2054,7 @@ class _FadeInImageWidgetState extends State<FadeInImageWidget>
       parent: _controller,
       curve: Curves.easeIn,
     );
-  
+
     _controller.forward();
   }
 

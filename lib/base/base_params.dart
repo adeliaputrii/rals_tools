@@ -87,6 +87,7 @@ const String trackSJSuccess = 'Track Surat Jalan Sukses';
 const String trackSJNavigate = 'Lihat Track SJ';
 
 //Popup Kartu Tambahan
+const String companyCardTitle = 'Kartu Perusahaan';
 const String cantempty = "Masukkan 6 digit kode POS";
 const String notFoundTransaction = "Belum ada Transaksi";
 const String page = "Kartu Tambahan Password";

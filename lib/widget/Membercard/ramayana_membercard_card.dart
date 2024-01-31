@@ -53,7 +53,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
               color: Colors.white,
             ),
           ),
-          title: Text('Kartu Tambahan',
+          title: Text(baseParam.companyCardTitle,
               style: GoogleFonts.plusJakartaSans(
                   fontSize: 23, color: Colors.white)),
           backgroundColor: Color.fromARGB(255, 210, 14, 0),
@@ -143,7 +143,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                                 .data?[index]
                                                                 .typeMc
                                                                 .toString() ??
-                                                            '7',
+                                                            '6',
                                                         data: state.response
                                                             .data![index]);
                                                   }));
@@ -182,27 +182,39 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                                 Offset(2, 4))
                                                       ],
                                                       image: DecorationImage(
-                                                          image: typeCard(state.response.data?[index].typeMc)
+                                                          image: typeCardImage(state
+                                                                      .response
+                                                                      .data?[
+                                                                          index]
+                                                                      .typeMc ??
+                                                                  0)
                                                               ? AssetImage(
-                                                                  'assets/tropikana.png')
+                                                                  'assets/rms.png')
                                                               : AssetImage(
-                                                                  'assets/rms.png'),
+                                                                  'assets/tropikana.png'),
                                                           fit: BoxFit.fill),
                                                     ),
                                                     child: Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment.end,
-                                                      crossAxisAlignment: state
-                                                                  .response
-                                                                  .data?[index]
-                                                                  .typeMc ==
-                                                              7
+                                                      crossAxisAlignment: typeCardImage(
+                                                              state
+                                                                      .response
+                                                                      .data?[
+                                                                          index]
+                                                                      .typeMc ??
+                                                                  0)
                                                           ? CrossAxisAlignment
                                                               .start
                                                           : CrossAxisAlignment
                                                               .end,
                                                       children: [
-                                                        typeCard(state.response.data?[index].typeMc)
+                                                        typeCardImage(state
+                                                                    .response
+                                                                    .data?[
+                                                                        index]
+                                                                    .typeMc ??
+                                                                0)
                                                             ? Text(
                                                                 totalBalance(
                                                                   int.tryParse(state
@@ -249,14 +261,24 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                           margin: EdgeInsets.only(
                                                               bottom: 10,
                                                               right: 10,
-                                                              top: typeCard(state.response.data?[index].typeMc)
+                                                              top: typeCardImage(state
+                                                                          .response
+                                                                          .data?[
+                                                                              index]
+                                                                          .typeMc ??
+                                                                      0)
                                                                   ? 50
                                                                   : 10),
                                                           child: Column(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .start,
-                                                            crossAxisAlignment: typeCard(state.response.data?[index].typeMc)
+                                                            crossAxisAlignment: state
+                                                                        .response
+                                                                        .data?[
+                                                                            index]
+                                                                        .typeMc ==
+                                                                    6
                                                                 ? CrossAxisAlignment
                                                                     .start
                                                                 : CrossAxisAlignment
@@ -303,5 +325,9 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
   String totalBalance(int saldo, int pemakaian) {
     final balance = saldo - pemakaian;
     return balance.toIdr();
+  }
+
+  bool typeCardImage(int type) {
+    return type != 7;
   }
 }

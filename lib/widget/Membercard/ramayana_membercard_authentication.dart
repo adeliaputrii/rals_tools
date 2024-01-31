@@ -4,10 +4,12 @@ class RamayanaMembercardAuthentication extends StatefulWidget {
   const RamayanaMembercardAuthentication({super.key});
 
   @override
-  State<RamayanaMembercardAuthentication> createState() => _RamayanaMembercardAuthenticationState();
+  State<RamayanaMembercardAuthentication> createState() =>
+      _RamayanaMembercardAuthenticationState();
 }
 
-class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAuthentication> {
+class _RamayanaMembercardAuthenticationState
+    extends State<RamayanaMembercardAuthentication> {
   UserData userData = UserData();
   KeyboardUtils keyboardUtils = KeyboardUtils();
   DeviceInfoPlugin devicePlugin = DeviceInfoPlugin();
@@ -22,7 +24,7 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
   bool isLoading = false;
   late SharedPreferences pref;
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    final urlApi = '${tipeurl}${basePath.api_login}';
+  final urlApi = '${tipeurl}${basePath.api_login}';
 
   @override
   void initState() {
@@ -71,6 +73,7 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
       loginCubit.login(loginBody: body);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
@@ -82,10 +85,9 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
         }
 
         if (state is LoginSuccess) {
-          loginCubit.createLog(
-              baseParam.page, baseParam.cardSuccess, urlApi);
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (_) => RamayanaMembercardCard()));
+          loginCubit.createLog(baseParam.page, baseParam.cardSuccess, urlApi);
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (_) => RamayanaMembercardCard()));
         }
 
         if (state is LoginFailure) {
@@ -119,145 +121,125 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          DefaultBottomBarController(child: Ramayana()),
-                    ),
-                    (Route<dynamic> route) => false);
-              },
-              icon: Icon(
-                Icons.arrow_back_ios,
-                size: 23,
-                color: Colors.white,
-              ),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        DefaultBottomBarController(child: Ramayana()),
+                  ),
+                  (Route<dynamic> route) => false);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 23,
+              color: Colors.white,
             ),
-            title: Text('Kartu Tambahan',
-                style: GoogleFonts.plusJakartaSans(
-                    fontSize: 23, 
-                    color: Colors.white)),
-            backgroundColor: Color.fromARGB(255, 210,14,0),
-            elevation: 0,
-            toolbarHeight: 80,
           ),
-      
+          title: Text(baseParam.companyCardTitle,
+              style: GoogleFonts.plusJakartaSans(
+                  fontSize: 23, color: Colors.white)),
+          backgroundColor: Color.fromARGB(255, 210, 14, 0),
+          elevation: 0,
+          toolbarHeight: 80,
+        ),
         body: Container(
-          color: Color.fromARGB(255, 210,14,0),
+          color: Color.fromARGB(255, 210, 14, 0),
           child: ListView(
             children: [
-              Stack(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(
-                        ),
+              Stack(children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(),
                         // color: Colors.blue,
                         height: 350,
                         width: 400,
-                        child:  FadeInImageWidget(
-                          imageUrl: 'assets/idcashpin_password_enter.png')
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(
-                          60, 0, 50, 0),
-                        // color: Colors.amber,
-                        // height: 200,
-                        width: 3500,
-                        child: Text(
-                          'Masukkan password Anda',
+                        child: FadeInImageWidget(
+                            imageUrl: 'assets/idcashpin_password_enter.png')),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(60, 0, 50, 0),
+                      // color: Colors.amber,
+                      // height: 200,
+                      width: 3500,
+                      child: Text('Masukkan password Anda',
                           style: GoogleFonts.plusJakartaSans(
-                          fontSize: 20, 
-                          color: Colors.white)
-                        ),
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: Container(
-                          margin: EdgeInsets.fromLTRB(
-                            50, 30, 50, 0),
-                          height: 55,
-                          decoration: BoxDecoration(
+                              fontSize: 20, color: Colors.white)),
+                    ),
+                    Form(
+                      key: _formKey,
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(50, 30, 50, 0),
+                        height: 55,
+                        decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(30)
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 20, right: 20, bottom: 0
-                            ),
-                            child: TextFormField(
-                              
-                              obscureText: _passwordVisible ? false : true,
-                              // validator: RequiredValidator(errorText: 'Wajib diisi'),
-                              controller: passwordController,
-                              style: GoogleFonts.plusJakartaSans(
-                              fontSize: 18, 
-                              color: Colors.black),
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                suffixIcon: IconButton(
-                                      icon: Icon(
-                                        // Based on passwordVisible state choose the icon
-                                        _passwordVisible
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
-                                        color: Color.fromARGB(255, 255, 17, 17),
-                                      ),
-                                      onPressed: () {
-                                        // Update the state i.e. toogle the state of passwordVisible variable
-                                        setState(() {
-                                          _passwordVisible = !_passwordVisible;
-                                        });
-                                      },
-                                    ),
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, bottom: 0),
+                          child: TextFormField(
+                            obscureText: _passwordVisible ? false : true,
+                            // validator: RequiredValidator(errorText: 'Wajib diisi'),
+                            controller: passwordController,
+                            style: GoogleFonts.plusJakartaSans(
+                                fontSize: 18, color: Colors.black),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  _passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Color.fromARGB(255, 255, 17, 17),
+                                ),
+                                onPressed: () {
+                                  // Update the state i.e. toogle the state of passwordVisible variable
+                                  setState(() {
+                                    _passwordVisible = !_passwordVisible;
+                                  });
+                                },
                               ),
                             ),
                           ),
                         ),
                       ),
-                      Container(
+                    ),
+                    Container(
                         margin: EdgeInsets.only(
-                          top: 50, 
+                          top: 50,
                         ),
                         child: MaterialButton(
-                        minWidth: 150,
-                        color: Colors.white,
-                        height: 45,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)
-                        ),
-                         onPressed: () {
-                          if (passwordController.text.isEmpty) {
-                            print('null');
-                             popUpWidget.showPopUpError(baseParam.pleaseCheck, baseParam.passwordEmpty);
-                          } else {
-                             loginPressed();
-                          }
-                         },
-                         child: Text(
-                           'Konfirmasi',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 20, 
-                            color: Colors.red)
-                         ),
-                        )
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          top: 200
-                        ),
+                          minWidth: 150,
+                          color: Colors.white,
+                          height: 45,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          onPressed: () {
+                            if (passwordController.text.isEmpty) {
+                              print('null');
+                              popUpWidget.showPopUpError(baseParam.pleaseCheck,
+                                  baseParam.passwordEmpty);
+                            } else {
+                              loginPressed();
+                            }
+                          },
+                          child: Text('Konfirmasi',
+                              style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 20, color: Colors.red)),
+                        )),
+                    Container(
+                        margin: EdgeInsets.only(top: 200),
                         // height: 100,
                         decoration: BoxDecoration(
-                          // color: Colors.white,
-                        ),
+                            // color: Colors.white,
+                            ),
                         child: Center(
-                          child:  Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text('Versi ${versi} Hak Cipta RALS',
@@ -278,11 +260,10 @@ class _RamayanaMembercardAuthenticationState extends State<RamayanaMembercardAut
                                   ))
                             ],
                           ),
-                        )
-                      )
-                    ],
-                  ),
-                ]),
+                        ))
+                  ],
+                ),
+              ]),
             ],
           ),
         ),
