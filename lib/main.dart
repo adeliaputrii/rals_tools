@@ -92,10 +92,9 @@ Future<void> registerAppServices() async {
   final appUtil = AppUtils();
   appUtil.initNetwork();
   final appServices = AppServices(GetIt.I.get<Dio>());
-  // final url =
-  //     kDebugMode ? '${basePath.base_url_dev}' : '${basePath.base_url_prod}';
+
+  // final url = '${basePath.base_url_prod}';
   final url = '${basePath.base_url_dev}';
-  debugPrint('url' + url);
   await appServices.registerAppServices(url);
 }
 
