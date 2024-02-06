@@ -29,3 +29,8 @@ const String api_get_company_card_history_day =
     'v1/companycard/history_companyCardDD';
 
 const String api_get_news_list = 'v1/news/get';
+
+const String api_approval_my_transc = 'v1/returnvoid/tbl_my_transaksi_rtn';
+
+
+const String api_get_store = 'v1/returnvoid/tbl_my_transaksi_rtn';

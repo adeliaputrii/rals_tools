@@ -162,7 +162,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
               color: Colors.white,
             ),
           ),
-          title: Text('Kartu Tambahan',
+          title: Text('${baseParam.companyCardTitle}',
               style: GoogleFonts.plusJakartaSans(
                   fontSize: 23, color: Colors.white)),
           backgroundColor: Color.fromARGB(255, 210, 14, 0),
@@ -267,6 +267,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                           margin: EdgeInsets.only(
                                               bottom: 20, left: 20),
                                           child: Column(
+                                            
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             crossAxisAlignment:

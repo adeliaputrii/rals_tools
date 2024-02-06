@@ -207,7 +207,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                                     .typeMc ??
                                                                 0)
                                                             ? Text(
-                                                                totalBalance(
+                                                              totalBalance(
                                                                   int.tryParse(cardActive[index]
                                                                               .saldo ??
                                                                           '0') ??
