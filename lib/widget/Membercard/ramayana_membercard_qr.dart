@@ -131,37 +131,45 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
     return joinResult;
   }
 
-  Future<void> _onBackPressed() async {
+   _onBackPressed() async {
     await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
-    Navigator.pop(context, '${widget.nokartu}');
+     Navigator.pushAndRemoveUntil(
+      context, MaterialPageRoute(
+        builder: (context){
+          return RamayanaMembercardAuthentication();
+          }), (route) => false);
+          return false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: RelativeBuilder(builder: (context, height, width, sy, sx) {
-        return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              onPressed: () async {
-                _onBackPressed();
-                print(userData.getImei());
-              },
-              icon: Icon(
-                Icons.arrow_back_ios,
-                size: 20,
-                color: Colors.white,
-              ),
+    return RelativeBuilder(builder: (context, height, width, sy, sx) {
+      return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () async {
+              _onBackPressed();
+              print(userData.getImei());
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 20,
+              color: Colors.white,
             ),
-            centerTitle: true,
-            title: Text('Kartu Tambahan',
-                style: GoogleFonts.plusJakartaSans(
-                    fontSize: 23, color: Colors.white)),
-            backgroundColor: Color.fromARGB(255, 210, 14, 0),
-            // elevation: 7.20,
-            toolbarHeight: 70,
           ),
-          body: ListView(
+          centerTitle: true,
+          title: Text('Kartu Perusahaan',
+              style: GoogleFonts.plusJakartaSans(
+                  fontSize: 23, color: Colors.white)),
+          backgroundColor: Color.fromARGB(255, 210, 14, 0),
+          // elevation: 7.20,
+          toolbarHeight: 70,
+        ),
+        body: WillPopScope(
+          onWillPop: () {
+           return  _onBackPressed();
+          },
+          child: ListView(
             children: [
               Stack(children: <Widget>[
                 Container(
@@ -262,7 +270,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                   });
                                   await Future.delayed(
                                       const Duration(seconds: 3));
-
+              
                                   print(_visible);
                                   if (_visible == true) {
                                     await FlutterWindowManager.addFlags(
@@ -285,7 +293,11 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                   Future.delayed(Duration(minutes: 1), () {
                                     if (mounted) {
                                       setState(() {
-                                        Navigator.pop(context);
+                                        Navigator.pushAndRemoveUntil(
+                                          context, MaterialPageRoute(
+                                            builder: (context){
+                                              return RamayanaMembercardAuthentication();
+                                            }), (route) => false);
                                       });
                                     
                                     }
@@ -501,17 +513,8 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
               ]),
             ],
           ),
-        );
-      }),
-      onWillPop: () async {
-        if (true) {
-          Navigator.pushAndRemoveUntil(context,
-              MaterialPageRoute(builder: (context) {
-            return DefaultBottomBarController(child: Ramayana());
-          }), (route) => false);
-          return true;
-        }
-      },
-    );
+        ),
+      );
+    });
   }
 }

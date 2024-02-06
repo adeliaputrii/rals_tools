@@ -496,7 +496,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                                 ),
                               ),
                             ),
-                            child: Text('Kirim',
+                            child: Text('Simpan',
                                 style: GoogleFonts.plusJakartaSans(
                                     fontSize: 18,
                                     color: baseColor.primaryColor)),
@@ -556,7 +556,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                             ),
                           ),
                         ),
-                        child: Text('Kirim',
+                        child: Text('Simpan',
                             style: GoogleFonts.plusJakartaSans(
                                 fontSize: 18, color: baseColor.primaryColor)),
                       ),

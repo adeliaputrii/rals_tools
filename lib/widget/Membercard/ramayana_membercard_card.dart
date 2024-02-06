@@ -184,7 +184,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                                       .typeMc ??
                                                                   0)
                                                               ? AssetImage(
-                                                                  'assets/rms.png')
+                                                                  'assets/rms2.png')
                                                               : AssetImage(
                                                                   'assets/tropikana.png'),
                                                           fit: BoxFit.fill),

@@ -108,7 +108,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                 offset: Offset(2, 4))
           ],
           image: DecorationImage(
-              image: AssetImage('assets/rms.png'), fit: BoxFit.fill),
+              image: AssetImage('assets/rms2.png'), fit: BoxFit.fill),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -235,7 +235,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                       ],
                                       image: DecorationImage(
                                           image: typeCard(widget.typeCard)
-                                              ? AssetImage('assets/rms.png')
+                                              ? AssetImage('assets/rms2.png')
                                               : AssetImage(
                                                   'assets/tropikana.png'),
                                           fit: BoxFit.fill),
@@ -316,7 +316,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                         ],
                                         image: DecorationImage(
                                             image: typeCard(widget.typeCard)
-                                                ? AssetImage('assets/rms.png')
+                                                ? AssetImage('assets/rms2.png')
                                                 : AssetImage(
                                                     'assets/tropikana.png'),
                                             fit: BoxFit.fill),
@@ -473,7 +473,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                       ],
                                       image: DecorationImage(
                                           image: typeCard(widget.typeCard)
-                                              ? AssetImage('assets/rms.png')
+                                              ? AssetImage('assets/rms2.png')
                                               : AssetImage(
                                                   'assets/tropikana.png'),
                                           fit: BoxFit.fill),
@@ -554,7 +554,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                         ],
                                         image: DecorationImage(
                                             image: typeCard(widget.typeCard)
-                                                ? AssetImage('assets/rms.png')
+                                                ? AssetImage('assets/rms2.png')
                                                 : AssetImage(
                                                     'assets/tropikana.png'),
                                             fit: BoxFit.fill),
