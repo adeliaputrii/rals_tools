@@ -44,6 +44,10 @@ DetailSj _$DetailSjFromJson(Map<String, dynamic> json) => DetailSj(
       driverName: json['driver_name'] as String?,
       origin: json['origin'] as String?,
       trackingStatus: json['tracking_status'] as String?,
+      actualKoli: json['actual_koli'] as int?,
+      listKoli: (json['list_koli'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$DetailSjToJson(DetailSj instance) => <String, dynamic>{
@@ -54,4 +58,6 @@ Map<String, dynamic> _$DetailSjToJson(DetailSj instance) => <String, dynamic>{
       'driver_name': instance.driverName,
       'origin': instance.origin,
       'tracking_status': instance.trackingStatus,
+      'actual_koli': instance.actualKoli,
+      'list_koli': instance.listKoli,
     };

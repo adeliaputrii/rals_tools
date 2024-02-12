@@ -13,7 +13,7 @@ CreateLogBody _$CreateLogBodyFromJson(Map<String, dynamic> json) =>
       dateRun: json['date_run'] as String?,
       info1: json['info1'] as String?,
       info2: json['info2'] as String?,
-      userid: json['userid'] as int?,
+      userid: json['userid'] as String?,
       toko: json['toko'] as String?,
       devicename: json['devicename'] as String?,
       token: json['token'] as String?,

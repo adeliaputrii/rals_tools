@@ -28,6 +28,20 @@ class PopUpWidget {
     ).show(context);
   }
 
+  showPopUpWarning(String message, String confirmBtnText) {
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.warning,
+      text: message,
+      confirmBtnText: confirmBtnText,
+      cancelBtnText: 'Kembali',
+      confirmBtnColor: Colors.green,
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      },
+    );
+  }
+
   showPopUpSuccess(String message, String confirmBtnText, Function function) {
     CoolAlert.show(
       context: context,

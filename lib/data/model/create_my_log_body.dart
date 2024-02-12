@@ -9,21 +9,12 @@ class CreateLogBody {
   String? dateRun;
   String? info1;
   String? info2;
-  int? userid;
+  String? userid;
   String? toko;
   String? devicename;
   String? token;
 
-  CreateLogBody(
-      {this.progname,
-      this.versi,
-      this.dateRun,
-      this.info1,
-      this.info2,
-      this.userid,
-      this.toko,
-      this.devicename,
-      this.token});
+  CreateLogBody({this.progname, this.versi, this.dateRun, this.info1, this.info2, this.userid, this.toko, this.devicename, this.token});
 
   CreateLogBody.fromJson(Map<String, dynamic> json) {
     progname = json['progname'];

@@ -55,8 +55,7 @@ class LoginCubit extends Cubit<LoginState> {
     });
   }
 
-  void createLog(
-      String logInfoScreen, String? logInfoDesc, String urlApi) async {
+  void createLog(String logInfoScreen, String? logInfoDesc, String urlApi) async {
     final userId = await SharedPref.getUserId();
     final userToko = await SharedPref.getUserToko();
     final deviceId = await SharedPref.getDeviceId();
@@ -64,7 +63,7 @@ class LoginCubit extends Cubit<LoginState> {
     final currentDt = DateTime.now();
 
     final bodyLog = CreateLogBody(
-        userid: int.parse(userId ?? "0"),
+        userid: userId,
         devicename: deviceId,
         dateRun: currentDt.toString(),
         info1: logInfoScreen,
@@ -85,15 +84,14 @@ class LoginCubit extends Cubit<LoginState> {
     });
   }
 
-  void createLogVoidOffline(String? logInfoScreen, String? logInfoDesc,
-      String urlApi, String? currentDt) async {
+  void createLogVoidOffline(String? logInfoScreen, String? logInfoDesc, String urlApi, String? currentDt) async {
     final userId = await SharedPref.getUserId();
     final userToko = await SharedPref.getUserToko();
     final deviceId = await SharedPref.getDeviceId();
     final deviceName = await SharedPref.getDeviceName();
 
     final bodyLog = CreateLogBody(
-        userid: int.parse(userId ?? "0"),
+        userid: userId,
         devicename: deviceId,
         dateRun: currentDt.toString(),
         info1: logInfoScreen,
