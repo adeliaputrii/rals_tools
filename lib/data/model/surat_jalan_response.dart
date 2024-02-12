@@ -37,11 +37,8 @@ class Data {
   Data({this.detailSj, this.button});
 
   Data.fromJson(Map<String, dynamic> json) {
-    detailSj = json['detail_sj'] != null
-        ? new DetailSj.fromJson(json['detail_sj'])
-        : null;
-    button =
-        json['button'] != null ? new Button.fromJson(json['button']) : null;
+    detailSj = json['detail_sj'] != null ? new DetailSj.fromJson(json['detail_sj']) : null;
+    button = json['button'] != null ? new Button.fromJson(json['button']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -65,6 +62,8 @@ class DetailSj {
   String? driverName;
   String? origin;
   String? trackingStatus;
+  int? actualKoli;
+  List<String>? listKoli;
 
   DetailSj(
       {this.noSj,
@@ -73,7 +72,9 @@ class DetailSj {
       this.noVehicle,
       this.driverName,
       this.origin,
-      this.trackingStatus});
+      this.trackingStatus,
+      this.actualKoli,
+      this.listKoli});
 
   DetailSj.fromJson(Map<String, dynamic> json) {
     noSj = json['no_sj'];
@@ -83,6 +84,8 @@ class DetailSj {
     driverName = json['driver_name'];
     origin = json['origin'];
     trackingStatus = json['tracking_status'];
+    actualKoli = json['actual_koli'];
+    listKoli = json['list_koli'].cast<String>();
   }
 
   Map<String, dynamic> toJson() {
@@ -94,6 +97,8 @@ class DetailSj {
     data['driver_name'] = this.driverName;
     data['origin'] = this.origin;
     data['tracking_status'] = this.trackingStatus;
+    data['actual_koli'] = this.actualKoli;
+    data['list_koli'] = this.listKoli;
     return data;
   }
 }

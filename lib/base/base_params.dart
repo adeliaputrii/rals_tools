@@ -32,10 +32,12 @@ const String logInfoIdcashFail = 'Reset Password Gagal';
 //*Log Surat Jalan Page*//
 const String logInfoScanSJPage = 'Ramayana Scan Surat Jalan Page';
 const String logInfoScanSJSucc = 'Ramayana Scan Surat Berhasil';
+const String logInfoScanDesc = 'Generate SJ No -';
 const String logInfoScanSJFail = 'Ramayana Scan Surat Gagal';
 const String logInfoTrackSJPage = 'Ramayana Track Surat Jalan Page';
 const String logInfoTrackSJSucc = 'Ramayana Track Surat Berhasil';
 const String logInfoTrackSJFail = 'Ramayana Track Surat Gagal';
+
 //*Log Profile Page*//
 const String logInfoProfilePage = 'Profile Page';
 const String logInfoProfile = 'Logout Aplikasi RALS';
@@ -75,17 +77,26 @@ const String pleaseCheckConnection = 'Please check your connection..';
 const String logLoginOfflinePage = 'Login Offline Page';
 const String logSucces = 'Login Offline Sukses';
 const String logCantAccessVoid = 'Login Offline Gagal';
-const String logDevice =
-    'Device tidak ditemukan.Pastikan Anda pernah login pada device ini';
-const String logLoginCode =
-    'Anda terdeteksi menggunakan device berbeda/Login Code tidak sesuai';
+const String logDevice = 'Device tidak ditemukan.Pastikan Anda pernah login pada device ini';
+const String logLoginCode = 'Anda terdeteksi menggunakan device berbeda/Login Code tidak sesuai';
 
 //Popup SJ Title or Description
 const String notFound = "Tidak ditemukan";
 const String failed = "Gagal";
 const String trackSJSuccess = 'Track Surat Jalan Sukses';
 const String trackSJNavigate = 'Lihat Track SJ';
-
+const String sjTrackTitle = 'Lacak Surat Jalan';
+const String sjNoSuratJalan = 'No.Surat Jalan';
+const String sjNoDokumen = 'No. Dokumen';
+const String sjTipeDokumen = 'Tipe Dokumen';
+const String sjAsal = 'Asal';
+const String sjTujuan = 'Tujuan';
+const String sjStatus = 'Status';
+const String sjPetugas = 'Petugas';
+const String sjNoMobil = 'No. Mobil';
+const String sjKoliDiterima = 'Koli Diterima';
+const String sjKoliHilang = 'Koli Hilang';
+const String sjCatatan = 'Catatan';
 //Popup Kartu Tambahan
 const String companyCardTitle = 'Kartu Perusahaan';
 const String cantempty = "Masukkan 6 digit kode POS";

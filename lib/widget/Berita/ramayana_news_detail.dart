@@ -12,6 +12,8 @@ class NewsDetail extends StatefulWidget {
 class _NewsDetailState extends State<NewsDetail> {
   TransformationController controller = TransformationController();
   late final WebViewController _controller;
+  bool isLoading = false;
+  int progressBar = 0;
   String urlDetail = "";
 
   @override
@@ -27,10 +29,20 @@ class _NewsDetailState extends State<NewsDetail> {
         ..setNavigationDelegate(
           NavigationDelegate(
             onProgress: (int progress) {
-              // Update loading bar.
+              setState(() {
+                progressBar = progress;
+              });
             },
-            onPageStarted: (String url) {},
-            onPageFinished: (String url) {},
+            onPageStarted: (String url) {
+              setState(() {
+                isLoading = true;
+              });
+            },
+            onPageFinished: (String url) {
+              setState(() {
+                isLoading = false;
+              });
+            },
             onWebResourceError: (WebResourceError error) {},
             onNavigationRequest: (NavigationRequest request) {
               if (request.url.startsWith('https://www.youtube.com/')) {
@@ -52,8 +64,7 @@ class _NewsDetailState extends State<NewsDetail> {
           if (!widget.fromHome) {
             Navigator.pop(context);
           } else {
-            Navigator.pushAndRemoveUntil(context,
-                MaterialPageRoute(builder: (context) {
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
               return DefaultBottomBarController(child: Ramayana());
             }), (route) => false);
           }
@@ -67,8 +78,7 @@ class _NewsDetailState extends State<NewsDetail> {
                 if (!widget.fromHome) {
                   Navigator.pop(context);
                 } else {
-                  Navigator.pushAndRemoveUntil(context,
-                      MaterialPageRoute(builder: (context) {
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
                     return DefaultBottomBarController(child: Ramayana());
                   }), (route) => false);
                 }
@@ -80,19 +90,13 @@ class _NewsDetailState extends State<NewsDetail> {
             ),
             title: Text(
               'Berita',
-              style: GoogleFonts.plusJakartaSans(
-                  textStyle: TextStyle(
-                      fontSize: 23,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500)),
+              style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 23, color: Colors.white, fontWeight: FontWeight.w500)),
             ),
             backgroundColor: Color.fromARGB(255, 210, 14, 0),
             elevation: 5,
             toolbarHeight: 90,
           ),
-          body: urlDetail != ""
-              ? WebViewWidget(controller: _controller)
-              : Text('Empty url detail')),
+          body: !isLoading ? WebViewWidget(controller: _controller) : Center(child: Text('${progressBar}%'))),
     );
   }
 }

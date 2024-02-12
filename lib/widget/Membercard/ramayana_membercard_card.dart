@@ -138,11 +138,13 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                       MaterialPageRoute(
                                                           builder: (context) {
                                                     return RamayanaMemberCardDetail(
-                                                        typeCard: cardActive[index]
+                                                        typeCard: cardActive[
+                                                                    index]
                                                                 .typeMc
                                                                 .toString() ??
                                                             '6',
-                                                        data: cardActive[index]);
+                                                        data:
+                                                            cardActive[index]);
                                                   }));
                                                 },
                                                 child: Container(
@@ -179,10 +181,10 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                                 Offset(2, 4))
                                                       ],
                                                       image: DecorationImage(
-                                                          image: typeCardImage(cardActive[
-                                                                          index]
-                                                                      .typeMc ??
-                                                                  0)
+                                                          image: typeCardImage(
+                                                                  cardActive[index]
+                                                                          .typeMc ??
+                                                                      0)
                                                               ? AssetImage(
                                                                   'assets/rms2.png')
                                                               : AssetImage(
@@ -192,15 +194,15 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                     child: Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment.end,
-                                                      crossAxisAlignment: typeCardImage(
-                                                              cardActive[
+                                                      crossAxisAlignment:
+                                                          typeCardImage(cardActive[
                                                                           index]
                                                                       .typeMc ??
                                                                   0)
-                                                          ? CrossAxisAlignment
-                                                              .start
-                                                          : CrossAxisAlignment
-                                                              .end,
+                                                              ? CrossAxisAlignment
+                                                                  .start
+                                                              : CrossAxisAlignment
+                                                                  .end,
                                                       children: [
                                                         typeCardImage(cardActive[
                                                                         index]
@@ -248,17 +250,17 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                           margin: EdgeInsets.only(
                                                               bottom: 10,
                                                               right: 10,
-                                                              top: typeCardImage(cardActive[
-                                                                              index]
-                                                                          .typeMc ??
-                                                                      0)
+                                                              top: typeCardImage(
+                                                                      cardActive[index]
+                                                                              .typeMc ??
+                                                                          0)
                                                                   ? 50
                                                                   : 10),
                                                           child: Column(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .start,
-                                                            crossAxisAlignment:cardActive[
+                                                            crossAxisAlignment: cardActive[
                                                                             index]
                                                                         .typeMc ==
                                                                     6
@@ -304,10 +306,8 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                     },
                   )));
   }
-  //testestes
 
   String totalBalance(int saldo, int pemakaian) {
-    String test="";
     final balance = saldo - pemakaian;
     return balance.toIdr();
   }
