@@ -94,6 +94,7 @@ const String sjTujuan = 'Tujuan';
 const String sjStatus = 'Status';
 const String sjPetugas = 'Petugas';
 const String sjNoMobil = 'No. Mobil';
+const String sjLspb = 'LSPB';
 const String sjKoliDiterima = 'Koli Diterima';
 const String sjKoliHilang = 'Koli Hilang';
 const String sjCatatan = 'Catatan';

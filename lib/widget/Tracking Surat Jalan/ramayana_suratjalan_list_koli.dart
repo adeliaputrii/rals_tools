@@ -1,9 +1,11 @@
 part of 'import.dart';
 
 class SJMissingColy extends StatefulWidget {
-  SJMissingColy({super.key, required this.listColy});
-  List<SuratJalanKoliModel> listColy;
+  SJMissingColy({super.key, required this.listColy, required this.receivedColyResponse, required this.receivedColy});
 
+  List<SuratJalanKoliModel> listColy;
+  int receivedColyResponse;
+  int receivedColy;
   @override
   State<SJMissingColy> createState() => _SJMissingColyState();
 }
@@ -14,18 +16,20 @@ class _SJMissingColyState extends State<SJMissingColy> {
   List<SuratJalanKoliModel> searchNoColy = [];
   String searchQuery = '';
   bool isSearch = false;
+  int maxColy = 0;
 
   @override
   void initState() {
     super.initState();
     noColyMissing = getCheckedValue(widget.listColy);
+
+    maxColy = widget.receivedColyResponse - widget.receivedColy;
   }
 
   void searchColy(String text) {
     setState(
       () {
         searchQuery = text;
-
         searchNoColy = widget.listColy
             .where(
               (item) => item.nomor.toLowerCase().contains(
@@ -72,6 +76,9 @@ class _SJMissingColyState extends State<SJMissingColy> {
             width: double.infinity,
             child: OutlinedButton(
               onPressed: () {
+                if (noColyMissing.length > maxColy) {
+                  return showSnackBar();
+                }
                 Navigator.pop(context, noColyMissing);
               },
               style: ButtonStyle(
@@ -156,11 +163,10 @@ class _SJMissingColyState extends State<SJMissingColy> {
                       onChanged: (bool? value) {
                         setState(() {
                           searchNoColy[index].isChecked = value;
-                          noColyMissing.contains(searchNoColy[index].nomor)
-                              ? noColyMissing.remove(searchNoColy[index].nomor)
-                              : noColyMissing.add(searchNoColy[index].nomor);
+                          noColyMissing.contains(widget.listColy[index].nomor)
+                              ? noColyMissing.remove(widget.listColy[index].nomor)
+                              : noColyMissing.add(widget.listColy[index].nomor);
                         });
-                        debugPrint(noColyMissing.toString());
                       },
                     ),
                   ]),
@@ -198,7 +204,6 @@ class _SJMissingColyState extends State<SJMissingColy> {
                               ? noColyMissing.remove(widget.listColy[index].nomor)
                               : noColyMissing.add(widget.listColy[index].nomor);
                         });
-                        debugPrint(noColyMissing.toString());
                       },
                     ),
                   ]),
@@ -208,5 +213,18 @@ class _SJMissingColyState extends State<SJMissingColy> {
             ),
           );
         });
+  }
+
+  void showSnackBar() {
+    final snackBar = SnackBar(
+      content: Text('Nomor Koli yang dipilih melebihi batas'),
+      duration: Duration(seconds: 2), // Adjust the duration as needed
+      action: SnackBarAction(
+        label: 'Tutup',
+        onPressed: () {},
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

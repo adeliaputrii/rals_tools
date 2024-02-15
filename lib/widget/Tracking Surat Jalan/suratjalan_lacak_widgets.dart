@@ -81,7 +81,7 @@ Widget stepperListView(List<StepperItemData> stepperSJ) {
                   Expanded(
                     flex: 7,
                     child: Text(
-                      ':' + stepData.content['date'] ?? '',
+                      ': ' + stepData.content['date'] ?? '',
                       style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Color.fromARGB(255, 87, 87, 87)),
                     ),
                   ),
@@ -109,7 +109,7 @@ Widget stepperListView(List<StepperItemData> stepperSJ) {
                   Expanded(
                     flex: 7,
                     child: Text(
-                      ':' + stepData.content['site'] ?? '',
+                      ': ' + stepData.content['site'] ?? '',
                       style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Color.fromARGB(255, 87, 87, 87)),
                     ),
                   ),
@@ -137,7 +137,7 @@ Widget stepperListView(List<StepperItemData> stepperSJ) {
                   Expanded(
                     flex: 7,
                     child: Text(
-                      ':' + stepData.content['description'] ?? '',
+                      ': ' + stepData.content['description'] ?? '',
                       style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Color.fromARGB(255, 87, 87, 87)),
                     ),
                   ),
@@ -158,14 +158,14 @@ Widget stepperListView(List<StepperItemData> stepperSJ) {
                   Container(
                     width: 90,
                     child: Text(
-                      'Note',
+                      'Note ',
                       style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Color.fromARGB(255, 87, 87, 87)),
                     ),
                   ),
                   Expanded(
                     flex: 7,
                     child: Text(
-                      ':' + stepData.content['remark'] ?? '',
+                      ': ' + stepData.content['remark'] ?? '',
                       style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Color.fromARGB(255, 87, 87, 87)),
                     ),
                   ),
@@ -174,6 +174,93 @@ Widget stepperListView(List<StepperItemData> stepperSJ) {
               const SizedBox(
                 height: 10,
               ),
+              Visibility(
+                visible: stepData.content['rcv_koli'] != null && stepData.content['rcv_koli'] != 0,
+                child: Row(
+                  children: [
+                    const Expanded(
+                      child: Icon(
+                        IconlyLight.document,
+                        color: Colors.red,
+                        size: 25,
+                      ),
+                    ),
+                    Container(
+                      width: 90,
+                      child: Text(
+                        'Jumlah Koli',
+                        style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Color.fromARGB(255, 87, 87, 87)),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 7,
+                      child: Text(
+                        ': ' + (stepData.content['rcv_koli'] ?? '-').toString() + '/' + (stepData.content['actual_koli'] ?? '-').toString(),
+                        style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Color.fromARGB(255, 87, 87, 87)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Visibility(
+                visible: stepData.content['rcv_koli'] != null && stepData.content['rcv_koli'] != 0,
+                child: Row(
+                  children: [
+                    const Expanded(
+                      child: Icon(
+                        IconlyLight.document,
+                        color: Colors.red,
+                        size: 25,
+                      ),
+                    ),
+                    Container(
+                      width: 90,
+                      child: Text(
+                        'Koli Hilang',
+                        style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Color.fromARGB(255, 87, 87, 87)),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 7,
+                      child: Text(
+                        ': ' + (stepData.content['missing_koli'] ?? '-'),
+                        style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Color.fromARGB(255, 87, 87, 87)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Visibility(
+                visible: stepData.content['rcv_koli'] != null && stepData.content['rcv_koli'] != 0,
+                child: Row(
+                  children: [
+                    const Expanded(
+                      child: Icon(
+                        IconlyLight.document,
+                        color: Colors.red,
+                        size: 25,
+                      ),
+                    ),
+                    Container(
+                      width: 90,
+                      child: Text(
+                        'LSPB',
+                        style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Color.fromARGB(255, 87, 87, 87)),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 7,
+                      child: Text(
+                        ': ' + (stepData.content['lspb'] ?? '-').toString(),
+                        style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Color.fromARGB(255, 87, 87, 87)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   const Expanded(

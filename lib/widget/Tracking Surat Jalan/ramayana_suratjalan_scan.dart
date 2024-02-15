@@ -21,6 +21,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
   TextEditingController originController = TextEditingController();
   TextEditingController destinationController = TextEditingController();
   TextEditingController statusController = TextEditingController();
+  TextEditingController lspbController = TextEditingController();
 
   List<SuratJalanModel> sjModel = [];
   List<TextEditingController> _controller = [];
@@ -36,6 +37,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
   bool buttonRegular = false;
   bool buttonSupplier = false;
   bool showMissingColy = false;
+  bool _visibleBottom = false;
   late SuratJalanCubit sjCubit;
   late LoginCubit logCubit;
   late PopUpWidget popUp;
@@ -43,6 +45,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
   int indexSj = 0;
   int receivedColyResponse = 0;
   int receivedColy = 0;
+  int lspb = 0;
 
   @override
   void initState() {
@@ -51,7 +54,6 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
     sjCubit = context.read<SuratJalanCubit>();
     logCubit = context.read<LoginCubit>();
     _visible = false;
-    debugPrint('initstate again');
   }
 
   @override
@@ -102,11 +104,12 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
 
   void chooseMissingColy() async {
     final result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return SJMissingColy(listColy: colyList);
+      return SJMissingColy(listColy: colyList, receivedColy: receivedColy, receivedColyResponse: receivedColyResponse);
     }));
     if (result != null) {
       noColyMissing.clear();
       noColyMissing.addAll(result);
+
       String resultSelected = noColyMissing.map((e) => e.toString()).join(',');
       colyMissingController.text = resultSelected;
     }
@@ -172,6 +175,171 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
     showCupertinoModalPopup(context: context, builder: (context) => popup1);
   }
 
+  Widget _buttonRegular() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Expanded(
+          child: Container(
+            height: 100,
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: () {
+                if (checkValidation()) {
+                  postTracking(1);
+                }
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(baseColor.primaryColor),
+                side: MaterialStateProperty.all(
+                  BorderSide(
+                    color: baseColor.primaryColor, // Set the border color to red
+                    width: 2.0, // Set the border width
+                  ),
+                ),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
+              ),
+              child: Text('Simpan', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white)),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buttonSupplier() {
+    return Container(
+      height: 100,
+      child: OutlinedButton(
+        onPressed: () {
+          if (checkValidation()) {
+            postTracking(3);
+          }
+        },
+        style: ButtonStyle(
+          side: MaterialStateProperty.all(
+            BorderSide(
+              color: baseColor.primaryColor, // Set the border color to red
+              width: 2.0, // Set the border width
+            ),
+          ),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
+        ),
+        child: Text('Supplier', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: baseColor.primaryColor)),
+      ),
+    );
+  }
+
+  Widget _buttonStoreline() {
+    return Container(
+      height: 100,
+      width: double.infinity,
+      child: OutlinedButton(
+        onPressed: () {
+          if (checkValidation()) {
+            postTracking(2);
+          }
+        },
+        style: ButtonStyle(
+          side: MaterialStateProperty.all(
+            BorderSide(
+              color: baseColor.primaryColor, // Set the border color to red
+              width: 2.0, // Set the border width
+            ),
+          ),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
+        ),
+        child: Text('Storeline', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: baseColor.primaryColor)),
+      ),
+    );
+  }
+
+  Widget buttonLogic() {
+    if (buttonSupplier || buttonStoreline && buttonRegular) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Container(
+            height: 100,
+            width: 200,
+            child: OutlinedButton(
+              onPressed: () {
+                if (checkValidation()) {
+                  postTracking(1);
+                }
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(baseColor.primaryColor),
+                side: MaterialStateProperty.all(
+                  BorderSide(
+                    color: baseColor.primaryColor, // Set the border color to red
+                    width: 2.0, // Set the border width
+                  ),
+                ),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
+              ),
+              child: Text('Simpan', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white)),
+            ),
+          ),
+          Container(
+            height: 100,
+            width: 200,
+            child: OutlinedButton(
+              onPressed: () {
+                if (checkValidation()) {
+                  if (buttonStoreline) {
+                    postTracking(2);
+                  } else {
+                    postTracking(3);
+                  }
+                }
+              },
+              style: ButtonStyle(
+                side: MaterialStateProperty.all(
+                  BorderSide(
+                    color: baseColor.primaryColor, // Set the border color to red
+                    width: 2.0, // Set the border width
+                  ),
+                ),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
+              ),
+              child:
+                  Text(buttonStoreline ? 'Storeline' : 'Supplier', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: baseColor.primaryColor)),
+            ),
+          )
+        ],
+      );
+    }
+
+    if (buttonStoreline && !buttonSupplier && !buttonRegular) {
+      return _buttonStoreline();
+    }
+    if (buttonSupplier && !buttonStoreline && !buttonRegular) {
+      return _buttonSupplier();
+    }
+    return _buttonRegular();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -210,15 +378,23 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                 noDocumentController.text = state.response.data?.detailSj?.noSj ?? baseParam.dash;
                 statusController.text = state.response.data?.detailSj?.trackingStatus ?? baseParam.dash;
                 receivedColyResponse = state.response.data?.detailSj?.actualKoli ?? 0;
+                receivedColy = state.response.data?.detailSj?.actualKoli ?? 0;
                 colyAvailableController..text = receivedColyResponse.toString();
                 state.response.data?.detailSj?.listKoli?.forEach((element) {
                   final body = SuratJalanKoliModel(isChecked: false, nomor: element);
                   colyList.add(body);
                 });
+
                 setState(() {
                   buttonStoreline = state.response.data?.button?.storeline ?? false;
                   buttonRegular = state.response.data?.button?.regular ?? false;
                   buttonSupplier = state.response.data?.button?.receivedBySupplier ?? false;
+
+                  if (buttonStoreline || buttonRegular || buttonSupplier) {
+                    _visibleBottom = true;
+                  } else {
+                    _visibleBottom = false;
+                  }
                 });
 
                 noSj = state.response.data?.detailSj?.noSj ?? '';
@@ -433,6 +609,8 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                                   onChanged: (value) {
                                     if (value.isNotEmpty) {
                                       receivedColy = int.parse(value);
+                                      lspb = (receivedColy - receivedColyResponse).toInt();
+                                      lspbController..text = lspb.toString();
                                       if (receivedColy < receivedColyResponse) {
                                         setState(() {
                                           showMissingColy = true;
@@ -494,8 +672,16 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                                   readOnly: true,
                                   maxLines: 10,
                                   minLines: 1,
-                                )
+                                ),
                               ],
+                            ),
+                          ),
+                          Visibility(
+                            visible: receivedColy != receivedColyResponse,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [TextLabel(baseParam.sjLspb), TextFieldSJ(lspbController)],
                             ),
                           ),
                           Padding(
@@ -535,7 +721,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
           child: Visibility(
-            visible: _visible,
+            visible: _visible && _visibleBottom,
             child: Container(
                 height: 56.0, // Adjust the height as needed
                 color: Colors.transparent, // Set the background color as needed
@@ -547,109 +733,9 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                     );
                   }
                   if (state is SuratJalanSuccess) {
-                    if (buttonSupplier || buttonStoreline) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            height: 100,
-                            width: 200,
-                            child: OutlinedButton(
-                              onPressed: () {
-                                if (checkValidation()) {
-                                  postTracking(1);
-                                }
-                              },
-                              style: ButtonStyle(
-                                side: MaterialStateProperty.all(
-                                  BorderSide(
-                                    color: baseColor.primaryColor, // Set the border color to red
-                                    width: 2.0, // Set the border width
-                                  ),
-                                ),
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
-                                ),
-                              ),
-                              child: Text('Simpan', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: baseColor.primaryColor)),
-                            ),
-                          ),
-                          Container(
-                            width: 200,
-                            height: 100,
-                            decoration: BoxDecoration(color: Color.fromARGB(255, 210, 14, 0), borderRadius: BorderRadius.circular(30)),
-                            child: MaterialButton(
-                              onPressed: () {
-                                if (checkValidation()) {
-                                  if (buttonStoreline) {
-                                    postTracking(2);
-                                  } else {
-                                    postTracking(3);
-                                  }
-                                }
-                              },
-                              child: Text(
-                                buttonStoreline ? 'Storeline' : 'Supplier',
-                                style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    }
+                    buttonLogic();
                   }
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        height: 100,
-                        width: 200,
-                        child: OutlinedButton(
-                          onPressed: () {
-                            if (checkValidation()) {
-                              postTracking(1);
-                            }
-                          },
-                          style: ButtonStyle(
-                            side: MaterialStateProperty.all(
-                              BorderSide(
-                                color: baseColor.primaryColor, // Set the border color to red
-                                width: 2.0, // Set the border width
-                              ),
-                            ),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                              ),
-                            ),
-                          ),
-                          child: Text('Simpan', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: baseColor.primaryColor)),
-                        ),
-                      ),
-                      Container(
-                        width: 200,
-                        height: 100,
-                        decoration: BoxDecoration(color: Color.fromARGB(255, 210, 14, 0), borderRadius: BorderRadius.circular(30)),
-                        child: MaterialButton(
-                          onPressed: () {
-                            if (checkValidation()) {
-                              if (buttonStoreline) {
-                                postTracking(2);
-                              } else {
-                                postTracking(3);
-                              }
-                            }
-                          },
-                          child: Text(
-                            buttonStoreline ? 'Storeline' : 'Supplier',
-                            style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
+                  return buttonLogic();
                 })),
           ),
         ),
@@ -658,11 +744,12 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
   }
 
   postTracking(int type) {
-    final body = TrackingSJBody(noSj: noSj, remarks: remarkController.text, rcv_koli: receivedColy.toString(), missingKoli: noColyMissing);
+    final body =
+        TrackingSJBody(noSj: noSjController.text, remarks: remarkController.text, rcv_koli: receivedColy.toString(), missingKoli: noColyMissing);
     CoolAlert.show(
       context: context,
       type: CoolAlertType.confirm,
-      text: 'Submit Status Pelacakan?',
+      text: 'Submit status pelacakan?',
       confirmBtnText: 'Ya',
       cancelBtnText: 'Tidak',
       confirmBtnColor: Colors.green,

@@ -163,19 +163,24 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
 
               int index = 0;
               final response = state.response.data;
-              debugPrint(state.response.data!.first.remark);
-              response!.forEach((element) {
-                stepperSJ.add(StepperItemData(
-                    id: "${index++}",
-                    content: ({
-                      'status': element.status,
-                      'site': element.site,
-                      'description': element.description != "null" ? element.description : "-",
-                      'remark': element.remark,
-                      'pic': element.pic,
-                      'date': element.date,
-                    })));
-              });
+              if (response != null) {
+                response.forEach((element) {
+                  stepperSJ.add(StepperItemData(
+                      id: "${index++}",
+                      content: ({
+                        'status': element.status ?? '-',
+                        'site': element.site ?? '-',
+                        'description': element.description != "null" ? element.description : "-",
+                        'remark': element.remark ?? '-',
+                        'pic': element.pic ?? '-',
+                        'actual_koli': element.actualKoli ?? 0,
+                        'rcv_koli': element.rcvKoli ?? 0,
+                        'missing_koli': element.missingKoli ?? '-',
+                        'lspb': element.lspb ?? 0,
+                        'date': element.date ?? '-',
+                      })));
+                });
+              }
             }
 
             if (state is TrackSJFailure) {
