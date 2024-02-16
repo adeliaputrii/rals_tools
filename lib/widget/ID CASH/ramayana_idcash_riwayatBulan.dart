@@ -2,9 +2,10 @@ part of 'import.dart';
 
 class RamayanaRiwayatIDCashBulan extends StatefulWidget {
   RamayanaRiwayatIDCashBulan(
-      {super.key, required this.noMember, required this.month});
+      {super.key, required this.noMember, required this.month, required this.year});
   final String noMember;
   final String month;
+  final String year;
   @override
   State<RamayanaRiwayatIDCashBulan> createState() =>
       _RamayanaRiwayatIDCashBulanState();
@@ -15,6 +16,7 @@ class _RamayanaRiwayatIDCashBulanState
   fetchDataBulan({
     required String nokartu,
     required String bulan,
+    required String tahun,
   }) async {
     final Map<String, ApprovalIdcashCustomerTanggal> profileMap = new Map();
     ApprovalIdcashCustomerTanggal.approvalidcashtanggal.clear();
@@ -122,7 +124,7 @@ class _RamayanaRiwayatIDCashBulanState
   @override
   void initState() {
     super.initState();
-    fetchDataBulan(nokartu: '${widget.noMember}', bulan: '${widget.month}');
+    fetchDataBulan(nokartu: '${widget.noMember}', bulan: '${widget.month}', tahun: '${widget.year}');
     // fetchDataBulan(nokartu: '1100180309385576', bulan: '${ApprovalIdcash.approvalidcash[2]}');
   }
 

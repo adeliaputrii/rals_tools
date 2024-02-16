@@ -100,32 +100,34 @@ class _RamayanaInformasiState extends State<RamayanaInformasi> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                        '${state.response.data?[index].beritaHdr}',
-                                        style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black)),
-                                    SizedBox(
-                                      height: 5,
+                                    Center(
+                                      child: Text(
+                                          '${state.response.data?[index].beritaHdr}',
+                                          style: GoogleFonts.plusJakartaSans(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.black)),
                                     ),
-                                    Flexible(
-                                      child: Html(
-                                        data:
-                                            state.response.data?[index].newsUrl,
-                                        style: {
-                                          'h1': Style(
-                                              maxLines: 3,
-                                              fontFamily:
-                                                  GoogleFonts.plusJakartaSans(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors.black)
-                                                      .fontFamily),
-                                        },
-                                      ),
-                                    ),
+                                    // SizedBox(
+                                    //   height: 5,
+                                    // ),
+                                    // Flexible(
+                                    //   child: Html(
+                                    //     data:
+                                    //         state.response.data?[index].newsUrl,
+                                    //     style: {
+                                    //       'h1': Style(
+                                    //           maxLines: 3,
+                                    //           fontFamily:
+                                    //               GoogleFonts.plusJakartaSans(
+                                    //                       fontSize: 16,
+                                    //                       fontWeight:
+                                    //                           FontWeight.w600,
+                                    //                       color: Colors.black)
+                                    //                   .fontFamily),
+                                    //     },
+                                    //   ),
+                                    // ),
                                     SizedBox(
                                       height: 10,
                                     ),

@@ -844,7 +844,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       if (element == 'myactivity.activity') {
         data.add(element);
       }
-      if (element == 'suratjalan.trackingsj') {
+      if (element == 'tms.suratjalan') {
         data.add(element);
       }
       if (element == 'kartu.kartuperusahaan') {

@@ -259,6 +259,7 @@ class _RamayanaRiwayatIDCash2State extends State<RamayanaRiwayatIDCash2> {
                         return RamayanaRiwayatIDCashBulan(
                           noMember: widget.noMember,
                           month: e.month,
+                          year: widget.year,
                         );
                       }));
                     },
