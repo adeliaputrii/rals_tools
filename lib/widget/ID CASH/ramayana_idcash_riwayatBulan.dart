@@ -1,18 +1,15 @@
 part of 'import.dart';
 
 class RamayanaRiwayatIDCashBulan extends StatefulWidget {
-  RamayanaRiwayatIDCashBulan(
-      {super.key, required this.noMember, required this.month, required this.year});
+  RamayanaRiwayatIDCashBulan({super.key, required this.noMember, required this.month, required this.year});
   final String noMember;
   final String month;
   final String year;
   @override
-  State<RamayanaRiwayatIDCashBulan> createState() =>
-      _RamayanaRiwayatIDCashBulanState();
+  State<RamayanaRiwayatIDCashBulan> createState() => _RamayanaRiwayatIDCashBulanState();
 }
 
-class _RamayanaRiwayatIDCashBulanState
-    extends State<RamayanaRiwayatIDCashBulan> {
+class _RamayanaRiwayatIDCashBulanState extends State<RamayanaRiwayatIDCashBulan> {
   fetchDataBulan({
     required String nokartu,
     required String bulan,
@@ -20,13 +17,8 @@ class _RamayanaRiwayatIDCashBulanState
   }) async {
     final Map<String, ApprovalIdcashCustomerTanggal> profileMap = new Map();
     ApprovalIdcashCustomerTanggal.approvalidcashtanggal.clear();
-    final responseku = await http.post(
-        Uri.parse('${tipeurl}v1/membercards/tbl_trxsaldokaryawanDD'),
-        body: {
-          'nokartu': '${widget.noMember}',
-          // 'nokartu' : '1100180309385576',
-          'bulan': '${widget.month}'
-        });
+    final responseku = await http.post(Uri.parse('${tipeurl}v1/membercards/tbl_trxsaldokaryawanDD'),
+        body: {'nokartu': '${widget.noMember}', 'tahun': '${widget.year}', 'bulan': '${widget.month}'});
 
     var data = jsonDecode(responseku.body);
 
@@ -35,15 +27,13 @@ class _RamayanaRiwayatIDCashBulanState
       print(data);
       int count = data['data'].length;
       for (int i = 0; i < count; i++) {
-        ApprovalIdcashCustomerTanggal.approvalidcashtanggal
-            .add(ApprovalIdcashCustomerTanggal.fromjson(data['data'][i]));
+        ApprovalIdcashCustomerTanggal.approvalidcashtanggal.add(ApprovalIdcashCustomerTanggal.fromjson(data['data'][i]));
       }
       // ApprovalIdcashCustomerTanggal.approvalidcashtanggal.forEach((element) {
       //       profileMap[element.tanggal] = element;
       //        ApprovalIdcashCustomerTanggal.approvalidcashtanggal = profileMap.values.toList();
       //      });
-      print(
-          'check length ${ApprovalIdcashCustomerTanggal.approvalidcashtanggal.length}');
+      print('check length ${ApprovalIdcashCustomerTanggal.approvalidcashtanggal.length}');
       print(data['data'].toString());
       if (ApprovalIdcashCustomerTanggal.approvalidcashtanggal.length == 0) {
         AlertDialog popup1 = AlertDialog(
@@ -71,10 +61,7 @@ class _RamayanaRiwayatIDCashBulanState
             child: Center(
               child: Text(
                 'Anda tidak memiliki riwayat transaksi',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -138,17 +125,15 @@ class _RamayanaRiwayatIDCashBulanState
             print(ApprovalIdcash.approvalidcash);
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios,
-              color: Colors.white,),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
         ),
         title: Container(
             margin: EdgeInsets.only(left: 70, right: 70),
             child: Text('Riwayat Transaksi',
-                style: GoogleFonts.plusJakartaSans(
-                    textStyle: TextStyle(
-                        fontSize: 23,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500)))),
+                style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 23, color: Colors.white, fontWeight: FontWeight.w500)))),
         backgroundColor: Color.fromARGB(255, 255, 0, 0),
         elevation: 0,
         toolbarHeight: 80,
@@ -159,18 +144,13 @@ class _RamayanaRiwayatIDCashBulanState
         ),
         Container(
           margin: EdgeInsets.only(top: 30, left: 5, right: 5, bottom: 10),
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(20)),
+          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
         ),
         Container(
           margin: EdgeInsets.fromLTRB(0, 60, 0, 0),
           child: Column(
             children: [
-              Center(
-                  child: Text('${kondisiBulan()}',
-                      style: GoogleFonts.plusJakartaSans(
-                          textStyle:
-                              TextStyle(fontSize: 20, color: Colors.black)))),
+              Center(child: Text('${kondisiBulan()}', style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 20, color: Colors.black)))),
               Container(
                 margin: EdgeInsets.only(top: 15, left: 50, right: 50),
                 color: Color.fromARGB(255, 197, 197, 197),
@@ -184,8 +164,7 @@ class _RamayanaRiwayatIDCashBulanState
           child: ListView(
             children: ApprovalIdcashCustomerTanggal.approvalidcashtanggal.map(
               (e) {
-                print(
-                    ApprovalIdcashCustomerTanggal.approvalidcashtanggal.length);
+                print(ApprovalIdcashCustomerTanggal.approvalidcashtanggal.length);
                 kondisiSelisih() {
                   var ex = '${e.nilai}';
                   List<String> resultSelisih = ex.split('');
@@ -194,43 +173,35 @@ class _RamayanaRiwayatIDCashBulanState
                     resultSelisih.insert(resultSelisih.length - 3, '.');
                     print(resultSelisih);
                   } //doneee 1000
-                  else if (resultSelisih.length <= 5 &&
-                      resultSelisih.length > 4) {
+                  else if (resultSelisih.length <= 5 && resultSelisih.length > 4) {
                     resultSelisih.insert(resultSelisih.length - 3, '.');
                     print(resultSelisih);
-                  } else if (resultSelisih.length <= 6 &&
-                      resultSelisih.length > 5) {
+                  } else if (resultSelisih.length <= 6 && resultSelisih.length > 5) {
                     resultSelisih.insert(resultSelisih.length - 3, '.');
                     print(resultSelisih);
-                  } else if (resultSelisih.length <= 7 &&
-                      resultSelisih.length > 6) {
+                  } else if (resultSelisih.length <= 7 && resultSelisih.length > 6) {
                     resultSelisih.insert(resultSelisih.length - 3, '.');
                     resultSelisih.insert(resultSelisih.length - 7, '.');
                     print(resultSelisih);
-                  } else if (resultSelisih.length <= 8 &&
-                      resultSelisih.length > 7) {
+                  } else if (resultSelisih.length <= 8 && resultSelisih.length > 7) {
                     resultSelisih.insert(resultSelisih.length - 3, '.');
                     resultSelisih.insert(resultSelisih.length - 7, '.');
                     print(resultSelisih);
-                  } else if (resultSelisih.length <= 9 &&
-                      resultSelisih.length > 8) {
+                  } else if (resultSelisih.length <= 9 && resultSelisih.length > 8) {
                     resultSelisih.insert(resultSelisih.length - 3, '.');
                     resultSelisih.insert(resultSelisih.length - 7, '.');
                     print(resultSelisih);
-                  } else if (resultSelisih.length <= 10 &&
-                      resultSelisih.length > 9) {
+                  } else if (resultSelisih.length <= 10 && resultSelisih.length > 9) {
                     resultSelisih.insert(resultSelisih.length - 3, '.');
                     resultSelisih.insert(resultSelisih.length - 7, '.');
                     resultSelisih.insert(resultSelisih.length - 11, '.');
                     print(resultSelisih);
-                  } else if (resultSelisih.length <= 11 &&
-                      resultSelisih.length > 10) {
+                  } else if (resultSelisih.length <= 11 && resultSelisih.length > 10) {
                     resultSelisih.insert(resultSelisih.length - 3, '.');
                     resultSelisih.insert(resultSelisih.length - 7, '.');
                     resultSelisih.insert(resultSelisih.length - 11, '.');
                     print(resultSelisih);
-                  } else if (resultSelisih.length <= 12 &&
-                      resultSelisih.length > 11) {
+                  } else if (resultSelisih.length <= 12 && resultSelisih.length > 11) {
                     resultSelisih.insert(resultSelisih.length - 3, '.');
                     resultSelisih.insert(resultSelisih.length - 7, '.');
                     resultSelisih.insert(resultSelisih.length - 11, '.');
@@ -256,18 +227,10 @@ class _RamayanaRiwayatIDCashBulanState
                       // backgroundColor: Color.fromARGB(255, 255, 17, 17),
                       // child: Icon(Icons.attach_money_outlined, color: Colors.white, size: 25,),
                       //                 ),
-                      title: Text('${e.tanggal}',
-                          style: GoogleFonts.plusJakartaSans(
-                              textStyle: TextStyle(
-                                  fontSize: 16, color: Colors.black))),
-                      subtitle: Text('${e.no_struk}',
-                          style: GoogleFonts.plusJakartaSans(
-                              textStyle: TextStyle(
-                                  fontSize: 16, color: Colors.black))),
-                      trailing: Text('Rp.${kondisiSelisih()}',
-                          style: GoogleFonts.plusJakartaSans(
-                              textStyle: TextStyle(
-                                  fontSize: 16, color: Colors.black))),
+                      title: Text('${e.tanggal}', style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 16, color: Colors.black))),
+                      subtitle: Text('${e.no_struk}', style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 16, color: Colors.black))),
+                      trailing:
+                          Text('Rp.${kondisiSelisih()}', style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 16, color: Colors.black))),
                     ),
                   ),
                 );
