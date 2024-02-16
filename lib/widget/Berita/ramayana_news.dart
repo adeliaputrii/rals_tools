@@ -94,20 +94,18 @@ class _RamayanaInformasiState extends State<RamayanaInformasi> {
                             Expanded(
                               child: Container(
                                 margin: EdgeInsets.only(
-                                    top: 20, right: 10, bottom: 15, left: 10),
+                                    top: 30, right: 10, bottom: 15, left: 10),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Center(
-                                      child: Text(
-                                          '${state.response.data?[index].beritaHdr}',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.black)),
-                                    ),
+                                    Text(
+                                        '${state.response.data?[index].beritaHdr}',
+                                        style: GoogleFonts.plusJakartaSans(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black)),
                                     // SizedBox(
                                     //   height: 5,
                                     // ),
@@ -128,9 +126,9 @@ class _RamayanaInformasiState extends State<RamayanaInformasi> {
                                     //     },
                                     //   ),
                                     // ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
+                                    // SizedBox(
+                                    //   height: 10,
+                                    // ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
