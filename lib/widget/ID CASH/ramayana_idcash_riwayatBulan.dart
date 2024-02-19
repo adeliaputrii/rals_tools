@@ -112,7 +112,6 @@ class _RamayanaRiwayatIDCashBulanState extends State<RamayanaRiwayatIDCashBulan>
   void initState() {
     super.initState();
     fetchDataBulan(nokartu: '${widget.noMember}', bulan: '${widget.month}', tahun: '${widget.year}');
-    // fetchDataBulan(nokartu: '1100180309385576', bulan: '${ApprovalIdcash.approvalidcash[2]}');
   }
 
   @override

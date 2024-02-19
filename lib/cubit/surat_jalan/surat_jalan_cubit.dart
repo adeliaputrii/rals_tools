@@ -27,22 +27,30 @@ class SuratJalanCubit extends Cubit<SuratJalanState> {
 
   void getScanTracking(String noSJ) async {
     emit(SuratJalanLoading());
-    await repositories.getScanTracking(noSJ).then((value) {
-      if (value!.isSuccess && value.dataResponse is SuratJalanResponse) {
-        final res = value.dataResponse as SuratJalanResponse;
-        emit(SuratJalanSuccess(res));
-        debugPrint('Success' + res.toString());
-      } else {
-        emit(SuratJalanFailure(message: value.dataResponse!));
-        debugPrint('Failed' + value.dataResponse);
-      }
-    });
+    try {
+      await repositories.getScanTracking(noSJ).then((value) {
+        if (value!.isSuccess && value.dataResponse is SuratJalanResponse) {
+          final res = value.dataResponse as SuratJalanResponse;
+          emit(SuratJalanSuccess(res));
+          debugPrint('Success' + res.toString());
+        } else {
+          emit(SuratJalanFailure(message: value.dataResponse!));
+          debugPrint('Failed' + value.dataResponse);
+        }
+      });
+    } catch (e) {
+      emit(SuratJalanFailure(message: "Harap gunakan jaringan Ramayana!"));
+    }
   }
 
   void postTrackingSJ(TrackingSJBody body, int trackType) async {
     emit(ScanSJLoading());
+    final userId = await SharedPref.getUserId();
+    final userStore = await SharedPref.getUserToko();
+    body.userId = userId;
+    body.userStore = userStore;
     await repositories.postTracking(body, trackType).then((value) {
-      if (value!.isSuccess && value.dataResponse is ScanSJResponse) {
+      if (value.isSuccess && value.dataResponse is ScanSJResponse) {
         final res = value.dataResponse as ScanSJResponse;
         emit(ScanSJSuccess(res));
         debugPrint('Success' + res.toString());

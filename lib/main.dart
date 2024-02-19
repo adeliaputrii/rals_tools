@@ -82,10 +82,8 @@ void main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]).then((value) => runApp(lastLogin == formattedDate
-      ? appCubit.initCubit(HomeMainApp())
-      : appCubit
-          .initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
+  ]).then((value) => runApp(
+      lastLogin == formattedDate ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
 }
 
 Future<void> registerAppServices() async {
@@ -94,8 +92,9 @@ Future<void> registerAppServices() async {
   final appServices = AppServices(GetIt.I.get<Dio>());
 
   // final url = '${basePath.base_url_prod}';
-  final url = '${basePath.base_url_prod}';
-  await appServices.registerAppServices(url);
+  final url = '${basePath.base_url_dev}';
+  final urlTMS = '${basePath.base_url_dev_tms}';
+  await appServices.registerAppServices(url, urlTMS);
 }
 
 void firebaseInit() async {}
@@ -142,10 +141,7 @@ class HomeMainApp extends StatelessWidget {
         ],
       ),
       navigatorKey: navigatorKey,
-      routes: {
-        RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()),
-        RamayanaLogin.route: ((context) => const RamayanaLogin())
-      },
+      routes: {RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()), RamayanaLogin.route: ((context) => const RamayanaLogin())},
       title: '${app_name}',
       debugShowCheckedModeBanner: false,
       home: DefaultBottomBarController(child: Ramayana()),
@@ -177,12 +173,7 @@ class SplashHomeMainApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         title: '${app_name}',
         debugShowCheckedModeBanner: false,
-        routes: {
-          RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()),
-          RamayanaLogin.route: ((context) => const RamayanaLogin())
-        },
-        home: loginOffline == formattedDate
-            ? RamayanaVoid(isOffline: true)
-            : SplashScreenRamayana());
+        routes: {RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()), RamayanaLogin.route: ((context) => const RamayanaLogin())},
+        home: loginOffline == formattedDate ? RamayanaVoid(isOffline: true) : SplashScreenRamayana());
   }
 }

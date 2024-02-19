@@ -204,7 +204,7 @@ Widget stepperListView(List<StepperItemData> stepperSJ) {
               ),
               const SizedBox(height: 10),
               Visibility(
-                visible: stepData.content['rcv_koli'] != null && stepData.content['rcv_koli'] != 0,
+                visible: stepData.content['missing_koli'] != null && stepData.content['missing_koli'] != '-',
                 child: Row(
                   children: [
                     const Expanded(
@@ -233,7 +233,7 @@ Widget stepperListView(List<StepperItemData> stepperSJ) {
               ),
               const SizedBox(height: 10),
               Visibility(
-                visible: stepData.content['rcv_koli'] != null && stepData.content['rcv_koli'] != 0,
+                visible: stepData.content['missing_koli'] != null && stepData.content['missing_koli'] != '-',
                 child: Row(
                   children: [
                     const Expanded(

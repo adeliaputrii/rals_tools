@@ -203,7 +203,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                   ),
                 ),
               ),
-              child: Text('Simpan', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white)),
+              child: Text('Submit', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white)),
             ),
           ),
         ),
@@ -294,7 +294,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                   ),
                 ),
               ),
-              child: Text('Simpan', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white)),
+              child: Text('Submit', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white)),
             ),
           ),
           Container(
@@ -749,7 +749,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
     CoolAlert.show(
       context: context,
       type: CoolAlertType.confirm,
-      text: 'Submit status pelacakan?',
+      text: textAlert(type),
       confirmBtnText: 'Ya',
       cancelBtnText: 'Tidak',
       confirmBtnColor: Colors.green,
@@ -772,6 +772,18 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
       },
     );
   }
+}
+
+String textAlert(int type) {
+  switch (type) {
+    case 1:
+      return 'Ubah Status Pelacakan Barang?';
+    case 2:
+      return 'Konfirmasi Barang Masuk/Keluar dari Storeline?';
+    case 3:
+      return 'Barang sudah sampai di Supplier?';
+  }
+  return 'Ubah Status Pelacakan Barang?';
 }
 
 Widget TextLabel(String text) {

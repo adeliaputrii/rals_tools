@@ -16,14 +16,12 @@ class AppServices {
 
   final get = GetIt.I;
 
-  registerAppServices(String url) async {
+  registerAppServices(String url, String urlTMS) async {
     dio.interceptors.clear();
 
-    dio.interceptors.add(LogInterceptor(
-        responseBody: true,
-        requestBody: true,
-        requestHeader: true,
-        error: true));
+    dio.options.receiveTimeout = Duration(milliseconds: 35000);
+    dio.options.connectTimeout = Duration(milliseconds: 30000);
+    dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true, requestHeader: true, error: true));
     dio.interceptors.add(DioInterceptor());
 
     if (!get.isRegistered<LoginService>()) {
@@ -33,10 +31,10 @@ class AppServices {
       get.registerFactory(() => LoginService(dio, baseUrl: url));
     }
     if (!get.isRegistered<SuratJalanService>()) {
-      get.registerFactory(() => SuratJalanService(dio, baseUrl: url));
+      get.registerFactory(() => SuratJalanService(dio, baseUrl: urlTMS));
     } else {
       get.unregister<SuratJalanService>();
-      get.registerFactory(() => SuratJalanService(dio, baseUrl: url));
+      get.registerFactory(() => SuratJalanService(dio, baseUrl: urlTMS));
     }
 
     if (!get.isRegistered<IDCashService>()) {
