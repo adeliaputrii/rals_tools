@@ -613,7 +613,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                         ),
                         visible: true,
                       );
-                    } else if (icon == "tms.suratjalan") {
+                    } else if (icon == "suratjalan.trackingsj") {
                       return Visibility(
                         child: CircleAvatar(
                           backgroundColor: Color.fromARGB(255, 207, 11, 11),

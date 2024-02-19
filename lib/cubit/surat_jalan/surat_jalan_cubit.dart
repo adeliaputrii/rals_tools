@@ -39,7 +39,7 @@ class SuratJalanCubit extends Cubit<SuratJalanState> {
         }
       });
     } catch (e) {
-      emit(SuratJalanFailure(message: "Harap gunakan jaringan Ramayana!"));
+      emit(SuratJalanFailure(message: "Harap coba lagi..."));
     }
   }
 
