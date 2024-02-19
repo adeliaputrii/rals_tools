@@ -45,10 +45,6 @@ class SuratJalanCubit extends Cubit<SuratJalanState> {
 
   void postTrackingSJ(TrackingSJBody body, int trackType) async {
     emit(ScanSJLoading());
-    final userId = await SharedPref.getUserId();
-    final userStore = await SharedPref.getUserToko();
-    body.userId = userId;
-    body.userStore = userStore;
     await repositories.postTracking(body, trackType).then((value) {
       if (value.isSuccess && value.dataResponse is ScanSJResponse) {
         final res = value.dataResponse as ScanSJResponse;

@@ -15,8 +15,7 @@ class Ramayana extends StatefulWidget {
 
 class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   String _lastMessage = "";
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   List data = [];
   List jumlahNews = [];
@@ -103,8 +102,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   }
 
   _unsecureScreen() async {
-    await FlutterWindowManager.clearFlags(FlutterWindowManager
-        .FLAG_SECURE); // Mengaktifkan kembali tangkapan layar
+    await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE); // Mengaktifkan kembali tangkapan layar
   }
 
   final List<Widget> imageSliders = imgList
@@ -122,10 +120,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                       child: Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            colors: [
-                              Color.fromARGB(200, 0, 0, 0),
-                              Color.fromARGB(0, 0, 0, 0)
-                            ],
+                            colors: [Color.fromARGB(200, 0, 0, 0), Color.fromARGB(0, 0, 0, 0)],
                             begin: Alignment.bottomCenter,
                             end: Alignment.topCenter,
                           ),
@@ -153,8 +148,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   fetchDataListUser() async {
     _loadToken();
     TaskHome.taskhome.clear();
-    final responseku = await http
-        .get(Uri.parse('${tipeurl}v1/activity/task/get-task'), headers: {
+    final responseku = await http.get(Uri.parse('${tipeurl}v1/activity/task/get-task'), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
@@ -191,8 +185,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
   fetchBerita() async {
     News.news.clear();
-    final responseku =
-        await http.get(Uri.parse('${tipeurl}v1/news/get'), headers: {
+    final responseku = await http.get(Uri.parse('${tipeurl}v1/news/get'), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
@@ -224,8 +217,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   fetchDataJumlahTask() async {
     _loadToken();
     HomeTaskTotal.hometasktotal.clear();
-    final responseku = await http
-        .get(Uri.parse('${tipeurl}v1/activity/task/count-unread'), headers: {
+    final responseku = await http.get(Uri.parse('${tipeurl}v1/activity/task/count-unread'), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
@@ -251,8 +243,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
   read_task() async {
     _loadToken();
-    final responseku = await http
-        .post(Uri.parse('${tipeurl}v1/activity/task/read-all-task'), headers: {
+    final responseku = await http.post(Uri.parse('${tipeurl}v1/activity/task/read-all-task'), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
@@ -313,8 +304,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           var id = activityy[columnId];
           var deskripsi = activityy[columnIdGenerate];
           var datetime = activityy[columnDate];
-          loginCubit.createLogVoidOffline(
-              logInfoVoidOfflinePage, deskripsi, urlApi, datetime);
+          loginCubit.createLogVoidOffline(logInfoVoidOfflinePage, deskripsi, urlApi, datetime);
           print('ID: $id, ID Generate: $deskripsi, Date: $datetime');
           await db.deleteActivityy(id);
         }
@@ -328,8 +318,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           var id = activityy[columnId];
           var idGenerate = activityy[columnIdGenerate];
           var date = activityy[columnDate];
-          loginCubit.createLogVoidOffline(
-              logInfoVoidOfflinePage, idGenerate, urlApi, date);
+          loginCubit.createLogVoidOffline(logInfoVoidOfflinePage, idGenerate, urlApi, date);
           print('ID: $id, ID Generate: $idGenerate, Date: $date');
           await db2.deleteVoidOffline(id);
         }
@@ -343,8 +332,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           var id = activity[columnId];
           var deskripsi = activity[columnDeskripsi];
           var datetime = activity[columnDatetime];
-          loginCubit.createLogVoidOffline(
-              logLoginOfflinePage, deskripsi, urlApi, datetime);
+          loginCubit.createLogVoidOffline(logLoginOfflinePage, deskripsi, urlApi, datetime);
           print('ID: $id, Deskripsi: $deskripsi, Datetime: $datetime');
           await db3.deleteActivityy(id);
         }
@@ -443,8 +431,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           color: Colors.grey,
         ),
       ),
-      titleStyle: GoogleFonts.plusJakartaSans(
-          fontSize: 23, color: Colors.red, fontWeight: FontWeight.w500),
+      titleStyle: GoogleFonts.plusJakartaSans(fontSize: 23, color: Colors.red, fontWeight: FontWeight.w500),
       alertAlignment: Alignment.center,
     );
     Alert(
@@ -462,8 +449,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           },
           child: Text(
             "Kembali",
-            style:
-                GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+            style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
           ),
         ),
         DialogButton(
@@ -485,16 +471,14 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
               'TOKEN': 'R4M4Y4N4'
             });
 
-            var response = await dio.post('${tipeurl}v1/activity/createmylog',
-                data: formData);
+            var response = await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
             print('berhasil $_udid');
             Navigator.pop(context);
             logoutPressed();
           },
           child: Text(
             "Log Out",
-            style:
-                GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+            style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
           ),
         ),
       ],
@@ -520,8 +504,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           color: Colors.grey,
         ),
       ),
-      titleStyle: GoogleFonts.plusJakartaSans(
-          fontSize: 23, color: Colors.red, fontWeight: FontWeight.w500),
+      titleStyle: GoogleFonts.plusJakartaSans(fontSize: 23, color: Colors.red, fontWeight: FontWeight.w500),
       alertAlignment: Alignment.center,
     );
     Alert(
@@ -535,8 +518,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           },
           child: Text(
             "Kembali",
-            style:
-                GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.white),
+            style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.white),
           ),
         ),
       ],
@@ -548,9 +530,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
               margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
               child: Text(
                 'My Activity Menu',
-                style: GoogleFonts.plusJakartaSans(
-                    textStyle: TextStyle(
-                        fontSize: 20, color: Color.fromARGB(255, 71, 70, 70))),
+                style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 20, color: Color.fromARGB(255, 71, 70, 70))),
               ),
             ),
             Container(
@@ -694,7 +674,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                       return 'Tukar Poin';
                     } else if (icon == "myactivity.activity") {
                       return 'My Activity';
-                    } else if (icon == "tms.suratjalan") {
+                    } else if (icon == "suratjalan.trackingsj") {
                       return 'Lacak SJ';
                     } else if (icon == "comchek.approvedcomchek") {
                       return 'Com. Checking';
@@ -718,43 +698,35 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                           await _checkInternetConnection();
                           print('haiiioooo');
                           if (e == 'mastervoid.void') {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return RamayanaVoid(isOffline: false);
                             }));
                           } else if (e == 'masteridcash.idcash') {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return RamayanaIDCash();
                             }));
                           } else if (e == 'approvalreturn.approvalreturn') {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return RamayanaApprovalReturn();
                             }));
                           } else if (e == 'cekprice.cekprice') {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return RamayanaCariToko();
                             }));
                           } else if (e == 'tukarpoin.tukarpoin') {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return RamayanaTukarPoin();
                             }));
                           } else if (e == 'myactivity.activity') {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return RamayanaMyActivity();
                             }));
-                          } else if (e == 'tms.suratjalan') {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
+                          } else if (e == 'suratjalan.trackingsj') {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return RamayanaSuratJalan();
                             }));
                           } else if (e == 'comchek.approvedcomchek') {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return RamayanaCompetitorCek();
                             }));
                             print(HakAkses.hakaksesSubmenuComcek);
@@ -767,8 +739,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                             //   print('hak akses : ${e}}');
                             //   print('hak akses : ${hakAkses}');
                           } else if (e == 'kartu.kartuperusahaan') {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return RamayanaMembercardAuthentication();
                             }));
                           } else {
@@ -776,13 +747,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                           }
                           if (_isConnected == true) {
                             print('is connect');
-                            loginCubit.createLog('${getName()}',
-                                'Navigasi Menu ${getName()}', urlApi);
+                            loginCubit.createLog('${getName()}', 'Navigasi Menu ${getName()}', urlApi);
 
                             print('berhasil $_udid');
                           } else if (_isConnected == false) {
-                            String format =
-                                DateFormat.Hms().format(DateTime.now());
+                            String format = DateFormat.Hms().format(DateTime.now());
                             print('not connect');
                             db.saveActivityy(LogOffline(
                               deskripsi: '${getName()} ',
@@ -796,10 +765,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                     Text(
                       '${getName()}',
                       style: GoogleFonts.plusJakartaSans(
-                          fontWeight: FontWeight.w500,
-                          textStyle: TextStyle(
-                              fontSize: 15,
-                              color: Color.fromARGB(255, 71, 70, 70))),
+                          fontWeight: FontWeight.w500, textStyle: TextStyle(fontSize: 15, color: Color.fromARGB(255, 71, 70, 70))),
                     )
                   ]);
                 }).toList(),
@@ -844,7 +810,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       if (element == 'myactivity.activity') {
         data.add(element);
       }
-      if (element == 'tms.suratjalan') {
+      if (element == 'suratjalan.trackingsj') {
         data.add(element);
       }
       if (element == 'kartu.kartuperusahaan') {
@@ -921,28 +887,22 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                 ),
                               ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
                                     margin: EdgeInsets.only(top: 0, left: 20),
                                     child: Text(
                                       'Selamat Datang',
                                       style: GoogleFonts.plusJakartaSans(
-                                          textStyle: TextStyle(
-                                              fontSize: 27,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.white)),
+                                          textStyle: TextStyle(fontSize: 27, fontWeight: FontWeight.w600, color: Colors.white)),
                                     ),
                                   ),
                                   Container(
-                                      margin:
-                                          EdgeInsets.only(top: 10, right: 20),
+                                      margin: EdgeInsets.only(top: 10, right: 20),
                                       child: InkWell(
                                         onTap: () {
                                           print('klik');
-                                          Navigator.pushReplacement(context,
-                                              MaterialPageRoute(builder: (_) {
+                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
                                             return Profilee();
                                           }));
                                         },
@@ -960,11 +920,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             SizedBox(
                                               height: 5,
                                             ),
-                                            Text('Lihat Profil',
-                                                style: GoogleFonts.mukta(
-                                                    textStyle: TextStyle(
-                                                        fontSize: 18,
-                                                        color: Colors.white)))
+                                            Text('Lihat Profil', style: GoogleFonts.mukta(textStyle: TextStyle(fontSize: 18, color: Colors.white)))
                                           ],
                                         ),
                                       ))
@@ -972,8 +928,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                               ),
                               namaUser
                                   ? Container(
-                                      margin: EdgeInsets.only(
-                                          top: 75, left: 20, right: 120),
+                                      margin: EdgeInsets.only(top: 75, left: 20, right: 120),
                                       // color: Colors.green,
                                       child: Text(
                                         'Halo ${userData.getFullname()}',
@@ -985,8 +940,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                         )),
                                       ))
                                   : Container(
-                                      margin:
-                                          EdgeInsets.only(top: 75, left: 20),
+                                      margin: EdgeInsets.only(top: 75, left: 20),
                                       child: AnimatedTextKit(
                                         totalRepeatCount: 2,
                                         onFinished: () {
@@ -997,17 +951,13 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                         animatedTexts: [
                                           FadeAnimatedText(
                                             'Halo ${userData.getFullname()}',
-                                            textStyle: GoogleFonts.mukta(
-                                                textStyle: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.white)),
+                                            textStyle: GoogleFonts.mukta(textStyle: TextStyle(fontSize: 20, color: Colors.white)),
                                           ),
                                         ],
                                       ),
                                     ),
                               Container(
-                                margin: EdgeInsets.only(
-                                    top: 130, left: 20, right: 20),
+                                margin: EdgeInsets.only(top: 130, left: 20, right: 20),
                                 height: 190,
                                 width: 100000,
                                 decoration: BoxDecoration(
@@ -1026,54 +976,34 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                   ],
                                 ),
                                 child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
                                     Container(
-                                      margin:
-                                          EdgeInsets.fromLTRB(20, 10, 0, 10),
+                                      margin: EdgeInsets.fromLTRB(20, 10, 0, 10),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             'My Activity Menu',
                                             style: GoogleFonts.plusJakartaSans(
-                                                textStyle: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Color.fromARGB(
-                                                        255, 71, 70, 70))),
+                                                textStyle: TextStyle(fontSize: 20, color: Color.fromARGB(255, 71, 70, 70))),
                                           ),
                                           data.length > 3
                                               ? Container(
                                                   height: 40,
                                                   decoration: BoxDecoration(
                                                       gradient: LinearGradient(
-                                                          colors: [
-                                                            Colors.red,
-                                                            Color.fromARGB(255,
-                                                                103, 94, 94)
-                                                          ],
-                                                          begin:
-                                                              FractionalOffset(
-                                                                  0.0, 0.0),
-                                                          end: FractionalOffset(
-                                                              1.5, 0.0),
+                                                          colors: [Colors.red, Color.fromARGB(255, 103, 94, 94)],
+                                                          begin: FractionalOffset(0.0, 0.0),
+                                                          end: FractionalOffset(1.5, 0.0),
                                                           stops: [0.0, 1.0],
-                                                          tileMode:
-                                                              TileMode.clamp),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              90)),
-                                                  margin: EdgeInsets.only(
-                                                      right: 10),
+                                                          tileMode: TileMode.clamp),
+                                                      borderRadius: BorderRadius.circular(90)),
+                                                  margin: EdgeInsets.only(right: 10),
                                                   child: ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        foregroundColor:
-                                                            Colors.black,
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor: Colors.transparent,
+                                                        foregroundColor: Colors.black,
                                                         elevation: 0,
                                                       ),
                                                       onPressed: () async {
@@ -1081,11 +1011,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                       },
                                                       child: Text(
                                                         'Lihat Semua',
-                                                        style: GoogleFonts
-                                                            .plusJakartaSans(
-                                                                fontSize: 15,
-                                                                color: Colors
-                                                                    .white),
+                                                        style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
                                                       )))
                                               : Container()
                                         ],
@@ -1094,14 +1020,12 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
                                     // ),
                                     Container(
-                                      margin:
-                                          EdgeInsets.fromLTRB(10, 0, 10, 20),
+                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
                                       child: Wrap(
                                         // spacing: 0.5,
                                         // runSpacing: 1.0,
                                         alignment: WrapAlignment.spaceBetween,
-                                        runAlignment:
-                                            WrapAlignment.spaceBetween,
+                                        runAlignment: WrapAlignment.spaceBetween,
                                         //adel ini gausah di masukin ke model bisa gaa? langsung aja dia pake api nya nembak langsung
                                         children: data3Menu.map((e) {
                                           // ${e.nsadssaame_menu}
@@ -1112,9 +1036,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             if (icon == 'mastervoid.void') {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 207, 11, 11),
+                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/void.png',
@@ -1122,13 +1044,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 ),
                                                 visible: true,
                                               );
-                                            } else if (icon ==
-                                                "masteridcash.idcash") {
+                                            } else if (icon == "masteridcash.idcash") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 207, 11, 11),
+                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/ic_idcash.png',
@@ -1136,13 +1055,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 ),
                                                 visible: true,
                                               );
-                                            } else if (icon ==
-                                                "approvalreturn.approvalreturn") {
+                                            } else if (icon == "approvalreturn.approvalreturn") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 207, 11, 11),
+                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/approval.png',
@@ -1150,13 +1066,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 ),
                                                 visible: true,
                                               );
-                                            } else if (icon ==
-                                                "cekprice.cekprice") {
+                                            } else if (icon == "cekprice.cekprice") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 207, 11, 11),
+                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/cekharga.png',
@@ -1164,13 +1077,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 ),
                                                 visible: true,
                                               );
-                                            } else if (icon ==
-                                                "tukarpoin.tukarpoin") {
+                                            } else if (icon == "tukarpoin.tukarpoin") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 207, 11, 11),
+                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/tukarpoin.png',
@@ -1178,13 +1088,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 ),
                                                 visible: true,
                                               );
-                                            } else if (icon ==
-                                                "myactivity.activity") {
+                                            } else if (icon == "myactivity.activity") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 207, 11, 11),
+                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/myactivity.png',
@@ -1192,13 +1099,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 ),
                                                 visible: true,
                                               );
-                                            } else if (icon ==
-                                                "tms.suratjalan") {
+                                            } else if (icon == "suratjalan.trackingsj") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 207, 11, 11),
+                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/sjalan.png',
@@ -1206,13 +1110,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 ),
                                                 visible: true,
                                               );
-                                            } else if (icon ==
-                                                "comchek.approvedcomchek") {
+                                            } else if (icon == "comchek.approvedcomchek") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 207, 11, 11),
+                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/comcek.png',
@@ -1220,13 +1121,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 ),
                                                 visible: true,
                                               );
-                                            } else if (icon ==
-                                                "kartu.kartuperusahaan") {
+                                            } else if (icon == "kartu.kartuperusahaan") {
                                               return Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 207, 11, 11),
+                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/card.png',
@@ -1237,9 +1135,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             } else {
                                               Visibility(
                                                 child: CircleAvatar(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 207, 11, 11),
+                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
                                                   radius: 30,
                                                   backgroundImage: AssetImage(
                                                     'assets/cekharga.png',
@@ -1254,29 +1150,21 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             var icon = '${e}';
                                             if (icon == 'mastervoid.void') {
                                               return 'Void';
-                                            } else if (icon ==
-                                                "masteridcash.idcash") {
+                                            } else if (icon == "masteridcash.idcash") {
                                               return 'Id Cash';
-                                            } else if (icon ==
-                                                "cekprice.cekprice") {
+                                            } else if (icon == "cekprice.cekprice") {
                                               return 'Cek Harga';
-                                            } else if (icon ==
-                                                "approvalreturn.approvalreturn") {
+                                            } else if (icon == "approvalreturn.approvalreturn") {
                                               return 'Approval Return';
-                                            } else if (icon ==
-                                                "tukarpoin.tukarpoin") {
+                                            } else if (icon == "tukarpoin.tukarpoin") {
                                               return 'Tukar Poin';
-                                            } else if (icon ==
-                                                "myactivity.activity") {
+                                            } else if (icon == "myactivity.activity") {
                                               return 'My Activity';
-                                            } else if (icon ==
-                                                "tms.suratjalan") {
+                                            } else if (icon == "suratjalan.trackingsj") {
                                               return 'Lacak SJ';
-                                            } else if (icon ==
-                                                "comchek.approvedcomchek") {
+                                            } else if (icon == "comchek.approvedcomchek") {
                                               return 'Com. Checking';
-                                            } else if (icon ==
-                                                "kartu.kartuperusahaan") {
+                                            } else if (icon == "kartu.kartuperusahaan") {
                                               return baseParam.companyCardTitle;
                                             } else {
                                               print(e);
@@ -1287,8 +1175,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                           return Column(children: [
                                             ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Colors.transparent,
+                                                  backgroundColor: Colors.transparent,
                                                   foregroundColor: Colors.black,
                                                   elevation: 0,
                                                 ),
@@ -1297,64 +1184,40 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                   await _checkInternetConnection();
                                                   print('haiiioooo');
                                                   if (e == 'mastervoid.void') {
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
                                                       return RamayanaVoid(
                                                         isOffline: false,
                                                       );
                                                     }));
-                                                  } else if (e ==
-                                                      'masteridcash.idcash') {
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
+                                                  } else if (e == 'masteridcash.idcash') {
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
                                                       return RamayanaIDCash();
                                                     }));
-                                                  } else if (e ==
-                                                      'approvalreturn.approvalreturn') {
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
+                                                  } else if (e == 'approvalreturn.approvalreturn') {
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
                                                       return RamayanaApprovalReturn();
                                                     }));
-                                                  } else if (e ==
-                                                      'cekprice.cekprice') {
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
+                                                  } else if (e == 'cekprice.cekprice') {
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
                                                       return RamayanaCariToko();
                                                     }));
-                                                  } else if (e ==
-                                                      'tukarpoin.tukarpoin') {
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
+                                                  } else if (e == 'tukarpoin.tukarpoin') {
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
                                                       return RamayanaTukarPoin();
                                                     }));
-                                                  } else if (e ==
-                                                      'myactivity.activity') {
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
+                                                  } else if (e == 'myactivity.activity') {
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
                                                       return RamayanaMyActivity();
                                                     }));
-                                                  } else if (e ==
-                                                      'tms.suratjalan') {
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
+                                                  } else if (e == 'suratjalan.trackingsj') {
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
                                                       return RamayanaSuratJalan();
                                                     }));
-                                                  } else if (e ==
-                                                      'comchek.approvedcomchek') {
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
+                                                  } else if (e == 'comchek.approvedcomchek') {
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
                                                       return RamayanaCompetitorCek();
                                                     }));
-                                                    print(HakAkses
-                                                        .hakaksesSubmenuComcek);
+                                                    print(HakAkses.hakaksesSubmenuComcek);
 
                                                     // } else if(e == 'idcash.ramayanariwayattransaksi'){
                                                     // Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -1363,11 +1226,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                     //   var hakAkses = pref.setString('hakAkses', '${e}');
                                                     //   print('hak akses : ${e}}');
                                                     //   print('hak akses : ${hakAkses}');
-                                                  } else if (e ==
-                                                      'kartu.kartuperusahaan') {
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
+                                                  } else if (e == 'kartu.kartuperusahaan') {
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
                                                       return RamayanaMembercardAuthentication();
                                                     }));
                                                   } else {
@@ -1375,21 +1235,13 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                   }
                                                   if (_isConnected == true) {
                                                     print('is connect');
-                                                    loginCubit.createLog(
-                                                        '${getName()}',
-                                                        'Navigasi Menu ${getName()}',
-                                                        urlApi);
-                                                  } else if (_isConnected ==
-                                                      false) {
-                                                    String format =
-                                                        DateFormat.Hms().format(
-                                                            DateTime.now());
+                                                    loginCubit.createLog('${getName()}', 'Navigasi Menu ${getName()}', urlApi);
+                                                  } else if (_isConnected == false) {
+                                                    String format = DateFormat.Hms().format(DateTime.now());
                                                     print('not connect');
                                                     db.saveActivityy(LogOffline(
-                                                      deskripsi:
-                                                          '${getName()} ',
-                                                      datetime:
-                                                          '${DateTime.now()}',
+                                                      deskripsi: '${getName()} ',
+                                                      datetime: '${DateTime.now()}',
                                                     ));
                                                   }
                                                 }),
@@ -1398,17 +1250,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             ),
                                             Text(
                                               '${getName()}',
-                                              style:
-                                                  GoogleFonts.plusJakartaSans(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      textStyle: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              71,
-                                                              70,
-                                                              70))),
+                                              style: GoogleFonts.plusJakartaSans(
+                                                  fontWeight: FontWeight.w500,
+                                                  textStyle: TextStyle(fontSize: 15, color: Color.fromARGB(255, 71, 70, 70))),
                                             )
                                           ]);
                                         }).toList(),
@@ -1429,75 +1273,37 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                   Container(
                                                     height: 50,
                                                     child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 20,
-                                                          right: 20,
-                                                          top: 0),
+                                                      margin: EdgeInsets.only(left: 20, right: 20, top: 0),
                                                       child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           Text(
                                                             'Informasi Update Ramayana',
                                                             style: GoogleFonts.plusJakartaSans(
-                                                                textStyle: TextStyle(
-                                                                    fontSize:
-                                                                        20,
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500)),
+                                                                textStyle: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500)),
                                                           ),
                                                           Container(
                                                               height: 40,
                                                               decoration: BoxDecoration(
                                                                   gradient: LinearGradient(
-                                                                      colors: [
-                                                                        Colors
-                                                                            .red,
-                                                                        Color.fromARGB(
-                                                                            255,
-                                                                            103,
-                                                                            94,
-                                                                            94)
-                                                                      ],
-                                                                      begin: FractionalOffset(
-                                                                          0.0, 0.0),
-                                                                      end: FractionalOffset(
-                                                                          1.5,
-                                                                          0.0),
-                                                                      stops: [
-                                                                        0.0,
-                                                                        1.0
-                                                                      ],
-                                                                      tileMode:
-                                                                          TileMode
-                                                                              .clamp),
-                                                                  borderRadius:
-                                                                      BorderRadius.circular(
-                                                                          90)),
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      right: 10),
+                                                                      colors: [Colors.red, Color.fromARGB(255, 103, 94, 94)],
+                                                                      begin: FractionalOffset(0.0, 0.0),
+                                                                      end: FractionalOffset(1.5, 0.0),
+                                                                      stops: [0.0, 1.0],
+                                                                      tileMode: TileMode.clamp),
+                                                                  borderRadius: BorderRadius.circular(90)),
+                                                              margin: EdgeInsets.only(right: 10),
                                                               child: ElevatedButton(
                                                                   style: ElevatedButton.styleFrom(
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    foregroundColor:
-                                                                        Colors
-                                                                            .black,
-                                                                    elevation:
-                                                                        0,
+                                                                    backgroundColor: Colors.transparent,
+                                                                    foregroundColor: Colors.black,
+                                                                    elevation: 0,
                                                                   ),
                                                                   onPressed: () async {
                                                                     Navigator.push(
                                                                         context,
                                                                         MaterialPageRoute(
-                                                                          builder: (context) =>
-                                                                              RamayanaInformasi(),
+                                                                          builder: (context) => RamayanaInformasi(),
                                                                         ));
                                                                     // Navigator.pushAndRemoveUntil(
                                                                     //     context,
@@ -1509,107 +1315,67 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                   },
                                                                   child: Text(
                                                                     'Lihat Semua',
-                                                                    style: GoogleFonts.plusJakartaSans(
-                                                                        fontSize:
-                                                                            15,
-                                                                        color: Colors
-                                                                            .white),
+                                                                    style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
                                                                   )))
                                                         ],
                                                       ),
                                                     ),
                                                   ),
                                                   Container(
-                                                      margin:
-                                                          EdgeInsets.fromLTRB(
-                                                              20, 0, 20, 0),
-                                                      child: BlocBuilder<
-                                                              HomeCubit,
-                                                              HomeState>(
-                                                          builder:
-                                                              (context, state) {
-                                                        if (state
-                                                            is HomeLoading) {
+                                                      margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                                      child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+                                                        if (state is HomeLoading) {
                                                           return SpinKitThreeBounce(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    230,
-                                                                    0,
-                                                                    0),
+                                                            color: Color.fromARGB(255, 230, 0, 0),
                                                             size: 50.0,
                                                           );
                                                         }
-                                                        if (state
-                                                            is HomeSuccess) {
+                                                        if (state is HomeSuccess) {
                                                           return Column(
                                                             children: [
                                                               SingleChildScrollView(
-                                                                scrollDirection:
-                                                                    Axis.horizontal,
+                                                                scrollDirection: Axis.horizontal,
                                                                 child: Row(
-                                                                  children: News
-                                                                      .news3
-                                                                      .map((e) {
-                                                                    var stringHtml =
-                                                                        '${e.berita_dtl}';
+                                                                  children: News.news3.map((e) {
+                                                                    var stringHtml = '${e.berita_dtl}';
                                                                     return InkWell(
-                                                                      onTap:
-                                                                          () {
-                                                                        News.newsDetail
-                                                                            .clear();
-                                                                        setState(
-                                                                            () {
-                                                                          News.newsDetail
-                                                                              .add(e);
-                                                                          print(
-                                                                              News.newsDetail);
+                                                                      onTap: () {
+                                                                        News.newsDetail.clear();
+                                                                        setState(() {
+                                                                          News.newsDetail.add(e);
+                                                                          print(News.newsDetail);
                                                                         });
-                                                                        Navigator.pushAndRemoveUntil(
-                                                                            context,
-                                                                            MaterialPageRoute(builder:
-                                                                                (context) {
-                                                                          return NewsDetail(
-                                                                              newsUrl: e.berita_dtl,
-                                                                              fromHome: true);
-                                                                        }),
-                                                                            (route) =>
-                                                                                false);
-                                                                        print(
-                                                                            'navigator');
+                                                                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+                                                                          return NewsDetail(newsUrl: e.berita_dtl, fromHome: true);
+                                                                        }), (route) => false);
+                                                                        print('navigator');
                                                                       },
-                                                                      child:
-                                                                          Container(
-                                                                        width:
-                                                                            400,
-                                                                        margin: EdgeInsets.only(
-                                                                            bottom:
-                                                                                10,
-                                                                            right:
-                                                                                20),
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(10),
-                                                                          color:
-                                                                              Colors.white,
+                                                                      child: Container(
+                                                                        width: 400,
+                                                                        margin: EdgeInsets.only(bottom: 10, right: 20),
+                                                                        decoration: BoxDecoration(
+                                                                          borderRadius: BorderRadius.circular(10),
+                                                                          color: Colors.white,
                                                                         ),
 
                                                                         // height: 165,
-                                                                        child:
-                                                                            Column(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.start,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.start,
+                                                                        child: Column(
+                                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                                           children: [
                                                                             Container(
                                                                               // height: 150
-                                                                              child: ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.network('${e.url_photo}', fit: BoxFit.cover)),
+                                                                              child: ClipRRect(
+                                                                                  borderRadius: BorderRadius.circular(10),
+                                                                                  child: Image.network('${e.url_photo}', fit: BoxFit.cover)),
                                                                             ),
                                                                             Container(
                                                                               margin: EdgeInsets.fromLTRB(10, 10, 0, 15),
-                                                                              child: Text('${e.berita_hdr}', style: GoogleFonts.plusJakartaSans(fontSize: 17, fontWeight: FontWeight.w600, color: Colors.black)),
+                                                                              child: Text('${e.berita_hdr}',
+                                                                                  style: GoogleFonts.plusJakartaSans(
+                                                                                      fontSize: 17,
+                                                                                      fontWeight: FontWeight.w600,
+                                                                                      color: Colors.black)),
                                                                             ),
                                                                           ],
                                                                         ),
@@ -1619,34 +1385,22 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                 ),
                                                               ),
                                                               Row(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                children: News
-                                                                    .news3
-                                                                    .map((e) {
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                children: News.news3.map((e) {
                                                                   return GestureDetector(
-                                                                    onTap: () =>
-                                                                        _controller
-                                                                            .animateToPage(1),
-                                                                    child:
-                                                                        Container(
-                                                                      width:
-                                                                          12.0,
-                                                                      height:
-                                                                          10.0,
-                                                                      margin: EdgeInsets.symmetric(
-                                                                          vertical:
-                                                                              15.0,
-                                                                          horizontal:
-                                                                              4.0),
+                                                                    onTap: () => _controller.animateToPage(1),
+                                                                    child: Container(
+                                                                      width: 12.0,
+                                                                      height: 10.0,
+                                                                      margin: EdgeInsets.symmetric(vertical: 15.0, horizontal: 4.0),
                                                                       decoration: BoxDecoration(
                                                                           // color: Colors.green,
                                                                           shape: BoxShape.circle,
-                                                                          color: (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black).withOpacity(_current == e ? 0.9 : 0.4)),
+                                                                          color: (Theme.of(context).brightness == Brightness.dark
+                                                                                  ? Colors.white
+                                                                                  : Colors.black)
+                                                                              .withOpacity(_current == e ? 0.9 : 0.4)),
                                                                     ),
                                                                   );
                                                                 }).toList(),
@@ -1665,107 +1419,56 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             ? Column(
                                                 children: [
                                                   Container(
-                                                    margin: EdgeInsets.only(
-                                                        top: 0,
-                                                        left: 20,
-                                                        right: 20),
+                                                    margin: EdgeInsets.only(top: 0, left: 20, right: 20),
                                                     // color: Colors.green,
                                                     child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
                                                         Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          mainAxisAlignment: MainAxisAlignment.start,
                                                           children: [
                                                             Text(
                                                               'Tugas Saya',
                                                               style: GoogleFonts.plusJakartaSans(
-                                                                  textStyle: TextStyle(
-                                                                      fontSize:
-                                                                          22,
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500)),
+                                                                  textStyle:
+                                                                      TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.w500)),
                                                             ),
                                                             Text(
                                                               ' (${total_task == null ? '' : total_task})',
                                                               style: GoogleFonts.plusJakartaSans(
                                                                   textStyle: TextStyle(
-                                                                      fontSize:
-                                                                          22,
-                                                                      color: Color
-                                                                          .fromARGB(
-                                                                              255,
-                                                                              255,
-                                                                              0,
-                                                                              0),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500)),
+                                                                      fontSize: 22,
+                                                                      color: Color.fromARGB(255, 255, 0, 0),
+                                                                      fontWeight: FontWeight.w500)),
                                                             ),
                                                           ],
                                                         ),
-                                                        unread_task == 0 ||
-                                                                unread_task ==
-                                                                    null
+                                                        unread_task == 0 || unread_task == null
                                                             ? Container(
                                                                 height: 40,
                                                                 decoration: BoxDecoration(
                                                                     gradient: LinearGradient(
-                                                                        colors: [
-                                                                          Colors
-                                                                              .red,
-                                                                          Color.fromARGB(
-                                                                              255,
-                                                                              103,
-                                                                              94,
-                                                                              94)
-                                                                        ],
-                                                                        begin: FractionalOffset(
-                                                                            0.0,
-                                                                            0.0),
-                                                                        end: FractionalOffset(
-                                                                            1.5,
-                                                                            0.0),
-                                                                        stops: [
-                                                                          0.0,
-                                                                          1.0
-                                                                        ],
-                                                                        tileMode: TileMode
-                                                                            .clamp),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            90)),
-                                                                margin: EdgeInsets.only(
-                                                                    right: 10),
+                                                                        colors: [Colors.red, Color.fromARGB(255, 103, 94, 94)],
+                                                                        begin: FractionalOffset(0.0, 0.0),
+                                                                        end: FractionalOffset(1.5, 0.0),
+                                                                        stops: [0.0, 1.0],
+                                                                        tileMode: TileMode.clamp),
+                                                                    borderRadius: BorderRadius.circular(90)),
+                                                                margin: EdgeInsets.only(right: 10),
                                                                 child: ElevatedButton(
                                                                     style: ElevatedButton.styleFrom(
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .transparent,
-                                                                      foregroundColor:
-                                                                          Colors
-                                                                              .black,
-                                                                      elevation:
-                                                                          0,
+                                                                      backgroundColor: Colors.transparent,
+                                                                      foregroundColor: Colors.black,
+                                                                      elevation: 0,
                                                                     ),
                                                                     onPressed: () async {
                                                                       await read_task();
-                                                                      print(
-                                                                          'read data');
+                                                                      print('read data');
                                                                       Navigator.push(
                                                                           context,
                                                                           MaterialPageRoute(
-                                                                            builder: (context) =>
-                                                                                RamayanaMyListTask(),
+                                                                            builder: (context) => RamayanaMyListTask(),
                                                                           ));
                                                                       // Navigator.pushAndRemoveUntil(
                                                                       //     context,
@@ -1778,85 +1481,57 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                     },
                                                                     child: Text(
                                                                       'Lihat Semua',
-                                                                      style: GoogleFonts.plusJakartaSans(
-                                                                          fontSize:
-                                                                              15,
-                                                                          color:
-                                                                              Colors.white),
+                                                                      style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
                                                                     )))
                                                             : badge.Badge(
-                                                                child:
-                                                                    Container(
-                                                                        height:
-                                                                            38,
-                                                                        decoration: BoxDecoration(
-                                                                            gradient: LinearGradient(
-                                                                                colors: [
-                                                                                  Colors.red,
-                                                                                  Color.fromARGB(255, 103, 94, 94)
-                                                                                ],
-                                                                                begin: FractionalOffset(0.0,
-                                                                                    0.0),
-                                                                                end: FractionalOffset(1.5,
-                                                                                    0.0),
-                                                                                stops: [
-                                                                                  0.0,
-                                                                                  1.0
-                                                                                ],
-                                                                                tileMode: TileMode
-                                                                                    .clamp),
-                                                                            borderRadius: BorderRadius.circular(
-                                                                                90)),
-                                                                        margin: EdgeInsets.only(
-                                                                            right:
-                                                                                10),
-                                                                        child: ElevatedButton(
-                                                                            style: ElevatedButton.styleFrom(
-                                                                              backgroundColor: Colors.transparent,
-                                                                              foregroundColor: Colors.black,
-                                                                              elevation: 0,
-                                                                            ),
-                                                                            onPressed: () async {
-                                                                              await read_task();
-                                                                              Navigator.push(
-                                                                                  context,
-                                                                                  MaterialPageRoute(
-                                                                                    builder: (context) => RamayanaMyListTask(),
-                                                                                  ));
-                                                                              // Navigator.pushAndRemoveUntil(
-                                                                              //     context,
-                                                                              //     MaterialPageRoute(
-                                                                              //       builder: (context) =>
-                                                                              //           RamayanaMyListTask(),
-                                                                              //     ),
-                                                                              //     (Route<dynamic> route) => false);
-                                                                            },
-                                                                            child: Text(
-                                                                              'Lihat Semua',
-                                                                              style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
-                                                                            ))),
-                                                                badgeContent:
-                                                                    SizedBox(
-                                                                        width:
-                                                                            18,
-                                                                        height:
-                                                                            20, //badge size
-                                                                        child:
-                                                                            Center(
-                                                                          //aligh badge content to center
-                                                                          child: Text(
-                                                                              "${unread_task == null ? '' : unread_task}",
-                                                                              style: TextStyle(
-                                                                                  color: Colors.white, //badge font color
-                                                                                  fontSize: 20 //badge font size
-                                                                                  )),
-                                                                        )),
-                                                                badgeColor: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        255,
-                                                                        67,
-                                                                        67), //badge background color
+                                                                child: Container(
+                                                                    height: 38,
+                                                                    decoration: BoxDecoration(
+                                                                        gradient: LinearGradient(
+                                                                            colors: [Colors.red, Color.fromARGB(255, 103, 94, 94)],
+                                                                            begin: FractionalOffset(0.0, 0.0),
+                                                                            end: FractionalOffset(1.5, 0.0),
+                                                                            stops: [0.0, 1.0],
+                                                                            tileMode: TileMode.clamp),
+                                                                        borderRadius: BorderRadius.circular(90)),
+                                                                    margin: EdgeInsets.only(right: 10),
+                                                                    child: ElevatedButton(
+                                                                        style: ElevatedButton.styleFrom(
+                                                                          backgroundColor: Colors.transparent,
+                                                                          foregroundColor: Colors.black,
+                                                                          elevation: 0,
+                                                                        ),
+                                                                        onPressed: () async {
+                                                                          await read_task();
+                                                                          Navigator.push(
+                                                                              context,
+                                                                              MaterialPageRoute(
+                                                                                builder: (context) => RamayanaMyListTask(),
+                                                                              ));
+                                                                          // Navigator.pushAndRemoveUntil(
+                                                                          //     context,
+                                                                          //     MaterialPageRoute(
+                                                                          //       builder: (context) =>
+                                                                          //           RamayanaMyListTask(),
+                                                                          //     ),
+                                                                          //     (Route<dynamic> route) => false);
+                                                                        },
+                                                                        child: Text(
+                                                                          'Lihat Semua',
+                                                                          style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+                                                                        ))),
+                                                                badgeContent: SizedBox(
+                                                                    width: 18,
+                                                                    height: 20, //badge size
+                                                                    child: Center(
+                                                                      //aligh badge content to center
+                                                                      child: Text("${unread_task == null ? '' : unread_task}",
+                                                                          style: TextStyle(
+                                                                              color: Colors.white, //badge font color
+                                                                              fontSize: 20 //badge font size
+                                                                              )),
+                                                                    )),
+                                                                badgeColor: Color.fromARGB(255, 255, 67, 67), //badge background color
                                                               )
                                                       ],
                                                     ),
@@ -1867,94 +1542,54 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                         left: 20,
                                                         right: 20,
                                                       ),
-                                                      child: BlocBuilder<
-                                                              HomeCubit,
-                                                              HomeState>(
-                                                          builder:
-                                                              (context, state) {
-                                                        if (state
-                                                            is HomeLoading) {
+                                                      child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+                                                        if (state is HomeLoading) {
                                                           return SpinKitThreeBounce(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    230,
-                                                                    0,
-                                                                    0),
+                                                            color: Color.fromARGB(255, 230, 0, 0),
                                                             size: 50.0,
                                                           );
                                                         }
-                                                        if (state
-                                                            is HomeSuccess) {
+                                                        if (state is HomeSuccess) {
                                                           return Container(
-                                                            child: ListView
-                                                                .builder(
+                                                            child: ListView.builder(
                                                               primary: false,
                                                               shrinkWrap: true,
                                                               itemCount: 3,
-                                                              itemBuilder:
-                                                                  (BuildContext
-                                                                          context,
-                                                                      int index) {
+                                                              itemBuilder: (BuildContext context, int index) {
                                                                 return GestureDetector(
                                                                   onTap: () {
-                                                                    Navigator.push(
-                                                                        context,
-                                                                        MaterialPageRoute(builder:
-                                                                            (context) {
-                                                                      return RamayanaMyActivity(
-                                                                          response: state
-                                                                              .response
-                                                                              .data?[index]);
+                                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                                                      return RamayanaMyActivity(response: state.response.data?[index]);
                                                                     }));
                                                                   },
-                                                                  child:
-                                                                      Container(
+                                                                  child: Container(
                                                                     height: 90,
-                                                                    margin: EdgeInsets.only(
-                                                                        bottom:
-                                                                            10),
-                                                                    decoration: BoxDecoration(
-                                                                        boxShadow: <BoxShadow>[
-                                                                          BoxShadow(
-                                                                              color: Color.fromARGB(255, 197, 197, 197),
-                                                                              blurRadius: 1,
-                                                                              spreadRadius: 1,
-                                                                              offset: Offset(2, 2))
-                                                                        ],
-                                                                        color: Colors
-                                                                            .white,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(10)),
-                                                                    child:
-                                                                        ListTile(
+                                                                    margin: EdgeInsets.only(bottom: 10),
+                                                                    decoration: BoxDecoration(boxShadow: <BoxShadow>[
+                                                                      BoxShadow(
+                                                                          color: Color.fromARGB(255, 197, 197, 197),
+                                                                          blurRadius: 1,
+                                                                          spreadRadius: 1,
+                                                                          offset: Offset(2, 2))
+                                                                    ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                                                                    child: ListTile(
                                                                       leading: CircleAvatar(
-                                                                          backgroundColor: Color.fromARGB(
-                                                                              255,
-                                                                              210,
-                                                                              14,
-                                                                              0),
-                                                                          radius:
-                                                                              30,
-                                                                          backgroundImage:
-                                                                              AssetImage('assets/todolist.png')),
+                                                                          backgroundColor: Color.fromARGB(255, 210, 14, 0),
+                                                                          radius: 30,
+                                                                          backgroundImage: AssetImage('assets/todolist.png')),
                                                                       // title: Text('${e.task_desc}', style: GoogleFonts.plusJakartaSans(
                                                                       //   fontSize: 18, color: Colors.black
                                                                       // ),),
-                                                                      subtitle:
-                                                                          Column(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.start,
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
+                                                                      subtitle: Column(
+                                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                                         children: [
                                                                           Container(
-                                                                            margin:
-                                                                                EdgeInsets.only(top: 3),
-                                                                            child:
-                                                                                Text(
+                                                                            margin: EdgeInsets.only(top: 3),
+                                                                            child: Text(
                                                                               '${state.response.data?[index].taskDesc}',
-                                                                              style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
+                                                                              style: GoogleFonts.plusJakartaSans(
+                                                                                  fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
                                                                               overflow: TextOverflow.ellipsis,
                                                                             ),
                                                                           ),
@@ -1962,18 +1597,26 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                             children: [
                                                                               Container(
                                                                                 width: 80,
-                                                                                child: Text('Status', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                                child: Text('Status',
+                                                                                    style: GoogleFonts.plusJakartaSans(
+                                                                                        fontSize: 15, color: Colors.grey)),
                                                                               ),
-                                                                              Text('${state.response.data?[index].taskStatus}', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                              Text('${state.response.data?[index].taskStatus}',
+                                                                                  style:
+                                                                                      GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
                                                                             ],
                                                                           ),
                                                                           Row(
                                                                             children: [
                                                                               Container(
                                                                                 width: 80,
-                                                                                child: Text('Project ID', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                                child: Text('Project ID',
+                                                                                    style: GoogleFonts.plusJakartaSans(
+                                                                                        fontSize: 15, color: Colors.grey)),
                                                                               ),
-                                                                              Text(': ${state.response.data?[index].projectId}', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                              Text(': ${state.response.data?[index].projectId}',
+                                                                                  style:
+                                                                                      GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
                                                                             ],
                                                                           ),
                                                                         ],
@@ -2014,10 +1657,8 @@ class BottomClipper extends CustomClipper<Path> {
     var path = Path();
     path.lineTo(0, 0);
     path.lineTo(0, size.height - 100);
-    path.quadraticBezierTo(
-        size.width / 4, size.height, size.width / 2, size.height);
-    path.quadraticBezierTo(size.width - size.width / 4, size.height, size.width,
-        size.height - 100);
+    path.quadraticBezierTo(size.width / 4, size.height, size.width / 2, size.height);
+    path.quadraticBezierTo(size.width - size.width / 4, size.height, size.width, size.height - 100);
     path.lineTo(size.width, 0);
     path.lineTo(0, 0);
     return path;
@@ -2038,8 +1679,7 @@ class FadeInImageWidget extends StatefulWidget {
   _FadeInImageWidgetState createState() => _FadeInImageWidgetState();
 }
 
-class _FadeInImageWidgetState extends State<FadeInImageWidget>
-    with TickerProviderStateMixin {
+class _FadeInImageWidgetState extends State<FadeInImageWidget> with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 

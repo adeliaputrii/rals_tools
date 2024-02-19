@@ -9,8 +9,7 @@ class RamayanaVoid extends StatefulWidget {
   State<RamayanaVoid> createState() => _RamayanaVoidState();
 }
 
-class _RamayanaVoidState extends State<RamayanaVoid>
-    with RouteAware, WidgetsBindingObserver {
+class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBindingObserver {
   DbHelper db = DbHelper();
   DbHelperVoidOffline db2 = DbHelperVoidOffline();
 
@@ -64,9 +63,7 @@ class _RamayanaVoidState extends State<RamayanaVoid>
       }
     }
     if (state == AppLifecycleState.paused) {}
-    if (state == AppLifecycleState.inactive) {
-      debugPrint('inactive');
-    }
+    if (state == AppLifecycleState.inactive) {}
   }
 
   Future<bool> sessionEnd() async {
@@ -160,8 +157,7 @@ class _RamayanaVoidState extends State<RamayanaVoid>
           color: Colors.grey,
         ),
       ),
-      titleStyle: GoogleFonts.plusJakartaSans(
-          fontSize: 23, color: Colors.red, fontWeight: FontWeight.w500),
+      titleStyle: GoogleFonts.plusJakartaSans(fontSize: 23, color: Colors.red, fontWeight: FontWeight.w500),
       alertAlignment: Alignment.center,
     );
     Alert(
@@ -179,8 +175,7 @@ class _RamayanaVoidState extends State<RamayanaVoid>
           },
           child: Text(
             "Cancel",
-            style:
-                GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+            style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
           ),
         ),
         DialogButton(
@@ -188,15 +183,11 @@ class _RamayanaVoidState extends State<RamayanaVoid>
           color: Color.fromARGB(255, 210, 14, 0),
           onPressed: () async {
             logoutPressed();
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => RamayanaLogin()),
-                (route) => false);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => RamayanaLogin()), (route) => false);
           },
           child: Text(
             "Log Out",
-            style:
-                GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+            style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
           ),
         ),
       ],
@@ -222,8 +213,7 @@ class _RamayanaVoidState extends State<RamayanaVoid>
     if (randomAngka != null && userId != null) {
       numberStepOne = stepOne(input: randomAngka);
       numberStepTwo = stepTwo(input: numberStepOne);
-      result =
-          stepThree(angkaKedua: numberStepTwo.toString(), angkaPertama: userId);
+      result = stepThree(angkaKedua: numberStepTwo.toString(), angkaPertama: userId);
       print('Hasil : ${result}');
     }
     return result;
@@ -263,11 +253,9 @@ class _RamayanaVoidState extends State<RamayanaVoid>
     int postNumber = 0;
     if (angkaPertama.length >= 3) {
       prefixNumber = int.parse(angkaPertama.substring(0, 3)) + 13;
-      postNumber =
-          int.parse(angkaPertama.substring(3, angkaPertama.length)) + 18;
+      postNumber = int.parse(angkaPertama.substring(3, angkaPertama.length)) + 18;
     } else if (angkaPertama.length > 0) {
-      prefixNumber =
-          int.parse(angkaPertama.substring(0, angkaPertama.length)) + 13;
+      prefixNumber = int.parse(angkaPertama.substring(0, angkaPertama.length)) + 13;
     } else {}
     return '${prefixNumber}X${angkaKedua}B${postNumber}';
   }
@@ -281,15 +269,13 @@ class _RamayanaVoidState extends State<RamayanaVoid>
         appBar: AppBar(
           leading: IconButton(
             onPressed: () async {
-              await FlutterWindowManager.clearFlags(
-                  FlutterWindowManager.FLAG_SECURE);
+              await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
               if (!widget.isOffline) {
                 debugPrint('to home');
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          DefaultBottomBarController(child: Ramayana()),
+                      builder: (context) => DefaultBottomBarController(child: Ramayana()),
                     ),
                     (Route<dynamic> route) => false);
               } else {
@@ -302,12 +288,8 @@ class _RamayanaVoidState extends State<RamayanaVoid>
               color: Colors.white,
             ),
           ),
-          title: Text('Void',
-              style: GoogleFonts.plusJakartaSans(
-                  textStyle: TextStyle(
-                      fontSize: 23,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500))),
+          title:
+              Text('Void', style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 23, color: Colors.white, fontWeight: FontWeight.w500))),
           backgroundColor: Color.fromARGB(255, 210, 14, 0),
           toolbarHeight: 90,
         ),
@@ -316,9 +298,7 @@ class _RamayanaVoidState extends State<RamayanaVoid>
           child: ListView(
             children: [
               Stack(children: <Widget>[
-                Container(
-                    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    color: Color.fromARGB(255, 253, 249, 249)),
+                Container(margin: EdgeInsets.fromLTRB(10, 0, 10, 0), color: Color.fromARGB(255, 253, 249, 249)),
                 Container(
                   width: MediaQuery.of(context).size.width / 1,
                   height: 170,
@@ -326,18 +306,13 @@ class _RamayanaVoidState extends State<RamayanaVoid>
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(30, 30, 30, 0),
-                  child: Text('Approval Void & Return',
-                      style: GoogleFonts.plusJakartaSans(
-                          textStyle:
-                              TextStyle(fontSize: 21, color: Colors.white))),
+                  child: Text('Approval Void & Return', style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 21, color: Colors.white))),
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 100, 10, 0),
                   height: 200,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      boxShadow: [BoxShadow(blurRadius: 5)]),
+                      borderRadius: BorderRadius.circular(20), color: Color.fromARGB(255, 255, 255, 255), boxShadow: [BoxShadow(blurRadius: 5)]),
                 ),
                 SizedBox(
                   height: 30,
@@ -356,54 +331,37 @@ class _RamayanaVoidState extends State<RamayanaVoid>
                               }
                             },
                             keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
+                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: 5.0),
-                                    borderRadius: BorderRadius.circular(25)),
+                                    borderSide: BorderSide(color: Colors.black, width: 5.0), borderRadius: BorderRadius.circular(25)),
                                 errorBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Color.fromARGB(255, 255, 17, 17),
                                     ),
                                     borderRadius: BorderRadius.circular(25)),
-                                errorStyle: TextStyle(
-                                    color: Color.fromARGB(255, 255, 17, 17),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400),
+                                errorStyle: TextStyle(color: Color.fromARGB(255, 255, 17, 17), fontSize: 14, fontWeight: FontWeight.w400),
                                 labelStyle: TextStyle(color: Colors.black87),
                                 prefixIcon: Icon(
                                   Icons.keyboard,
                                   color: Color.fromARGB(255, 255, 17, 17),
                                   size: 30,
                                 ),
-                                hintStyle: TextStyle(
-                                    color: Colors.black, fontSize: 20),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        new BorderSide(color: Colors.black),
-                                    borderRadius: BorderRadius.circular(25)),
+                                hintStyle: TextStyle(color: Colors.black, fontSize: 20),
+                                enabledBorder:
+                                    OutlineInputBorder(borderSide: new BorderSide(color: Colors.black), borderRadius: BorderRadius.circular(25)),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(25),
-                                  borderSide:
-                                      new BorderSide(color: Colors.black),
+                                  borderSide: new BorderSide(color: Colors.black),
                                 ))))),
                 Container(
                   margin: EdgeInsets.fromLTRB(160, 230, 160, 0),
                   width: 150,
-                  decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 255, 17, 17),
-                      borderRadius: BorderRadius.circular(30)),
+                  decoration: BoxDecoration(color: Color.fromARGB(255, 255, 17, 17), borderRadius: BorderRadius.circular(30)),
                   height: 40,
                   child: TextButton(
                     child: Text('GENERATE',
-                        style: GoogleFonts.plusJakartaSans(
-                            textStyle: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500))),
+                        style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500))),
                     onPressed: () async {
                       keyboardUtils.dissmissKeyboard(context);
                       if (_formKey.currentState!.validate()) {
@@ -415,17 +373,14 @@ class _RamayanaVoidState extends State<RamayanaVoid>
                         });
                         print(_visible);
                         if (_visible == true) {
-                          await FlutterWindowManager.addFlags(
-                              FlutterWindowManager.FLAG_SECURE);
+                          await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
                         } else {
-                          await FlutterWindowManager.clearFlags(
-                              FlutterWindowManager.FLAG_SECURE);
+                          await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
                         }
                         await _checkInternetConnection();
                         if (widget.isOffline) {
                           db2.saveActivityVoidOffline(VoidOffline(
-                            idGenerate:
-                                '${logInfoVoidSucc}${myController.text}',
+                            idGenerate: '${logInfoVoidSucc}${myController.text}',
                             date: '${DateTime.now()}',
                           ));
                           //  if(deleteResult != 0){
@@ -440,17 +395,12 @@ class _RamayanaVoidState extends State<RamayanaVoid>
                           debugPrint('login via online');
                           if (_isConnected == true) {
                             print('is connect');
-                            AndroidDeviceInfo info =
-                                await deviceInfo.androidInfo;
+                            AndroidDeviceInfo info = await deviceInfo.androidInfo;
                             final productId = myController.text;
-                            loginCubit.createLog(
-                                baseParam.logInfoVoidPage,
-                                '${baseParam.logInfoVoidSucc}${productId}',
-                                baseParam.noUrl);
+                            loginCubit.createLog(baseParam.logInfoVoidPage, '${baseParam.logInfoVoidSucc}${productId}', baseParam.noUrl);
                             print('berhasil $_udid');
                           } else if (_isConnected == false) {
-                            String format =
-                                DateFormat.Hms().format(DateTime.now());
+                            String format = DateFormat.Hms().format(DateTime.now());
                             print('not connect');
                             db.saveActivityy(LogOffline(
                               deskripsi: 'Generate - ${myController.text}',
@@ -499,11 +449,8 @@ class _RamayanaVoidState extends State<RamayanaVoid>
                               Container(
                                 margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 height: 110,
-                                child: SfBarcodeGenerator(
-                                    value: '$data',
-                                    backgroundColor: Colors.white,
-                                    barColor: Colors.black,
-                                    symbology: Code128()),
+                                child:
+                                    SfBarcodeGenerator(value: '$data', backgroundColor: Colors.white, barColor: Colors.black, symbology: Code128()),
                               ),
 
                               Container(

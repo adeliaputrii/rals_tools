@@ -16,7 +16,7 @@ class AppServices {
 
   final get = GetIt.I;
 
-  registerAppServices(String url, String urlTMS) async {
+  registerAppServices(String url) async {
     dio.interceptors.clear();
 
     dio.options.receiveTimeout = Duration(milliseconds: 35000);
@@ -31,10 +31,10 @@ class AppServices {
       get.registerFactory(() => LoginService(dio, baseUrl: url));
     }
     if (!get.isRegistered<SuratJalanService>()) {
-      get.registerFactory(() => SuratJalanService(dio, baseUrl: urlTMS));
+      get.registerFactory(() => SuratJalanService(dio, baseUrl: url));
     } else {
       get.unregister<SuratJalanService>();
-      get.registerFactory(() => SuratJalanService(dio, baseUrl: urlTMS));
+      get.registerFactory(() => SuratJalanService(dio, baseUrl: url));
     }
 
     if (!get.isRegistered<IDCashService>()) {

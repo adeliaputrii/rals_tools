@@ -93,8 +93,7 @@ Future<void> registerAppServices() async {
 
   // final url = '${basePath.base_url_prod}';
   final url = '${basePath.base_url_dev}';
-  final urlTMS = '${basePath.base_url_dev_tms}';
-  await appServices.registerAppServices(url, urlTMS);
+  await appServices.registerAppServices(url);
 }
 
 void firebaseInit() async {}

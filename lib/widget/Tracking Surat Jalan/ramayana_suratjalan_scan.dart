@@ -139,42 +139,6 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
     return true;
   }
 
-  popup() {
-    AlertDialog popup1 = AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-
-      // shadowColor: Colors.black,
-      titlePadding: EdgeInsets.all(0),
-      title: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          height: 170,
-          width: 2000,
-          child: Image.asset(
-            'assets/omaigat.png',
-          )),
-      content: Container(
-        margin: EdgeInsets.only(bottom: 10),
-        height: 30,
-        child: Center(
-          child: Text(
-            'SUCCESS',
-            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      actionsAlignment: MainAxisAlignment.start,
-      actionsPadding: EdgeInsets.only(bottom: 20),
-    );
-    showCupertinoModalPopup(context: context, builder: (context) => popup1);
-  }
-
   Widget _buttonRegular() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -757,14 +721,20 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
         switch (type) {
           case 1:
             sjCubit.postTrackingSJ(body, 1);
+            logCubit.createLog(
+                baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Default No. SJ = ${noSj}', basePath.api_tracking_update_tracking + noSj);
             debugPrint("submit");
             break;
           case 2:
             sjCubit.postTrackingSJ(body, 2);
+            logCubit.createLog(
+                baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Storeline No. SJ = ${noSj}', basePath.api_tracking_update_storeline + noSj);
             debugPrint("buttonStoreline");
             break;
           case 3:
             sjCubit.postTrackingSJ(body, 3);
+            logCubit.createLog(
+                baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Supplier No. SJ = ${noSj}', basePath.api_tracking_update_supplier + noSj);
             debugPrint('buttonSupplier');
             break;
         }
