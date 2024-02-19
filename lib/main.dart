@@ -94,7 +94,7 @@ Future<void> registerAppServices() async {
   final appServices = AppServices(GetIt.I.get<Dio>());
 
   // final url = '${basePath.base_url_prod}';
-  final url = '${basePath.base_url_dev}';
+  final url = '${basePath.base_url_prod}';
   await appServices.registerAppServices(url);
 }
 

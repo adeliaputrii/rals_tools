@@ -633,7 +633,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                         ),
                         visible: true,
                       );
-                    } else if (icon == "suratjalan.trackingsj") {
+                    } else if (icon == "tms.suratjalan") {
                       return Visibility(
                         child: CircleAvatar(
                           backgroundColor: Color.fromARGB(255, 207, 11, 11),
@@ -694,7 +694,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                       return 'Tukar Poin';
                     } else if (icon == "myactivity.activity") {
                       return 'My Activity';
-                    } else if (icon == "suratjalan.trackingsj") {
+                    } else if (icon == "tms.suratjalan") {
                       return 'Lacak SJ';
                     } else if (icon == "comchek.approvedcomchek") {
                       return 'Com. Checking';
@@ -747,7 +747,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                 MaterialPageRoute(builder: (context) {
                               return RamayanaMyActivity();
                             }));
-                          } else if (e == 'suratjalan.trackingsj') {
+                          } else if (e == 'tms.suratjalan') {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                               return RamayanaSuratJalan();
@@ -832,31 +832,31 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       if (element == 'mastervoid.void') {
         data.add(element);
       }
-      if (element == 'approvalreturn.approvalreturn') {
-        data.add(element);
-      }
-      if (element == 'cekprice.cekprice') {
-        data.add(element);
-      }
+      // if (element == 'approvalreturn.approvalreturn') {
+      //   data.add(element);
+      // }
+      // if (element == 'cekprice.cekprice') {
+      //   data.add(element);
+      // }
       if (element == 'tukarpoin.tukarpoin') {
         data.add(element);
       }
       if (element == 'myactivity.activity') {
         data.add(element);
       }
-      if (element == 'suratjalan.trackingsj') {
+      if (element == 'tms.suratjalan') {
         data.add(element);
       }
       if (element == 'kartu.kartuperusahaan') {
         data.add(element);
       }
-      if (element == 'comchek.approvedcomchek') {
-        data.add(element);
-        HakAkses.hakaksesSubmenuComcek.add(element);
-      }
-      if (element == 'comchek.historycomchek') {
-        HakAkses.hakaksesSubmenuComcek.add(element);
-      }
+      // if (element == 'comchek.approvedcomchek') {
+      //   data.add(element);
+      //   HakAkses.hakaksesSubmenuComcek.add(element);
+      // }
+      // if (element == 'comchek.historycomchek') {
+      //   HakAkses.hakaksesSubmenuComcek.add(element);
+      // }
 
       if (element == 'homepage.news') {
         setState(() {
@@ -1193,7 +1193,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 visible: true,
                                               );
                                             } else if (icon ==
-                                                "suratjalan.trackingsj") {
+                                                "tms.suratjalan") {
                                               return Visibility(
                                                 child: CircleAvatar(
                                                   backgroundColor:
@@ -1270,7 +1270,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                 "myactivity.activity") {
                                               return 'My Activity';
                                             } else if (icon ==
-                                                "suratjalan_trackingsj") {
+                                                "tms.suratjalan") {
                                               return 'Lacak SJ';
                                             } else if (icon ==
                                                 "comchek.approvedcomchek") {
@@ -1340,7 +1340,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                       return RamayanaMyActivity();
                                                     }));
                                                   } else if (e ==
-                                                      'suratjalan_trackingsj') {
+                                                      'tms.suratjalan') {
                                                     Navigator.push(context,
                                                         MaterialPageRoute(
                                                             builder: (context) {
