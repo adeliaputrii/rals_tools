@@ -382,7 +382,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
               setState(() {
                 _visible = false;
               });
-              popUp.showPopUpSuccess(trackSJSuccess, trackSJNavigate, navigateTrackSJ);
+              popUp.showPopUpSuccess(state.response.message ?? 'Submit Pelacakan Sukses!', trackSJNavigate, navigateTrackSJ);
             }
             if (state is ScanSJFailure) {
               popUp.showPopUpError(failed, state.message);
