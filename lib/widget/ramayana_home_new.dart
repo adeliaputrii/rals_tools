@@ -798,12 +798,12 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       if (element == 'mastervoid.void') {
         data.add(element);
       }
-      // if (element == 'approvalreturn.approvalreturn') {
-      //   data.add(element);
-      // }
-      // if (element == 'cekprice.cekprice') {
-      //   data.add(element);
-      // }
+      if (element == 'approvalreturn.approvalreturn') {
+        data.add(element);
+      }
+      if (element == 'cekprice.cekprice') {
+        data.add(element);
+      }
       if (element == 'tukarpoin.tukarpoin') {
         data.add(element);
       }
@@ -816,13 +816,13 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       if (element == 'kartu.kartuperusahaan') {
         data.add(element);
       }
-      // if (element == 'comchek.approvedcomchek') {
-      //   data.add(element);
-      //   HakAkses.hakaksesSubmenuComcek.add(element);
-      // }
-      // if (element == 'comchek.historycomchek') {
-      //   HakAkses.hakaksesSubmenuComcek.add(element);
-      // }
+      if (element == 'comchek.approvedcomchek') {
+        data.add(element);
+        HakAkses.hakaksesSubmenuComcek.add(element);
+      }
+      if (element == 'comchek.historycomchek') {
+        HakAkses.hakaksesSubmenuComcek.add(element);
+      }
 
       if (element == 'homepage.news') {
         setState(() {

@@ -8,7 +8,7 @@ class RamayanaMembercardHistory extends StatefulWidget {
       required this.year,
       required this.month,
       required this.typeCard});
-  final bool color;
+  final String color;
   final String nokartu;
   final String year;
   final String month;
@@ -67,9 +67,7 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                   child: Text('Riwayat Transaksi',
                       style: GoogleFonts.rubik(
                           fontSize: 31,
-                          color: typeCard(widget.typeCard)
-                              ? Color.fromARGB(255, 197, 18, 19)
-                              : Color.fromARGB(255, 82, 74, 156),
+                          color: getColorForTypePayment(widget.typeCard),
                           fontWeight: FontWeight.w500)),
                 ),
                 Center(
@@ -78,17 +76,13 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                     child: Text(getMonthName(widget.month),
                         style: GoogleFonts.rubik(
                             fontSize: 22,
-                            color: typeCard(widget.typeCard)
-                                ? Color.fromARGB(255, 197, 18, 19)
-                                : Color.fromARGB(255, 82, 74, 156))),
+                            color: getColorForTypePayment(widget.typeCard))),
                   ),
                 ),
                 Container(
                     margin: EdgeInsets.fromLTRB(20, 5, 20, 20),
                     height: 1,
-                    color: typeCard(widget.typeCard)
-                        ? Color.fromARGB(255, 197, 18, 19)
-                        : Color.fromARGB(255, 82, 74, 156)),
+                    color: getColorForTypePayment(widget.typeCard)),
 // ===========================================================================================================================
                 Center(
                   child: BlocBuilder<CompanyCardCubit, CompanyCardState>(
@@ -105,9 +99,7 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                               child: Text(baseParam.notFoundTransaction,
                                   style: GoogleFonts.rubik(
                                       fontSize: 22,
-                                      color: typeCard(widget.typeCard)
-                                          ? Color.fromARGB(255, 197, 18, 19)
-                                          : Color.fromARGB(255, 82, 74, 156))),
+                                      color: getColorForTypePayment(widget.typeCard))),
                             );
                     }
 
@@ -134,9 +126,7 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
               Container(
                   margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                   decoration: BoxDecoration(
-                      color: typeCard(widget.typeCard)
-                          ? Color.fromARGB(255, 190, 215, 44)
-                          : Color.fromARGB(255, 255, 207, 228),
+                      color: getColorForType2(widget.typeCard),
                       borderRadius: BorderRadius.circular(20)),
                   child: Column(
                     children: [
@@ -146,36 +136,36 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: typeCard(widget.typeCard)
-                                ? Colors.black
-                                : baseColor.trrColor,
+                            // fontWeight: FontWeight.bold,
+                            color: widget.typeCard == '6'
+                                ? baseColor.trrColor
+                                : Colors.black,
                           ),
                         ),
                       ),
                       Container(
                         height: 1,
-                        color: typeCard(widget.typeCard)
-                            ? baseColor.primaryColor
-                            : baseColor.trrColor,
+                         color:widget.typeCard == '6'
+                                  ? baseColor.trrColor
+                                  : baseColor.primaryColor
                       ),
                       Center(
                         child: ListTile(
                           leading: Icon(
                             IconlyBold.bag,
-                            color: typeCard(widget.typeCard)
-                                ? Color.fromARGB(255, 197, 18, 19)
-                                : Color.fromARGB(255, 82, 74, 156),
+                            color:widget.typeCard == '6'
+                                  ? baseColor.trrColor
+                                  : baseColor.primaryColor,
                             size: 28,
                           ),
                           title: Text(
                             'ID: ${historyResponse.data?[index].nostruk}',
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: typeCard(widget.typeCard)
-                                  ? Colors.black
-                                  : Color.fromARGB(255, 82, 74, 156),
+                              // fontWeight: FontWeight.bold,
+                              color: widget.typeCard == '6'
+                                  ? baseColor.trrColor
+                                  : Colors.black
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -184,9 +174,9 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: typeCard(widget.typeCard)
-                                  ? Color.fromARGB(255, 197, 18, 19)
-                                  : Color.fromARGB(255, 82, 74, 156),
+                              color:widget.typeCard == '6'
+                                  ? baseColor.trrColor
+                                  : baseColor.primaryColor
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),

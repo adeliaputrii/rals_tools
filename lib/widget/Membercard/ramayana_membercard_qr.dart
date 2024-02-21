@@ -3,7 +3,7 @@ part of 'import.dart';
 class RamayanaMembercardQr extends StatefulWidget {
   const RamayanaMembercardQr(
       {super.key, required this.icon, required this.nokartu});
-  final bool icon;
+  final String icon;
   final String nokartu;
 
   @override
@@ -179,16 +179,12 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                   margin: EdgeInsets.only(top: 20),
                   height: 250,
                   // color: Colors.green,
-                  child: Center(
-                      child: widget.icon
-                          ? Image.asset(
-                              'assets/payment_rms.png',
-                              fit: BoxFit.cover,
-                            )
-                          : Image.asset(
-                              'assets/payment_trr.png',
-                              fit: BoxFit.cover,
-                            )),
+                  decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: getImageForType(widget.icon)
+                    
+                    ),
+                    ),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 280),
@@ -247,9 +243,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                             height: 50,
                             width: 10000,
                             decoration: BoxDecoration(
-                              color: widget.icon
-                                  ? Color.fromARGB(255, 210, 14, 0)
-                                  : Color.fromARGB(255, 240, 133, 179),
+                              color: getColorForTypePayment(widget.icon),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: MaterialButton(
@@ -282,14 +276,14 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                   setState(() {
                                     isLoading = false;
                                   });
-                                  loginCubit.createLog(
-                                      widget.icon
-                                      ?
-                                      baseParam.paymentRmsPage
-                                      :
-                                      baseParam.paymentTrrPage,
-                                      baseParam.posCode+'${myController.text}',
-                                      urlApi);
+                                  // loginCubit.createLog(
+                                  //     widget.icon
+                                  //     ?
+                                  //     baseParam.paymentRmsPage
+                                  //     :
+                                  //     baseParam.paymentTrrPage,
+                                  //     baseParam.posCode+'${myController.text}',
+                                  //     urlApi);
                                   Future.delayed(Duration(minutes: 1), () {
                                     if (mounted) {
                                       setState(() {
@@ -318,9 +312,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                               ? Container(
                                   margin: EdgeInsets.only(top: 100),
                                   child: SpinKitThreeBounce(
-                                    color: widget.icon
-                                        ? Color.fromARGB(255, 210, 14, 0)
-                                        : Color.fromARGB(255, 82, 74, 156),
+                                    color: getColorForTypePayment(widget.icon),
                                     size: 50.0,
                                   ),
                                 )
@@ -351,11 +343,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(35),
-                                            color: widget.icon
-                                                ? Color.fromARGB(
-                                                    255, 190, 215, 44)
-                                                : Color.fromARGB(
-                                                    255, 240, 133, 179),
+                                            color:getColorForTypeHistory(widget.icon)
                                           ),
                                           child: Row(
                                             mainAxisAlignment:
@@ -376,17 +364,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                                               30)),
                                                   minWidth: 225,
                                                   height: 50,
-                                                  color: widget.icon
-                                                      ? _barcode
-                                                          ? Color.fromARGB(
-                                                              255, 197, 18, 19)
-                                                          : Color.fromARGB(
-                                                              255, 190, 215, 44)
-                                                      : _barcode
-                                                          ? Color.fromARGB(
-                                                              255, 82, 74, 156)
-                                                          : Color.fromARGB(255,
-                                                              240, 133, 179),
+                                                  color: getBarcodeColor(widget.icon),
                                                   onPressed: () {
                                                     setState(() {
                                                       _barcode = true;
@@ -418,17 +396,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                                               30)),
                                                   minWidth: 225,
                                                   height: 50,
-                                                  color: widget.icon
-                                                      ? _barcode
-                                                          ? Color.fromARGB(
-                                                              255, 190, 215, 44)
-                                                          : Color.fromARGB(
-                                                              255, 197, 18, 19)
-                                                      : _barcode
-                                                          ? Color.fromARGB(255,
-                                                              240, 133, 179)
-                                                          : Color.fromARGB(
-                                                              255, 82, 74, 156),
+                                                  color: getQrColor(widget.icon) ,
                                                   onPressed: () {
                                                     setState(() {
                                                       _barcode = false;
@@ -517,4 +485,69 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
       );
     });
   }
+   ImageProvider<Object> getImageForType(String type)  {
+    print('type : $type');
+  switch (type) {
+    case '6':
+      return AssetImage('assets/payment_trr.png');
+    case '7':
+      return AssetImage('assets/payment_rms.png');
+    case '8':
+      return AssetImage('assets/payment_ifs.png');
+    default:
+      return AssetImage('assets/default.png'); // Gambar default jika type tidak sesuai
+  }
 }
+
+Color getBarcodeColor(String type) { // untuk warna container
+  switch (type) {
+    case '6':
+    if (_barcode) {
+      return baseColor.trrColor;
+    } else {
+      return baseColor.trrColorPink;
+    }
+    case '7':
+      if (_barcode) {
+      return baseColor.primaryColor;
+    } else {
+      return baseColor.rmsColor;
+    }
+    case '8':
+      if (_barcode) {
+      return baseColor.ifsGreen;
+    } else {
+      return baseColor.ifsYellow;
+    }
+    default:
+      return Colors.grey; // Warna default jika type tidak sesuai
+  }
+}
+
+Color getQrColor(String type) { // untuk warna container
+  switch (type) {
+    case '6':
+    if (_barcode) {
+      return baseColor.trrColorPink;
+    } else {
+      return baseColor.trrColor;
+    }
+    case '7':
+      if (_barcode) {
+      return baseColor.rmsColor;
+    } else {
+      return baseColor.primaryColor;
+    }
+    case '8':
+      if (_barcode) {
+      return baseColor.ifsYellow;
+    } else {
+      return baseColor.ifsGreen;
+    }
+    default:
+      return Colors.grey; // Warna default jika type tidak sesuai
+  }
+}
+
+}
+
