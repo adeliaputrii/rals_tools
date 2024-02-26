@@ -99,21 +99,24 @@ const String sjKoliDiterima = 'Koli Diterima';
 const String sjKoliHilang = 'Koli Hilang';
 const String sjCatatan = 'Catatan';
 //Popup Kartu Tambahan
-const String companyCardTitle = 'Kartu Perusahaan';
+const String companyCardTitle = 'Member Perusahaan';
 const String cantempty = "Masukkan 6 digit kode POS";
 const String notFoundTransaction = "Belum ada Transaksi";
-const String page = "Kartu Tambahan Password";
-const String cardSuccess = "Kartu Tambahan Password Sukses";
-const String cardFailed = "Kartu Tambahan Password Gagal";
+const String page = "Member Perusahaan Password";
+const String cardSuccess = "Member Perusahaan Password Sukses";
+const String cardFailed = "Member Perusahaan Password Gagal";
 const String chooseCard = "Pilih Kartu";
 const String trrCard = "Kartu TRR";
 const String rmsCard = "Kartu RMS";
+const String ifsCard = "Kartu IFS";
 const String rmsCardPage = "Halaman Kartu RMS";
 const String trrCardPage = "Halaman Kartu TRR";
+const String ifsCardPage = "Halaman Kartu IFS";
 const String navigatePayment = "Navigasi Pembayaran";
 const String navigateHistory = "Navigasi Riwayat Transaksi";
 const String paymentTrrPage = "Halaman Pembayaran Kartu TRR";
 const String paymentRmsPage = "Halaman Pembayaran Kartu RMS";
+const String paymentIfsPage = "Halaman Pembayaran Kartu IFS";
 const String posCode = "Generate Kode POS - ";
 
 //Tipe Transaksi Payment

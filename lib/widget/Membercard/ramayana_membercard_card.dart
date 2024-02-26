@@ -208,11 +208,36 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                                 : CrossAxisAlignment
                                                                     .start,
                                                         children: [
-                                                          typeCardImage(cardActive[
+                                                          typeCardImageCenter(cardActive[
                                                                           index]
                                                                       .typeMc ??
                                                                   0)
-                                                              ? Center(
+                                                              ? Row(
+                                                                
+                                                                children: [
+                                                                  SizedBox(
+                                                                  width: 20,),
+                                                                  Text(
+                                                                      totalBalance(
+                                                                        int.tryParse(cardActive[index].saldo ??
+                                                                                '0') ??
+                                                                            0,
+                                                                                                                  int.tryParse(cardActive[index].pemakaian ??
+                                                                                '0') ??
+                                                                            0,
+                                                                      ),
+                                                                      style: GoogleFonts.plusJakartaSans(
+                                                                          fontSize:
+                                                                              25,
+                                                                          fontWeight:
+                                                                              FontWeight
+                                                                                  .bold,
+                                                                          color: Colors
+                                                                              .white)),
+                                                                ],
+                                                              )
+                                                              :
+                                                              Center(
                                                                 child: Text(
                                                                     totalBalance(
                                                                       int.tryParse(cardActive[index]
@@ -232,30 +257,6 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                                                 .bold,
                                                                         color: Colors
                                                                             .white)),
-                                                              )
-                                                              : Row(
-                                                                
-                                                                children: [
-                                                                  SizedBox(
-                                                                  width: 10,),
-                                                                  Text(
-                                                                      totalBalance(
-                                                                        int.tryParse(cardActive[index].saldo ??
-                                                                                '0') ??
-                                                                            0,
-                                                                                                                  int.tryParse(cardActive[index].pemakaian ??
-                                                                                '0') ??
-                                                                            0,
-                                                                      ),
-                                                                      style: GoogleFonts.plusJakartaSans(
-                                                                          fontSize:
-                                                                              25,
-                                                                          fontWeight:
-                                                                              FontWeight
-                                                                                  .bold,
-                                                                          color: Colors
-                                                                              .white)),
-                                                                ],
                                                               ),
                                                           Container(
                                                             margin: EdgeInsets.only(
@@ -326,6 +327,10 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
 
   bool typeCardImage(int type) {
     return type == 6;
+  }
+
+   bool typeCardImageCenter(int type) {
+    return type == 8;
   }
 
   ImageProvider<Object> getImageForType(int type)  {

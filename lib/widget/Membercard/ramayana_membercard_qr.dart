@@ -158,7 +158,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
             ),
           ),
           centerTitle: true,
-          title: Text('Kartu Perusahaan',
+          title: Text(baseParam.companyCardTitle,
               style: GoogleFonts.plusJakartaSans(
                   fontSize: 23, color: Colors.white)),
           backgroundColor: Color.fromARGB(255, 210, 14, 0),
@@ -276,14 +276,10 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                   setState(() {
                                     isLoading = false;
                                   });
-                                  // loginCubit.createLog(
-                                  //     widget.icon
-                                  //     ?
-                                  //     baseParam.paymentRmsPage
-                                  //     :
-                                  //     baseParam.paymentTrrPage,
-                                  //     baseParam.posCode+'${myController.text}',
-                                  //     urlApi);
+                                  loginCubit.createLog(
+                                      typeTransaction(widget.icon),
+                                      baseParam.posCode+'${myController.text}',
+                                      urlApi);
                                   Future.delayed(Duration(minutes: 1), () {
                                     if (mounted) {
                                       setState(() {

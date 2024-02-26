@@ -762,10 +762,20 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      '${getName()}',
-                      style: GoogleFonts.plusJakartaSans(
-                          fontWeight: FontWeight.w500, textStyle: TextStyle(fontSize: 15, color: Color.fromARGB(255, 71, 70, 70))),
+                    Container(
+                      width: 115 ,
+                      // color: Colors.amber,
+                      child: Center(
+                        child: Text(
+                          '${getName()}',
+                          style: GoogleFonts.plusJakartaSans(
+                              fontWeight: FontWeight.w500, 
+                              textStyle: TextStyle(
+                                fontSize: 15, 
+                                color: Color.fromARGB(255, 71, 70, 70)),),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     )
                   ]);
                 }).toList(),
@@ -1717,3 +1727,5 @@ class _FadeInImageWidgetState extends State<FadeInImageWidget> with TickerProvid
     super.dispose();
   }
 }
+
+

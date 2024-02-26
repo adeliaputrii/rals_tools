@@ -42,9 +42,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
     // Navigator.pop on the Selection Screen.
     debugPrint('navigator push');
     loginCubit.createLog(
-        typeCard(widget.typeCard)
-            ? baseParam.rmsCardPage
-            : baseParam.trrCardPage,
+        typeTransaction(widget.typeCard),
         baseParam.navigateHistory,
         urlApi);
     final result = await Navigator.push(
@@ -72,9 +70,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
               icon: widget.typeCard, nokartu: cardNumber)),
     );
     loginCubit.createLog(
-        typeCard(widget.typeCard)
-            ? baseParam.rmsCardPage
-            : baseParam.trrCardPage,
+        typeTransaction(widget.typeCard),
         baseParam.navigatePayment,
         urlApi);
     if (!mounted) return;
@@ -106,7 +102,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
               color: Colors.white,
             ),
           ),
-          title: Text('Kartu Tambahan',
+          title: Text(baseParam.companyCardTitle,
               style: GoogleFonts.plusJakartaSans(
                   fontSize: 23, color: Colors.white)),
           backgroundColor: Color.fromARGB(255, 210, 14, 0),
@@ -199,18 +195,9 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                                   ? 160
                                                   : 130),
                                           child: 
-                                          typeCard(widget.typeCard)
+                                          typeCardImageCenter(widget.typeCard)
                                           ?
-                                          Center(
-                                            child: Text('${balance.toIdr()}',
-                                                style:
-                                                    GoogleFonts.plusJakartaSans(
-                                                        fontSize: 28,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white)),
-                                          )
-                                          :
+                                          
                                           Row(
                                             children: [
                                               SizedBox(
@@ -224,7 +211,18 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                                                 FontWeight.bold,
                                                             color: Colors.white)),
                                             ],
-                                          ),
+                                          )
+                                          :
+                                          Center(
+                                            child: Text('${balance.toIdr()}',
+                                                style:
+                                                    GoogleFonts.plusJakartaSans(
+                                                        fontSize: 28,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                          )
+                                          ,
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(
@@ -723,10 +721,14 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
 
 String typeTransaction(String type) {
   String description = "";
-  if (type == '1') {
-    description = "Berhasil";
+  if (type == '6') {
+    description = baseParam.trrCardPage;
+  } else if (type == '7'){
+    description = baseParam.rmsCardPage;
+  } else if (type == '8'){
+    description = baseParam.ifsCardPage;
   } else {
-    description = "Gagal";
+    description = 'Kartu';
   }
   // if (type == 'P') {
   //   description = baseParam.typeP;
@@ -756,6 +758,10 @@ String typeTransaction(String type) {
 bool typeCard(typeCard) {
   return typeCard == '6';
 }
+
+  bool typeCardImageCenter(String type) {
+    return type == '8';
+  }
 
   ImageProvider<Object> getImageForType(String type)  {
     print('type : $type');

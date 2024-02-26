@@ -168,9 +168,7 @@ class _RamayanaMembercardHistoryYState
                         child: Text(baseParam.notFoundTransaction,
                             style: GoogleFonts.rubik(
                                 fontSize: 16,
-                                color: widget.typeCard == '6'
-                                              ? baseColor.trrColor
-                                              : baseColor.primaryColor,)),
+                                color: getColorForTypePayment(widget.typeCard))),
                       ),
                     );
                   }
