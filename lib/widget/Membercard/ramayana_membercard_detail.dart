@@ -42,16 +42,14 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
     // Navigator.pop on the Selection Screen.
     debugPrint('navigator push');
     loginCubit.createLog(
-        typeCard(widget.typeCard)
-            ? baseParam.rmsCardPage
-            : baseParam.trrCardPage,
+        typeTransaction(widget.typeCard),
         baseParam.navigateHistory,
         urlApi);
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => RamayanaMembercardHistoryY(
-              color: typeCard(widget.typeCard) ? true : false,
+              color: widget.typeCard,
               nokartu: cardNumber,
               typeCard: widget.typeCard)),
     );
@@ -69,12 +67,10 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
       context,
       MaterialPageRoute(
           builder: (context) => RamayanaMembercardQr(
-              icon: typeCard(widget.typeCard), nokartu: cardNumber)),
+              icon: widget.typeCard, nokartu: cardNumber)),
     );
     loginCubit.createLog(
-        typeCard(widget.typeCard)
-            ? baseParam.rmsCardPage
-            : baseParam.trrCardPage,
+        typeTransaction(widget.typeCard),
         baseParam.navigatePayment,
         urlApi);
     if (!mounted) return;
@@ -85,63 +81,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
     ScreenBrightness().resetScreenBrightness();
   }
 
-  Widget myWidget = Center(
-    child: Container(
-      key: ValueKey(2),
-      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-      child: Container(
-        width: 700,
-        height: 280,
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 235, 227, 227),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-          ),
-          boxShadow: [
-            BoxShadow(
-                color: Color.fromARGB(255, 136, 131, 131),
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: Offset(2, 4))
-          ],
-          image: DecorationImage(
-              image: AssetImage('assets/rms2.png'), fit: BoxFit.fill),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 130, left: 20),
-              child: Text('Rp.25.000.000',
-                  style: GoogleFonts.plusJakartaSans(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white)),
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20, left: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('${userData.getFullname()}',
-                      style: GoogleFonts.plusJakartaSans(
-                          fontSize: 16, color: Colors.white)),
-                  Text('${userData.getUsernameID()}',
-                      style: GoogleFonts.plusJakartaSans(
-                          fontSize: 16, color: Colors.white)),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,7 +102,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
               color: Colors.white,
             ),
           ),
-          title: Text('Kartu Tambahan',
+          title: Text(baseParam.companyCardTitle,
               style: GoogleFonts.plusJakartaSans(
                   fontSize: 23, color: Colors.white)),
           backgroundColor: Color.fromARGB(255, 210, 14, 0),
@@ -234,10 +174,11 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                             offset: Offset(2, 4))
                                       ],
                                       image: DecorationImage(
-                                          image: typeCard(widget.typeCard)
-                                              ? AssetImage('assets/rms2.png')
-                                              : AssetImage(
-                                                  'assets/tropikana.png'),
+                                          image: getImageForType(widget.typeCard),
+                                          // typeCard(widget.typeCard)
+                                          //     ? AssetImage('assets/rms2.png')
+                                          //     : AssetImage(
+                                          //         'assets/tropikana.png'),
                                           fit: BoxFit.fill),
                                     ),
                                     child: Column(
@@ -245,15 +186,34 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                           MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment:
                                           typeCard(widget.typeCard)
-                                              ? CrossAxisAlignment.start
-                                              : CrossAxisAlignment.end,
+                                              ? CrossAxisAlignment.end
+                                              : CrossAxisAlignment.start,
                                       children: [
                                         Container(
                                           margin: EdgeInsets.only(
                                               top: typeCard(widget.typeCard)
-                                                  ? 130
-                                                  : 160),
-                                          child: Center(
+                                                  ? 160
+                                                  : 130),
+                                          child: 
+                                          typeCardImageCenter(widget.typeCard)
+                                          ?
+                                          
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Text('${balance.toIdr()}',
+                                                    style:
+                                                        GoogleFonts.plusJakartaSans(
+                                                            fontSize: 28,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Colors.white)),
+                                            ],
+                                          )
+                                          :
+                                          Center(
                                             child: Text('${balance.toIdr()}',
                                                 style:
                                                     GoogleFonts.plusJakartaSans(
@@ -261,7 +221,8 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: Colors.white)),
-                                          ),
+                                          )
+                                          ,
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(
@@ -315,10 +276,11 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                               offset: Offset(2, 4))
                                         ],
                                         image: DecorationImage(
-                                            image: typeCard(widget.typeCard)
-                                                ? AssetImage('assets/rms2.png')
-                                                : AssetImage(
-                                                    'assets/tropikana.png'),
+                                            image:getImageForType(widget.typeCard), 
+                                            // typeCard(widget.typeCard)
+                                            //     ? AssetImage('assets/rms2.png')
+                                            //     : AssetImage(
+                                            //         'assets/tropikana.png'),
                                             fit: BoxFit.fill),
                                       ),
                                       child: Container(
@@ -358,9 +320,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                     width: 190,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: typeCard(widget.typeCard)
-                                          ? baseColor.primaryColor
-                                          : baseColor.trrColor,
+                                      color: getColorForTypePayment(widget.typeCard),
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -386,9 +346,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                     width: 190,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: typeCard(widget.typeCard)
-                                          ? baseColor.rmsColor
-                                          : baseColor.trrColorPink,
+                                      color: getColorForTypeHistory(widget.typeCard)
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -418,18 +376,14 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                   style: GoogleFonts.plusJakartaSans(
                                     fontSize: 22,
                                     fontWeight: FontWeight.w500,
-                                    color: typeCard(widget.typeCard)
-                                        ? baseColor.primaryColor
-                                        : baseColor.trrColor,
+                                    color: getColorForTypePayment(widget.typeCard)
                                   ))),
                           state.response.data?.length != 0
                               ? listHistory(state.response)
                               : Text(baseParam.notFoundTransaction,
                                   style: GoogleFonts.rubik(
                                       fontSize: 16,
-                                      color: typeCard(widget.typeCard)
-                                          ? Color.fromARGB(255, 197, 18, 19)
-                                          : Color.fromARGB(255, 82, 74, 156)))
+                                      color: getColorForTypePayment(widget.typeCard)))
                         ])),
               ],
             );
@@ -472,10 +426,11 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                             offset: Offset(2, 4))
                                       ],
                                       image: DecorationImage(
-                                          image: typeCard(widget.typeCard)
-                                              ? AssetImage('assets/rms2.png')
-                                              : AssetImage(
-                                                  'assets/tropikana.png'),
+                                          image: getImageForType(widget.typeCard),
+                                          // typeCard(widget.typeCard)
+                                          //     ? AssetImage('assets/rms2.png')
+                                          //     : AssetImage(
+                                          //         'assets/tropikana.png'),
                                           fit: BoxFit.fill),
                                     ),
                                     child: Column(
@@ -483,23 +438,40 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                           MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment:
                                           typeCard(widget.typeCard)
-                                              ? CrossAxisAlignment.start
-                                              : CrossAxisAlignment.end,
+                                              ? CrossAxisAlignment.end
+                                              : CrossAxisAlignment.start,
                                       children: [
                                         Container(
                                           margin: EdgeInsets.only(
                                               top: typeCard(widget.typeCard)
-                                                  ? 130
-                                                  : 160),
-                                          child: Center(
-                                            child: Text('${balance.toIdr()}',
-                                                style:
-                                                    GoogleFonts.plusJakartaSans(
-                                                        fontSize: 28,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white)),
-                                          ),
+                                                  ? 160
+                                                  : 130),
+                                          child: typeCard(widget.typeCard)
+                                          ?
+                                          Center(
+                                          child: Text('${balance.toIdr()}',
+                                              style:
+                                                  GoogleFonts.plusJakartaSans(
+                                                      fontSize: 28,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white)),
+                                                      )
+                                                      :
+                                                      Row(
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 20,
+                                                          ),
+                                                          Text('${balance.toIdr()}',
+                                                          style:
+                                                          GoogleFonts.plusJakartaSans(
+                                                          fontSize: 28,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white)),
+                                                        ],
+                                                      ),
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(
@@ -553,10 +525,11 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                               offset: Offset(2, 4))
                                         ],
                                         image: DecorationImage(
-                                            image: typeCard(widget.typeCard)
-                                                ? AssetImage('assets/rms2.png')
-                                                : AssetImage(
-                                                    'assets/tropikana.png'),
+                                            image: getImageForType(widget.typeCard),
+                                            // typeCard(widget.typeCard)
+                                            //     ? AssetImage('assets/rms2.png')
+                                            //     : AssetImage(
+                                            //         'assets/tropikana.png'),
                                             fit: BoxFit.fill),
                                       ),
                                       child: Container(
@@ -596,9 +569,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                     width: 190,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: typeCard(widget.typeCard)
-                                          ? baseColor.primaryColor
-                                          : baseColor.trrColor,
+                                      color: getColorForTypePayment(widget.typeCard)
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -624,9 +595,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                     width: 190,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: typeCard(widget.typeCard)
-                                          ? baseColor.rmsColor
-                                          : baseColor.trrColorPink,
+                                      color: getColorForTypeHistory(widget.typeCard)
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -656,9 +625,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                   style: GoogleFonts.plusJakartaSans(
                                     fontSize: 22,
                                     fontWeight: FontWeight.w500,
-                                    color: typeCard(widget.typeCard)
-                                        ? baseColor.primaryColor
-                                        : baseColor.trrColor,
+                                    color: getColorForTypePayment(widget.typeCard)
                                   ))),
                           Container(
                             // color: Colors.amber,
@@ -666,9 +633,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                             child: Text(baseParam.notFoundTransaction,
                                 style: GoogleFonts.rubik(
                                     fontSize: 18,
-                                    color: typeCard(widget.typeCard)
-                                        ? Color.fromARGB(255, 197, 18, 19)
-                                        : Color.fromARGB(255, 82, 74, 156))),
+                                    color: getColorForTypePayment(widget.typeCard))),
                           )
                         ])),
               ],
@@ -690,9 +655,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
               Container(
                   margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                   decoration: BoxDecoration(
-                      color: typeCard(widget.typeCard)
-                          ? Color.fromARGB(255, 190, 215, 44)
-                          : Color.fromARGB(255, 255, 207, 228),
+                      color: getColorForType2(widget.typeCard),
                       borderRadius: BorderRadius.circular(20)),
                   child: Column(
                     children: [
@@ -702,36 +665,36 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 15,
-                            fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                             color: typeCard(widget.typeCard)
-                                ? Colors.black
-                                : baseColor.trrColor,
+                                ? baseColor.trrColor
+                                  : Colors.black,
                           ),
                         ),
                       ),
                       Container(
                         height: 1,
                         color: typeCard(widget.typeCard)
-                            ? baseColor.primaryColor
-                            : baseColor.trrColor,
+                                  ? baseColor.trrColor
+                                  : baseColor.primaryColor,
                       ),
                       Center(
                         child: ListTile(
                           leading: Icon(
                             IconlyBold.bag,
                             color: typeCard(widget.typeCard)
-                                ? Color.fromARGB(255, 197, 18, 19)
-                                : Color.fromARGB(255, 82, 74, 156),
+                                  ? baseColor.trrColor
+                                  : baseColor.primaryColor,
                             size: 28,
                           ),
                           title: Text(
                             'ID: ${historyResponse.data?[index].nostruk}',
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                              // fontWeight: FontWeight.bold,
                               color: typeCard(widget.typeCard)
-                                  ? Colors.black
-                                  : Color.fromARGB(255, 82, 74, 156),
+                                  ? baseColor.trrColor
+                                  : Colors.black,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -741,8 +704,8 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color: typeCard(widget.typeCard)
-                                  ? Color.fromARGB(255, 197, 18, 19)
-                                  : Color.fromARGB(255, 82, 74, 156),
+                                  ? baseColor.trrColor
+                                  : baseColor.primaryColor,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -758,10 +721,14 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
 
 String typeTransaction(String type) {
   String description = "";
-  if (type == '1') {
-    description = "Berhasil";
+  if (type == '6') {
+    description = baseParam.trrCardPage;
+  } else if (type == '7'){
+    description = baseParam.rmsCardPage;
+  } else if (type == '8'){
+    description = baseParam.ifsCardPage;
   } else {
-    description = "Gagal";
+    description = 'Kartu';
   }
   // if (type == 'P') {
   //   description = baseParam.typeP;
@@ -789,5 +756,70 @@ String typeTransaction(String type) {
 }
 
 bool typeCard(typeCard) {
-  return typeCard == '7';
+  return typeCard == '6';
 }
+
+  bool typeCardImageCenter(String type) {
+    return type == '8';
+  }
+
+  ImageProvider<Object> getImageForType(String type)  {
+    print('type : $type');
+  switch (type) {
+    case '6':
+      return AssetImage('assets/tropikana.png');
+    case '7':
+      return AssetImage('assets/rms2.png');
+    case '8':
+      return AssetImage('assets/ifs.png');
+    default:
+      return AssetImage('assets/default.png'); // Gambar default jika type tidak sesuai
+  }
+}
+
+Color getColorForTypePayment(String type) {
+  switch (type) {
+    case '6':
+      return baseColor.trrColor;
+    case '7':
+      return baseColor.primaryColor;
+    case '8':
+      return baseColor.ifsGreen;
+    default:
+      return Colors.grey; // Warna default jika type tidak sesuai
+  }
+}
+
+Color getColorForTypeHistory(String type) {
+  switch (type) {
+    case '6':
+      return baseColor.trrColorPink;
+    case '7':
+      return baseColor.rmsColor;
+    case '8':
+      return baseColor.ifsYellow;
+    default:
+      return Colors.grey; // Warna default jika type tidak sesuai
+  }
+}
+
+
+
+Color getColorForType2(String type) { // untuk warna container
+  switch (type) {
+    case '6':
+      return Color.fromARGB(255, 255, 207, 228);
+    case '7':
+      return Color.fromARGB(255, 190, 215, 44);
+    case '8':
+      return baseColor.ifsYellow.withOpacity(0.7);
+    default:
+      return Colors.grey; // Warna default jika type tidak sesuai
+  }
+}
+
+
+
+
+
+
