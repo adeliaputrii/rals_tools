@@ -42,6 +42,12 @@ class SharedPref {
     await prefs.setString(key_last_login, lastLogin);
   }
 
+  static Future<void> setAccessMenu(String accessMenu) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString(key_list_access, accessMenu);
+  }
+
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -105,6 +111,12 @@ class SharedPref {
     final prefs = await SharedPreferences.getInstance();
 
     return prefs.getString('role');
+  }
+
+  static Future<String?> getUserAccess() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(key_list_access);
   }
 
   static Future<void> clearLastLogin() async {

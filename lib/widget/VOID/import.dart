@@ -55,7 +55,7 @@ import 'package:myactivity_project/service/SP_service/SP_service.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:myactivity_project/base/base_params.dart' as baseParam;
 import 'package:myactivity_project/base/base_paths.dart' as basePath;
-import '../../utils/check_session.dart';
+import '../../utils/app_check_user.dart';
 import '../../utils/keyboard_utils.dart';
 
 part 'ramayana_void.dart';

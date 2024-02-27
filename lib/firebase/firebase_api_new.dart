@@ -5,7 +5,7 @@ import 'package:myactivity_project/widget/My%20List%20Task/import.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
-import '../utils/check_session.dart';
+import '../utils/app_check_user.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
   print('Message Id: ${message.messageId}');
@@ -18,22 +18,18 @@ class FirebaseApiNew {
   final _firebaseMessaging = FirebaseMessaging.instance;
 
   void handleMessage(RemoteMessage? message) async {
-    CheckSession checkSession = CheckSession();
     if (message == null) return;
     debugPrint('test fcm');
-    debugPrint(checkSession.checkSession().toString());
-    if (await checkSession.checkSession()) {
-      navigatorKey.currentState
-          ?.pushNamed(RamayanaMyListTask.route, arguments: message);
+    debugPrint(CheckUser.checkSession().toString());
+    if (await CheckUser.checkSession()) {
+      navigatorKey.currentState?.pushNamed(RamayanaMyListTask.route, arguments: message);
     } else {
-      navigatorKey.currentState
-          ?.pushNamed(RamayanaLogin.route, arguments: message);
+      navigatorKey.currentState?.pushNamed(RamayanaLogin.route, arguments: message);
     }
   }
 
   Future initPushNotifications() async {
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
       sound: true,
@@ -48,8 +44,7 @@ class FirebaseApiNew {
     await _firebaseMessaging.requestPermission();
     final fcmToken = await _firebaseMessaging.getToken();
     print('Token ${fcmToken}');
-    var tokenFirebase =
-        prefs.setString('firebaseToken', fcmToken == null ? '' : fcmToken);
+    var tokenFirebase = prefs.setString('firebaseToken', fcmToken == null ? '' : fcmToken);
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
     initPushNotifications();
   }

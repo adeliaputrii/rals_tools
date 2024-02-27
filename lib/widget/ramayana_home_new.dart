@@ -486,6 +486,34 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     return;
   }
 
+  void showMenuBottomSheet(String menu) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(16), topLeft: Radius.circular(16))),
+      backgroundColor: baseColor.primaryColor,
+      isScrollControlled: true,
+      useSafeArea: true,
+      isDismissible: true,
+      enableDrag: true,
+      showDragHandle: true,
+      builder: (_) {
+        if (menu == baseParam.menuGroupPersonal) {
+          return PersonalMenuWidget();
+        }
+        if (menu == baseParam.menuGroupTools) {
+          return ToolsMenuWidget();
+        }
+        if (menu == baseParam.menuGroupReport) {
+          return ReportMenuWidget();
+        }
+        if (menu == baseParam.menuAll) {
+          return AllMenuWidget();
+        }
+        return Container();
+      },
+    );
+  }
+
   alertMenu() {
     var alertStyle = AlertStyle(
       titlePadding: EdgeInsets.only(top: 0),
@@ -696,7 +724,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                         child: getIcon(),
                         onPressed: () async {
                           await _checkInternetConnection();
-                          print('haiiioooo');
                           if (e == 'mastervoid.void') {
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return RamayanaVoid(isOffline: false);
@@ -763,16 +790,15 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                       height: 10,
                     ),
                     Container(
-                      width: 115 ,
+                      width: 115,
                       // color: Colors.amber,
                       child: Center(
                         child: Text(
                           '${getName()}',
                           style: GoogleFonts.plusJakartaSans(
-                              fontWeight: FontWeight.w500, 
-                              textStyle: TextStyle(
-                                fontSize: 15, 
-                                color: Color.fromARGB(255, 71, 70, 70)),),
+                            fontWeight: FontWeight.w500,
+                            textStyle: TextStyle(fontSize: 15, color: Color.fromARGB(255, 71, 70, 70)),
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -879,7 +905,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                       await _checkInternetConnection();
                     },
                     child: Container(
-                      color: Color.fromARGB(255, 245, 245, 245),
+                      color: Color.fromARGB(255, 235, 235, 235),
                       child: Column(
                         children: [
                           Stack(
@@ -994,280 +1020,50 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'My Activity Menu',
+                                            'Rtools Menu',
                                             style: GoogleFonts.plusJakartaSans(
                                                 textStyle: TextStyle(fontSize: 20, color: Color.fromARGB(255, 71, 70, 70))),
                                           ),
-                                          data.length > 3
-                                              ? Container(
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                      gradient: LinearGradient(
-                                                          colors: [Colors.red, Color.fromARGB(255, 103, 94, 94)],
-                                                          begin: FractionalOffset(0.0, 0.0),
-                                                          end: FractionalOffset(1.5, 0.0),
-                                                          stops: [0.0, 1.0],
-                                                          tileMode: TileMode.clamp),
-                                                      borderRadius: BorderRadius.circular(90)),
-                                                  margin: EdgeInsets.only(right: 10),
-                                                  child: ElevatedButton(
-                                                      style: ElevatedButton.styleFrom(
-                                                        backgroundColor: Colors.transparent,
-                                                        foregroundColor: Colors.black,
-                                                        elevation: 0,
-                                                      ),
-                                                      onPressed: () async {
-                                                        alertMenu();
-                                                      },
-                                                      child: Text(
-                                                        'Lihat Semua',
-                                                        style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
-                                                      )))
-                                              : Container()
+                                          Container(
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                      colors: [Colors.red, Color.fromARGB(255, 103, 94, 94)],
+                                                      begin: FractionalOffset(0.0, 0.0),
+                                                      end: FractionalOffset(1.5, 0.0),
+                                                      stops: [0.0, 1.0],
+                                                      tileMode: TileMode.clamp),
+                                                  borderRadius: BorderRadius.circular(90)),
+                                              margin: EdgeInsets.only(right: 10),
+                                              child: ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: Colors.transparent,
+                                                    foregroundColor: Colors.black,
+                                                    elevation: 0,
+                                                  ),
+                                                  onPressed: () async {
+                                                    // alertMenu();
+                                                    showMenuBottomSheet(baseParam.menuAll);
+                                                  },
+                                                  child: Text(
+                                                    'Lihat Semua',
+                                                    style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+                                                  )))
                                         ],
                                       ),
                                     ),
-
-                                    // ),
-                                    Container(
-                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                                      child: Wrap(
-                                        // spacing: 0.5,
-                                        // runSpacing: 1.0,
-                                        alignment: WrapAlignment.spaceBetween,
-                                        runAlignment: WrapAlignment.spaceBetween,
-                                        //adel ini gausah di masukin ke model bisa gaa? langsung aja dia pake api nya nembak langsung
-                                        children: data3Menu.map((e) {
-                                          // ${e.nsadssaame_menu}
-                                          print(e);
-
-                                          getIcon() {
-                                            var icon = '${e}';
-                                            if (icon == 'mastervoid.void') {
-                                              return Visibility(
-                                                child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
-                                                  radius: 30,
-                                                  backgroundImage: AssetImage(
-                                                    'assets/void.png',
-                                                  ),
-                                                ),
-                                                visible: true,
-                                              );
-                                            } else if (icon == "masteridcash.idcash") {
-                                              return Visibility(
-                                                child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
-                                                  radius: 30,
-                                                  backgroundImage: AssetImage(
-                                                    'assets/ic_idcash.png',
-                                                  ),
-                                                ),
-                                                visible: true,
-                                              );
-                                            } else if (icon == "approvalreturn.approvalreturn") {
-                                              return Visibility(
-                                                child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
-                                                  radius: 30,
-                                                  backgroundImage: AssetImage(
-                                                    'assets/approval.png',
-                                                  ),
-                                                ),
-                                                visible: true,
-                                              );
-                                            } else if (icon == "cekprice.cekprice") {
-                                              return Visibility(
-                                                child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
-                                                  radius: 30,
-                                                  backgroundImage: AssetImage(
-                                                    'assets/cekharga.png',
-                                                  ),
-                                                ),
-                                                visible: true,
-                                              );
-                                            } else if (icon == "tukarpoin.tukarpoin") {
-                                              return Visibility(
-                                                child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
-                                                  radius: 30,
-                                                  backgroundImage: AssetImage(
-                                                    'assets/tukarpoin.png',
-                                                  ),
-                                                ),
-                                                visible: true,
-                                              );
-                                            } else if (icon == "myactivity.activity") {
-                                              return Visibility(
-                                                child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
-                                                  radius: 30,
-                                                  backgroundImage: AssetImage(
-                                                    'assets/myactivity.png',
-                                                  ),
-                                                ),
-                                                visible: true,
-                                              );
-                                            } else if (icon == "suratjalan.trackingsj") {
-                                              return Visibility(
-                                                child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
-                                                  radius: 30,
-                                                  backgroundImage: AssetImage(
-                                                    'assets/sjalan.png',
-                                                  ),
-                                                ),
-                                                visible: true,
-                                              );
-                                            } else if (icon == "comchek.approvedcomchek") {
-                                              return Visibility(
-                                                child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
-                                                  radius: 30,
-                                                  backgroundImage: AssetImage(
-                                                    'assets/comcek.png',
-                                                  ),
-                                                ),
-                                                visible: true,
-                                              );
-                                            } else if (icon == "kartu.kartuperusahaan") {
-                                              return Visibility(
-                                                child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
-                                                  radius: 30,
-                                                  backgroundImage: AssetImage(
-                                                    'assets/card.png',
-                                                  ),
-                                                ),
-                                                visible: true,
-                                              );
-                                            } else {
-                                              Visibility(
-                                                child: CircleAvatar(
-                                                  backgroundColor: Color.fromARGB(255, 207, 11, 11),
-                                                  radius: 30,
-                                                  backgroundImage: AssetImage(
-                                                    'assets/cekharga.png',
-                                                  ),
-                                                ),
-                                                visible: true,
-                                              );
-                                            }
-                                          }
-
-                                          getName() {
-                                            var icon = '${e}';
-                                            if (icon == 'mastervoid.void') {
-                                              return 'Void';
-                                            } else if (icon == "masteridcash.idcash") {
-                                              return 'Id Cash';
-                                            } else if (icon == "cekprice.cekprice") {
-                                              return 'Cek Harga';
-                                            } else if (icon == "approvalreturn.approvalreturn") {
-                                              return 'Approval Return';
-                                            } else if (icon == "tukarpoin.tukarpoin") {
-                                              return 'Tukar Poin';
-                                            } else if (icon == "myactivity.activity") {
-                                              return 'My Activity';
-                                            } else if (icon == "suratjalan.trackingsj") {
-                                              return 'Lacak SJ';
-                                            } else if (icon == "comchek.approvedcomchek") {
-                                              return 'Com. Checking';
-                                            } else if (icon == "kartu.kartuperusahaan") {
-                                              return baseParam.companyCardTitle;
-                                            } else {
-                                              print(e);
-                                              print('no menu');
-                                            }
-                                          }
-
-                                          return Column(children: [
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.transparent,
-                                                  foregroundColor: Colors.black,
-                                                  elevation: 0,
-                                                ),
-                                                child: getIcon(),
-                                                onPressed: () async {
-                                                  await _checkInternetConnection();
-                                                  print('haiiioooo');
-                                                  if (e == 'mastervoid.void') {
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                      return RamayanaVoid(
-                                                        isOffline: false,
-                                                      );
-                                                    }));
-                                                  } else if (e == 'masteridcash.idcash') {
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                      return RamayanaIDCash();
-                                                    }));
-                                                  } else if (e == 'approvalreturn.approvalreturn') {
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                      return RamayanaApprovalReturn();
-                                                    }));
-                                                  } else if (e == 'cekprice.cekprice') {
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                      return RamayanaCariToko();
-                                                    }));
-                                                  } else if (e == 'tukarpoin.tukarpoin') {
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                      return RamayanaTukarPoin();
-                                                    }));
-                                                  } else if (e == 'myactivity.activity') {
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                      return RamayanaMyActivity();
-                                                    }));
-                                                  } else if (e == 'suratjalan.trackingsj') {
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                      return RamayanaSuratJalan();
-                                                    }));
-                                                  } else if (e == 'comchek.approvedcomchek') {
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                      return RamayanaCompetitorCek();
-                                                    }));
-                                                    print(HakAkses.hakaksesSubmenuComcek);
-
-                                                    // } else if(e == 'idcash.ramayanariwayattransaksi'){
-                                                    // Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                    //   return Anakan(); }));
-                                                    //   SharedPreferences pref = await SharedPreferences.getInstance();
-                                                    //   var hakAkses = pref.setString('hakAkses', '${e}');
-                                                    //   print('hak akses : ${e}}');
-                                                    //   print('hak akses : ${hakAkses}');
-                                                  } else if (e == 'kartu.kartuperusahaan') {
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                      return RamayanaMembercardAuthentication();
-                                                    }));
-                                                  } else {
-                                                    print('e');
-                                                  }
-                                                  if (_isConnected == true) {
-                                                    print('is connect');
-                                                    loginCubit.createLog('${getName()}', 'Navigasi Menu ${getName()}', urlApi);
-                                                  } else if (_isConnected == false) {
-                                                    String format = DateFormat.Hms().format(DateTime.now());
-                                                    print('not connect');
-                                                    db.saveActivityy(LogOffline(
-                                                      deskripsi: '${getName()} ',
-                                                      datetime: '${DateTime.now()}',
-                                                    ));
-                                                  }
-                                                }),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                              '${getName()}',
-                                              style: GoogleFonts.plusJakartaSans(
-                                                  fontWeight: FontWeight.w500,
-                                                  textStyle: TextStyle(fontSize: 15, color: Color.fromARGB(255, 71, 70, 70))),
-                                            )
-                                          ]);
-                                        }).toList(),
-                                      ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                                        menuIconHome(baseAsset.personalMenuLogo, baseParam.menuGroupPersonal,
+                                            function: () => showMenuBottomSheet(baseParam.menuGroupPersonal)),
+                                        menuIconHome(baseAsset.toolsMenuLogo, baseParam.menuGroupTools,
+                                            function: () => showMenuBottomSheet(baseParam.menuGroupTools)),
+                                        menuIconHome(baseAsset.reportMenuLogo, baseParam.menuGroupReport,
+                                            function: () => showMenuBottomSheet(baseParam.menuGroupReport)),
+                                      ]),
                                     ),
+                                    // ),
                                   ],
                                 ),
                               ),
@@ -1277,152 +1073,141 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                   children: [
                                     Padding(
                                         padding: const EdgeInsets.all(1.0),
-                                        child: news
-                                            ? Column(
-                                                children: [
-                                                  Container(
-                                                    height: 50,
-                                                    child: Container(
-                                                      margin: EdgeInsets.only(left: 20, right: 20, top: 0),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            'Informasi Update Ramayana',
-                                                            style: GoogleFonts.plusJakartaSans(
-                                                                textStyle: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500)),
-                                                          ),
-                                                          Container(
-                                                              height: 40,
-                                                              decoration: BoxDecoration(
-                                                                  gradient: LinearGradient(
-                                                                      colors: [Colors.red, Color.fromARGB(255, 103, 94, 94)],
-                                                                      begin: FractionalOffset(0.0, 0.0),
-                                                                      end: FractionalOffset(1.5, 0.0),
-                                                                      stops: [0.0, 1.0],
-                                                                      tileMode: TileMode.clamp),
-                                                                  borderRadius: BorderRadius.circular(90)),
-                                                              margin: EdgeInsets.only(right: 10),
-                                                              child: ElevatedButton(
-                                                                  style: ElevatedButton.styleFrom(
-                                                                    backgroundColor: Colors.transparent,
-                                                                    foregroundColor: Colors.black,
-                                                                    elevation: 0,
-                                                                  ),
-                                                                  onPressed: () async {
-                                                                    Navigator.push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                          builder: (context) => RamayanaInformasi(),
-                                                                        ));
-                                                                    // Navigator.pushAndRemoveUntil(
-                                                                    //     context,
-                                                                    //     MaterialPageRoute(
-                                                                    //         builder: (context) =>
-                                                                    //             RamayanaInformasi()),
-                                                                    //     (route) =>
-                                                                    //         false);
-                                                                  },
-                                                                  child: Text(
-                                                                    'Lihat Semua',
-                                                                    style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
-                                                                  )))
-                                                        ],
-                                                      ),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              height: 50,
+                                              child: Container(
+                                                margin: EdgeInsets.only(left: 20, right: 20, top: 0),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      'Informasi Update Ramayana',
+                                                      style: GoogleFonts.plusJakartaSans(
+                                                          textStyle: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500)),
                                                     ),
-                                                  ),
-                                                  Container(
-                                                      margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                                      child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
-                                                        if (state is HomeLoading) {
-                                                          return SpinKitThreeBounce(
-                                                            color: Color.fromARGB(255, 230, 0, 0),
-                                                            size: 50.0,
-                                                          );
-                                                        }
-                                                        if (state is HomeSuccess) {
-                                                          return Column(
-                                                            children: [
-                                                              SingleChildScrollView(
-                                                                scrollDirection: Axis.horizontal,
-                                                                child: Row(
-                                                                  children: News.news3.map((e) {
-                                                                    var stringHtml = '${e.berita_dtl}';
-                                                                    return InkWell(
-                                                                      onTap: () {
-                                                                        News.newsDetail.clear();
-                                                                        setState(() {
-                                                                          News.newsDetail.add(e);
-                                                                          print(News.newsDetail);
-                                                                        });
-                                                                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-                                                                          return NewsDetail(newsUrl: e.berita_dtl, fromHome: true);
-                                                                        }), (route) => false);
-                                                                        print('navigator');
-                                                                      },
-                                                                      child: Container(
-                                                                        width: 400,
-                                                                        margin: EdgeInsets.only(bottom: 10, right: 20),
-                                                                        decoration: BoxDecoration(
-                                                                          borderRadius: BorderRadius.circular(10),
-                                                                          color: Colors.white,
-                                                                        ),
+                                                    Container(
+                                                        height: 40,
+                                                        decoration: BoxDecoration(
+                                                            gradient: LinearGradient(
+                                                                colors: [Colors.red, Color.fromARGB(255, 103, 94, 94)],
+                                                                begin: FractionalOffset(0.0, 0.0),
+                                                                end: FractionalOffset(1.5, 0.0),
+                                                                stops: [0.0, 1.0],
+                                                                tileMode: TileMode.clamp),
+                                                            borderRadius: BorderRadius.circular(90)),
+                                                        margin: EdgeInsets.only(right: 10),
+                                                        child: ElevatedButton(
+                                                            style: ElevatedButton.styleFrom(
+                                                              backgroundColor: Colors.transparent,
+                                                              foregroundColor: Colors.black,
+                                                              elevation: 0,
+                                                            ),
+                                                            onPressed: () async {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder: (context) => RamayanaInformasi(),
+                                                                  ));
+                                                            },
+                                                            child: Text(
+                                                              'Lihat Semua',
+                                                              style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+                                                            )))
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                                margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                                child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+                                                  if (state is HomeLoading) {
+                                                    return SpinKitThreeBounce(
+                                                      color: Color.fromARGB(255, 230, 0, 0),
+                                                      size: 50.0,
+                                                    );
+                                                  }
+                                                  if (state is HomeSuccess) {
+                                                    return Column(
+                                                      children: [
+                                                        SingleChildScrollView(
+                                                          scrollDirection: Axis.horizontal,
+                                                          child: Row(
+                                                            children: News.news3.map((e) {
+                                                              var stringHtml = '${e.berita_dtl}';
+                                                              return InkWell(
+                                                                onTap: () {
+                                                                  News.newsDetail.clear();
+                                                                  setState(() {
+                                                                    News.newsDetail.add(e);
+                                                                    print(News.newsDetail);
+                                                                  });
+                                                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+                                                                    return NewsDetail(newsUrl: e.berita_dtl, fromHome: true);
+                                                                  }), (route) => false);
+                                                                  print('navigator');
+                                                                },
+                                                                child: Container(
+                                                                  width: 400,
+                                                                  margin: EdgeInsets.only(bottom: 10, right: 20),
+                                                                  decoration: BoxDecoration(
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                    color: Colors.white,
+                                                                  ),
 
-                                                                        // height: 165,
-                                                                        child: Column(
-                                                                          mainAxisAlignment: MainAxisAlignment.start,
-                                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                                          children: [
-                                                                            Container(
-                                                                              // height: 150
-                                                                              child: ClipRRect(
-                                                                                  borderRadius: BorderRadius.circular(10),
-                                                                                  child: Image.network('${e.url_photo}', fit: BoxFit.cover)),
-                                                                            ),
-                                                                            Container(
-                                                                              margin: EdgeInsets.fromLTRB(10, 10, 0, 15),
-                                                                              child: Text('${e.berita_hdr}',
-                                                                                  style: GoogleFonts.plusJakartaSans(
-                                                                                      fontSize: 17,
-                                                                                      fontWeight: FontWeight.w600,
-                                                                                      color: Colors.black)),
-                                                                            ),
-                                                                          ],
-                                                                        ),
+                                                                  // height: 165,
+                                                                  child: Column(
+                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    children: [
+                                                                      Container(
+                                                                        // height: 150
+                                                                        child: ClipRRect(
+                                                                            borderRadius: BorderRadius.circular(10),
+                                                                            child: Image.network('${e.url_photo}', fit: BoxFit.cover)),
                                                                       ),
-                                                                    );
-                                                                  }).toList(),
+                                                                      Container(
+                                                                        margin: EdgeInsets.fromLTRB(10, 10, 0, 15),
+                                                                        child: Text('${e.berita_hdr}',
+                                                                            style: GoogleFonts.plusJakartaSans(
+                                                                                fontSize: 17, fontWeight: FontWeight.w600, color: Colors.black)),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
+                                                              );
+                                                            }).toList(),
+                                                          ),
+                                                        ),
+                                                        Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: News.news3.map((e) {
+                                                            return GestureDetector(
+                                                              onTap: () => _controller.animateToPage(1),
+                                                              child: Container(
+                                                                width: 12.0,
+                                                                height: 10.0,
+                                                                margin: EdgeInsets.symmetric(vertical: 15.0, horizontal: 4.0),
+                                                                decoration: BoxDecoration(
+                                                                    // color: Colors.green,
+                                                                    shape: BoxShape.circle,
+                                                                    color: (Theme.of(context).brightness == Brightness.dark
+                                                                            ? Colors.white
+                                                                            : Colors.black)
+                                                                        .withOpacity(_current == e ? 0.9 : 0.4)),
                                                               ),
-                                                              Row(
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                children: News.news3.map((e) {
-                                                                  return GestureDetector(
-                                                                    onTap: () => _controller.animateToPage(1),
-                                                                    child: Container(
-                                                                      width: 12.0,
-                                                                      height: 10.0,
-                                                                      margin: EdgeInsets.symmetric(vertical: 15.0, horizontal: 4.0),
-                                                                      decoration: BoxDecoration(
-                                                                          // color: Colors.green,
-                                                                          shape: BoxShape.circle,
-                                                                          color: (Theme.of(context).brightness == Brightness.dark
-                                                                                  ? Colors.white
-                                                                                  : Colors.black)
-                                                                              .withOpacity(_current == e ? 0.9 : 0.4)),
-                                                                    ),
-                                                                  );
-                                                                }).toList(),
-                                                              )
-                                                            ],
-                                                          );
-                                                        }
-                                                        return Container();
-                                                      })),
-                                                ],
-                                              )
-                                            : Container()),
+                                                            );
+                                                          }).toList(),
+                                                        )
+                                                      ],
+                                                    );
+                                                  }
+                                                  return Container();
+                                                })),
+                                          ],
+                                        )),
                                     Padding(
                                         padding: const EdgeInsets.all(1.0),
                                         child: mylisttask
@@ -1661,6 +1446,25 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   }
 }
 
+Widget menuIconHome(String asset, String title, {required VoidCallback function}) {
+  return GestureDetector(
+    onTap: function,
+    child: Column(children: [
+      CircleAvatar(
+        backgroundColor: Colors.white,
+        radius: 30,
+        child: Image.asset(asset, height: baseSize.iconMenuHeight, width: baseSize.iconMenuWidth),
+      ),
+      const SizedBox(height: 8),
+      Text('${title}',
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style:
+              GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w500, textStyle: TextStyle(fontSize: 15, color: Color.fromARGB(255, 71, 70, 70)))),
+    ]),
+  );
+}
+
 class BottomClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -1727,5 +1531,3 @@ class _FadeInImageWidgetState extends State<FadeInImageWidget> with TickerProvid
     super.dispose();
   }
 }
-
-

@@ -34,12 +34,15 @@ class LoginCubit extends Cubit<LoginState> {
         final res = value.dataResponse as LoginResponse;
         userData.setDataUser(res);
         SharedPref.setToken(res.accessToken ?? '');
+        SharedPref.setAccessMenu(res.data?.listMenu ?? '');
 
         emit(LoginSuccess(res));
       } else {
         emit(LoginFailure(message: value.dataResponse!));
       }
     });
+    final getListMenu = await SharedPref.getUserAccess();
+    debugPrint('MENU USER ${getListMenu}');
   }
 
   void getDataCustomer(String userId) async {

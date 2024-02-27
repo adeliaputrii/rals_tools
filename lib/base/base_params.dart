@@ -128,3 +128,36 @@ const String typeS = "Saldo Awal";
 const String typeB = "Koreksi/Bonus Poin";
 const String typeJ = "Penyesuaian Poin";
 const String typeV = "Pembayaran dengan Poin";
+
+const String menuGroupPersonal = 'Personal';
+const menuGroupTools = 'Tools';
+const menuGroupReport = 'Report';
+const menuAll = 'All Menu';
+
+const String menuIdCash = 'ID\nCash';
+const String menuTukarPoin = 'Tukar\nPoin';
+const String menuKartuPerusahaan = 'Kartu\nPerusahaan';
+
+const String menuSuratJalan = 'Surat\nJalan';
+const String menuMyActivity = 'My\nActivity';
+const String menuVoid = 'Void\n  ';
+const String menuCekHarga = 'Cek\nHarga';
+const String menuComCheck = 'Competitor\nChecking';
+const String menuApprReturn = 'Approval\nReturn';
+
+const String menuLaporanSo = 'Laporan\nStok Opname';
+const String menuLaporanSales = 'Laporan\nPenjualan';
+const String menuLaporanPooling = 'Laporan\nPooling';
+
+const String menuKeyIdCash = 'masteridcash.idcash';
+const String menuKeyVoid = 'mastervoid.void';
+const String menuKeyApprovalReturn = 'approvalreturn.approvalreturn';
+const String menuKeyCekPrice = 'cekprice.cekprice';
+const String menuKeyTukarPoin = 'tukarpoin.tukarpoin';
+const String menuKeyMyActivity = 'myactivity.activity';
+const String menuKeySj = 'suratjalan.trackingsj';
+const String menuKeyCompanyCard = 'kartu.kartuperusahaan';
+const String menuKeyApprovedComCheck = 'comchek.approvedcomchek';
+const String menuKeyHistoryComCheck = 'comchek.historycomchek';
+const String menuKeyHomepageNews = 'homepage.news';
+const String menuKeyMyListTask = 'homepage.mylisttask';

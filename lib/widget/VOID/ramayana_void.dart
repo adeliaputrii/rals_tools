@@ -67,8 +67,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
   }
 
   Future<bool> sessionEnd() async {
-    CheckSession session = CheckSession();
-    return await session.checkSession();
+    return await CheckUser.checkSession();
   }
 
   Future<void> initPlatformState() async {
