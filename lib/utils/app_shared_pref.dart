@@ -123,4 +123,10 @@ class SharedPref {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(key_last_login);
   }
+
+  static Future<void> clearUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(key_user_id);
+  }
 }
+

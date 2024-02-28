@@ -68,22 +68,33 @@ void main() async {
   initPlatformState();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  // String formattedDate = '2024-03-04';
   UserData userData = UserData();
   await userData.getPref();
 
   var waktuLoginOffline = prefs.getString("waktuLoginOffline");
   final lastLogin = await SharedPref.getLastLogin();
   final deviceId = await SharedPref.getDeviceId();
-  // final versionApp = prefs.setString("versionApp", version);
-  // final applicationName = prefs.setString("applicationName", appName);
+  DateTime dateTime = DateTime.parse(lastLogin ?? '${formattedDate}');
+  final sevenDays = DateFormat('yyyy-MM-dd').format(dateTime.add(const Duration(days: 7)));
 
+  debugPrint('last login : ${dateTime}');
+  debugPrint('seven days logout : ${sevenDays}');
+  if (formattedDate == sevenDays || DateTime.now().isAfter(dateTime.add(const Duration(days: 7)))){
+  await SharedPref.clearLastLogin();
+  await SharedPref.clearUserId();
+   print('yess');
+   } else {
+    print('yess no');
+   }
   await NotificationService.initializeNotification();
   final appCubit = AppCubit();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((value) => runApp(
-      lastLogin == formattedDate ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
+      // lastLogin == formattedDate ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
+      lastLogin != null ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
 }
 
 Future<void> registerAppServices() async {
@@ -92,7 +103,7 @@ Future<void> registerAppServices() async {
   final appServices = AppServices(GetIt.I.get<Dio>());
 
   // final url = '${basePath.base_url_prod}';
-  final url = '${basePath.base_url_dev}';
+  final url = '${basePath.base_url_prod}';
   await appServices.registerAppServices(url);
 }
 
@@ -143,7 +154,9 @@ class HomeMainApp extends StatelessWidget {
       routes: {RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()), RamayanaLogin.route: ((context) => const RamayanaLogin())},
       title: '${app_name}',
       debugShowCheckedModeBanner: false,
-      home: DefaultBottomBarController(child: Ramayana()),
+      home: 
+      
+      DefaultBottomBarController(child: Ramayana()),
       // home: RamayanaLoginOffline(),
     );
   }

@@ -170,6 +170,8 @@ class _ProfileeState extends State<Profilee> {
   logoutPressed() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     SharedPref.clearLastLogin();
+    await SharedPref.clearLastLogin();
+    await SharedPref.clearUserId();
     pref.remove('waktuLogin');
      LoginOffline.listActivity.forEach((element) async{
      await db3.deleteActivityy(element.id_act!);
