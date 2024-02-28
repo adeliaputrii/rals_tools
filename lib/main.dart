@@ -80,13 +80,10 @@ void main() async {
 
   debugPrint('last login : ${dateTime}');
   debugPrint('seven days logout : ${sevenDays}');
-  if (formattedDate == sevenDays || DateTime.now().isAfter(dateTime.add(const Duration(days: 7)))){
-  await SharedPref.clearLastLogin();
-  await SharedPref.clearUserId();
-   print('yess');
-   } else {
-    print('yess no');
-   }
+  if (formattedDate == sevenDays || DateTime.now().isAfter(dateTime.add(const Duration(days: 7)))) {
+    await SharedPref.clearLastLogin();
+    await SharedPref.clearUserId();
+  }
   await NotificationService.initializeNotification();
   final appCubit = AppCubit();
   SystemChrome.setPreferredOrientations([
@@ -102,8 +99,8 @@ Future<void> registerAppServices() async {
   appUtil.initNetwork();
   final appServices = AppServices(GetIt.I.get<Dio>());
 
-  // final url = '${basePath.base_url_prod}';
   final url = '${basePath.base_url_prod}';
+  // final url = '${basePath.base_url_dev}';
   await appServices.registerAppServices(url);
 }
 
@@ -154,9 +151,7 @@ class HomeMainApp extends StatelessWidget {
       routes: {RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()), RamayanaLogin.route: ((context) => const RamayanaLogin())},
       title: '${app_name}',
       debugShowCheckedModeBanner: false,
-      home: 
-      
-      DefaultBottomBarController(child: Ramayana()),
+      home: DefaultBottomBarController(child: Ramayana()),
       // home: RamayanaLoginOffline(),
     );
   }

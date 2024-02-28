@@ -5,27 +5,28 @@ class PersonalMenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 200,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: Text(
-                baseParam.menuGroupPersonal,
-                style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600)),
-              ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: Text(
+              baseParam.menuGroupPersonal,
+              style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600)),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                menuIcon(baseParam.menuTukarPoin, baseAsset.tukarPoinLogo, navigate: () => AppNavigator.navigateToTukarPoin(context)),
-                menuIcon(baseParam.menuIdCash, baseAsset.idCashLogo, navigate: () => AppNavigator.navigateToIdCash(context)),
-                menuIcon(baseParam.menuMyActivity, baseAsset.myActivityLogo, navigate: () => AppNavigator.navigateToMyActivity(context)),
-              ]),
-            ),
-          ],
-        ));
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              menuIcon(baseParam.menuTukarPoin, baseAsset.tukarPoinLogo, navigate: () => AppNavigator.navigateToTukarPoin(context)),
+              menuIcon(baseParam.menuIdCash, baseAsset.idCashLogo, navigate: () => AppNavigator.navigateToIdCash(context)),
+              menuIcon(baseParam.menuMyActivity, baseAsset.myActivityLogo, navigate: () => AppNavigator.navigateToMyActivity(context)),
+            ]),
+          ),
+          const SizedBox(height: 20),
+        ],
+      ),
+    );
   }
 }
 
@@ -45,13 +46,14 @@ class ToolsMenuWidget extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               menuIcon(baseParam.menuSuratJalan, baseAsset.suratJalanLogo, navigate: () => AppNavigator.navigateToSuratJalan(context)),
               menuIcon(baseParam.menuKartuPerusahaan, baseAsset.companyCardLogo, navigate: () => AppNavigator.navigateToKartuPerusahaan(context)),
               menuIcon(baseParam.menuVoid, baseAsset.voidLogo, navigate: () => AppNavigator.navigateToVoid(context))
             ]),
           ),
+          const SizedBox(height: 20),
           // Padding(
           //   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
           //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -90,6 +92,7 @@ class ReportMenuWidget extends StatelessWidget {
                 menuIcon(baseParam.menuLaporanSales, baseAsset.reportSalesLogo, navigate: () => AppNavigator.navigateToReport(context)),
               ]),
             ),
+            const SizedBox(height: 20),
           ],
         ));
   }
@@ -139,6 +142,7 @@ class AllMenuWidget extends StatelessWidget {
                 //     menuIcon(baseParam.menuApprReturn, baseAsset.appReturnLogo, navigate: () => AppNavigator.navigateToApprReturn(context))
                 //   ]),
                 // ),
+                const SizedBox(height: 20),
                 Visibility(
                   visible: false,
                   child: Padding(
