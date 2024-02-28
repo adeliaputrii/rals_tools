@@ -1,6 +1,6 @@
 const String appLogo = 'assets/ramayana(C).png';
 
-const String personalMenuLogo = 'assets/ic_personal.png';
+const String personalMenuLogo = 'assets/ic_personal_menu.png';
 const String toolsMenuLogo = 'assets/ic_tools.png';
 const String reportMenuLogo = 'assets/ic_report.png';
 const String companyCardLogo = 'assets/card.png';

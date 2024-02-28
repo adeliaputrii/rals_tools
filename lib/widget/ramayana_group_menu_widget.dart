@@ -19,9 +19,9 @@ class PersonalMenuWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
               child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                menuIcon(baseParam.menuKartuPerusahaan, baseAsset.companyCardLogo, navigate: () => AppNavigator.navigateToKartuPerusahaan(context)),
                 menuIcon(baseParam.menuTukarPoin, baseAsset.tukarPoinLogo, navigate: () => AppNavigator.navigateToTukarPoin(context)),
                 menuIcon(baseParam.menuIdCash, baseAsset.idCashLogo, navigate: () => AppNavigator.navigateToIdCash(context)),
+                menuIcon(baseParam.menuMyActivity, baseAsset.myActivityLogo, navigate: () => AppNavigator.navigateToMyActivity(context)),
               ]),
             ),
           ],
@@ -34,27 +34,35 @@ class ToolsMenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 200,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: Text(
-                baseParam.menuGroupTools,
-                style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600)),
-              ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: Text(
+              baseParam.menuGroupTools,
+              style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600)),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                menuIcon(baseParam.menuSuratJalan, baseAsset.suratJalanLogo, navigate: () => AppNavigator.navigateToSuratJalan(context)),
-                menuIcon(baseParam.menuMyActivity, baseAsset.myActivityLogo, navigate: () => AppNavigator.navigateToMyActivity(context)),
-                menuIcon(baseParam.menuVoid, baseAsset.voidLogo, navigate: () => AppNavigator.navigateToVoid(context))
-              ]),
-            ),
-          ],
-        ));
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              menuIcon(baseParam.menuSuratJalan, baseAsset.suratJalanLogo, navigate: () => AppNavigator.navigateToSuratJalan(context)),
+              menuIcon(baseParam.menuKartuPerusahaan, baseAsset.companyCardLogo, navigate: () => AppNavigator.navigateToKartuPerusahaan(context)),
+              menuIcon(baseParam.menuVoid, baseAsset.voidLogo, navigate: () => AppNavigator.navigateToVoid(context))
+            ]),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              menuIcon(baseParam.menuComCheck, baseAsset.comCheckLogo, navigate: () => AppNavigator.navigateToComCheck(context)),
+              menuIcon(baseParam.menuCekHarga, baseAsset.checkPriceLogo, navigate: () => AppNavigator.navigateToCheckPrice(context)),
+              menuIcon(baseParam.menuApprReturn, baseAsset.appReturnLogo, navigate: () => AppNavigator.navigateToApprReturn(context))
+            ]),
+          ),
+        ],
+      ),
+    );
   }
 }
 
