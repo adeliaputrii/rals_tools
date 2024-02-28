@@ -1060,7 +1060,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                         menuIconHome(baseAsset.toolsMenuLogo, baseParam.menuGroupTools,
                                             function: () => showMenuBottomSheet(baseParam.menuGroupTools)),
                                         menuIconHome(baseAsset.reportMenuLogo, baseParam.menuGroupReport,
-                                            function: () => showMenuBottomSheet(baseParam.menuGroupReport)),
+                                            function: () => PopUpWidget(context).showPopUpWarning('Update selanjutnya..', 'Kembali')),
                                       ]),
                                     ),
                                     // ),

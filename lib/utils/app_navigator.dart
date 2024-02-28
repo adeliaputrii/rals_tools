@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myactivity_project/utils/app_check_user.dart';
+import 'package:myactivity_project/utils/popup_widget.dart';
 import 'package:myactivity_project/widget/Membercard/import.dart';
 import 'package:myactivity_project/base/base_params.dart' as baseParam;
 import '../widget/Approval Return/import.dart';
@@ -121,20 +122,10 @@ class AppNavigator {
   }
 
   static void navigateToReport(BuildContext context) async {
-    Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Update selanjutnya..'),
-      ),
-    );
+    PopUpWidget(context).showPopUpWarning('Update selanjutnya..', 'Kembali');
   }
 }
 
 void showRestrictMessenger(BuildContext context) {
-  Navigator.pop(context);
-  ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(
-      content: Text('Anda tidak mempunyai akses menu ini'),
-    ),
-  );
+  PopUpWidget(context).showPopUpWarning('Anda tidak mempunyai akses', 'Kembali');
 }

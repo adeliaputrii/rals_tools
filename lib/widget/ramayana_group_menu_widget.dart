@@ -139,13 +139,16 @@ class AllMenuWidget extends StatelessWidget {
                     menuIcon(baseParam.menuApprReturn, baseAsset.appReturnLogo, navigate: () => AppNavigator.navigateToApprReturn(context))
                   ]),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20.0),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                    menuIcon(baseParam.menuLaporanSo, baseAsset.reportSoLogo, navigate: () => AppNavigator.navigateToReport(context)),
-                    menuIcon(baseParam.menuLaporanPooling, baseAsset.reportPoolingLogo, navigate: () => AppNavigator.navigateToReport(context)),
-                    menuIcon(baseParam.menuLaporanSales, baseAsset.reportSalesLogo, navigate: () => AppNavigator.navigateToReport(context)),
-                  ]),
+                Visibility(
+                  visible: false,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20.0),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                      menuIcon(baseParam.menuLaporanSo, baseAsset.reportSoLogo, navigate: () => AppNavigator.navigateToReport(context)),
+                      menuIcon(baseParam.menuLaporanPooling, baseAsset.reportPoolingLogo, navigate: () => AppNavigator.navigateToReport(context)),
+                      menuIcon(baseParam.menuLaporanSales, baseAsset.reportSalesLogo, navigate: () => AppNavigator.navigateToReport(context)),
+                    ]),
+                  ),
                 ),
               ],
             ),
