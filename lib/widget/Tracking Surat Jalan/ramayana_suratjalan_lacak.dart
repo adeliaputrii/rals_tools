@@ -110,15 +110,19 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
     super.dispose();
   }
 
+  _onBackPressed() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
+      return RamayanaSuratJalan();
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
         if (true) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
-            return RamayanaSuratJalan();
-          }));
+          _onBackPressed();
           return true;
         }
       },
@@ -192,6 +196,14 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
             length: 2,
             child: Scaffold(
               appBar: AppBar(
+                leading: IconButton(
+                    onPressed: () {
+                      _onBackPressed();
+                    },
+                    icon: Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.white,
+                    )),
                 backgroundColor: baseColor.primaryColor,
                 title: Text(
                   baseParam.sjTrackTitle,

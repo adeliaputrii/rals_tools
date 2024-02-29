@@ -304,18 +304,30 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
     return _buttonRegular();
   }
 
+  _onBackPressed() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
         if (true) {
-          Navigator.pop(context);
+          _onBackPressed();
           return true;
         }
       },
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                _onBackPressed();
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+              )),
           backgroundColor: baseColor.primaryColor,
           title: Text(
             'Form Surat Jalan',

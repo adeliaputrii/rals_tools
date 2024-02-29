@@ -5,11 +5,9 @@ class AppUtils {
   final getIt = GetIt.instance;
 
   void initNetwork() {
-    final options = BaseOptions(headers: {
-      Headers.contentTypeHeader: Headers.multipartFormDataContentType
-    });
+    final options = BaseOptions(headers: {Headers.contentTypeHeader: Headers.multipartFormDataContentType});
 
-    final dio = Dio(options);
+    final dio = Dio();
 
     // GetIt.I.registerSingleton<Dio>(dio);
     getIt.registerSingleton<Dio>(dio);

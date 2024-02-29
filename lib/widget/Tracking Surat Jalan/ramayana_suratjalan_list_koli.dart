@@ -41,18 +41,29 @@ class _SJMissingColyState extends State<SJMissingColy> {
     );
   }
 
+  _onBackPressed() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
         if (true) {
-          Navigator.pop(context);
           return true;
         }
       },
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                _onBackPressed();
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+              )),
           backgroundColor: baseColor.primaryColor,
           title: isSearch ? TextFieldInputSearch(_searchController) : Text('Pilih Nomor Koli Hilang'),
           centerTitle: true,

@@ -11,22 +11,34 @@ class _RamayanaSuratJalanState extends State<RamayanaSuratJalan> {
   TextEditingController barcodeScan = TextEditingController();
   TextEditingController barcodeLacak = TextEditingController();
 
+  _onBackPressed() {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DefaultBottomBarController(child: Ramayana()),
+        ),
+        (Route<dynamic> route) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
         if (true) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DefaultBottomBarController(child: Ramayana()),
-              ),
-              (Route<dynamic> route) => false);
+          _onBackPressed();
           return true;
         }
       },
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                _onBackPressed();
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+              )),
           centerTitle: true,
           title: Text('Lacak Surat Jalan', style: GoogleFonts.plusJakartaSans(fontSize: 25, color: Colors.white)),
           backgroundColor: Color.fromARGB(255, 210, 14, 0),

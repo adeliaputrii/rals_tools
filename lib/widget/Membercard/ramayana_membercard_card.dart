@@ -42,10 +42,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
             onPressed: () {
               Navigator.pop(context);
               Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => RamayanaMembercardAuthentication()),
-                  (Route<dynamic> route) => false);
+                  context, MaterialPageRoute(builder: (context) => RamayanaMembercardAuthentication()), (Route<dynamic> route) => false);
             },
             icon: Icon(
               Icons.arrow_back_ios,
@@ -53,9 +50,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
               color: Colors.white,
             ),
           ),
-          title: Text(baseParam.companyCardTitle,
-              style: GoogleFonts.plusJakartaSans(
-                  fontSize: 23, color: Colors.white)),
+          title: Text(baseParam.companyCardTitle, style: GoogleFonts.plusJakartaSans(fontSize: 23, color: Colors.white)),
           backgroundColor: Color.fromARGB(255, 210, 14, 0),
           toolbarHeight: 80,
         ),
@@ -65,8 +60,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                 setState(() {
                   isLoading = false;
                 });
-                companyCardCubit
-                    .getDataMember(state.response.data?.first.nokartu ?? '0');
+                companyCardCubit.getDataMember(state.response.data?.first.nokartu ?? '0');
               }
             },
             child: isLoading
@@ -80,13 +74,18 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                         List<ResponseCompany.DataCompany> cardActive = [];
                         DateTime currentDay = DateTime.now();
                         state.response.data?.forEach((element) {
-                          DateTime parsedDate = DateTime.parse(
-                              element.tglinaktif ?? '2023-01-01');
-                          if (element.status == 1 &&
-                              currentDay.isBefore(parsedDate)) {
+                          DateTime parsedDate = DateTime.parse(element.tglinaktif ?? '2023-01-01');
+                          if (element.status == 1 && currentDay.isBefore(parsedDate)) {
                             cardActive.add(element);
                           }
                         });
+                        if (cardActive.isEmpty) {
+                          return Center(
+                            child: Container(
+                              child: Text(baseParam.cardNotFound, style: GoogleFonts.rubik(fontSize: 18, color: baseColor.primaryColor)),
+                            ),
+                          );
+                        }
                         return ListView(
                           children: [
                             Stack(
@@ -99,89 +98,49 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                       padding: const EdgeInsets.only(top: 30, bottom: 30),
                                       child: Center(
                                         child: Text('Pilih Kartu',
-                                            style: GoogleFonts.plusJakartaSans(
-                                                fontSize: 26,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black)),
+                                            style: GoogleFonts.plusJakartaSans(fontSize: 26, fontWeight: FontWeight.w500, color: Colors.black)),
                                       ),
                                     ),
                                     ListView.builder(
                                         primary: false,
                                         shrinkWrap: true,
                                         itemCount: cardActive.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
+                                        itemBuilder: (BuildContext context, int index) {
                                           return Column(
                                             children: [
                                               Center(
-                                                child: Text(
-                                                    cardActive[index].nama ??
-                                                        '-',
-                                                    style: GoogleFonts
-                                                        .plusJakartaSans(
-                                                            fontSize: 20,
-                                                            color: const Color
-                                                                    .fromARGB(
-                                                                255,
-                                                                210,
-                                                                14,
-                                                                0))),
+                                                child: Text(cardActive[index].nama ?? '-',
+                                                    style: GoogleFonts.plusJakartaSans(fontSize: 20, color: const Color.fromARGB(255, 210, 14, 0))),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.only(
-                                                  bottom: 30
-                                                ),
+                                                padding: const EdgeInsets.only(bottom: 30),
                                                 child: MaterialButton(
                                                   onPressed: () {
-                                                    print(cardActive[
-                                                                      index]
-                                                                  .typeMc
-                                                                  .toString());
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
+                                                    print(cardActive[index].typeMc.toString());
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
                                                       return RamayanaMemberCardDetail(
-                                                          typeCard: cardActive[
-                                                                      index]
-                                                                  .typeMc
-                                                                  .toString() ??
-                                                              '0',
-                                                          data:
-                                                              cardActive[index]);
+                                                          typeCard: cardActive[index].typeMc.toString() ?? '0', data: cardActive[index]);
                                                     }));
                                                   },
                                                   child: Container(
-                                                    margin: EdgeInsets.fromLTRB(
-                                                        20, 20, 20, 0),
+                                                    margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
                                                     child: Container(
                                                       width: 700,
                                                       height: 280,
                                                       decoration: BoxDecoration(
-                                                        color: Color.fromARGB(
-                                                            255, 235, 227, 227),
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          topLeft:
-                                                              Radius.circular(20),
-                                                          topRight:
-                                                              Radius.circular(20),
-                                                          bottomLeft:
-                                                              Radius.circular(20),
-                                                          bottomRight:
-                                                              Radius.circular(20),
+                                                        color: Color.fromARGB(255, 235, 227, 227),
+                                                        borderRadius: BorderRadius.only(
+                                                          topLeft: Radius.circular(20),
+                                                          topRight: Radius.circular(20),
+                                                          bottomLeft: Radius.circular(20),
+                                                          bottomRight: Radius.circular(20),
                                                         ),
                                                         boxShadow: [
                                                           BoxShadow(
-                                                              color:
-                                                                  Color.fromARGB(
-                                                                      255,
-                                                                      136,
-                                                                      131,
-                                                                      131),
+                                                              color: Color.fromARGB(255, 136, 131, 131),
                                                               spreadRadius: 2,
                                                               blurRadius: 5,
-                                                              offset:
-                                                                  Offset(2, 4))
+                                                              offset: Offset(2, 4))
                                                         ],
                                                         image: DecorationImage(
                                                             image: getImageForType(cardActive[index].typeMc ?? 0),
@@ -196,105 +155,47 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                                                             fit: BoxFit.fill),
                                                       ),
                                                       child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment.end,
-                                                        crossAxisAlignment:
-                                                            typeCardImage(cardActive[
-                                                                            index]
-                                                                        .typeMc ??
-                                                                    0)
-                                                                ? CrossAxisAlignment
-                                                                    .end
-                                                                : CrossAxisAlignment
-                                                                    .start,
+                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        crossAxisAlignment: typeCardImage(cardActive[index].typeMc ?? 0)
+                                                            ? CrossAxisAlignment.end
+                                                            : CrossAxisAlignment.start,
                                                         children: [
-                                                          typeCardImageCenter(cardActive[
-                                                                          index]
-                                                                      .typeMc ??
-                                                                  0)
+                                                          typeCardImageCenter(cardActive[index].typeMc ?? 0)
                                                               ? Row(
-                                                                
-                                                                children: [
-                                                                  SizedBox(
-                                                                  width: 20,),
-                                                                  Text(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 20,
+                                                                    ),
+                                                                    Text(
+                                                                        totalBalance(
+                                                                          int.tryParse(cardActive[index].saldo ?? '0') ?? 0,
+                                                                          int.tryParse(cardActive[index].pemakaian ?? '0') ?? 0,
+                                                                        ),
+                                                                        style: GoogleFonts.plusJakartaSans(
+                                                                            fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white)),
+                                                                  ],
+                                                                )
+                                                              : Center(
+                                                                  child: Text(
                                                                       totalBalance(
-                                                                        int.tryParse(cardActive[index].saldo ??
-                                                                                '0') ??
-                                                                            0,
-                                                                                                                  int.tryParse(cardActive[index].pemakaian ??
-                                                                                '0') ??
-                                                                            0,
+                                                                        int.tryParse(cardActive[index].saldo ?? '0') ?? 0,
+                                                                        int.tryParse(cardActive[index].pemakaian ?? '0') ?? 0,
                                                                       ),
                                                                       style: GoogleFonts.plusJakartaSans(
-                                                                          fontSize:
-                                                                              25,
-                                                                          fontWeight:
-                                                                              FontWeight
-                                                                                  .bold,
-                                                                          color: Colors
-                                                                              .white)),
-                                                                ],
-                                                              )
-                                                              :
-                                                              Center(
-                                                                child: Text(
-                                                                    totalBalance(
-                                                                      int.tryParse(cardActive[index]
-                                                                                  .saldo ??
-                                                                              '0') ??
-                                                                          0,
-                                                                      int.tryParse(cardActive[index]
-                                                                                  .pemakaian ??
-                                                                              '0') ??
-                                                                          0,
-                                                                    ),
-                                                                    style: GoogleFonts.plusJakartaSans(
-                                                                        fontSize:
-                                                                            25,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        color: Colors
-                                                                            .white)),
-                                                              ),
+                                                                          fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white)),
+                                                                ),
                                                           Container(
                                                             margin: EdgeInsets.only(
-                                                                bottom: 10,
-                                                                right: 10,
-                                                                top: typeCardImage(
-                                                                        cardActive[index]
-                                                                                .typeMc ??
-                                                                            0)
-                                                                    ? 10
-                                                                    : 50),
+                                                                bottom: 10, right: 10, top: typeCardImage(cardActive[index].typeMc ?? 0) ? 10 : 50),
                                                             child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              crossAxisAlignment: cardActive[
-                                                                              index]
-                                                                          .typeMc ==
-                                                                      6
-                                                                  ? CrossAxisAlignment
-                                                                      .end
-                                                                  : CrossAxisAlignment
-                                                                      .start,
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              crossAxisAlignment:
+                                                                  cardActive[index].typeMc == 6 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                                                               children: [
-                                                                Text(
-                                                                    '  ${cardActive[index].nama ?? '-'}',
-                                                                    style: GoogleFonts.plusJakartaSans(
-                                                                        fontSize:
-                                                                            16,
-                                                                        color: Colors
-                                                                            .white)),
-                                                                Text(
-                                                                    '  ${cardActive[index].nokartu ?? '-'}',
-                                                                    style: GoogleFonts.plusJakartaSans(
-                                                                        fontSize:
-                                                                            16,
-                                                                        color: Colors
-                                                                            .white)),
+                                                                Text('  ${cardActive[index].nama ?? '-'}',
+                                                                    style: GoogleFonts.plusJakartaSans(fontSize: 16, color: Colors.white)),
+                                                                Text('  ${cardActive[index].nokartu ?? '-'}',
+                                                                    style: GoogleFonts.plusJakartaSans(fontSize: 16, color: Colors.white)),
                                                               ],
                                                             ),
                                                           ),
@@ -315,7 +216,11 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                         );
                       }
 
-                      return Container();
+                      return Center(
+                        child: Container(
+                          child: Text(baseParam.cardNotFound, style: GoogleFonts.rubik(fontSize: 18, color: baseColor.primaryColor)),
+                        ),
+                      );
                     },
                   )));
   }
@@ -329,22 +234,21 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
     return type == 6;
   }
 
-   bool typeCardImageCenter(int type) {
+  bool typeCardImageCenter(int type) {
     return type == 8;
   }
 
-  ImageProvider<Object> getImageForType(int type)  {
+  ImageProvider<Object> getImageForType(int type) {
     print('type : $type');
-  switch (type) {
-    case 6:
-      return AssetImage('assets/tropikana.png');
-    case 7:
-      return AssetImage('assets/rms2.png');
-    case 8:
-      return AssetImage('assets/ifs.png');
-    default:
-      return AssetImage('assets/default.png'); // Gambar default jika type tidak sesuai
+    switch (type) {
+      case 6:
+        return AssetImage('assets/tropikana.png');
+      case 7:
+        return AssetImage('assets/rms2.png');
+      case 8:
+        return AssetImage('assets/ifs.png');
+      default:
+        return AssetImage('assets/default.png'); // Gambar default jika type tidak sesuai
+    }
   }
-}
-
 }

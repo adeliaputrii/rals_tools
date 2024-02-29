@@ -34,6 +34,7 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:myactivity_project/base/base_paths.dart' as basePath;
+import 'package:myactivity_project/base/base_params.dart' as baseParam;
 import 'firebase/firebase_api_new.dart';
 import 'firebase_options.dart';
 import 'utils/app_cubit.dart';
@@ -50,11 +51,8 @@ void main() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   app_name = packageInfo.appName;
   String packageName = packageInfo.packageName;
-  // String version = packageInfo.version;
   versi = packageInfo.version;
   String buildNumber = packageInfo.buildNumber;
-
-  debugPrint('appVersion ' + versi);
   await NotificationPermissions.requestNotificationPermissions;
   await NotificationPermissions.getNotificationPermissionStatus();
   await Permission.notification.isDenied.then((value) {
@@ -64,7 +62,7 @@ void main() async {
   });
   await Firebase.initializeApp();
   await FirebaseApiNew().initNotification();
-  registerAppServices();
+  registerAppServices(packageName);
   initPlatformState();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -94,13 +92,14 @@ void main() async {
       lastLogin != null ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
 }
 
-Future<void> registerAppServices() async {
+Future<void> registerAppServices(String packageName) async {
   final appUtil = AppUtils();
   appUtil.initNetwork();
   final appServices = AppServices(GetIt.I.get<Dio>());
 
-  final url = '${basePath.base_url_prod}';
+  final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_prod}' : '${basePath.base_url_dev}';
   // final url = '${basePath.base_url_dev}';
+
   await appServices.registerAppServices(url);
 }
 

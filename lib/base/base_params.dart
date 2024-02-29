@@ -1,3 +1,6 @@
+const String packageNameProd = 'com.rals.myactivity_project';
+const String packageNameDev = 'com.rals.myactivity_project_dev';
+
 // Dio attributes
 const String contentType = 'Content-Type';
 const String auth = 'Authorization';
@@ -102,6 +105,8 @@ const String sjCatatan = 'Catatan';
 const String companyCardTitle = 'Member Perusahaan';
 const String cantempty = "Masukkan 6 digit kode POS";
 const String notFoundTransaction = "Belum ada Transaksi";
+const String cardNotFound = "Anda tidak mempunyai Kartu Perusahaan";
+const String cardError = "Gagal mengambil data";
 const String page = "Member Perusahaan Password";
 const String cardSuccess = "Member Perusahaan Password Sukses";
 const String cardFailed = "Member Perusahaan Password Gagal";
@@ -155,7 +160,7 @@ const String menuKeyApprovalReturn = 'approvalreturn.approvalreturn';
 const String menuKeyCekPrice = 'cekprice.cekprice';
 const String menuKeyTukarPoin = 'tukarpoin.tukarpoin';
 const String menuKeyMyActivity = 'myactivity.activity';
-const String menuKeySj = 'suratjalan.trackingsj';
+const String menuKeySj = 'tms.suratjalan';
 const String menuKeyCompanyCard = 'kartu.kartuperusahaan';
 const String menuKeyApprovedComCheck = 'comchek.approvedcomchek';
 const String menuKeyHistoryComCheck = 'comchek.historycomchek';
