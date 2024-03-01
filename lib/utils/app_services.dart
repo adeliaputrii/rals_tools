@@ -4,6 +4,7 @@ import 'package:myactivity_project/data/service/company_card_service.dart';
 import 'package:myactivity_project/data/service/id_cash_service.dart';
 import 'package:myactivity_project/data/service/login_service.dart';
 import 'package:myactivity_project/data/service/myactivity_service.dart';
+import 'package:myactivity_project/data/service/report_service.dart';
 import 'package:myactivity_project/data/service/surat_jalan_service.dart';
 import 'package:myactivity_project/utils/dio_interceptor.dart';
 
@@ -63,6 +64,13 @@ class AppServices {
     } else {
       get.unregister<CompanyCardService>();
       get.registerFactory(() => CompanyCardService(dio, baseUrl: url));
+    }
+
+    if (!get.isRegistered<ReportService>()) {
+      get.registerFactory(() => ReportService(dio, baseUrl: url));
+    } else {
+      get.unregister<ReportService>();
+      get.registerFactory(() => ReportService(dio, baseUrl: url));
     }
   }
 }

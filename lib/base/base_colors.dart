@@ -7,3 +7,7 @@ const Color rmsColor = Color.fromARGB(255, 190, 215, 44);
 const Color ifsYellow = Color.fromARGB(255, 252, 195, 11);
 const Color ifsGreen = Color.fromARGB(255, 157, 205, 90);
 
+const Color grayPrimary = Color.fromARGB(255, 68, 66, 66);
+const Color graySecondary = Color.fromARGB(255, 100, 86, 86);
+const Color cardReportColor = Color.fromARGB(255, 240, 207, 204);
+const Color cardImageBackground = Color.fromARGB(255, 255, 228, 228);

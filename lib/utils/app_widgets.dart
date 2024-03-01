@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:myactivity_project/base/base_colors.dart' as baseColor;
 
 class AppWidget {
   Widget TextFieldSJ(TextEditingController controller) {
@@ -35,6 +37,32 @@ class AppWidget {
     return SpinKitThreeBounce(
       color: Color.fromARGB(255, 230, 0, 0),
       size: 50.0,
+    );
+  }
+
+  Widget ErrorHandler(String message, Function function) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            message,
+            style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.w900, color: baseColor.primaryColor),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          TextButton(
+              onPressed: () {
+                function();
+              },
+              child: Text(
+                'Refresh',
+                style: TextStyle(fontSize: 18, color: baseColor.grayPrimary),
+              ))
+        ],
+      ),
     );
   }
 }
