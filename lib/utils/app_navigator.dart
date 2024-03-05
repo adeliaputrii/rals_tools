@@ -6,13 +6,12 @@ import 'package:myactivity_project/utils/app_check_user.dart';
 import 'package:myactivity_project/utils/popup_widget.dart';
 import 'package:myactivity_project/widget/Membercard/import.dart';
 import 'package:myactivity_project/base/base_params.dart' as baseParam;
-import 'package:myactivity_project/widget/Report/report_sales_detail.dart';
 import '../widget/Approval Return/import.dart';
 import '../widget/Cek Harga/import.dart';
 import '../widget/Competitor Checking/import.dart';
 import '../widget/ID CASH/import.dart';
 import '../widget/My Activity/import.dart';
-import '../widget/Report/report_sales_list.dart';
+import '../widget/Report/import.dart';
 import '../widget/Tracking Surat Jalan/import.dart';
 import '../widget/Tukar Poin/import.dart';
 import '../widget/VOID/import.dart';
@@ -123,9 +122,9 @@ class AppNavigator {
     }
   }
 
-  static void navigateToReportSalesDetail(BuildContext context, String url) async {
+  static void navigateToReportSalesDetail(BuildContext context, String url, String title) async {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return ReportSalesDetail(url: url);
+      return ReportSalesDetail(url: url, title: title);
     }));
     // final listAccess = await SharedPref.getUserAccess() ?? '';
     // if (listAccess.contains(baseParam.menuKeyApprovalReturn)) {

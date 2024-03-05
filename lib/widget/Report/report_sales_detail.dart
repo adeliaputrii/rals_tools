@@ -1,18 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:myactivity_project/utils/app_widgets.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:myactivity_project/base/base_colors.dart' as baseColor;
-
-import '../../cubit/report/report_cubit.dart';
-import '../../data/model/report_list_response.dart';
+part of 'import.dart';
 
 class ReportSalesDetail extends StatefulWidget {
   String? url;
-  ReportSalesDetail({super.key, required this.url});
+  String? title;
+  ReportSalesDetail({super.key, required this.url, required this.title});
   @override
   State<ReportSalesDetail> createState() => _ReportSalesDetailState();
 }
@@ -35,7 +26,6 @@ class _ReportSalesDetailState extends State<ReportSalesDetail> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    // reportCubit.getListReport();
     setContentWebView();
     super.initState();
   }
@@ -104,7 +94,12 @@ class _ReportSalesDetailState extends State<ReportSalesDetail> {
           child: Scaffold(
               appBar: AppBar(
                 backgroundColor: baseColor.primaryColor,
-                title: Text('Laporan Detail'),
+                title: Text(
+                  widget.title ?? 'Laporan Detail',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
                 centerTitle: true,
               ),
               body: !isLoading ? WebViewWidget(controller: _controller) : Center(child: AppWidget().LoadingWidget())),

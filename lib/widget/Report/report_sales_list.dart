@@ -1,16 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:myactivity_project/utils/app_navigator.dart';
-import 'package:myactivity_project/utils/app_widgets.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:myactivity_project/base/base_colors.dart' as baseColor;
-import 'package:myactivity_project/base/base_assets.dart' as baseAsset;
-import 'package:myactivity_project/base/base_params.dart' as baseParam;
-import '../../cubit/report/report_cubit.dart';
-import '../../data/model/report_list_response.dart';
+part of 'import.dart';
 
 class ReportSalesList extends StatefulWidget {
   const ReportSalesList({super.key});
@@ -28,39 +16,70 @@ class _ReportSalesListState extends State<ReportSalesList> {
   late ReportCubit reportCubit;
   List<ReportListResponse> listReport = [];
   List<ReportListResponse> listReportSearch = [];
+  List<PagingResponse.Data> listDataSearch = [];
+  List<PagingResponse.Data> listDataPaging = [];
   String searchQuery = '';
+  String title = "";
+  String? nextUrlCursor;
+  bool isLoaded = false;
+  final scrollController = ScrollController();
+  late PopUpWidget popUpWidget;
+  Timer? _debounceTimer;
 
   @override
   void initState() {
     reportCubit = context.read<ReportCubit>();
+    popUpWidget = PopUpWidget(context);
+    _debounceTimer?.cancel();
+    initDataReport();
+    scrollListener();
 
-    getListReport();
     super.initState();
   }
 
-  void getListReport() {
-    reportCubit.getListReport();
+  void initDataReport() {
+    reportCubit.getListReportPagination("", "", "", "");
+  }
+
+  void scrollListener() {
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent == scrollController.offset) {
+        debugPrint('on bottom scroll');
+        getListReport();
+      }
+    });
   }
 
   void search(String text) {
-    setState(
-      () {
-        searchQuery = text;
-        listReportSearch = listReport
-            .where(
-              (item) => (item.header1?.toLowerCase() ?? '').contains(
-                text.toLowerCase(),
-              ),
-            )
-            .toList();
-      },
-    );
+    listDataPaging.clear();
+    isLoaded = false;
+    setState(() {
+      nextUrlCursor = "null";
+      title = text;
+    });
+    KeyboardUtils().dissmissKeyboard(context);
+    getListReport();
+  }
+
+  void getListReport() {
+    if (isLoaded) {
+      return;
+    }
+    if (nextUrlCursor != null) {
+      reportCubit.getListReportPagination(nextUrlCursor, title, "", "");
+    } else {
+      popUpWidget.showToastMessage('Tidak ada data lagi..');
+      setState(() {
+        isLoaded = true;
+      });
+    }
   }
 
   @override
   void dispose() {
     searchController.dispose();
     controller.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -82,7 +101,11 @@ class _ReportSalesListState extends State<ReportSalesList> {
                   ? SearchInputReport(
                       controller: searchController,
                       onSelectedCallback: (value) {
-                        search(value);
+                        _debounceTimer?.cancel();
+
+                        _debounceTimer = Timer(Duration(seconds: 1), () {
+                          search(value);
+                        });
                       },
                     )
                   : Text('Laporan'),
@@ -95,7 +118,12 @@ class _ReportSalesListState extends State<ReportSalesList> {
                         isSearch = !isSearch;
                       });
                       if (!isSearch) {
+                        isLoaded = false;
+                        reportCubit.getListReportPagination("", "", "", "");
                         setState(() {
+                          title = "";
+                          nextUrlCursor = null;
+                          listDataPaging.clear();
                           searchController.clear();
                           listReportSearch.clear();
                         });
@@ -104,23 +132,50 @@ class _ReportSalesListState extends State<ReportSalesList> {
               ],
             ),
             body: BlocBuilder<ReportCubit, ReportState>(builder: (context, state) {
-              if (state is ReportLoading) {
+              if (state is ReportInitial) {
                 return Center(child: AppWidget().LoadingWidget());
               }
-              if (state is ReportSuccess) {
-                if (state.response.isNotEmpty) {
-                  state.response.forEach((element) {
-                    listReport.add(element);
-                  });
+
+              if (state is ReportLoading) {
+                if (listDataPaging.isEmpty) {
+                  return Center(child: AppWidget().LoadingWidget());
+                } else {
                   return Padding(
                     padding: const EdgeInsets.only(top: 10.0),
-                    child: listReportSearch.isEmpty ? searchEmpty() : searchResult(),
+                    child: searchEmpty(),
                   );
-                } else {
-                  AppWidget().ErrorHandler(baseParam.emptyDataReportMessage, getListReport);
                 }
               }
 
+              if (state is ReportPaginationSuccess) {
+                String? url = state.response.nextPageUrl;
+
+                if (url != null) {
+                  Uri uri = Uri.parse(url);
+                  Map<String, dynamic> queryParams = uri.queryParameters;
+                  String cursorValue = queryParams['cursor'];
+                  nextUrlCursor = cursorValue;
+                } else {
+                  nextUrlCursor = null;
+                  isLoaded = true;
+                }
+
+                if (state.response.data?.isNotEmpty ?? false) {
+                  debugPrint('here?');
+
+                  state.response.data?.forEach((element) {
+                    bool headerExists = listDataPaging.any((existingElement) => existingElement.header1 == element.header1);
+                    if (!headerExists) {
+                      listDataPaging.add(element);
+                    }
+                    // listDataPaging.add(element);
+                  });
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: searchEmpty(),
+                  );
+                }
+              }
               if (state is ReportFailure) {
                 return AppWidget().ErrorHandler(baseParam.errorReportMessage, getListReport);
               }
@@ -131,83 +186,31 @@ class _ReportSalesListState extends State<ReportSalesList> {
   Widget searchResult() {
     return ListView.builder(
         shrinkWrap: true,
-        itemCount: listReportSearch.length,
+        itemCount: listDataSearch.length,
         itemBuilder: (context, index) {
-          return CardReport(response: listReportSearch[index]);
+          return CardReport(response: listDataSearch[index]);
         });
   }
 
   Widget searchEmpty() {
     return ListView.builder(
-        itemCount: listReport.length,
+        controller: scrollController,
+        itemCount: listDataPaging.length + 1,
         itemBuilder: (builder, index) {
-          return CardReport(response: listReport[index]);
-        });
-  }
-}
-
-class CardReport extends StatelessWidget {
-  ReportListResponse response;
-  CardReport({super.key, required this.response});
-
-  @override
-  Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    return GestureDetector(
-      onTap: () => AppNavigator.navigateToReportSalesDetail(context, response.properties!),
-      child: Container(
-          margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-          decoration: BoxDecoration(color: baseColor.cardReportColor, borderRadius: BorderRadius.circular(20)),
-          height: 100,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(color: baseColor.cardImageBackground, borderRadius: BorderRadius.circular(10)),
-                  child: Image(
-                    width: 40,
-                    height: 40,
-                    image: AssetImage(baseAsset.icReportList),
-                  ),
-                ),
-                Container(
-                  width: screenSize.width / 1.3,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Laporan',
-                              style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w500, color: baseColor.graySecondary),
-                            ),
-                            Text(
-                              '${response.header1}',
-                              style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 18, fontWeight: FontWeight.w900, color: baseColor.grayPrimary, wordSpacing: 2),
-                            ),
-                            Text('${response.createDate}',
-                                style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w400, color: baseColor.graySecondary))
-                          ],
-                        ),
-                        Image(
-                          width: 40,
-                          height: 40,
-                          image: AssetImage(baseAsset.icReportArrow),
-                        ),
-                      ],
+          if (index < listDataPaging.length) {
+            final item = listDataPaging[index];
+            return CardReport(response: item);
+          } else {
+            return Center(
+              child: isLoaded
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: AppWidget().LoadingWidget(),
                     ),
-                  ),
-                ),
-              ],
-            ),
-          )),
-    );
+            );
+          }
+        });
   }
 }
 
@@ -246,7 +249,6 @@ class SearchInputReport extends StatelessWidget {
           ),
         ),
         onChanged: (text) {
-          debugPrint('text' + text);
           onSelectedCallback(text);
         },
       ),

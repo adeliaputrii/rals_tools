@@ -19,6 +19,24 @@ class ReportSuccess extends ReportState {
   List<Object?> get props => [response];
 }
 
+class ReportPaginationSuccess extends ReportState {
+  final ReportListPaginationResponse response;
+
+  const ReportPaginationSuccess(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
+class ReportSearchSuccess extends ReportState {
+  final ReportListPaginationResponse response;
+
+  const ReportSearchSuccess(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
 class ReportLoading extends ReportState {}
 
 class ReportFailure extends ReportState {
