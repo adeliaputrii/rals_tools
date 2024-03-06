@@ -89,7 +89,7 @@ class ReportMenuWidget extends StatelessWidget {
               child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 menuIcon(baseParam.menuLaporanSo, baseAsset.reportSoLogo, navigate: () => AppNavigator.navigateToReport(context)),
                 menuIcon(baseParam.menuLaporanPooling, baseAsset.reportPoolingLogo, navigate: () => AppNavigator.navigateToReport(context)),
-                menuIcon(baseParam.menuLaporanSales, baseAsset.reportSalesLogo, navigate: () => AppNavigator.navigateToReport(context)),
+                menuIcon(baseParam.menuLaporanSales, baseAsset.reportSalesLogo, navigate: () => AppNavigator.navigateToReportSalesList(context)),
               ]),
             ),
             const SizedBox(height: 20),

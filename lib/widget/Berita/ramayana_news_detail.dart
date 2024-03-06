@@ -20,8 +20,6 @@ class _NewsDetailState extends State<NewsDetail> {
   void initState() {
     super.initState();
     urlDetail = widget.newsUrl;
-    debugPrint('url detial' + urlDetail);
-    print('initstate');
     if (urlDetail != "") {
       _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)

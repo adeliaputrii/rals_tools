@@ -5,6 +5,7 @@ import 'package:myactivity_project/cubit/home/home_cubit.dart';
 import 'package:myactivity_project/cubit/id_cash/id_cash_cubit.dart';
 import 'package:myactivity_project/cubit/login/login_cubit.dart';
 import 'package:myactivity_project/cubit/myactivity/myactivity_cubit.dart';
+import 'package:myactivity_project/cubit/report/report_cubit.dart';
 import 'package:myactivity_project/cubit/surat_jalan/surat_jalan_cubit.dart';
 
 class AppCubit {
@@ -27,6 +28,9 @@ class AppCubit {
       ),
       BlocProvider<CompanyCardCubit>(
         create: (BuildContext context) => CompanyCardCubit(),
+      ),
+      BlocProvider<ReportCubit>(
+        create: (BuildContext context) => ReportCubit(),
       ),
     ], child: widget);
   }

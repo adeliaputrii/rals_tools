@@ -11,6 +11,7 @@ import '../widget/Cek Harga/import.dart';
 import '../widget/Competitor Checking/import.dart';
 import '../widget/ID CASH/import.dart';
 import '../widget/My Activity/import.dart';
+import '../widget/Report/import.dart';
 import '../widget/Tracking Surat Jalan/import.dart';
 import '../widget/Tukar Poin/import.dart';
 import '../widget/VOID/import.dart';
@@ -119,6 +120,34 @@ class AppNavigator {
     } else {
       showRestrictMessenger(context);
     }
+  }
+
+  static void navigateToReportSalesDetail(BuildContext context, String? url, String title) async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ReportSalesDetail(url: url, title: title);
+    }));
+    // final listAccess = await SharedPref.getUserAccess() ?? '';
+    // if (listAccess.contains(baseParam.menuKeyApprovalReturn)) {
+    //   Navigator.push(context, MaterialPageRoute(builder: (context) {
+    //     return ReportSales();
+    //   }));
+    // } else {
+    //   showRestrictMessenger(context);
+    // }
+  }
+
+  static void navigateToReportSalesList(BuildContext context) async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ReportSalesList();
+    }));
+    // final listAccess = await SharedPref.getUserAccess() ?? '';
+    // if (listAccess.contains(baseParam.menuKeyApprovalReturn)) {
+    //   Navigator.push(context, MaterialPageRoute(builder: (context) {
+    //     return ReportSales();
+    //   }));
+    // } else {
+    //   showRestrictMessenger(context);
+    // }
   }
 
   static void navigateToReport(BuildContext context) async {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
+import 'package:myactivity_project/base/base_colors.dart' as baseColor;
 
 class PopUpWidget {
   final BuildContext context;
@@ -61,10 +62,10 @@ class PopUpWidget {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
+        backgroundColor: baseColor.primaryColor,
         textColor: Colors.white,
-        fontSize: 16.0);
+        fontSize: 12.0);
   }
 }
