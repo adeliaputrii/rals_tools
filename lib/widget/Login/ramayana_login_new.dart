@@ -62,8 +62,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   }
 
   _unsecureScreen() async {
-    await FlutterWindowManager.clearFlags(FlutterWindowManager
-        .FLAG_SECURE); // Mengaktifkan kembali tangkapan layar
+    await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE); // Mengaktifkan kembali tangkapan layar
   }
 
   Future<void> init() async {
@@ -155,8 +154,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
 
   void showSnack(String text) {
     if (_scaffoldKey.currentContext != null) {
-      ScaffoldMessenger.of(_scaffoldKey.currentContext!)
-          .showSnackBar(SnackBar(content: Text(text)));
+      ScaffoldMessenger.of(_scaffoldKey.currentContext!).showSnackBar(SnackBar(content: Text(text)));
     }
   }
 
@@ -177,10 +175,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           color: Colors.grey,
         ),
       ),
-      titleStyle: GoogleFonts.plusJakartaSans(
-          fontSize: 25,
-          color: Color.fromARGB(255, 210, 14, 0),
-          fontWeight: FontWeight.w500),
+      titleStyle: GoogleFonts.plusJakartaSans(fontSize: 25, color: Color.fromARGB(255, 210, 14, 0), fontWeight: FontWeight.w500),
       alertAlignment: Alignment.center,
     );
     Alert(
@@ -188,8 +183,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       context: context,
       image: FadeInImageWidget(imageUrl: "assets/loginOffline.png"),
       title: 'Server Offline',
-      desc:
-          "Apakah Anda ingin login dengan mode offline? Jika YA harap hubungi DTC dengan angka random di bawah.",
+      desc: "Apakah Anda ingin login dengan mode offline? Jika YA harap hubungi DTC dengan angka random di bawah.",
       buttons: [
         DialogButton(
           radius: BorderRadius.circular(20),
@@ -201,23 +195,18 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           },
           child: Text(
             "TIDAK",
-            style:
-                GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+            style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
           ),
         ),
         DialogButton(
           radius: BorderRadius.circular(20),
           color: Colors.green,
           onPressed: () async {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => RamayanaLoginOffline()),
-                (Route<dynamic> route) => false);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => RamayanaLoginOffline()), (Route<dynamic> route) => false);
           },
           child: Text(
             "YA",
-            style:
-                GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+            style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
           ),
         ),
       ],
@@ -363,11 +352,9 @@ class _RamayanaLogin extends State<RamayanaLogin> {
               'TOKEN': 'R4M4Y4N4'
             });
 
-            var response = await dio.post('${tipeurl}v1/activity/createmylog',
-                data: formData);
+            var response = await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
             print('berhasil $_udid');
-            LaunchReview.launch(
-                androidAppId: "com.rals.myactivity_project_dev");
+            LaunchReview.launch(androidAppId: "com.rals.myactivity_project_dev");
             Navigator.pop(context);
           },
           child: Text(
@@ -431,14 +418,10 @@ class _RamayanaLogin extends State<RamayanaLogin> {
   loginPressed() async {
     keyboardUtils.dissmissKeyboard(context);
     AndroidDeviceInfo info = await devicePlugin.androidInfo;
-    if (usernameController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty) {
-      final body = LoginBody(
-          username: usernameController.text,
-          password: passwordController.text,
-          deviceId: "${_nativeId}${info.device}",
-          versi: versi);
-
+    if (usernameController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+      final body =
+          LoginBody(username: usernameController.text, password: passwordController.text, deviceId: "${_nativeId}${info.device}", versi: versi);
+      loginCubit.logout();
       loginCubit.login(loginBody: body);
     }
 
@@ -776,9 +759,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
 
   fetchDataCustomer({required String user_name}) async {
     AndroidDeviceInfo info = await devicePlugin.androidInfo;
-    final responseku = await http.post(
-        Uri.parse('${tipeurl}api/v1/auth/reset.username'),
-        body: {'user_name': usernameController.text});
+    final responseku = await http.post(Uri.parse('${tipeurl}api/v1/auth/reset.username'), body: {'user_name': usernameController.text});
 
     var data = jsonDecode(responseku.body);
 
@@ -799,8 +780,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         ' devicename': '${info.device}',
         'TOKEN': 'R4M4Y4N4'
       });
-      loginCubit.createLog(
-          baseParam.logInfoResetPage, 'Navigasi ke forgot password', urlApi);
+      loginCubit.createLog(baseParam.logInfoResetPage, 'Navigasi ke forgot password', urlApi);
       // var response =
       //     await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
       print('berhasil $_udid');
@@ -828,17 +808,13 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         if (state is LoginSuccess) {
           pref.setString('user_token_str', state.response.accessToken ?? '');
           SharedPref.setLastLogin('${formattedDate}');
-          SharedPref.setUserId(
-              state.response.data?.username7.toString() ?? 'unknown');
-          SharedPref.setUserToko(
-              state.response.data?.toko.toString() ?? 'unknown');
+          SharedPref.setUserId(state.response.data?.username7.toString() ?? 'unknown');
+          SharedPref.setUserToko(state.response.data?.toko.toString() ?? 'unknown');
 
           // await fetchDataNoKartu(
           //     id_user: state.response.data!.userId.toString());
-          loginCubit.createLog(
-              logInfoLoginPage, baseParam.logInfoLoginSucc, urlApi);
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (_) => Ramayana()));
+          loginCubit.createLog(logInfoLoginPage, baseParam.logInfoLoginSucc, urlApi);
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Ramayana()));
         }
 
         if (state is LoginFailure) {
@@ -849,10 +825,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
             sweatAlert();
           } else {
             final username = usernameController.text;
-            loginCubit.createLog(
-                logInfoLoginPage,
-                '${baseParam.logInfoLoginFail} ${state.message} user ${username}',
-                urlApi);
+            loginCubit.createLog(logInfoLoginPage, '${baseParam.logInfoLoginFail} ${state.message} user ${username}', urlApi);
             popUpWidget.showPopUpError(pleaseCheck, state.message);
           }
         }
@@ -891,12 +864,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           color: Colors.white,
-                          boxShadow: [
-                            (BoxShadow(
-                                color: Color.fromARGB(255, 185, 185, 185),
-                                blurRadius: 5,
-                                offset: Offset(2, 4)))
-                          ]),
+                          boxShadow: [(BoxShadow(color: Color.fromARGB(255, 185, 185, 185), blurRadius: 5, offset: Offset(2, 4)))]),
                       child: Column(
                         children: <Widget>[
                           Container(
@@ -910,17 +878,12 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                             margin: EdgeInsets.only(top: 35),
                             child: Center(
                                 child: Text('Selamat Datang di Rtools',
-                                    style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 24,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w600))),
+                                    style: GoogleFonts.plusJakartaSans(fontSize: 24, color: Colors.black, fontWeight: FontWeight.w600))),
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 10),
-                            child: Center(
-                                child: Text('Masuk untuk melanjutkan',
-                                    style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 18, color: Colors.black))),
+                            child:
+                                Center(child: Text('Masuk untuk melanjutkan', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black))),
                           ),
                           SizedBox(
                             height: 70,
@@ -930,15 +893,12 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                             child: TextFormField(
                               cursorColor: Colors.black,
                               controller: usernameController,
-                              validator:
-                                  RequiredValidator(errorText: 'Wajib diisi'),
+                              validator: RequiredValidator(errorText: 'Wajib diisi'),
                               keyboardType: TextInputType.multiline,
-                              style: GoogleFonts.plusJakartaSans(
-                                  color: Colors.black, fontSize: 18),
+                              style: GoogleFonts.plusJakartaSans(color: Colors.black, fontSize: 18),
                               decoration: InputDecoration(
                                   border: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: 5.0),
+                                    borderSide: BorderSide(color: Colors.black, width: 5.0),
                                     borderRadius: BorderRadius.circular(25),
                                   ),
                                   errorBorder: UnderlineInputBorder(
@@ -946,10 +906,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                       borderSide: BorderSide(
                                         color: Color.fromARGB(255, 255, 17, 17),
                                       )),
-                                  errorStyle: TextStyle(
-                                      color: Color.fromARGB(255, 255, 17, 17),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
+                                  errorStyle: TextStyle(color: Color.fromARGB(255, 255, 17, 17), fontSize: 14, fontWeight: FontWeight.w400),
                                   labelStyle: TextStyle(color: Colors.black),
                                   prefixIcon: Icon(
                                     Icons.person,
@@ -957,16 +914,11 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                     size: 30,
                                   ),
                                   hintText: 'Username',
-                                  hintStyle: TextStyle(
-                                      color: Colors.black, fontSize: 20),
-                                  enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          new BorderSide(color: Colors.black),
-                                      borderRadius: BorderRadius.circular(25)),
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          new BorderSide(color: Colors.black),
-                                      borderRadius: BorderRadius.circular(25))),
+                                  hintStyle: TextStyle(color: Colors.black, fontSize: 20),
+                                  enabledBorder:
+                                      UnderlineInputBorder(borderSide: new BorderSide(color: Colors.black), borderRadius: BorderRadius.circular(25)),
+                                  focusedBorder:
+                                      UnderlineInputBorder(borderSide: new BorderSide(color: Colors.black), borderRadius: BorderRadius.circular(25))),
                             ),
                           ),
                           SizedBox(height: 40),
@@ -974,8 +926,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                             margin: EdgeInsets.only(left: 20, right: 20),
                             child: TextFormField(
                                 controller: passwordController,
-                                style: GoogleFonts.plusJakartaSans(
-                                    color: Colors.black, fontSize: 18),
+                                style: GoogleFonts.plusJakartaSans(color: Colors.black, fontSize: 18),
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return "Wajib diisi";
@@ -985,22 +936,16 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                 keyboardType: TextInputType.multiline,
                                 decoration: InputDecoration(
                                     border: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.black, width: 5.0),
+                                      borderSide: BorderSide(color: Colors.black, width: 5.0),
                                       borderRadius: BorderRadius.circular(25),
                                     ),
                                     errorBorder: UnderlineInputBorder(
                                         borderRadius: BorderRadius.circular(25),
                                         borderSide: BorderSide(
-                                          color:
-                                              Color.fromARGB(255, 255, 17, 17),
+                                          color: Color.fromARGB(255, 255, 17, 17),
                                         )),
-                                    errorStyle: TextStyle(
-                                        color: Color.fromARGB(255, 255, 17, 17),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400),
-                                    labelStyle:
-                                        TextStyle(color: Colors.black87),
+                                    errorStyle: TextStyle(color: Color.fromARGB(255, 255, 17, 17), fontSize: 14, fontWeight: FontWeight.w400),
+                                    labelStyle: TextStyle(color: Colors.black87),
                                     prefixIcon: Icon(
                                       Icons.lock,
                                       color: Color.fromARGB(255, 255, 17, 17),
@@ -1008,9 +953,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                     suffixIcon: IconButton(
                                       icon: Icon(
                                         // Based on passwordVisible state choose the icon
-                                        _passwordVisible
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
+                                        _passwordVisible ? Icons.visibility : Icons.visibility_off,
                                         color: Color.fromARGB(255, 255, 17, 17),
                                       ),
                                       onPressed: () {
@@ -1021,18 +964,11 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                       },
                                     ),
                                     hintText: 'Password',
-                                    hintStyle: TextStyle(
-                                        color: Colors.black, fontSize: 20),
+                                    hintStyle: TextStyle(color: Colors.black, fontSize: 20),
                                     enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Colors.black),
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
+                                        borderSide: new BorderSide(color: Colors.black), borderRadius: BorderRadius.circular(25)),
                                     focusedBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Colors.black),
-                                        borderRadius:
-                                            BorderRadius.circular(25)))),
+                                        borderSide: new BorderSide(color: Colors.black), borderRadius: BorderRadius.circular(25)))),
                           ),
                           Column(
                             children: <Widget>[
@@ -1043,54 +979,34 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                   children: [
                                     isLoading
                                         ? SpinKitCircle(
-                                            color: Color.fromARGB(
-                                                255, 255, 17, 17),
+                                            color: Color.fromARGB(255, 255, 17, 17),
                                             size: 60.0,
                                           )
                                         : Container(
-                                            margin: EdgeInsets.only(
-                                                left: 20, right: 20),
+                                            margin: EdgeInsets.only(left: 20, right: 20),
                                             child: MaterialButton(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 150),
+                                                padding: EdgeInsets.symmetric(horizontal: 150),
                                                 height: 45,
                                                 shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
+                                                  borderRadius: BorderRadius.circular(15),
                                                 ),
-                                                child: Text('MASUK',
-                                                    style: GoogleFonts
-                                                        .plusJakartaSans(
-                                                            color: Colors.white,
-                                                            fontSize: 18)),
-                                                color: Color.fromARGB(
-                                                    255, 255, 17, 17),
-                                                onPressed: _updateInfo
-                                                                ?.updateAvailability ==
-                                                            UpdateAvailability
-                                                                .updateAvailable &&
-                                                        update == false
+                                                child: Text('MASUK', style: GoogleFonts.plusJakartaSans(color: Colors.white, fontSize: 18)),
+                                                color: Color.fromARGB(255, 255, 17, 17),
+                                                onPressed: _updateInfo?.updateAvailability == UpdateAvailability.updateAvailable && update == false
                                                     ? () {
-                                                        print(
-                                                            "update : ${update}");
+                                                        print("update : ${update}");
 
-                                                        InAppUpdate
-                                                                .startFlexibleUpdate()
-                                                            .then((_) {
+                                                        InAppUpdate.startFlexibleUpdate().then((_) {
                                                           setState(() {
-                                                            _flexibleUpdateAvailable =
-                                                                true;
+                                                            _flexibleUpdateAvailable = true;
                                                             update = true;
                                                           });
                                                         }).catchError((e) {
-                                                          showSnack(
-                                                              e.toString());
+                                                          showSnack(e.toString());
                                                         });
                                                       }
                                                     : () async {
-                                                        if (_formKey
-                                                            .currentState!
-                                                            .validate()) {
+                                                        if (_formKey.currentState!.validate()) {
                                                           await init();
                                                           loginPressed();
                                                         }
@@ -1110,17 +1026,13 @@ class _RamayanaLogin extends State<RamayanaLogin> {
                                   ),
                                   child: Text('Lupa Password?',
                                       style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 18,
-                                          color:
-                                              Color.fromARGB(255, 152, 10, 0),
-                                          fontWeight: FontWeight.bold)),
+                                          fontSize: 18, color: Color.fromARGB(255, 152, 10, 0), fontWeight: FontWeight.bold)),
                                   // color: Colors.red,
                                   onPressed: () {
                                     if (usernameController.text.isEmpty) {
                                       _displayCenterMotionUsername();
                                     } else {
-                                      fetchDataCustomer(
-                                          user_name: usernameController.text);
+                                      fetchDataCustomer(user_name: usernameController.text);
                                     }
                                   }),
                               // SizedBox(

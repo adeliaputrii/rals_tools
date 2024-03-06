@@ -4,6 +4,7 @@ const String base_url_dev_tms = "https://dev-ris.ramayana.co.id/api/";
 const String base_url_prod_tms = "https://ris.ramayana.co.id/api/";
 
 const String api_login = "api/v1/auth/signin";
+const String api_logout = "api/v1/auth/logout";
 const String api_reset_pass = 'api/v1/auth/reset.password';
 const String api_my_log = 'v1/activity/createmylog';
 const String api_membercard_customer = "v1/membercards/tbl_customer";
