@@ -99,7 +99,6 @@ Future<void> registerAppServices(String packageName) async {
 
   // final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_prod}' : '${basePath.base_url_dev}';
   final url = '${basePath.base_url_dev}';
-
   await appServices.registerAppServices(url);
 }
 

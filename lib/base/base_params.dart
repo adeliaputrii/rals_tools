@@ -166,3 +166,6 @@ const String menuKeyApprovedComCheck = 'comchek.approvedcomchek';
 const String menuKeyHistoryComCheck = 'comchek.historycomchek';
 const String menuKeyHomepageNews = 'homepage.news';
 const String menuKeyMyListTask = 'homepage.mylisttask';
+
+const String errorReportMessage = 'Gagal Mendapatkan\nData Laporan';
+const String emptyDataReportMessage = 'Data Laporan\nKosong';
