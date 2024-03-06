@@ -134,16 +134,11 @@ class _ProfileeState extends State<Profilee> {
               Container(
                 alignment: Alignment.centerRight,
                 height: 25,
-                margin:
-                    EdgeInsets.only(top: 175, bottom: 0, left: 10, right: 10),
+                margin: EdgeInsets.only(top: 175, bottom: 0, left: 10, right: 10),
                 child: ListTile(
                   trailing: Text(
                     '${userData.getFullname()}',
-                    style: GoogleFonts.plusJakartaSans(
-                        textStyle: TextStyle(
-                            fontSize: 17,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500)),
+                    style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 17, color: Colors.white, fontWeight: FontWeight.w500)),
                   ),
                 ),
               ),
@@ -154,11 +149,7 @@ class _ProfileeState extends State<Profilee> {
                 child: ListTile(
                   trailing: Text(
                     '${userData.getUsernameID()}',
-                    style: GoogleFonts.plusJakartaSans(
-                        textStyle: TextStyle(
-                            fontSize: 17,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500)),
+                    style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 17, color: Colors.white, fontWeight: FontWeight.w500)),
                   ),
                 ),
               )
@@ -173,8 +164,8 @@ class _ProfileeState extends State<Profilee> {
     await SharedPref.clearLastLogin();
     await SharedPref.clearUserId();
     pref.remove('waktuLogin');
-     LoginOffline.listActivity.forEach((element) async{
-     await db3.deleteActivityy(element.id_act!);
+    LoginOffline.listActivity.forEach((element) async {
+      await db3.deleteActivityy(element.id_act!);
     });
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
       return RamayanaLogin();
@@ -199,8 +190,7 @@ class _ProfileeState extends State<Profilee> {
           color: Colors.grey,
         ),
       ),
-      titleStyle: GoogleFonts.plusJakartaSans(
-          fontSize: 23, color: Colors.red, fontWeight: FontWeight.w500),
+      titleStyle: GoogleFonts.plusJakartaSans(fontSize: 23, color: Colors.red, fontWeight: FontWeight.w500),
       alertAlignment: Alignment.center,
     );
     Alert(
@@ -215,14 +205,11 @@ class _ProfileeState extends State<Profilee> {
           color: Colors.green,
           onPressed: () {
             Navigator.pop(context);
-            setState(() {
-              _selectedIndex = 2;
-            });
+         
           },
           child: Text(
             "Kembali",
-            style:
-                GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+            style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
           ),
         ),
         DialogButton(
@@ -242,16 +229,14 @@ class _ProfileeState extends State<Profilee> {
               ' devicename': '${info.device}',
               'TOKEN': 'R4M4Y4N4'
             });
-            loginCubit.createLog(baseParam.logInfoProfilePage,
-                baseParam.logInfoProfile, baseParam.noUrl);
+            loginCubit.createLog(baseParam.logInfoProfilePage, baseParam.logInfoProfile, baseParam.noUrl);
             print('berhasil $_udid');
             logoutPressed();
             Navigator.pop(context);
           },
           child: Text(
             "Keluar",
-            style:
-                GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+            style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
           ),
         ),
       ],
@@ -294,8 +279,7 @@ class _ProfileeState extends State<Profilee> {
               centerTitle: true,
               leading: IconButton(
                   onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (_) {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
                       return DefaultBottomBarController(child: Ramayana());
                     }));
                   },
@@ -305,11 +289,7 @@ class _ProfileeState extends State<Profilee> {
                   )),
               title: Text(
                 'Profil',
-                style: GoogleFonts.plusJakartaSans(
-                    textStyle: TextStyle(
-                        fontSize: 25,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500)),
+                style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 25, color: Colors.white, fontWeight: FontWeight.w500)),
               ),
               actions: [
                 Padding(
@@ -342,10 +322,7 @@ class _ProfileeState extends State<Profilee> {
                     margin: EdgeInsets.only(top: 10),
                     height: 500,
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30))),
+                        color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
                   ),
                   Container(
                       margin: EdgeInsets.fromLTRB(17, 370, 17, 0),
@@ -357,37 +334,29 @@ class _ProfileeState extends State<Profilee> {
                           Container(
                             height: 80,
                             margin: EdgeInsets.only(bottom: 20),
-                            decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(20)),
+                            decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(20)),
                             child: Row(
                               children: [
                                 Container(
                                   margin: EdgeInsets.only(left: 20),
                                   child: CircleAvatar(
-                                      backgroundColor:
-                                          Color.fromARGB(255, 210, 14, 0),
+                                      backgroundColor: Color.fromARGB(255, 210, 14, 0),
                                       radius: 30,
-                                      backgroundImage:
-                                          AssetImage('assets/fullname.png')),
+                                      backgroundImage: AssetImage('assets/fullname.png')),
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(top: 12),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         margin: EdgeInsets.only(left: 20),
                                         child: Text(
                                           'Nama',
                                           style: GoogleFonts.plusJakartaSans(
-                                              textStyle: TextStyle(
-                                                  fontSize: 19,
-                                                  color: Color.fromARGB(
-                                                      255, 71, 70, 70),
-                                                  fontWeight: FontWeight.w500)),
+                                              textStyle:
+                                                  TextStyle(fontSize: 19, color: Color.fromARGB(255, 71, 70, 70), fontWeight: FontWeight.w500)),
                                         ),
                                       ),
                                       SizedBox(
@@ -396,14 +365,9 @@ class _ProfileeState extends State<Profilee> {
                                       Container(
                                         margin: EdgeInsets.only(left: 20),
                                         child: Text(
-                                          userData.getFullname() == null
-                                              ? '-'
-                                              : '${userData.getFullname()}',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              textStyle: TextStyle(
-                                                  fontSize: 17,
-                                                  color: Color.fromARGB(
-                                                      255, 71, 70, 70))),
+                                          userData.getFullname() == null ? '-' : '${userData.getFullname()}',
+                                          style:
+                                              GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 17, color: Color.fromARGB(255, 71, 70, 70))),
                                         ),
                                       ),
                                     ],
@@ -416,37 +380,27 @@ class _ProfileeState extends State<Profilee> {
                           Container(
                             height: 80,
                             margin: EdgeInsets.only(bottom: 20),
-                            decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(20)),
+                            decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(20)),
                             child: Row(
                               children: [
                                 Container(
                                   margin: EdgeInsets.only(left: 20),
                                   child: CircleAvatar(
-                                      backgroundColor:
-                                          Color.fromARGB(255, 210, 14, 0),
-                                      radius: 30,
-                                      backgroundImage:
-                                          AssetImage('assets/email.png')),
+                                      backgroundColor: Color.fromARGB(255, 210, 14, 0), radius: 30, backgroundImage: AssetImage('assets/email.png')),
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(top: 12),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         margin: EdgeInsets.only(left: 20),
                                         child: Text(
                                           'Email',
                                           style: GoogleFonts.plusJakartaSans(
-                                              textStyle: TextStyle(
-                                                  fontSize: 19,
-                                                  color: Color.fromARGB(
-                                                      255, 71, 70, 70),
-                                                  fontWeight: FontWeight.w500)),
+                                              textStyle:
+                                                  TextStyle(fontSize: 19, color: Color.fromARGB(255, 71, 70, 70), fontWeight: FontWeight.w500)),
                                         ),
                                       ),
                                       SizedBox(
@@ -455,14 +409,9 @@ class _ProfileeState extends State<Profilee> {
                                       Container(
                                         margin: EdgeInsets.only(left: 20),
                                         child: Text(
-                                          userData.getEmail() == null
-                                              ? '-'
-                                              : '${userData.getEmail()}',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              textStyle: TextStyle(
-                                                  fontSize: 17,
-                                                  color: Color.fromARGB(
-                                                      255, 71, 70, 70))),
+                                          userData.getEmail() == null ? '-' : '${userData.getEmail()}',
+                                          style:
+                                              GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 17, color: Color.fromARGB(255, 71, 70, 70))),
                                         ),
                                       ),
                                     ],
@@ -526,37 +475,27 @@ class _ProfileeState extends State<Profilee> {
                           Container(
                             height: 80,
                             margin: EdgeInsets.only(bottom: 30),
-                            decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(20)),
+                            decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(20)),
                             child: Row(
                               children: [
                                 Container(
                                   margin: EdgeInsets.only(left: 20),
                                   child: CircleAvatar(
-                                      backgroundColor:
-                                          Color.fromARGB(255, 210, 14, 0),
-                                      radius: 30,
-                                      backgroundImage:
-                                          AssetImage('assets/id.png')),
+                                      backgroundColor: Color.fromARGB(255, 210, 14, 0), radius: 30, backgroundImage: AssetImage('assets/id.png')),
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(top: 12),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         margin: EdgeInsets.only(left: 20),
                                         child: Text(
                                           'ID',
                                           style: GoogleFonts.plusJakartaSans(
-                                              textStyle: TextStyle(
-                                                  fontSize: 19,
-                                                  color: Color.fromARGB(
-                                                      255, 71, 70, 70),
-                                                  fontWeight: FontWeight.w500)),
+                                              textStyle:
+                                                  TextStyle(fontSize: 19, color: Color.fromARGB(255, 71, 70, 70), fontWeight: FontWeight.w500)),
                                         ),
                                       ),
                                       SizedBox(
@@ -565,14 +504,9 @@ class _ProfileeState extends State<Profilee> {
                                       Container(
                                         margin: EdgeInsets.only(left: 20),
                                         child: Text(
-                                          userData.getUsernameID() == null
-                                              ? '-'
-                                              : '${userData.getUsernameID()}',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              textStyle: TextStyle(
-                                                  fontSize: 17,
-                                                  color: Color.fromARGB(
-                                                      255, 71, 70, 70))),
+                                          userData.getUsernameID() == null ? '-' : '${userData.getUsernameID()}',
+                                          style:
+                                              GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 17, color: Color.fromARGB(255, 71, 70, 70))),
                                         ),
                                       ),
                                     ],
@@ -587,11 +521,7 @@ class _ProfileeState extends State<Profilee> {
                               margin: EdgeInsets.only(top: 10, bottom: 30),
                               child: Text(
                                 'Versi ${versi} Hak Cipta RALS@2023',
-                                style: GoogleFonts.plusJakartaSans(
-                                    textStyle: TextStyle(
-                                        fontSize: 17,
-                                        color:
-                                            Color.fromARGB(255, 71, 70, 70))),
+                                style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 17, color: Color.fromARGB(255, 71, 70, 70))),
                               ),
                             ),
                           )
@@ -599,195 +529,142 @@ class _ProfileeState extends State<Profilee> {
                       )),
                   Container(
                       margin: EdgeInsets.only(top: 30, left: 20, right: 20),
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            AnimatedSwitcher(
-                              child: myWidget,
-                              duration: Duration(seconds: 1),
-                              transitionBuilder: (child, animation) =>
-                                  FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              ),
+                      child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                        AnimatedSwitcher(
+                          child: myWidget,
+                          duration: Duration(seconds: 1),
+                          transitionBuilder: (child, animation) => FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Switch(
+                            activeColor: Color.fromARGB(255, 210, 14, 0),
+                            activeThumbImage: AssetImage(
+                              'assets/ramayana(C).png',
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Switch(
-                                activeColor: Color.fromARGB(255, 210, 14, 0),
-                                activeThumbImage: AssetImage(
-                                  'assets/ramayana(C).png',
-                                ),
-                                value: isOn,
-                                onChanged: (newValue) {
-                                  isOn = newValue;
-                                  setState(() {
-                                    if (isOn)
-                                      myWidget = Center(
-                                        child: Container(
-                                          key: ValueKey(1),
-                                          margin:
-                                              EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                          child: Container(
-                                              width: 700,
-                                              height: 280,
-                                              decoration: BoxDecoration(
-                                                color: Color.fromARGB(
-                                                    255, 235, 227, 227),
-                                                borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(20),
-                                                  topRight: Radius.circular(20),
-                                                  bottomLeft:
-                                                      Radius.circular(20),
-                                                  bottomRight:
-                                                      Radius.circular(20),
-                                                ),
-                                                image: DecorationImage(
-                                                    image: AssetImage(
-                                                        'assets/desain(C).png'),
-                                                    fit: BoxFit.fill),
-                                              ),
-                                              child: Container(
-                                                  margin: EdgeInsets.only(
-                                                      top: 20,
-                                                      bottom: 30,
-                                                      left: 10,
-                                                      right: 10),
-                                                  child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: <Widget>[
-                                                        Container(
-                                                          width: 75,
-                                                          height: 75,
-                                                          child: SfBarcodeGenerator(
-                                                              barColor:
-                                                                  Colors.white,
-                                                              value:
-                                                                  '${noMember}',
-                                                              symbology:
-                                                                  QRCode()),
-                                                        ),
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            debugPrint(
-                                                                '${noMember}');
-                                                          },
-                                                          child: Container(
-                                                              width: 280,
-                                                              height: 75,
-                                                              child: SfBarcodeGenerator(
-                                                                  value:
-                                                                      '${noMember}',
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  barColor:
-                                                                      Colors
-                                                                          .black,
-                                                                  symbology:
-                                                                      Code128())),
-                                                        ),
-
-                                                        // QrImage(
-                                                        //   foregroundColor:
-                                                        //       Colors.white,
-                                                        //   data: "${_member}",
-                                                        //   version: QrVersions.auto,
-                                                        //   size: 85.0,
-                                                        // ),
-                                                        //  BarCodeImage(
-                                                        //   backgroundColor: Colors.white,
-                                                        //   params: Code128BarCodeParams(
-                                                        //   "${_member}",
-                                                        //   lineWidth: 1.5,
-                                                        //   barHeight: 75,
-                                                        //   // withText: true,
-                                                        //   ),
-                                                        //   padding: EdgeInsets.only(bottom: 7),
-                                                        //   onError: (error) {               // Error handler
-                                                        //   print('error = $error');
-                                                        //   },
-                                                        //   ),
-                                                      ]))),
-                                        ),
-                                      );
-                                    else
-                                      myWidget = Center(
-                                          child: Container(
-                                        key: ValueKey(2),
-                                        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                        child: Container(
+                            value: isOn,
+                            onChanged: (newValue) {
+                              isOn = newValue;
+                              setState(() {
+                                if (isOn)
+                                  myWidget = Center(
+                                    child: Container(
+                                      key: ValueKey(1),
+                                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      child: Container(
                                           width: 700,
                                           height: 280,
                                           decoration: BoxDecoration(
-                                            color: Color.fromARGB(
-                                                255, 235, 227, 227),
+                                            color: Color.fromARGB(255, 235, 227, 227),
                                             borderRadius: BorderRadius.only(
                                               topLeft: Radius.circular(20),
                                               topRight: Radius.circular(20),
                                               bottomLeft: Radius.circular(20),
                                               bottomRight: Radius.circular(20),
                                             ),
-                                            image: DecorationImage(
-                                                image: AssetImage(
-                                                    'assets/newww.png'),
-                                                fit: BoxFit.fill),
+                                            image: DecorationImage(image: AssetImage('assets/desain(C).png'), fit: BoxFit.fill),
                                           ),
-                                          child: ListView(
-                                            children: [
-                                              Container(
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                height: 25,
-                                                margin: EdgeInsets.only(
-                                                    top: 175,
-                                                    bottom: 0,
-                                                    left: 10,
-                                                    right: 10),
-                                                child: ListTile(
-                                                  trailing: Text(
-                                                    '${userData.getFullname()}',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 18,
-                                                        color: Colors.white),
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                height: 50,
-                                                margin: EdgeInsets.only(
-                                                    top: 0,
-                                                    bottom: 0,
-                                                    left: 10,
-                                                    right: 10),
-                                                child: ListTile(
-                                                  trailing: Text(
-                                                    '${userData.getUsernameID()}',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 16,
-                                                        color: Colors.white),
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                          child: Container(
+                                              margin: EdgeInsets.only(top: 20, bottom: 30, left: 10, right: 10),
+                                              child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Container(
+                                                      width: 75,
+                                                      height: 75,
+                                                      child: SfBarcodeGenerator(barColor: Colors.white, value: '${noMember}', symbology: QRCode()),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        debugPrint('${noMember}');
+                                                      },
+                                                      child: Container(
+                                                          width: 280,
+                                                          height: 75,
+                                                          child: SfBarcodeGenerator(
+                                                              value: '${noMember}',
+                                                              backgroundColor: Colors.white,
+                                                              barColor: Colors.black,
+                                                              symbology: Code128())),
+                                                    ),
+
+                                                    // QrImage(
+                                                    //   foregroundColor:
+                                                    //       Colors.white,
+                                                    //   data: "${_member}",
+                                                    //   version: QrVersions.auto,
+                                                    //   size: 85.0,
+                                                    // ),
+                                                    //  BarCodeImage(
+                                                    //   backgroundColor: Colors.white,
+                                                    //   params: Code128BarCodeParams(
+                                                    //   "${_member}",
+                                                    //   lineWidth: 1.5,
+                                                    //   barHeight: 75,
+                                                    //   // withText: true,
+                                                    //   ),
+                                                    //   padding: EdgeInsets.only(bottom: 7),
+                                                    //   onError: (error) {               // Error handler
+                                                    //   print('error = $error');
+                                                    //   },
+                                                    //   ),
+                                                  ]))),
+                                    ),
+                                  );
+                                else
+                                  myWidget = Center(
+                                      child: Container(
+                                    key: ValueKey(2),
+                                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                    child: Container(
+                                      width: 700,
+                                      height: 280,
+                                      decoration: BoxDecoration(
+                                        color: Color.fromARGB(255, 235, 227, 227),
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
+                                          bottomLeft: Radius.circular(20),
+                                          bottomRight: Radius.circular(20),
                                         ),
-                                      ));
-                                  });
-                                })
-                          ])),
+                                        image: DecorationImage(image: AssetImage('assets/newww.png'), fit: BoxFit.fill),
+                                      ),
+                                      child: ListView(
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.centerRight,
+                                            height: 25,
+                                            margin: EdgeInsets.only(top: 175, bottom: 0, left: 10, right: 10),
+                                            child: ListTile(
+                                              trailing: Text(
+                                                '${userData.getFullname()}',
+                                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            alignment: Alignment.centerRight,
+                                            height: 50,
+                                            margin: EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 10),
+                                            child: ListTile(
+                                              trailing: Text(
+                                                '${userData.getUsernameID()}',
+                                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ));
+                              });
+                            })
+                      ])),
                 ]),
               ],
             )));

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myactivity_project/utils/app_check_user.dart';
 import 'package:myactivity_project/utils/popup_widget.dart';
+import 'package:myactivity_project/widget/Login/import.dart';
 import 'package:myactivity_project/widget/Membercard/import.dart';
 import 'package:myactivity_project/base/base_params.dart' as baseParam;
 import '../widget/Approval Return/import.dart';
@@ -19,6 +20,12 @@ import 'app_shared_pref.dart';
 
 class AppNavigator {
   AppNavigator._();
+
+  static void navigateToLogin(BuildContext context) async {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
+      return RamayanaLogin();
+    }));
+  }
 
   static void navigateToKartuPerusahaan(BuildContext context) async {
     final listAccess = await SharedPref.getUserAccess() ?? '';

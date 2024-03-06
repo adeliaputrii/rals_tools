@@ -1043,7 +1043,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                   ),
                                                   onPressed: () async {
                                                     // alertMenu();
-                                                    showMenuBottomSheet(baseParam.menuAll);
+                                                    // showMenuBottomSheet(baseParam.menuAll);
+                                                    SharedPref.setToken('asd');
                                                   },
                                                   child: Text(
                                                     'Lihat Semua',

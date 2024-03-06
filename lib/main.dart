@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:myactivity_project/service/SP_service/SP_service.dart';
 import 'package:myactivity_project/service/notification/notification_service.dart';
 import 'package:myactivity_project/utils/app_shared_pref.dart';
+import 'package:myactivity_project/utils/token_authenticator.dart';
 import 'package:myactivity_project/widget/Login/import.dart';
 import 'package:myactivity_project/widget/My%20List%20Task/import.dart';
 import 'package:myactivity_project/widget/Splashscreen/import.dart';
@@ -50,7 +51,6 @@ void main() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   app_name = packageInfo.appName;
   String packageName = packageInfo.packageName;
-  // String version = packageInfo.version;
   versi = packageInfo.version;
   String buildNumber = packageInfo.buildNumber;
 
@@ -64,7 +64,6 @@ void main() async {
   });
   await Firebase.initializeApp();
   await FirebaseApiNew().initNotification();
-  registerAppServices();
   initPlatformState();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -89,17 +88,17 @@ void main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]).then((value) => runApp(
+  ]).then((value) => runApp(MyApp(loginSession: lastLogin ?? '', loginOfflineTime: waktuLoginOffline ?? '')
       // lastLogin == formattedDate ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
-      lastLogin != null ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
+      // lastLogin != null ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))
+      ));
 }
 
-Future<void> registerAppServices() async {
+Future<void> registerAppServices(BuildContext context) async {
   final appUtil = AppUtils();
-  appUtil.initNetwork();
-  final appServices = AppServices(GetIt.I.get<Dio>());
+  appUtil.initNetwork(context);
+  final appServices = AppServices(GetIt.I.get<Dio>(), GetIt.I.get<BuildContext>());
 
-  // final url = '${basePath.base_url_prod}';
   final url = '${basePath.base_url_dev}';
   await appServices.registerAppServices(url);
 }
@@ -147,7 +146,6 @@ class HomeMainApp extends StatelessWidget {
           ResponsiveBreakpoint.autoScale(1200, name: DESKTOP),
         ],
       ),
-      navigatorKey: navigatorKey,
       routes: {RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()), RamayanaLogin.route: ((context) => const RamayanaLogin())},
       title: '${app_name}',
       debugShowCheckedModeBanner: false,
@@ -177,10 +175,55 @@ class SplashHomeMainApp extends StatelessWidget {
                 ResponsiveBreakpoint.autoScale(1200, name: DESKTOP),
               ],
             ),
-        navigatorKey: navigatorKey,
         title: '${app_name}',
         debugShowCheckedModeBanner: false,
         routes: {RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()), RamayanaLogin.route: ((context) => const RamayanaLogin())},
         home: loginOffline == formattedDate ? RamayanaVoid(isOffline: true) : SplashScreenRamayana());
+  }
+}
+
+class MyApp extends StatelessWidget {
+  final String loginSession;
+  final String loginOfflineTime;
+
+  MyApp({Key? key, required this.loginSession, required this.loginOfflineTime}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      navigatorKey: navigatorKey,
+      routes: {
+        RamayanaMyListTask.route: (context) => const RamayanaMyListTask(),
+        RamayanaLogin.route: (context) => const RamayanaLogin(),
+      },
+      home: FutureBuilder(
+        future: _initApp(context),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return _buildHome(context);
+          } else {
+            // You can return a loading indicator while initialization is in progress
+            return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Future<void> _initApp(BuildContext context) async {
+    registerAppServices(context);
+  }
+
+  Widget _buildHome(BuildContext context) {
+    final appCubit = AppCubit(); // Assuming this is your cubit instance
+    final lastLogin = loginSession; // Get the last login time
+    final waktuLoginOffline = loginOfflineTime; // Get the offline login time
+
+    return lastLogin.isNotEmpty ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline));
   }
 }

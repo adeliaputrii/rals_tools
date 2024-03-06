@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:myactivity_project/data/service/company_card_service.dart';
 import 'package:myactivity_project/data/service/id_cash_service.dart';
@@ -7,24 +8,24 @@ import 'package:myactivity_project/data/service/myactivity_service.dart';
 import 'package:myactivity_project/data/service/report_service.dart';
 import 'package:myactivity_project/data/service/surat_jalan_service.dart';
 import 'package:myactivity_project/utils/dio_interceptor.dart';
+import 'package:myactivity_project/utils/token_authenticator.dart';
 
 import '../data/service/home_app_service.dart';
 
 class AppServices {
   final Dio dio;
-
-  AppServices(this.dio);
+  final BuildContext context;
+  AppServices(this.dio, this.context);
 
   final get = GetIt.I;
 
   registerAppServices(String url) async {
     dio.interceptors.clear();
-
     dio.options.receiveTimeout = Duration(milliseconds: 35000);
     dio.options.connectTimeout = Duration(milliseconds: 30000);
     dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true, requestHeader: true, error: true));
     dio.interceptors.add(DioInterceptor());
-
+    dio.interceptors.add(TokenAuthenticator(dio, context));
     if (!get.isRegistered<LoginService>()) {
       get.registerFactory(() => LoginService(dio, baseUrl: url));
     } else {
