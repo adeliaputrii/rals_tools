@@ -64,3 +64,5 @@ class CreateLogFailure extends LoginState {
   @override
   List<Object?> get props => [message];
 }
+
+class LogoutSucess extends LoginState {}

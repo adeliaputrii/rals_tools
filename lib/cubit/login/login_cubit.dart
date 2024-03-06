@@ -113,4 +113,12 @@ class LoginCubit extends Cubit<LoginState> {
       }
     });
   }
+
+  void logout() async {
+    await repositories.logout().then((value) {
+      if (value.isSuccess) {
+        emit(LogoutSucess());
+      }
+    });
+  }
 }

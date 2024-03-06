@@ -18,23 +18,19 @@ class LoginRepositories {
 
     try {
       await services.login(body).then((value) {
-        response = RepositoriesResponse(
-            isSuccess: true, statusCode: value.status, dataResponse: value);
+        response = RepositoriesResponse(isSuccess: true, statusCode: value.status, dataResponse: value);
       });
     } catch (e) {
       if (e is IOException) {
-        response = RepositoriesResponse(
-            isSuccess: false, statusCode: 500, dataResponse: e.toString());
+        response = RepositoriesResponse(isSuccess: false, statusCode: 500, dataResponse: e.toString());
       } else {
-        response = RepositoriesResponse(
-            isSuccess: false, statusCode: 0, dataResponse: e.toString());
+        response = RepositoriesResponse(isSuccess: false, statusCode: 0, dataResponse: e.toString());
       }
       if (e is DioException) {
         response = RepositoriesResponse(
             isSuccess: false,
             statusCode: e.response?.statusCode,
-            dataResponse: e.response?.data['message'].toString() ??
-                'Please check your connection..');
+            dataResponse: e.response?.data['message'].toString() ?? 'Please check your connection..');
 
         debugPrint(e.response?.data['message'] ?? 'Failed');
       }
@@ -49,18 +45,13 @@ class LoginRepositories {
 
     try {
       await services.getDataCustomer(userId).then((value) {
-        response = RepositoriesResponse(
-            isSuccess: true, statusCode: value.status, dataResponse: value);
+        response = RepositoriesResponse(isSuccess: true, statusCode: value.status, dataResponse: value);
       });
     } catch (e) {
       if (e is DioError) {
-        response = RepositoriesResponse(
-            isSuccess: false,
-            statusCode: e.response?.statusCode,
-            dataResponse: e.response!.data.toString());
+        response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
       } else {
-        response = RepositoriesResponse(
-            isSuccess: false, statusCode: 500, dataResponse: e.toString());
+        response = RepositoriesResponse(isSuccess: false, statusCode: 500, dataResponse: e.toString());
       }
     }
     return response;
@@ -73,30 +64,46 @@ class LoginRepositories {
 
     try {
       await services.createLog(body).then((value) {
-        response = RepositoriesResponse(
-            isSuccess: true, statusCode: value.status, dataResponse: value);
+        response = RepositoriesResponse(isSuccess: true, statusCode: value.status, dataResponse: value);
       });
     } catch (e) {
       if (e is DioError) {
         if (e.response?.statusCode == 400) {
-          response = RepositoriesResponse(
-              isSuccess: false,
-              statusCode: e.response?.statusCode,
-              dataResponse: e.response!.data.toString());
+          response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
         } else if (e.response?.statusCode == 404) {
-          response = RepositoriesResponse(
-              isSuccess: false,
-              statusCode: e.response?.statusCode,
-              dataResponse: e.response!.data.toString());
+          response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
         } else if (e.response?.statusCode == 401) {
-          response = RepositoriesResponse(
-              isSuccess: false,
-              statusCode: e.response?.statusCode,
-              dataResponse: e.response!.data.toString());
-        } 
+          response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
+        }
       } else {
+        response = RepositoriesResponse(isSuccess: false, statusCode: 500, dataResponse: e.toString());
+      }
+    }
+    return response;
+  }
+
+  Future<RepositoriesResponse> logout() async {
+    final services = GetIt.I.get<LoginService>();
+
+    late RepositoriesResponse response;
+
+    try {
+      await services.logout().then((value) {
+        response = RepositoriesResponse(isSuccess: true, statusCode: value.status, dataResponse: value);
+      });
+    } catch (e) {
+      if (e is IOException) {
+        response = RepositoriesResponse(isSuccess: false, statusCode: 500, dataResponse: e.toString());
+      } else {
+        response = RepositoriesResponse(isSuccess: false, statusCode: 0, dataResponse: e.toString());
+      }
+      if (e is DioException) {
         response = RepositoriesResponse(
-            isSuccess: false, statusCode: 500, dataResponse: e.toString());
+            isSuccess: false,
+            statusCode: e.response?.statusCode,
+            dataResponse: e.response?.data['message'].toString() ?? 'Please check your connection..');
+
+        debugPrint(e.response?.data['message'] ?? 'Failed');
       }
     }
     return response;
