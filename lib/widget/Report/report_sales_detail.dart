@@ -54,6 +54,7 @@ class _ReportSalesDetailState extends State<ReportSalesDetail> {
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
             if (request.url == 'https://m.youtube.com/') {
+              PopUpWidget(context).showToastMessage('Gagal memuat URL ${widget.title}');
               return NavigationDecision.prevent;
             }
             return NavigationDecision.navigate;

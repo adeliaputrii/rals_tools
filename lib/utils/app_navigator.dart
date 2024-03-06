@@ -122,7 +122,7 @@ class AppNavigator {
     }
   }
 
-  static void navigateToReportSalesDetail(BuildContext context, String url, String title) async {
+  static void navigateToReportSalesDetail(BuildContext context, String? url, String title) async {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ReportSalesDetail(url: url, title: title);
     }));

@@ -8,7 +8,9 @@ class CardReport extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: () => AppNavigator.navigateToReportSalesDetail(context, response.properties!, response.header1!),
+      onTap: () {
+        AppNavigator.navigateToReportSalesDetail(context, response.properties, response.header1!);
+      },
       child: Container(
           margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
           decoration: BoxDecoration(color: baseColor.cardReportColor, borderRadius: BorderRadius.circular(20)),
@@ -38,7 +40,7 @@ class CardReport extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Laporan',
+                                '${response.status}',
                                 style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w500, color: baseColor.graySecondary),
                               ),
                               Text(
