@@ -57,7 +57,7 @@ class _ReportSalesListState extends State<ReportSalesList> {
       nextUrlCursor = "null";
       title = text;
     });
-    KeyboardUtils().dissmissKeyboard(context);
+    // KeyboardUtils().dissmissKeyboard(context);
     getListReport();
   }
 
@@ -83,19 +83,33 @@ class _ReportSalesListState extends State<ReportSalesList> {
     super.dispose();
   }
 
+  void _onBackPressed() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return WillPopScope(
         onWillPop: () async {
           if (true) {
-            Navigator.pop(context);
+            _onBackPressed();
 
             return true;
           }
         },
         child: Scaffold(
             appBar: AppBar(
+              leading: IconButton(
+                onPressed: () async {
+                  _onBackPressed();
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  size: 20,
+                  color: Colors.white,
+                ),
+              ),
               backgroundColor: baseColor.primaryColor,
               title: isSearch
                   ? SearchInputReport(
@@ -229,6 +243,7 @@ class SearchInputReport extends StatelessWidget {
       child: TextField(
         readOnly: false,
         keyboardType: TextInputType.text,
+        textInputAction: TextInputAction.search,
         controller: controller,
         decoration: InputDecoration(
           filled: true,
