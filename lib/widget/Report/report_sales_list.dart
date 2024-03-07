@@ -199,6 +199,8 @@ class _ReportSalesListState extends State<ReportSalesList> {
                     padding: const EdgeInsets.only(top: 10.0),
                     child: searchEmpty(),
                   );
+                } else {
+                  return Center(child: AppWidget().EmptyHandler(baseParam.emptyDataReportMessage));
                 }
               }
               if (state is ReportFailure) {
