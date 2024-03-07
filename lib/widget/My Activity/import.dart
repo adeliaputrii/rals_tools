@@ -40,7 +40,7 @@ import '../../cubit/myactivity/myactivity_cubit.dart';
 import 'package:time_picker_sheet/widget/sheet.dart';
 import 'package:time_picker_sheet/widget/time_picker.dart';
 import '../../utils/app_media_query.dart';
-part 'ramayana_myactivity_new.dart';
-part 'ramayana_myactivity_project.dart';
-part 'ramayana_myactivity_task.dart';
+part 'ramayana_myactivity.dart';
+// part 'ramayana_myactivity_project.dart';
+// part 'ramayana_myactivity_task.dart';
 

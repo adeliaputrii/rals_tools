@@ -14,7 +14,7 @@ class CardReport extends StatelessWidget {
       child: Container(
           margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
           decoration: BoxDecoration(color: baseColor.cardReportColor, borderRadius: BorderRadius.circular(20)),
-          height: 100,
+          height: screenSize.height/9,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
