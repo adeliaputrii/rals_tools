@@ -97,7 +97,7 @@ void main() async {
 Future<void> registerAppServices(BuildContext context) async {
   final appUtil = AppUtils();
   appUtil.initNetwork(context);
-  final appServices = AppServices(GetIt.I.get<Dio>(), GetIt.I.get<BuildContext>());
+  final appServices = AppServices(GetIt.I.get<Dio>(), GetIt.I.get<BuildContext>(), navigatorKey);
 
   final url = '${basePath.base_url_dev}';
   await appServices.registerAppServices(url);
@@ -188,14 +188,16 @@ class MyApp extends StatelessWidget {
 
   MyApp({Key? key, required this.loginSession, required this.loginOfflineTime}) : super(key: key);
 
+  final appCubit = AppCubit();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       routes: {
+        '/': (context) => MyApp(loginOfflineTime: loginOfflineTime, loginSession: loginSession),
         RamayanaMyListTask.route: (context) => const RamayanaMyListTask(),
-        RamayanaLogin.route: (context) => const RamayanaLogin(),
+        RamayanaLogin.route: (context) => appCubit.initCubit(RamayanaLogin()),
       },
       home: FutureBuilder(
         future: _initApp(context),
@@ -220,10 +222,6 @@ class MyApp extends StatelessWidget {
   }
 
   Widget _buildHome(BuildContext context) {
-    final appCubit = AppCubit(); // Assuming this is your cubit instance
-    final lastLogin = loginSession; // Get the last login time
-    final waktuLoginOffline = loginOfflineTime; // Get the offline login time
-
-    return lastLogin.isNotEmpty ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline));
+    return loginSession.isNotEmpty ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: loginOfflineTime));
   }
 }

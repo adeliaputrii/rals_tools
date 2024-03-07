@@ -29,6 +29,7 @@ class _ProfileeState extends State<Profilee> {
   bool loading = true;
   late LoginCubit loginCubit;
   late IDCashCubit cubit;
+  Alert? alert;
 
   @override
   void initState() {
@@ -193,7 +194,7 @@ class _ProfileeState extends State<Profilee> {
       titleStyle: GoogleFonts.plusJakartaSans(fontSize: 23, color: Colors.red, fontWeight: FontWeight.w500),
       alertAlignment: Alignment.center,
     );
-    Alert(
+    alert = Alert(
       style: alertStyle,
       context: context,
       image: FadeInImageWidget(imageUrl: "assets/logout.png"),
@@ -204,8 +205,7 @@ class _ProfileeState extends State<Profilee> {
           radius: BorderRadius.circular(20),
           color: Colors.green,
           onPressed: () {
-            Navigator.pop(context);
-         
+            showAlert(false);
           },
           child: Text(
             "Kembali",
@@ -232,7 +232,7 @@ class _ProfileeState extends State<Profilee> {
             loginCubit.createLog(baseParam.logInfoProfilePage, baseParam.logInfoProfile, baseParam.noUrl);
             print('berhasil $_udid');
             logoutPressed();
-            Navigator.pop(context);
+            showAlert(false);
           },
           child: Text(
             "Keluar",
@@ -240,8 +240,16 @@ class _ProfileeState extends State<Profilee> {
           ),
         ),
       ],
-    ).show();
-    return;
+    );
+    showAlert(true);
+  }
+
+  showAlert(bool isShow) {
+    if (isShow) {
+      alert!.show();
+    } else {
+      alert!.dismiss();
+    }
   }
 
   var fcmToken;

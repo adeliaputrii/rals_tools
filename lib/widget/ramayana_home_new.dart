@@ -136,6 +136,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     UserData userData = UserData();
     var accToken = userData.getUserToken();
+    var token1 = await SharedPref.getToken();
+    print('load token 1 ${token1}');
     print('load token ${accToken}');
     if (isMounted) {
       setState(() {

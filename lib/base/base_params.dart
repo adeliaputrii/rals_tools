@@ -1,5 +1,6 @@
 // Dio attributes
 const String contentType = 'Content-Type';
+const String accept = 'Accept';
 const String auth = 'Authorization';
 const String appJson = 'application/json';
 

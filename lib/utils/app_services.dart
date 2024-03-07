@@ -15,7 +15,8 @@ import '../data/service/home_app_service.dart';
 class AppServices {
   final Dio dio;
   final BuildContext context;
-  AppServices(this.dio, this.context);
+  final GlobalKey<NavigatorState> navigatorKey;
+  AppServices(this.dio, this.context, this.navigatorKey);
 
   final get = GetIt.I;
 
@@ -25,7 +26,7 @@ class AppServices {
     dio.options.connectTimeout = Duration(milliseconds: 30000);
     dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true, requestHeader: true, error: true));
     dio.interceptors.add(DioInterceptor());
-    dio.interceptors.add(TokenAuthenticator(dio, context));
+    dio.interceptors.add(TokenAuthenticator(dio, context, navigatorKey));
     if (!get.isRegistered<LoginService>()) {
       get.registerFactory(() => LoginService(dio, baseUrl: url));
     } else {
