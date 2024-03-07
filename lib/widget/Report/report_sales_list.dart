@@ -122,11 +122,22 @@ class _ReportSalesListState extends State<ReportSalesList> {
                         });
                       },
                     )
-                  : Text('Laporan'),
+                  : Text(
+                      'Laporan',
+                      style: TextStyle(color: Colors.white),
+                    ),
               centerTitle: true,
               actions: [
                 IconButton(
-                    icon: !isSearch ? Icon(Icons.search) : Icon(Icons.close),
+                    icon: !isSearch
+                        ? Icon(
+                            Icons.search,
+                            color: Colors.white,
+                          )
+                        : Icon(
+                            Icons.close,
+                            color: Colors.white,
+                          ),
                     onPressed: () {
                       setState(() {
                         isSearch = !isSearch;
