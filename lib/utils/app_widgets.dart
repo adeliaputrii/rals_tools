@@ -65,4 +65,22 @@ class AppWidget {
       ),
     );
   }
+
+  Widget EmptyHandler(String message) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            message,
+            style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.w900, color: baseColor.primaryColor),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+        ],
+      ),
+    );
+  }
 }
