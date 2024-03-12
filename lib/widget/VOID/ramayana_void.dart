@@ -52,7 +52,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     final session = await sessionEnd();
     if (state == AppLifecycleState.resumed) {
-      if (!session) {
+      if (session) {
         Navigator.pushAndRemoveUntil<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
