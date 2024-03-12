@@ -113,7 +113,7 @@ class _ReportSalesDetailState extends State<ReportSalesDetail> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white),
+                  style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.w500,color:Colors.white),
                 ),
                 centerTitle: true,
               ),

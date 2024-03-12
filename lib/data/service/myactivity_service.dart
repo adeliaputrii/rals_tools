@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:myactivity_project/base/base_params.dart';
+import 'package:myactivity_project/data/model/myactivity_body.dart';
+import 'package:myactivity_project/data/model/myactivity_edit_response.dart';
+import 'package:myactivity_project/data/model/myactivity_response.dart';
 import 'package:retrofit/retrofit.dart';
 import '../model/create_my_log_body.dart';
 import '../model/data_customer_response.dart';
@@ -22,4 +25,12 @@ abstract class MyActivityService {
   @GET('v1/activity/list-task?project_id={project_id}')
   Future<MyActivityTaskResponse> getTaskById(
       @Path("project_id") String projectId);
+
+  @POST('v1/activity/create_daily_activity')
+  Future<MyActivityResponse> submitActivity(
+      @Body() MyActivityBody myActivityBody);
+  
+  @POST('v1/activity/clock_daily_activity')
+  Future<MyActivityEditResponse> editActivity(
+      @Body() String userCreate);
 }
