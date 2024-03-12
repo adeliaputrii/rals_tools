@@ -1541,7 +1541,7 @@
 //                                           'projek_id': projectId == ''
 //                                               ? 'P202300001'
 //                                               : projectId,
-//                                           'myactivity_status': null,
+//                                           'task_tech_status': null,
 //                                           'myactivity_desc': desc.text,
 //                                           'date_create': dateInput,
 //                                           'dokumen':
@@ -1591,7 +1591,7 @@
 //                                           'projek_id': projectId == ''
 //                                               ? 'P202300001'
 //                                               : projectId,
-//                                           'myactivity_status': null,
+//                                           'task_tech_status': null,
 //                                           'myactivity_desc': desc.text,
 //                                           'date_create': dateInput,
 //                                         });

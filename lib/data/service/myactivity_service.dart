@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:myactivity_project/base/base_params.dart';
 import 'package:myactivity_project/data/model/myactivity_body.dart';
+import 'package:myactivity_project/data/model/myactivity_edit_body.dart';
 import 'package:myactivity_project/data/model/myactivity_edit_response.dart';
 import 'package:myactivity_project/data/model/myactivity_response.dart';
+import 'package:myactivity_project/data/model/myactivity_update_body.dart';
+import 'package:myactivity_project/data/model/myactivity_update_response.dart';
 import 'package:retrofit/retrofit.dart';
 import '../model/create_my_log_body.dart';
 import '../model/data_customer_response.dart';
@@ -32,5 +35,9 @@ abstract class MyActivityService {
   
   @POST('v1/activity/clock_daily_activity')
   Future<MyActivityEditResponse> editActivity(
-      @Body() String userCreate);
+      @Body() MyActivityEditBody myActivityEditBody);
+
+   @POST('v1/activity/updateDailyActivity')
+  Future<MyActivityUpdateResponse> updateActivity(
+      @Body() MyActivityUpdateBody myActivityUpdateBody);
 }

@@ -9,7 +9,7 @@ class MyActivity{
     required String time_end,
     required String task_id,
     required String project_id,
-    required String myactivity_status,
+    required String task_tech_status,
     required String date_create,
     required String dokumen,
     /*
@@ -24,7 +24,7 @@ class MyActivity{
       datajson['time_end'] = time_end;
       datajson['task_id'] = task_id;
       datajson['projek_id'] = project_id;
-      datajson['myactivity_status'] = myactivity_status;
+      datajson['task_tech_status'] = task_tech_status;
       datajson['date_create'] = date_create;
       datajson['dokumen'] = dokumen;
 print('print');

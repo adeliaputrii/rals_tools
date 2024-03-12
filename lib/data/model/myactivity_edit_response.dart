@@ -41,10 +41,10 @@ class Data {
   String? timeEnd;
   String? taskId;
   String? projekId;
-  Null? myactivityStatus;
+  String? myactivityStatus;
   int? myactivityId;
   String? myactivityDesc;
-  Null? dokumen;
+  String? dokumen;
   String? dateModify;
   String? dateCreate;
 

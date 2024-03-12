@@ -28,6 +28,16 @@ class MyActivitySuccessSubmit extends MyActivityState {
   List<Object?> get props => [response];
 }
 
+
+class MyActivitySuccessUpdate extends MyActivityState {
+  final MyActivityUpdateResponse response;
+
+  const MyActivitySuccessUpdate(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
 class MyActivityEditSuccess extends MyActivityState {
   final MyActivityEditResponse response;
 
