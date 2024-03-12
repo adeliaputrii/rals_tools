@@ -8,6 +8,8 @@ import '../model/data_customer_response.dart';
 import '../model/login_body.dart';
 import '../model/login_response.dart';
 import 'package:myactivity_project/base/base_paths.dart' as basePath;
+
+import '../model/logout_response.dart';
 part 'login_service.g.dart';
 
 @RestApi()
@@ -22,4 +24,7 @@ abstract class LoginService {
 
   @POST(basePath.api_my_log)
   Future<LoginResponse> createLog(@Body() CreateLogBody createLogBody);
+
+  @POST(basePath.api_logout)
+  Future<LogoutResponse> logout();
 }

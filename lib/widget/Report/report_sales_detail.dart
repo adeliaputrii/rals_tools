@@ -64,13 +64,16 @@ class _ReportSalesDetailState extends State<ReportSalesDetail> {
       ..loadRequest(Uri.parse(widget.url ?? urlDetail));
   }
 
+  void _onBackPressed() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
           if (true) {
-            Navigator.pop(context);
-
+            _onBackPressed();
             return true;
           }
         },
@@ -94,12 +97,23 @@ class _ReportSalesDetailState extends State<ReportSalesDetail> {
           },
           child: Scaffold(
               appBar: AppBar(
+                leading: IconButton(
+                  onPressed: () async {
+                    _onBackPressed();
+                  },
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    size: 20,
+                    color: Colors.white,
+                  ),
+                ),
                 backgroundColor: baseColor.primaryColor,
                 title: Text(
                   widget.title ?? 'Laporan Detail',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
                 ),
                 centerTitle: true,
               ),
