@@ -86,6 +86,7 @@ class _ReportViewPagerState extends State<ReportViewPager> with TickerProviderSt
     }
     urlList.forEach((element) {
       final WebViewController _initController = WebViewController();
+
       _webController.add(_initController);
       final reportModel = ReportSalesWebviewModel(url: element, isFinish: false, isLoading: false, webController: _webController[0], progressBar: 0);
       reportWebviewModel.add(reportModel);
@@ -114,28 +115,30 @@ class _ReportViewPagerState extends State<ReportViewPager> with TickerProviderSt
                   for (var data in reportWebviewModel) Center(child: ReportWebview(reportModel: data)),
                 ],
               ),
-              Positioned(
-                bottom: 15,
-                left: 0,
-                right: 0,
-                child: Container(
-                  // Wrap SmoothPageIndicator with Container to center it
-                  width: screenSize.width, // Set width to screen width
-                  child: Center(
-                    child: SmoothPageIndicator(
-                      controller: _pageViewController,
-                      count: reportWebviewModel.length,
-                      effect: const WormEffect(
-                        dotHeight: 12,
-                        dotWidth: 12,
-                        activeDotColor: baseColor.primaryColor,
-                        dotColor: baseColor.graySecondary,
-                        type: WormType.thinUnderground,
+              reportWebviewModel.length > 1
+                  ? Positioned(
+                      bottom: 15,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        // Wrap SmoothPageIndicator with Container to center it
+                        width: screenSize.width, // Set width to screen width
+                        child: Center(
+                          child: SmoothPageIndicator(
+                            controller: _pageViewController,
+                            count: reportWebviewModel.length,
+                            effect: const WormEffect(
+                              dotHeight: 12,
+                              dotWidth: 12,
+                              activeDotColor: baseColor.primaryColor,
+                              dotColor: baseColor.graySecondary,
+                              type: WormType.thinUnderground,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-              ),
+                    )
+                  : Container(),
             ],
           )
         : Center(child: AppWidget().EmptyHandler(baseParam.emptyDataReportMessage));

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../data/model/report_webview_model.dart';
@@ -16,6 +17,8 @@ class _ReportWebviewState extends State<ReportWebview> with AutomaticKeepAliveCl
   @override
   void initState() {
     widget.reportModel.webController = WebViewController();
+    widget.reportModel.webController!.setJavaScriptMode(JavaScriptMode.unrestricted);
+    widget.reportModel.webController!.setBackgroundColor(Colors.white);
     widget.reportModel.webController!.setNavigationDelegate(
       NavigationDelegate(
         onProgress: (int progress) {
