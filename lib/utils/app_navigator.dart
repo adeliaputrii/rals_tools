@@ -124,30 +124,14 @@ class AppNavigator {
 
   static void navigateToReportSalesDetail(BuildContext context, String? url, String title) async {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return ReportSalesDetail(url: url, title: title);
+      return ReportSalesDetailPager(url: url, title: title);
     }));
-    // final listAccess = await SharedPref.getUserAccess() ?? '';
-    // if (listAccess.contains(baseParam.menuKeyApprovalReturn)) {
-    //   Navigator.push(context, MaterialPageRoute(builder: (context) {
-    //     return ReportSales();
-    //   }));
-    // } else {
-    //   showRestrictMessenger(context);
-    // }
   }
 
   static void navigateToReportSalesList(BuildContext context) async {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ReportSalesList();
     }));
-    // final listAccess = await SharedPref.getUserAccess() ?? '';
-    // if (listAccess.contains(baseParam.menuKeyApprovalReturn)) {
-    //   Navigator.push(context, MaterialPageRoute(builder: (context) {
-    //     return ReportSales();
-    //   }));
-    // } else {
-    //   showRestrictMessenger(context);
-    // }
   }
 
   static void navigateToReport(BuildContext context) async {

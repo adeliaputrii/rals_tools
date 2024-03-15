@@ -97,8 +97,9 @@ Future<void> registerAppServices(String packageName) async {
   appUtil.initNetwork();
   final appServices = AppServices(GetIt.I.get<Dio>());
 
-  final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_prod}' : '${basePath.base_url_dev}';
-  // final url = '${basePath.base_url_dev}';
+  // final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_prod}' : '${basePath.base_url_dev}';
+
+  final url = '${basePath.base_url_dev}';
   await appServices.registerAppServices(url);
 }
 
@@ -107,22 +108,14 @@ void firebaseInit() async {}
 Future<void> initPlatformState() async {
   DeviceInfoPlugin devicePlugin = DeviceInfoPlugin();
   AndroidDeviceInfo info = await devicePlugin.androidInfo;
-  String udid;
   String nativeId;
-  String uuid;
-  // Platform messages may fail, so we use a try/catch PlatformException.
-  // We also handle the message potentially returning null.
+
   try {
     nativeId = await _nativeIdPlugin.getId() ?? 'Unknown NATIVE_ID';
   } on PlatformException {
     nativeId = 'Failed to get native id.';
   }
 
-  try {
-    uuid = await _nativeIdPlugin.getUUID() ?? 'Unknown UUID';
-  } on PlatformException {
-    uuid = 'Failed to get uuid.';
-  }
   SharedPref.setDeviceId('${nativeId}${info.device}');
   SharedPref.setDeviceName('${info.brand}');
   debugPrint('device id ${nativeId}${info.device}');
@@ -150,7 +143,6 @@ class HomeMainApp extends StatelessWidget {
       title: '${app_name}',
       debugShowCheckedModeBanner: false,
       home: DefaultBottomBarController(child: Ramayana()),
-      // home: RamayanaLoginOffline(),
     );
   }
 }
