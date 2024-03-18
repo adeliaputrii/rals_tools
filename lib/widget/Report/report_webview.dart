@@ -1,9 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-
-import '../../data/model/report_webview_model.dart';
-import '../../utils/app_widgets.dart';
+part of 'import.dart';
 
 class ReportWebview extends StatefulWidget {
   ReportSalesWebviewModel reportModel;
@@ -14,6 +9,7 @@ class ReportWebview extends StatefulWidget {
 }
 
 class _ReportWebviewState extends State<ReportWebview> with AutomaticKeepAliveClientMixin {
+  late LoginCubit loginCubit;
   @override
   void initState() {
     widget.reportModel.webController = WebViewController();
@@ -44,6 +40,10 @@ class _ReportWebviewState extends State<ReportWebview> with AutomaticKeepAliveCl
       ),
     );
     widget.reportModel.webController!.loadRequest(Uri.parse(widget.reportModel.url.toString()));
+
+    loginCubit = context.read<LoginCubit>();
+    loginCubit.createLog(
+        baseParam.logInfoNavigateDetailReportPage, '${baseParam.logInfoDetiailReportUrl} ${widget.reportModel.url}', '${widget.reportModel.url}');
     super.initState();
   }
 

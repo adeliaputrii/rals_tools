@@ -63,6 +63,13 @@ const String logInfoVoidPage = 'Void Page';
 const String logInfoVoidSucc = 'Generate Void - ';
 const String logInfoVoidOfflinePage = 'Void Offline Page';
 
+//*Log Report Page*//
+const String logInfoReportPage = 'Report Page';
+const String logInfoNavigateReportPage = 'Navigate Report List Page';
+const String logInfoNavigateDetailReportPage = 'Navigate Report Detail Page';
+const String logInfoDetailReport = 'Report - ';
+const String logInfoDetiailReportUrl = 'Report Url - ';
+
 //Popup Title or Description
 const String pleaseCheck = "Mohon Cek Kembali";
 const String usernameEmpty = "Username harus diisi";

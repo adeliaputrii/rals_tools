@@ -14,6 +14,7 @@ class _ReportSalesListState extends State<ReportSalesList> {
   String urlDetail = 'https://www.youtube.com/';
   bool isSearch = false;
   late ReportCubit reportCubit;
+  late LoginCubit loginCubit;
   List<ReportListResponse> listReport = [];
   List<ReportListResponse> listReportSearch = [];
   List<PagingResponse.Data> listDataSearch = [];
@@ -29,6 +30,8 @@ class _ReportSalesListState extends State<ReportSalesList> {
   @override
   void initState() {
     reportCubit = context.read<ReportCubit>();
+    loginCubit = context.read<LoginCubit>();
+
     popUpWidget = PopUpWidget(context);
     _debounceTimer?.cancel();
     initDataReport();
@@ -39,6 +42,7 @@ class _ReportSalesListState extends State<ReportSalesList> {
 
   void initDataReport() {
     reportCubit.getListReportPagination("", "", "", "");
+    loginCubit.createLog(baseParam.logInfoReportPage, baseParam.logInfoNavigateReportPage, basePath.api_report_list_pagination);
   }
 
   void scrollListener() {

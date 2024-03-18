@@ -10,6 +10,13 @@ class ReportSalesDetailPager extends StatefulWidget {
 }
 
 class _ReportSalesDetailPagerState extends State<ReportSalesDetailPager> {
+  late LoginCubit loginCubit;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   void _onBackPressed() {
     Navigator.pop(context);
   }
