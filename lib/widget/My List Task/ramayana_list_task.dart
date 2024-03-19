@@ -67,8 +67,7 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
   fetchDataListUser() async {
     _loadToken();
     TaskHome2.taskhome2.clear();
-    final responseku = await http
-        .get(Uri.parse('${tipeurl}v1/activity/task/get-task'), headers: {
+    final responseku = await http.get(Uri.parse('${tipeurl}v1/activity/task/get-task'), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
@@ -126,11 +125,7 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
           margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
           // color: Colors.green,
           height: 100,
-          child: Text('Tugas saya',
-              style: GoogleFonts.rubik(
-                  fontSize: 35,
-                  color: Color.fromARGB(255, 230, 0, 0),
-                  fontWeight: FontWeight.w500)),
+          child: Text('Tugas saya', style: GoogleFonts.rubik(fontSize: 35, color: Color.fromARGB(255, 230, 0, 0), fontWeight: FontWeight.w500)),
         ),
         Container(
           margin: EdgeInsets.fromLTRB(20, 80, 20, 0),
@@ -148,43 +143,26 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return RamayanaMyActivity(
-                            response: state.response.data?[index]);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return RamayanaMyActivity(update: false, response: state.response.data?[index]);
                       }));
                     },
                     child: Container(
                       height: 90,
                       margin: EdgeInsets.only(bottom: 10),
-                      decoration: BoxDecoration(
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Color.fromARGB(255, 197, 197, 197),
-                                blurRadius: 1,
-                                spreadRadius: 1,
-                                offset: Offset(2, 2))
-                          ],
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
+                      decoration: BoxDecoration(boxShadow: <BoxShadow>[
+                        BoxShadow(color: Color.fromARGB(255, 197, 197, 197), blurRadius: 1, spreadRadius: 1, offset: Offset(2, 2))
+                      ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
                       child: ListTile(
                         onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return RamayanaMyActivity(
-                                response: state.response.data?[index]);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return RamayanaMyActivity(update: false, response: state.response.data?[index]);
                           }));
-                          loginCubit.createLog(
-                              logInfoActivityPage,
-                              '${state.response.data?[index].taskDesc}' +
-                                  '-' +
-                                  '${state.response.data?[index].projectId}',
-                              urlApi);
+                          loginCubit.createLog(logInfoActivityPage,
+                              '${state.response.data?[index].taskDesc}' + '-' + '${state.response.data?[index].projectId}', urlApi);
                         },
                         leading: CircleAvatar(
-                            backgroundColor: Color.fromARGB(255, 210, 14, 0),
-                            radius: 30,
-                            backgroundImage: AssetImage('assets/todolist.png')),
+                            backgroundColor: Color.fromARGB(255, 210, 14, 0), radius: 30, backgroundImage: AssetImage('assets/todolist.png')),
                         // title: Text('${e.task_desc}', style: GoogleFonts.plusJakartaSans(
                         //   fontSize: 18, color: Colors.black
                         // ),),
@@ -196,10 +174,8 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
                               margin: EdgeInsets.only(top: 3),
                               child: Text(
                                 '${state.response.data?[index].taskDesc}',
-                                style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500),overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             Row(
@@ -207,27 +183,20 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
                                 Container(
                                   width: 80,
                                   child: Text('Status',
-                                      style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 15, color: Colors.grey),overflow: TextOverflow.ellipsis),
+                                      style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey), overflow: TextOverflow.ellipsis),
                                 ),
-                                Text(
-                                    '${state.response.data?[index].taskStatus}',
-                                    style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 15, color: Colors.grey),overflow: TextOverflow.ellipsis),
+                                Text('${state.response.data?[index].taskStatus}',
+                                    style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey), overflow: TextOverflow.ellipsis),
                               ],
                             ),
                             Row(
                               children: [
                                 Container(
                                   width: 80,
-                                  child: Text('Project ID',
-                                      style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 15, color: Colors.grey)),
+                                  child: Text('Project ID', style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
                                 ),
-                                Text(
-                                    ': ${state.response.data?[index].projectId}',
-                                    style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 15, color: Colors.grey),overflow: TextOverflow.ellipsis),
+                                Text(': ${state.response.data?[index].projectId}',
+                                    style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey), overflow: TextOverflow.ellipsis),
                               ],
                             ),
                           ],

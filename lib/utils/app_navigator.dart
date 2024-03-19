@@ -69,7 +69,9 @@ class AppNavigator {
     final listAccess = await SharedPref.getUserAccess() ?? '';
     if (listAccess.contains(baseParam.menuKeyMyActivity)) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return RamayanaMyActivity();
+        return RamayanaMyActivity(
+          update: false,
+        );
       }));
     } else {
       showRestrictMessenger(context);

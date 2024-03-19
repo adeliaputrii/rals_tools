@@ -746,7 +746,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                             }));
                           } else if (e == 'myactivity.activity') {
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return RamayanaMyActivity();
+                              return RamayanaMyActivity(
+                                update: false,
+                              );
                             }));
                           } else if (e == 'suratjalan.trackingsj') {
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -1354,7 +1356,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                 return GestureDetector(
                                                                   onTap: () {
                                                                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                                      return RamayanaMyActivity(response: state.response.data?[index]);
+                                                                      return RamayanaMyActivity(update: false, response: state.response.data?[index]);
                                                                     }));
                                                                   },
                                                                   child: Container(

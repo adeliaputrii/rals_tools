@@ -46,6 +46,33 @@ class _MyActivityService implements MyActivityService {
   }
 
   @override
+  Future<GetTaskResponse> getTaskUser() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<GetTaskResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'v1/activity/task/get-task',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = GetTaskResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<MyActivityTaskResponse> getTaskById(String projectId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -102,11 +129,13 @@ class _MyActivityService implements MyActivityService {
   }
 
   @override
-  Future<MyActivityEditResponse> editActivity(String userCreate) async {
+  Future<MyActivityEditResponse> editActivity(
+      MyActivityEditBody myActivityEditBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = userCreate;
+    final _data = <String, dynamic>{};
+    _data.addAll(myActivityEditBody.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<MyActivityEditResponse>(Options(
       method: 'POST',
@@ -125,6 +154,35 @@ class _MyActivityService implements MyActivityService {
               baseUrl,
             ))));
     final value = MyActivityEditResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<MyActivityUpdateResponse> updateActivity(
+      MyActivityUpdateBody myActivityUpdateBody) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(myActivityUpdateBody.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MyActivityUpdateResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'v1/activity/updateDailyActivity',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = MyActivityUpdateResponse.fromJson(_result.data!);
     return value;
   }
 

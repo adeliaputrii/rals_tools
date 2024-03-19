@@ -28,6 +28,15 @@ class MyActivitySuccessSubmit extends MyActivityState {
   List<Object?> get props => [response];
 }
 
+class MyActivitySuccessUpdate extends MyActivityState {
+  final MyActivityUpdateResponse response;
+
+  const MyActivitySuccessUpdate(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
 class MyActivityEditSuccess extends MyActivityState {
   final MyActivityEditResponse response;
 
@@ -48,6 +57,8 @@ class MyActivitySuccessTask extends MyActivityState {
 
 class MyActivityLoading extends MyActivityState {}
 
+class MyActivityButtonLoading extends MyActivityState {}
+
 class MyActivitySubmitFailure extends MyActivityState {
   final String message;
 
@@ -64,4 +75,13 @@ class MyActivityFailure extends MyActivityState {
 
   @override
   List<Object?> get props => [message];
+}
+
+class MyActivitySuccessGetTask extends MyActivityState {
+  final GetTaskResponse response;
+
+  const MyActivitySuccessGetTask(this.response);
+
+  @override
+  List<Object?> get propsProject => [response];
 }
