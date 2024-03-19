@@ -151,6 +151,7 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return RamayanaMyActivity(
+                            update: false,
                             response: state.response.data?[index]);
                       }));
                     },
@@ -172,6 +173,7 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             return RamayanaMyActivity(
+                                update: false,
                                 response: state.response.data?[index]);
                           }));
                           loginCubit.createLog(

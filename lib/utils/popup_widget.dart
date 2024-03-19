@@ -68,4 +68,18 @@ class PopUpWidget {
         textColor: Colors.white,
         fontSize: 12.0);
   }
+
+  showPopupSuccess () {
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.success,
+      text: 'Berhasil',
+      confirmBtnText: 'Ya',
+      cancelBtnText: 'Tidak',
+      confirmBtnColor: Colors.green,
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      },
+    );
+  }
 }

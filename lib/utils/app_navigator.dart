@@ -6,6 +6,7 @@ import 'package:myactivity_project/utils/app_check_user.dart';
 import 'package:myactivity_project/utils/popup_widget.dart';
 import 'package:myactivity_project/widget/Membercard/import.dart';
 import 'package:myactivity_project/base/base_params.dart' as baseParam;
+import 'package:myactivity_project/widget/import.dart';
 import '../widget/Approval Return/import.dart';
 import '../widget/Cek Harga/import.dart';
 import '../widget/Competitor Checking/import.dart';
@@ -69,7 +70,10 @@ class AppNavigator {
     final listAccess = await SharedPref.getUserAccess() ?? '';
     if (listAccess.contains(baseParam.menuKeyMyActivity)) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return RamayanaMyActivity();
+
+        return RamayanaMyActivity(
+          update: false,
+        );
       }));
     } else {
       showRestrictMessenger(context);

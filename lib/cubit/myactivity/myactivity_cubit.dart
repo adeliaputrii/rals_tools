@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:myactivity_project/data/model/get_task_response.dart';
 import 'package:myactivity_project/data/model/myactivity_body.dart';
 import 'package:myactivity_project/data/model/myactivity_edit_body.dart';
 import 'package:myactivity_project/data/model/myactivity_edit_response.dart';
@@ -20,7 +21,7 @@ class MyActivityCubit extends Cubit<MyActivityState> {
 
   final MyActivityRepositories repositories = MyActivityRepositories();
 
-  void getProject() async {
+  Future<void> getProject() async {
     emit(MyActivityLoading());
     await repositories.getProject().then((value) {
       if (value != null) {
@@ -45,6 +46,24 @@ class MyActivityCubit extends Cubit<MyActivityState> {
         if (value.isSuccess && value.dataResponse is MyActivityTaskResponse) {
           final res = value.dataResponse as MyActivityTaskResponse;
           emit(MyActivitySuccessTask(res));
+          debugPrint('Success cubit' + res.toString());
+        } else {
+          emit(MyActivityFailure(message: value.dataResponse!));
+          debugPrint('Failed' + value.dataResponse);
+        }
+      } else {
+        debugPrint('value null');
+      }
+    });
+  }
+
+    Future<void> getTaskUser() async {
+    emit(MyActivityLoading());
+    await repositories.getTaskUser().then((value) {
+      if (value != null) {
+        if (value.isSuccess && value.dataResponse is GetTaskResponse) {
+          final res = value.dataResponse as GetTaskResponse;
+          emit(MyActivitySuccessGetTask(res));
           debugPrint('Success cubit' + res.toString());
         } else {
           emit(MyActivityFailure(message: value.dataResponse!));

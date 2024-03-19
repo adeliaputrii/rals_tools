@@ -17,7 +17,7 @@ MyActivityUpdateBody _$MyActivityUpdateBodyFromJson(
       myactivity_desc: json['myactivity_desc'] as String?,
       dokumen: json['dokumen'] as String?,
       date_create: json['date_create'] as String?,
-      task_tech_status: json['task_tech_status'] as String,
+      task_tech_status: json['task_tech_status'] as String?,
       myactivity_id: json['myactivity_id'] as String?,
     );
 

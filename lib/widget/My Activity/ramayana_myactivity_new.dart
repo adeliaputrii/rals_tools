@@ -12,7 +12,9 @@ class RamayanaMyActivity extends StatefulWidget {
     this.status,
     this.timeStart,
     this.timeEnd,
-    this.id
+    this.id,
+    this.desc,
+    required this.update
     });
 
   final GetTaskResponse.Data? response;
@@ -25,6 +27,8 @@ class RamayanaMyActivity extends StatefulWidget {
   DateTime? timeStart; 
   DateTime? timeEnd;
   String? id;
+  String? desc;
+  bool update = false;
 
 
 
@@ -35,90 +39,49 @@ class RamayanaMyActivity extends StatefulWidget {
 class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
-  TextEditingController date = TextEditingController();
-  TextEditingController timeStart = TextEditingController();
-  TextEditingController timeEnd = TextEditingController();
-  TextEditingController project = TextEditingController();
-  TextEditingController task = TextEditingController();
   TextEditingController desc = TextEditingController();
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   UserData userData = UserData();
-  bool _loadingPath = false;
-  bool _loadingSpinkit = false;
-  var apiTask = 'P202300001';
-  bool up = false;
-  bool sendDataApi = false;
-  String _udid = 'Unknown';
-  var dokumen = '';
-  var infoTask = '';
-  bool update = false;
-  bool uploadEdit = false;
-  bool iniApiEdit = false;
-  bool iniApiSave = false;
-  bool edit = false;
-  String? _fileName;
-  List<PlatformFile>? _paths;
-  // final File fileForFirebase = File(_path.path);
-  String? _directoryPath;
-  var selected = 'Reguler';
-  late int idEdit;
-  File? file;
-  int intJoinStart = 0;
-  String? nameFile;
-  var token = '';
-  String paths = '';
-  String dokumenEdit = '';
-  var projectId = '';
-  var taskId = '';
-  var taskId2 = '';
-  var taskId3 = '';
-  List<String> result = [];
-  List<String> resultEdit = [];
-  List<String> resultProject = [];
-  var selectedTask = 'My Task';
-  String? _extension;
-  bool _multiPick = false;
-  FileType _pickingType = FileType.any;
-  DateTime selectedDate = DateTime.now();
-  TimeOfDay selectedTimeStart = TimeOfDay.now();
-  TimeOfDay selectedTime = TimeOfDay.now();
-  String? _setDate;
-  Dio dio = Dio();
-  Map<String, String> projectMap = {};
-  Map<String, String> taskMap = {};
-
-
-  String formattedDate = DateFormat('d MMMM yyyy').format(DateTime.now());
-  String dateInput = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-  String formattedTime = DateFormat('HH:mm').format(DateTime.now());
-  final urlApi = '${tipeurl}${basePath.api_login}';
+  
   late MyActivityCubit cubit;
   late LoginCubit loginCubit;
+  late PopUpWidget popUpWidget;
+  final urlApi = '${tipeurl}${basePath.api_login}';
+
+  File? file;
+  
+  bool _loadingPath = false;
+  bool _loadingSpinkit = false;
+
+  String? idUpdate;
+  String? _fileName;
+  String? _directoryPath;
+
+  bool uploadEdit = false;
+  bool _multiPick = false;
+ 
+  List<PlatformFile>? _paths;
+
+  var selectedProject = 'Reguler';
+  var selectedTask = 'My Task';
+  var dokumen = '';
+  var projectId = '';
+
+  String? nameFile;
+  String paths = '';
+  String taskId = '';
+  String myActId = '';
+  String? base64File;
+  String formattedDate = DateFormat('d MMMM yyyy').format(DateTime.now());
+  
+  List<String> result = [];
+  List<String> resultProject = [];  
 
   DateTime dateTimeSelected = DateTime.now();
   DateTime dateTimeSelectedEnd = DateTime.now();
 
   void _openTimePickerSheet(BuildContext context) async {
 
-    final result = await TimePicker.show<DateTime?>(
-      context: context,
-      sheet: TimePickerSheet(
-        initialDateTime: dateTimeSelected,
-        minuteInterval: 1,
-        twoDigit: true,
-        sheetTitle: 'Pilih Waktu',
-        minuteTitle: 'Menit',
-        hourTitle: 'Jam',
-        saveButtonText: 'Simpan',
-        saveButtonColor : baseColors.primaryColor,
-        sheetCloseIconColor : baseColors.primaryColor,
-        sheetTitleStyle : GoogleFonts.plusJakartaSans(fontSize: 23, color: Colors.black),
-        hourTitleStyle : GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
-        minuteTitleStyle : GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
-        wheelNumberItemStyle :  GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
-        wheelNumberSelectedStyle : GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
-      ),
-    );
+    final result = await DateTimeUtils.openTimePickerSheet(context);
     if (result != null) {
       setState(() {
         dateTimeSelected = result;
@@ -127,30 +90,10 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   }
 
   void _openTimePickerSheetEnd(BuildContext context) async {
-  
-    final resultEnd = await TimePicker.show<DateTime?>(
-      context: context,
-      sheet: TimePickerSheet(
-        initialDateTime: dateTimeSelectedEnd,
-        minuteInterval: 1,
-        twoDigit: true,
-        sheetTitle: 'Pilih Waktu',
-        minuteTitle: 'Menit',
-        hourTitle: 'Jam',
-        saveButtonText: 'Simpan',
-        saveButtonColor : baseColors.primaryColor,
-        sheetCloseIconColor : baseColors.primaryColor,
-        sheetTitleStyle : GoogleFonts.plusJakartaSans(fontSize: 23, color: Colors.black),
-        hourTitleStyle : GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
-        minuteTitleStyle : GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
-        wheelNumberItemStyle :  GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
-        wheelNumberSelectedStyle : GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
-      ),
-    );
-
-    if (resultEnd != null) {
+    final result = await DateTimeUtils.openTimePickerSheet(context);
+    if (result != null) {
       setState(() {
-        dateTimeSelectedEnd = resultEnd;
+        dateTimeSelectedEnd = result;
       });
     }
   }
@@ -160,585 +103,68 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     super.initState();
     cubit = context.read<MyActivityCubit>();
     loginCubit = context.read<LoginCubit>();
-    iniApiEdit;
-    _loadingSpinkit;
-    widget.taskDesc;
+    setData(widget.response);
+    popUpWidget = PopUpWidget(context);
   }
 
   void setData(GetTaskResponse.Data? response) {
     if (response != null) {
       cubit.getProject();
       cubit.getTaskById(widget.response!.projectId!);
-      date.text = response.dateCreate.toString();
-      // desc.text = response.taskDesc.toString();
-      // timeStart.text = response.taskStart.toString();
-      // timeEnd.text = response.taskClose.toString();
+      response.forEach((element) {  
+            setState(() {
+              resultProject.add(element.projectDesc!);
+              if (element.projectId == widget.response!.projectId) {
+                projectId = element.projectId!;
+                widget.projectDesc = element.projectDesc!;
+                debugPrint('selected is ' + projectId);
+              }
+            });
+          });
+      widget.taskDesc = widget.response!.taskDesc;
     }
-  }
-
-  void _loadData() async {
-    setState(() {
-      _loadingSpinkit = true;
-    });
-    try {
-      popupEdit();
-      await Future.delayed(const Duration(seconds: 3));
-      MyactivityModelTask.myactivitytask.clear();
-      result.clear();
-      // fetchEdit(user_create: '${userData.getUsername7()}');
-      // fetchProject();
-      result.clear();
-      MyactivityModelTask.addselectTask.clear();
-      resultEdit.clear();
-      MyactivityModelTask.addselectTaskEdit.clear();
-      _loadingPath = false;
-      print(edit);
-      print('iniApiEdit : ${iniApiEdit}');
-      iniApiEdit = false;
-      // fetchProject();
-      // fetchTask(apiProject: '${apiTask}');
-      print('HasilTask : ${result}');
-      print('HasilTask2 : ${MyactivityModelTask.addselectTask}');
-      // popupEdit();
-    } on PlatformException catch (e) {
-      print("Unsupported operation" + e.toString());
-    } catch (ex) {
-      print(ex);
-    }
-    if (!mounted) return;
-    setState(() {
-      _loadingSpinkit = false;
-      print('delay');
-    });
-  }
-
-  Future<void> initPlatformState() async {
-    String udid;
-    try {
-      udid = await FlutterUdid.consistentUdid;
-    } on PlatformException {
-      udid = 'Failed to get UDID.';
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      _udid = udid;
-    });
-  }
-
-  _loadToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    UserData userData = UserData();
-    print('token ${prefs.getString('token')}');
-    setState(() {
-      token = userData.getUserToken();
-    });
-    return token;
   }
 
   //---------------------------------------------------POP UP----------------------------------------------------------
-  popUpTaskStatus() {
-    AlertDialog popup = AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-
-      // shadowColor: Colors.black,
-      titlePadding: EdgeInsets.only(top: 20),
-      title: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          // height: 370,
-          width: 500,
-          child: Image.asset(
-            'assets/statusTask.png',
-            height: 200,
-          )),
-      content: Container(
-        margin: EdgeInsets.only(bottom: 10),
-        height: 160,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Text('PIlih Status Tugas',
-                style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500
-                ),
-                ),
-            ),
-              MaterialButton(
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18)),
-              minWidth: 350,
-              height: 40,
-              color: Colors.green,
-              onPressed: (){
-                setState(() {
-                  widget.status = 'Progress';
-                });
-                print(widget.status);
-                Navigator.pop(context);
-              },
-              child: Text('Progress',
-              style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white
-              ),
-              )),
-              MaterialButton(
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18)),
-              minWidth: 350,
-              height: 40,
-              color: Colors.cyan,
-              onPressed: (){
-                setState(() {
-                widget.status = 'Closed';
-                });
-                print(widget.status);
-                Navigator.pop(context);
-              },
-              child: Text('Closed',
-              style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white
-              ),
-              ))
-          ],
-        )
-      ),
-      actionsAlignment: MainAxisAlignment.start,
-      actionsPadding: EdgeInsets.only(bottom: 20),
-    );
-    showCupertinoModalPopup(context: context, builder: (context) => popup);
-  }
-  popUpSuccess() {
-    AlertDialog popupSucc = AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-
-      // shadowColor: Colors.black,
-      titlePadding: EdgeInsets.all(0),
-      title: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          height: 170,
-          width: 2000,
-          child: Image.asset(
-            'assets/omaigat.png',
-          )),
-      content: Container(
-        margin: EdgeInsets.only(bottom: 10),
-        height: 30,
-        child: Center(
-          child: Text(
-            'SUCCESS',
-            style: TextStyle(
-                color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      actionsAlignment: MainAxisAlignment.start,
-      actionsPadding: EdgeInsets.only(bottom: 20),
-    );
-    showCupertinoModalPopup(context: context, builder: (context) => popupSucc);
+  popUpTaskStatus() async {
+  
+     final result = await showCupertinoModalPopup(context: context, builder: (context) => MyActivityPopUpStatus());
+   
+     if(result!=null){
+   
+      setState(() {
+         widget.status = '${result}';
+      });
+     
+     }
+   
   }
 
   popupFormat() {
-    AlertDialog popup1 = AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-
-      // shadowColor: Colors.black,
-      titlePadding: EdgeInsets.all(0),
-      title: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          height: 170,
-          width: 2000,
-          child: Image.asset(
-            'assets/omaigat.png',
-          )),
-      content: Container(
-        margin: EdgeInsets.only(bottom: 10),
-        height: 30,
-        child: Center(
-          child: Text(
-            'Format Harus .jpg/.jpeg/.png/.docx/.xlsx/.pdf',
-            style: TextStyle(
-                color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      actionsAlignment: MainAxisAlignment.start,
-      actionsPadding: EdgeInsets.only(bottom: 20),
-    );
-    showCupertinoModalPopup(context: context, builder: (context) => popup1);
+   
+    showCupertinoModalPopup(context: context, builder: (context) => MyActivityAlertFormat());
   }
 
-  popupEdit() {
-    AlertDialog popup1 = AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-
-      // shadowColor: Colors.black,
-      titlePadding: EdgeInsets.all(0),
-      title: Container(
-        decoration: BoxDecoration(
-          // color: Colors.green,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
-        height: 600,
-        width: 2000,
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.only(top: 20,),
-              height: 220,
-              child: FadeInImageWidget(imageUrl: 'assets/edit.png',)
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Text('Pilih Tugas',
-                      style: GoogleFonts.plusJakartaSans(fontSize: 20, color: Color.fromARGB(255, 135, 11, 2))
-                      ),
-            ),
-            Container(
-              height: 300,
-              // color: Colors.amber,
-              child: BlocBuilder<MyActivityCubit, MyActivityState>(builder: (context, state) {
-            if (state is MyActivityLoading) {
-              return SpinKitThreeBounce(
-                color: Color.fromARGB(255, 230, 0, 0),
-                size: 50.0,
-              );
-            }
-
-            if(state is MyActivitySuccess){
-              print('task successss');
-              for (var projectData in state.response.data!) {
-               // Menambahkan setiap proyek ke dalam projectMap
-                addProject(
-                  projectData.projectId, 
-                  projectData.projectDesc
-                );
-               }
-            }
-
-            if(state is MyActivitySuccessTask){
-              print('task success');
-              for (var taskData in state.response.data!) {
-               // Menambahkan setiap proyek ke dalam projectMap
-                addTask(
-                  taskData.taskId,
-                  taskData.taskDesc
-                );
-                
-               }
-            }
-            
-            if (state is MyActivityEditSuccess) {
-              
-              if(state.response.data!.isEmpty) {
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 30,
-                      bottom: 50
-                    ),
-                    child: Text("${state.response.data!.length}",
-                            style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black
-                          )),
-                  ),
-                );
-              } else {
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: state.response.data!.length,
-                itemBuilder: (BuildContext context, int index) {
-                 
-                  return Container(
-                    margin: EdgeInsets.fromLTRB(20, 2, 20, 10),
-                    height: 70, 
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white, 
-                    ),
-                    child:MaterialButton(
-                          onPressed: () {
-                            cubit.getProject();
-                            // projectIdEdit = 
-                            // MyactivityModel.myactivitymodel.forEach((element) {
-                            //   debugPrint('element my activity ${element.project_id}');
-                            //   debugPrint('respone data ${state.response.data![index].projekId}');
-                            //   if (state.response.data![index].projekId == projectIdEdit) {
-                            //     setState(() {
-                            //     widget.projectDesc = '${element.project_desc}';
-                            //     });
-                            //     debugPrint('project desc${element.project_desc}');
-                            //   }
-                            //   else {
-                            //       widget.projectDesc = '${state.response.data![index].projekId}';
-                            //     }
-                            // });
-                             projectMap.keys.forEach((element) {
-                              print('print${element}');
-                              if (element == state.response.data![index].projekId) {
-                                print('print true ${element}');
-                                 print('print true ${projectMap[element]}}');
-                                 setState(() {
-                                   widget.projectDesc = '${projectMap[element]}';
-                                 });
-                              } else {
-                                print('print false ${element}');
-                              }
-                            });
-                            taskMap.keys.forEach((elementt) {
-                              print('printt ${elementt}');
-                              if (elementt == state.response.data![index].taskId) {
-                                print('print true ${elementt}');
-                                 print('print true ${taskMap[elementt]}}');
-                                 setState(() {
-                                   widget.taskDesc = '${taskMap[elementt]}';
-                                 });
-                              } else {
-                                print('print false ${elementt}');
-                              }
-                            });
-                            setState(() {
-                            update = true;
-                            
-                            // widget.projectDesc = '${state.response.data![index].projekId}';
-                            // widget.taskDesc= '${state.response.data![index].taskId}';
-                            widget.status= '${state.response.data![index].myactivityStatus ?? 'Progress'}';
-                            dateTimeSelected = convertStringToDateTime('${state.response.data![index].timeStart}');
-                            dateTimeSelectedEnd = convertStringToDateTime(state.response.data![index].timeEnd!);
-                            desc.text = '${state.response.data![index].myactivityDesc}';
-                            widget.id = '${state.response.data![index].myactivityId}';
-                            });
-                            Navigator.pop(context);
-                          },
-                          child: ListTile(
-                            leading: Container(
-                              // color: Colors.amber,
-                              child: FadeInImageWidget(
-                                imageUrl: 'assets/tasklist.png',),
-                                height: 50,
-                                width: 50,
-                                ),
-                            
-                            title: Text('${state.response.data?[index].myactivityDesc}',
-                            style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.black
-                          ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
-                            subtitle: Text('${state.response.data?[index].timeStart} s/d ${state.response.data?[index].timeEnd}',
-                            style: GoogleFonts.plusJakartaSans(fontSize: 13, color: Colors.grey),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            ),
-                          ),
-                        )
-                  );});
-              
-              }
-            }
-            return Container();
-          }),
-            )
-          ],
-        ),
-      ),
-
-      actionsAlignment: MainAxisAlignment.start,
-      actionsPadding: EdgeInsets.only(bottom: 20),
-    );
-    showCupertinoModalPopup(context: context, builder: (context) => popup1);
+  popupEdit() async {
+  final result = await showCupertinoModalPopup(context: context, builder: (context) => MyActivityEdit());
+ 
+  myActId = result['id'].toString();
+  desc.text = result['desc'];
+  widget.desc = result['desc'];
+  dateTimeSelected = convertStringToDateTime(result['timeStart']);
+  dateTimeSelectedEnd = convertStringToDateTime(result['timeEnd']);
+  setState(() {
+  projectId = result['projectId'];
+  taskId = result['taskId'];
+  widget.update = result['update'];
+  widget.status = result['status'];
+  widget.projectId = result['projectId'];
+  widget.taskId= result['taskId'];
+  widget.id = result['id'];
+  });
+   
   }
 
-  //------------------------------------------------------------------------------------------------------
-
-  //---------------------------------------------API------------------------------------------------------
-
-  // fetchProject() async {
-  //   resultProject.clear();
-  //   _loadToken();
-  //   print('ini token1111 : $token');
-  //   MyactivityModel.myactivitymodel.clear();
-  //   // cubit.getProject();
-  //   // cubit.getTaskById(apiTask);
-  //   final responseku = await http
-  //       .get(Uri.parse('${tipeurl}v1/activity/list-project'), headers: {
-  //     'Content-Type': 'application/json',
-  //     'Accept': 'application/json',
-  //     'Authorization': 'Bearer $token',
-  //   });
-  //   print('ini token2222 : $token');
-  //   final responseku2 = await http
-  //       .get(Uri.parse('${tipeurl}v1/activity/list-project'), headers: {
-  //     'Content-Type': 'application/json',
-  //     'Accept': 'application/json',
-  //     'Authorization': 'Bearer $token',
-  //   });
-  //   var data = jsonDecode(responseku2.body);
-  //   print('respone : ${responseku2}');
-  //   print('data : ${data}');
-  //   if (data['status'] == 200) {
-  //     print("API Success");
-  //     print(data);
-  //     int count = data['data'].length;
-  //     final Map<String, MyactivityModel> profileMap = new Map();
-  //     for (int i = 0; i < count; i++) {
-  //       MyactivityModel.myactivitymodel
-  //           .add(MyactivityModel.fromjson(data['data'][i]));
-  //       MyactivityModel.myactivitymodel.forEach((element) {
-  //         MyactivityModel.addSelect.add('${element.project_desc}');
-  //         print(MyactivityModel.addSelect);
-  //         resultProject =
-  //             LinkedHashSet<String>.from(MyactivityModel.addSelect).toList();
-  //       });
-  //       debugPrint('result Project' + resultProject.toString());
-  //       if (iniApiSave == true) {
-  //         selected = 'Reguler';
-  //       }
-  //     }
-
-  //     print('check length ${MyactivityModel.myactivitymodel.length}');
-  //     print(data['data'].toString());
-  //     if (data['status'] != 200) {
-  //       print('data[status] ${data['status']}');
-  //     }
-  //   } else {
-  //     print('NO DATA');
-  //     print('data[status] ${data['status']}');
-  //   }
-  //   if (mounted) {
-  //     setState(() {});
-  //   }
-  // }
-
-  // fetchTask({required String apiProject}) async {
-  //   result.clear;
-  //   _loadToken();
-  //   MyactivityModelTask.myactivitytask.clear();
-  //   MyactivityModelTask.addselectTaskEdit.clear;
-  //   MyactivityModelTask.addselectTask.clear();
-  //   print('coba disini');
-  //   final responseku = await http.get(
-  //     Uri.parse('${tipeurl}v1/activity/list-task?project_id=${apiTask}'),
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Accept': 'application/json',
-  //       'Authorization': 'Bearer $token',
-  //     },
-  //   );
-  //   print('ini token : $token');
-  //   final responseku2 = await http.get(
-  //     Uri.parse('${tipeurl}v1/activity/list-task?project_id=${apiTask}'),
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Accept': 'application/json',
-  //       'Authorization': 'Bearer $token',
-  //     },
-  //   );
-
-  //   var data = jsonDecode(responseku2.body);
-  //   print('respone : ${responseku2}');
-  //   print('data : ${data}');
-  //   if (data['status'] == 200) {
-  //     print("API Success");
-  //     print(data);
-  //     int count = data['data'].length;
-  //     for (int i = 0; i < count; i++) {
-  //       MyactivityModelTask.myactivitytask
-  //           .add(MyactivityModelTask.fromjson(data['data'][i]));
-  //       MyactivityModelTask.myactivitytask.forEach((element) {
-  //         if (iniApiEdit == true) {
-  //           MyactivityModelTask.addselectTaskEdit.add('${element.task_desc}');
-  //           print('MyactivityModelTask.addselectTask');
-  //           print(MyactivityModelTask.addselectTask);
-
-  //           resultEdit = LinkedHashSet<String>.from(
-  //                   MyactivityModelTask.addselectTaskEdit)
-  //               .toList();
-  //           if (taskId2 == element.task_id) {
-  //             taskId3 = element.task_desc;
-  //             selectedTask = '${taskId3}';
-  //           }
-  //           print('resulttttttttttt : ${taskId2}');
-  //           print('resulttttttttttt : ${taskId3}');
-  //         } else {
-  //           MyactivityModelTask.addselectTask.add('${element.task_desc}');
-  //           print('MyactivityModelTask.addselectTask');
-  //           print(MyactivityModelTask.addselectTask);
-  //           result =
-  //               LinkedHashSet<String>.from(MyactivityModelTask.addselectTask)
-  //                   .toList();
-  //           print('result : ${result}');
-  //           selectedTask = '${result.elementAt(0)}';
-  //         }
-  //       });
-  //     }
-  //     print('check length ${MyactivityModelTask.myactivitytask.length}');
-  //     print(data['data'].toString());
-  //   } else {
-  //     print('NO DATA');
-  //   }
-  //   if (mounted) {
-  //     setState(() {});
-  //   }
-  // }
-
-  // fetchEdit({required String user_create}) async {
-  //   MyactivityEditModel.myactivityedit.clear();
-  //   final responseku = await http.post(
-  //       Uri.parse('${tipeurl}v1/activity/clock_daily_activity'),
-  //       body: {'user_create': '${user_create}'});
-
-  //   var data = jsonDecode(responseku.body);
-
-  //   if (data['status'] == 200) {
-  //     print("API Success");
-  //     print(data);
-  //     int count = data['data'].length;
-  //     final Map<String, MyactivityEditModel> profileMap = new Map();
-  //     for (int i = 0; i < count; i++) {
-  //       MyactivityEditModel.myactivityedit
-  //           .add(MyactivityEditModel.fromjson(data['data'][i]));
-  //     }
-  //     MyactivityEditModel.myactivityedit.forEach((element) {
-  //       profileMap[element.myactivity_desc] = element;
-  //       MyactivityEditModel.myactivityedit = profileMap.values.toList();
-  //       print(MyactivityEditModel.myactivityedit);
-  //     });
-  //     print('check length ${MyactivityEditModel.myactivityedit.length}');
-  //     print(data['data'].toString());
-  //   } else {
-  //     print('NO DATA');
-  //   }
-  // }
-
-  //----------------------------------------------------------------------------------------------------------------
-
-  // getDataApi() {
-  //   MyactivityEditModel.myactivityedit.forEach((element) {});
-  // }
 
   Future<void> requestPermission() async {
     final permission = Permission.storage;
@@ -770,12 +196,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
       bool videos = true;
       bool photos = true;
 
-      // Only check for storage < Android 13
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       if (androidInfo.version.sdkInt >= 33) {
-        print('diatas 33');
-        print(Permission.photos.status);
         videos = await Permission.videos.status.isGranted;
         photos = await Permission.photos.status.isGranted;
       } else {
@@ -790,7 +213,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     }
   }
 
-  void _openFileExplorer() async {
+  void _openFileExplorer(
+  
+  ) async {
     setState(() => _loadingPath = true);
     try {
       _directoryPath = null;
@@ -814,7 +239,22 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
 
       _fileName =
           _paths != null ? _paths!.map((e) => e.name).toString() : '...';
+    
     });
+    
+  }
+
+  void resetState( String info2){
+     widget.projectDesc = 'Reguler';
+              widget.projectId = 'P202300001';
+              widget.taskId = 'P202300001-001';
+              widget.taskDesc = 'My Task';
+              dateTimeSelected = DateTime.now();
+              dateTimeSelectedEnd = DateTime.now();
+              widget.status = 'Progress';
+              widget.desc = '';
+              uploadEdit = true;
+  loginCubit.createLog(baseParam.logInfoActivityPage, info2, urlApi);
   }
 
   Widget build(BuildContext context) {
@@ -848,38 +288,70 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
         ),
         body: BlocListener<MyActivityCubit, MyActivityState>(
             listener: (context, state) {
+              setState(() {
+                widget.projectDesc;
+                widget.taskDesc;
+                widget.id;
+                // widget.desc = description;
+              });
               if (state is MyActivitySuccess) {
                 final response = state.response.data;
                 response?.forEach((element) {
-                  MyactivityModel.myactivitymodel
-                      .add(MyactivityModel.fromjson(element.toJson()));
+                 
                   setState(() {
-                    resultProject.add(element.projectDesc!);
-                    if (element.projectId == widget.response!.projectId) {
-                      projectId = element.projectId!;
-                      selected = element.projectDesc!;
+                    resultProject.add(element.projectDesc ?? '');
+                    if (element.projectId == widget.response?.projectId) {
+                      projectId = element.projectId ?? '';
+                      selectedProject = element.projectDesc ?? '';
+                      widget.projectDesc = selectedProject;
                       debugPrint('selected is ' + projectId);
                     }
                   });
+                     if(projectId == element.projectId){
+                      setState(() {
+                          widget.projectDesc = element.projectDesc;
+                      debugPrint('is triggereed');
+                      });
+                     }
                 });
-
                 debugPrint('result Project' + resultProject.toString());
               }
-              if (state is MyActivitySuccessTask) {
+
+              if(state is MyActivityFailure){
+                popUpWidget.showPopUpError('Gagal Submit', state.message);
+                loginCubit.createLog(baseParam.logInfoActivityPage, state.message, urlApi);
+              }
+              if (state is MyActivitySuccessGetTask) {
                 final response = state.response.data;
                 response?.forEach((element) {
+                
                   setState(() {
-                    result.add(element.taskDesc!);
+                    result.add(element.taskDesc ?? '');
                     if (element.taskId == widget.response?.taskId) {
-                      taskId = element.taskId!;
-                      selectedTask = element.taskDesc!;
-                      debugPrint('selected task is ' + taskId);
+                      taskId = element.taskId?? '';
+                      selectedTask = element.taskId ?? '';
+                      widget.taskDesc = selectedTask;
+                      debugPrint('selected TASK is ' + taskId);
                     }
                   });
+                     if(taskId == element.taskId){
+                      setState(() {
+                          widget.taskDesc = element.taskDesc;
+                      debugPrint('is triggereed task');
+                      });
+                     }
                 });
-
-                debugPrint('result Project' + resultProject.toString());
+                debugPrint('result Task' + result.toString());
               }
+            if (state is MyActivitySuccessSubmit) {
+            resetState(baseParam.logInfoActivityInputSucc);
+            popUpWidget.showPopupSuccess();
+            }
+            if (state is MyActivitySuccessUpdate) {
+            resetState(baseParam.logInfoActityEdit);
+            widget.update = false;
+            popUpWidget.showPopupSuccess();
+            }
             },
             child: Stack(children: [
               Form(
@@ -957,7 +429,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               onPressed: (){
                                 Navigator.push(context, 
                                 MaterialPageRoute(builder: (context){
-                                  return RamayanaMyActivityProject();
+                                  return RamayanaMyActivityProject(
+                                    update: widget.update,
+                                    desc: desc.text,
+                                    id: widget.id
+                                  );
                                 }));
                               },
                               child: Row(
@@ -1020,16 +496,22 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                   Navigator.push(context, 
                                   MaterialPageRoute(builder: (context){
                                   return RamayanaMyActivityTask(
+                                  desc: desc.text,
+                                  update: widget.update,
                                   projectId: 'P202300001',
                                   projectDesc: 'Reguler',
+                                  id: widget.id
                                   );
                                   }));
                                 } else {
                                   Navigator.push(context, 
                                 MaterialPageRoute(builder: (context){
                                   return RamayanaMyActivityTask(
+                                    desc: desc.text,
+                                  update: widget.update,
                                   projectId: '${widget.projectId}',
                                   projectDesc: '${widget.projectDesc}',
+                                  id: widget.id
                                   );
                                   }));
                                 }
@@ -1182,7 +664,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                           ),
                                         child: Image.asset('assets/progress.png'),
                                       ),
-                                  Text(widget.status == null ? 'Perbarui Status' : widget.status!,
+                                  Text(widget.status == null ? 'Perbarui Status' : widget.status! == 'Verification' ? 'Closed' : widget.status!,
                                   style: GoogleFonts.plusJakartaSans(
                                       fontSize: 17, color: Colors.black),
                                   ),
@@ -1220,7 +702,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                           TextFormField(
                             validator:
                                 RequiredValidator(errorText: ' Please Enter'),
-                            controller: desc,
+                            // controller: desc,
+                            controller: desc..text = widget.desc ?? desc.text,
                             maxLines: 7,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -1249,6 +732,17 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                             style: GoogleFonts.plusJakartaSans(
                                 fontSize: 17, color: Colors.black),
                           ),
+                        //   Expanded(
+                        //   child: QuillEditor.basic(
+                        //     configurations: QuillEditorConfigurations(
+                        //       controller: _controller,
+                        //       readOnly: false,
+                        //       sharedConfigurations: const QuillSharedConfigurations(
+                        //         locale: Locale('de'),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // )
                         ],
                       ),
 
@@ -1335,9 +829,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                             ],
                           ),
                           onPressed: () {
-                            // requestPermission(); //dikomennnnn
-                            print('dateinput : ${dateInput}');
-                            _openFileExplorer();
+                            requestPermission();
+                            _openFileExplorer(
+                            );
                           },
                         ),
                       ),
@@ -1366,7 +860,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                             SizedBox(
                         height: 20,
                       ),
-                      update 
+                      widget.update 
                       ?
                       MaterialButton(
                               shape: RoundedRectangleBorder(
@@ -1376,17 +870,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               color: baseColors.primaryColor,
                               onPressed: () async {
                                 updateActivity();
-                                setState(() {
-                                  update = false;
-                                  widget.projectDesc = 'Reguler';
-                                    widget.projectId = 'P202300001';
-                                    widget.taskId = 'P202300001-001';
-                                    widget.taskDesc = 'My Task';
-                                    dateTimeSelected = DateTime.now();
-                                    dateTimeSelectedEnd = DateTime.now();
-                                    widget.status = 'Progress';
-                                    desc.text = '';
-                                });
                               },
                               child: Text(
                                 "Update",
@@ -1404,17 +887,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                 onPressed: () async {
                                    if (_formKey.currentState!.validate()) {
                                     submitActivity();
-                                    setState(() {
-                                    widget.projectDesc = 'Reguler';
-                                    widget.projectId = 'P202300001';
-                                    widget.taskId = 'P202300001-001';
-                                    widget.taskDesc = 'My Task';
-                                    dateTimeSelected = DateTime.now();
-                                    dateTimeSelectedEnd = DateTime.now();
-                                    widget.status = 'Progress';
-                                    desc.text = '';
-                                    });
-                                    
                                    }
                                 },
                                 child: Text(
@@ -1433,41 +905,52 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
               )
             ])));
   }
-
-  
-
-
-  submitActivity() {
-    final body =
-        MyActivityBody(
-          user_create: '${userData.getUsername7()}',
-          time_start: '${dateTimeSelected}',
-          time_end: '${dateTimeSelectedEnd}',
-          task_id: '${widget.taskId ?? 'P202300001-001'}',
-          projek_id: '${widget.projectId ?? 'P202300001'}',
-          myactivity_desc: '${desc.text}',
-          task_tech_status: 'Closed',
-          dokumen: '',
-          date_create: '${DateTime.now()}'
-
-        );
-    CoolAlert.show(
-      context: context,
-      type: CoolAlertType.success,
-      text: 'Berhasil',
-      confirmBtnText: 'Ya',
-      cancelBtnText: 'Tidak',
-      confirmBtnColor: Colors.green,
-      onConfirmBtnTap: () {
-      cubit.submitactivity(body);
-        // loginCubit.createLog(
-        //   baseParam.logInfoActivityPage, baseParam.logInfoActitySucc, urlApi);
-        Navigator.pop(context);
-      },
+  submitActivity() async{
+    final descBody= desc.text;
+    debugPrint('desc cont 1${desc.text}');
+    if (_paths != null && _paths!.isNotEmpty) {
+    // Ubah PlatformFile menjadi File
+    File file = File(_paths!.first.path!);
+    // Baca konten file sebagai bytes
+    List<int> fileBytes = await file.readAsBytes();
+    // Encode bytes sebagai base64
+    base64File = base64Encode(fileBytes);
+    debugPrint('desc controller ${desc.text}');
+    // Buat dan kirim body permintaan setelah pemilihan file selesai
+    final body = MyActivityBody(
+      user_create: '${userData.getUsername7()}',
+      time_start: '${dateTimeSelected}',
+      time_end: '${dateTimeSelectedEnd}',
+      task_id: '${widget.taskId ?? 'P202300001-001'}',
+      projek_id: '${widget.projectId ?? 'P202300001'}',
+      myactivity_desc: descBody,
+      task_tech_status: '${widget.status}',
+      dokumen: base64File,
+      date_create: '${DateTime.now()}',
     );
+    debugPrint('body myact ${body.toString()}');
+    debugPrint('Dokumen yg dipilih : ada');
+    cubit.submitactivity(body);
+  } else {
+    final body = MyActivityBody(
+      user_create: '${userData.getUsername7()}',
+      time_start: '${dateTimeSelected}',
+      time_end: '${dateTimeSelectedEnd}',
+      task_id: '${widget.taskId ?? 'P202300001-001'}',
+      projek_id: '${widget.projectId ?? 'P202300001'}',
+      myactivity_desc: desc.text,
+      task_tech_status: '${widget.status}',
+      dokumen: '',
+      date_create: '${DateTime.now()}',
+    );
+    cubit.submitactivity(body);
+  }
+  debugPrint('Dokumen yg dipilih : tidak ada');
   }
 
   updateActivity() {
+     widget.desc = desc.text ?? widget.desc;
+     widget.id;
     final body =
         MyActivityUpdateBody(
           user_create: '${userData.getUsername7()}',
@@ -1475,63 +958,30 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
           time_end: '${dateTimeSelectedEnd}',
           task_id: '${widget.taskId ?? 'P202300001-001'}',
           projek_id: '${widget.projectId ?? 'P202300001'}',
-          myactivity_desc: '${desc.text}',
-          myactivity_id: '${widget.id}',
-          task_tech_status: 'Closed',
+          myactivity_desc:widget.desc ?? desc.text ,
+          myactivity_id: myActId,
+          task_tech_status: '${widget.status}',
           dokumen: '',
           date_create: '${DateTime.now()}'
 
         );
-    CoolAlert.show(
-      context: context,
-      type: CoolAlertType.success,
-      text: 'Berhasil',
-      confirmBtnText: 'Ya',
-      cancelBtnText: 'Tidak',
-      confirmBtnColor: Colors.green,
-      onConfirmBtnTap: () {
-      cubit.updateactivity(body);
-        // loginCubit.createLog(
-        //   baseParam.logInfoActivityPage, baseParam.logInfoActitySucc, urlApi);
-        Navigator.pop(context);
-      },
-    );
+    debugPrint('body update'+body.toString());
+    cubit.updateactivity(body);
   }
-
-void addProject(String? projectId, String? projectDesc) {
-  // Memeriksa apakah projectId sudah ada dalam Map
-  if (!projectMap.containsKey(projectId)) {
-    // Menambahkan pasangan projectId dan projectDesc ke dalam Map
-    projectMap.putIfAbsent(projectId!, () => projectDesc!);
-    print('Proyek dengan ID $projectId berhasil ditambahkan.');
-  } else {
-    print('Proyek dengan ID $projectId sudah ada dalam daftar.');
-  }
-}
-
-void addTask(String? taskId, String? taskDesc) {
-  // Memeriksa apakah projectId sudah ada dalam Map
-  if (!taskMap.containsKey(taskId)) {
-    // Menambahkan pasangan projectId dan projectDesc ke dalam Map
-    taskMap.putIfAbsent(taskId!, () => taskDesc!);
-    print('Proyek Task dengan ID $taskId berhasil ditambahkan.');
-  } else {
-    print('Proyek Task dengan ID $taskId sudah ada dalam daftar.');
-  }
-}
-
-  editActivity() {
+  
+  editActivity() async {
     final body =
         MyActivityEditBody(
           userCreate: '${userData.getUsername7()}',
         );
    cubit.editactivity(body);
-   print('edit');
-   popupEdit();
+   popupEdit(); 
   }
 
   DateTime convertStringToDateTime(String timeString) {
   return DateFormat("HH:mm:ss").parse(timeString); // Sesuaikan dengan format waktu dari API
 }
 }
+
+
 

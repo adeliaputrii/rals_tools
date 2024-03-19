@@ -1,7 +1,21 @@
 part of 'import.dart';
 
 class RamayanaMyActivityProject extends StatefulWidget {
-  const RamayanaMyActivityProject({super.key});
+  RamayanaMyActivityProject({
+    super.key,
+    this.update = false,
+    this.desc,
+    this.timeStart,
+    this.timeEnd,
+    this.id
+    });
+
+    bool update;
+    String? desc;
+    String? timeStart;
+    String? timeEnd;
+    String? id;
+
 
   @override
   State<RamayanaMyActivityProject> createState() => _RamayanaMyActivityProjectState();
@@ -14,6 +28,7 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
    super.initState();
    myactivityCubit = context.read<MyActivityCubit>();
    myactivityCubit.getProject();
+   print('widget update ${widget.update}');
  }
  
   @override
@@ -24,7 +39,11 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => RamayanaMyActivity()),
+                MaterialPageRoute(builder: (context) => RamayanaMyActivity(
+                  update: widget.update,
+                  desc: widget.desc,
+                  id: widget.id
+                )),
                 (Route<dynamic> route) => false,
               );
             },
@@ -76,6 +95,9 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
                       Navigator.push(context, 
                       MaterialPageRoute(builder: (context){
                         return RamayanaMyActivityTask(
+                        update: widget.update,
+                        desc: widget.desc,
+                        id: widget.id,
                         projectId: '${state.response.data?[index].projectId}',
                         projectDesc: '${state.response.data?[index].projectDesc}',
                         );
@@ -118,6 +140,9 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
                               Navigator.push(context, 
                               MaterialPageRoute(builder: (context){
                                 return RamayanaMyActivityTask(
+                                update: widget.update,
+                                desc: widget.desc,
+                                id: widget.id,
                                 projectId: '${state.response.data?[index].projectId}',
                                 projectDesc: '${state.response.data?[index].projectDesc}',
                                 );
@@ -141,6 +166,16 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
               }
               
             );
+            }
+            if (state is MyActivityFailure) {
+              Center(
+                child: Text(state.message,
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize : 20,
+                  color: Colors.black
+                ),
+                ),
+              );
             }
             return Container();
           }),

@@ -56,6 +56,15 @@ class MyActivitySuccessTask extends MyActivityState {
   List<Object?> get propsProject => [response];
 }
 
+class MyActivitySuccessGetTask extends MyActivityState {
+  final GetTaskResponse response;
+
+  const MyActivitySuccessGetTask(this.response);
+
+  @override
+  List<Object?> get propsProject => [response];
+}
+
 class MyActivityLoading extends MyActivityState {}
 
 class MyActivitySubmitFailure extends MyActivityState {

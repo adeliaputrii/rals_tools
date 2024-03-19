@@ -161,4 +161,34 @@ class MyActivityRepositories {
     }
     return response;
   }
+
+  Future<RepositoriesResponse> getTaskUser() async {
+    final services = GetIt.I.get<MyActivityService>();
+
+    late RepositoriesResponse response;
+
+    try {
+      await services.getTaskUser().then((value) {
+        response = RepositoriesResponse(
+            isSuccess: true, statusCode: value.status, dataResponse: value);
+      });
+    } catch (e) {
+      if (e is IOException) {
+        response = RepositoriesResponse(
+            isSuccess: false, statusCode: 500, dataResponse: e.toString());
+      } else {
+        response = RepositoriesResponse(
+            isSuccess: false, statusCode: 0, dataResponse: e.toString());
+      }
+      if (e is DioException) {
+        response = RepositoriesResponse(
+            isSuccess: false,
+            statusCode: e.response?.statusCode,
+            dataResponse: e.response!.data['message'].toString());
+
+        debugPrint(e.response!.data['message']);
+      }
+    }
+    return response;
+  }
 }

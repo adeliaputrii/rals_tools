@@ -15,6 +15,8 @@ class Ramayana extends StatefulWidget {
 
 class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   String _lastMessage = "";
+  static Map<String, String> taskMap = {};
+  static Map<String, String> projectMap = {};
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   List data = [];
@@ -57,6 +59,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   List<Map<String, dynamic>> loginOffline = [];
   List<Map<String, dynamic>> voidOffline = [];
   List<Map<String, dynamic>> logOffline = [];
+
+  // static Map<String, String> taskMap = {};
 
   @override
   void initState() {
@@ -746,7 +750,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                             }));
                           } else if (e == 'myactivity.activity') {
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return RamayanaMyActivity();
+                              return RamayanaMyActivity(
+                                update: false,
+                                // taskMap: taskMap,
+                              );
                             }));
                           } else if (e == 'suratjalan.trackingsj') {
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -1129,6 +1136,15 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                     );
                                                   }
                                                   if (state is HomeSuccess) {
+                                                    print('task success');
+                                                    for (var taskData in state.response.data!) {
+                                                      // Menambahkan setiap proyek ke dalam projectMap
+                                                      addTask(
+                                                        taskData.taskId, 
+                                                        taskData.taskDesc
+                                                      );
+                                                      
+                                                }
                                                     return Column(
                                                       children: [
                                                         SingleChildScrollView(
@@ -1354,7 +1370,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                 return GestureDetector(
                                                                   onTap: () {
                                                                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                                      return RamayanaMyActivity(response: state.response.data?[index]);
+                                                                      return RamayanaMyActivity(
+                                                                        response: state.response.data?[index],
+                                                                        update: false,
+                                                                        
+                                                                        );
                                                                     }));
                                                                   },
                                                                   child: Container(
@@ -1444,6 +1464,26 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       );
     });
   }
+  void addProject(String? projectId, String? projectDesc) {
+  // Memeriksa apakah projectId sudah ada dalam Map
+  if (!projectMap.containsKey(projectId)) {
+    // Menambahkan pasangan projectId dan projectDesc ke dalam Map
+    projectMap.putIfAbsent(projectId!, () => projectDesc!);
+ 
+  } else {
+  
+  }
+}
+
+    void addTask(String? taskId, String? taskDesc) {
+  // Memeriksa apakah projectId sudah ada dalam Map
+  if (!taskMap.containsKey(taskId)) {
+    // Menambahkan pasangan projectId dan projectDesc ke dalam Map
+    taskMap.putIfAbsent(taskId!, () => taskDesc!);
+   
+  } else {
+  }
+}
 }
 
 Widget menuIconHome(String asset, String title, {required VoidCallback function}) {
@@ -1482,6 +1522,8 @@ class BottomClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) {
     return true;
   }
+
+
 }
 
 class FadeInImageWidget extends StatefulWidget {

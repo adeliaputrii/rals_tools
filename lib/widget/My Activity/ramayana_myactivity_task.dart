@@ -1,18 +1,28 @@
 part of 'import.dart';
 
 class RamayanaMyActivityTask extends StatefulWidget {
-  const RamayanaMyActivityTask({
+  RamayanaMyActivityTask({
     super.key, 
+    this.update  = false,
     this.projectId, 
     this.projectDesc, 
     this.taskId,
-    this.taskDesc
+    this.taskDesc,
+    this.desc,
+    this.timeStart,
+    this.timeEnd,
+    this.id
     });
+  final  bool update;
   final String? projectId;
   final String? projectDesc;
   final String? taskId;
   final String? taskDesc;
-  @override
+  String? desc;
+  String? timeStart;
+  String? timeEnd;
+  String? id;
+    @override
   State<RamayanaMyActivityTask> createState() => _RamayanaMyActivityTaskState();
 }
 
@@ -23,6 +33,7 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
    super.initState();
    myactivityCubit = context.read<MyActivityCubit>();
    myactivityCubit.getTaskById(widget.projectId!);
+   print('widget update ${widget.update}');
  }
   @override
   Widget build(BuildContext context) {
@@ -32,7 +43,11 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                 context, MaterialPageRoute(builder: (context) 
-                => DefaultBottomBarController(child: RamayanaMyActivityProject()),), 
+                => DefaultBottomBarController(child: RamayanaMyActivityProject(
+                  update: widget.update,
+                  desc: widget.desc,
+                  id: widget.id
+                )),), 
                 (Route<dynamic> route) => false);
             },
             icon: Icon(
@@ -84,6 +99,9 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
                 context, MaterialPageRoute(builder: (context) 
                 => DefaultBottomBarController(child: RamayanaMyActivity
                 (
+                  id: widget.id,
+                  desc: widget.desc,
+                  update: widget.update,
                   projectId: '${widget.projectId}',
                   projectDesc: '${widget.projectDesc}',
                   taskId: '${state.response.data?[index].taskId}',
@@ -145,6 +163,16 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
               }
               
             );
+            }
+            if (state is MyActivityFailure) {
+              Center(
+                child: Text(state.message,
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize : 20,
+                  color: Colors.black
+                ),
+                ),
+              );
             }
             return Container();
           }),

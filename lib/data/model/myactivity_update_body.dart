@@ -15,7 +15,7 @@ class MyActivityUpdateBody {
   String? dokumen;
   String? date_create;
 
-  MyActivityUpdateBody({this.user_create, this.time_start, this.time_end, this.task_id, this.projek_id, this.myactivity_desc, this.dokumen, this.date_create, required String task_tech_status, required this.myactivity_id});
+  MyActivityUpdateBody({this.user_create, this.time_start, this.time_end, this.task_id, this.projek_id, this.myactivity_desc, this.dokumen, this.date_create, required this.task_tech_status, required this.myactivity_id});
 
   MyActivityUpdateBody.fromJson(Map<String, dynamic> json) {
     user_create = json['user_create'];

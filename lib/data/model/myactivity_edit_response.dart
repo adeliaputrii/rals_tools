@@ -93,4 +93,6 @@ class Data {
     data['date_create'] = this.dateCreate;
     return data;
   }
+
+  void forEach(Null Function(dynamic element) param0) {}
 }

@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'myactivity_body.g.dart';
@@ -11,10 +12,10 @@ class MyActivityBody {
   String? projek_id;
   String? task_tech_status;
   String? myactivity_desc;
-  String? dokumen;
+  var dokumen;
   String? date_create;
 
-  MyActivityBody({this.user_create, this.time_start, this.time_end, this.task_id, this.projek_id, this.myactivity_desc, this.dokumen, this.date_create, required String task_tech_status});
+  MyActivityBody({this.user_create, this.time_start, this.time_end, this.task_id, this.projek_id, required this.myactivity_desc, required this.dokumen, this.date_create, required this.task_tech_status});
 
   MyActivityBody.fromJson(Map<String, dynamic> json) {
     user_create = json['user_create'];
@@ -40,5 +41,20 @@ class MyActivityBody {
     data['dokumen'] = this.dokumen;
     data['date_create'] = this.date_create;
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'MyActivityBody{'
+        'user_create: $user_create, '
+        'time_start: $time_start, '
+        'time_end: $time_end, '
+        'task_id: $task_id, '
+        'projek_id: $projek_id, '
+        'myactivity_desc: $myactivity_desc, '
+        'task_tech_status: $task_tech_status, '
+        'dokumen: $dokumen, '
+        'date_create: $date_create'
+        '}';
   }
 }

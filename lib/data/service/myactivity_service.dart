@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:myactivity_project/base/base_params.dart';
+import 'package:myactivity_project/data/model/get_task_response.dart';
 import 'package:myactivity_project/data/model/myactivity_body.dart';
 import 'package:myactivity_project/data/model/myactivity_edit_body.dart';
 import 'package:myactivity_project/data/model/myactivity_edit_response.dart';
@@ -25,6 +26,9 @@ abstract class MyActivityService {
   @GET('v1/activity/list-project')
   Future<GetProjectResponse> getProject();
 
+  @GET('v1/activity/task/get-task')
+  Future<GetTaskResponse> getTaskUser();
+  
   @GET('v1/activity/list-task?project_id={project_id}')
   Future<MyActivityTaskResponse> getTaskById(
       @Path("project_id") String projectId);

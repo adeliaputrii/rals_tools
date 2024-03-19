@@ -7,8 +7,10 @@ list(APPEND FLUTTER_PLUGIN_LIST
   cloud_firestore
   file_selector_windows
   firebase_core
+  irondash_engine_context
   permission_handler_windows
   screen_brightness_windows
+  super_native_extensions
   url_launcher_windows
 )
 

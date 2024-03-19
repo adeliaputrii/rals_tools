@@ -104,4 +104,6 @@ class Data {
     data['note'] = this.note;
     return data;
   }
+
+  void forEach(Null Function(dynamic element) param0) {}
 }
