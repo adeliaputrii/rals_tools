@@ -732,17 +732,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                             style: GoogleFonts.plusJakartaSans(
                                 fontSize: 17, color: Colors.black),
                           ),
-                        //   Expanded(
-                        //   child: QuillEditor.basic(
-                        //     configurations: QuillEditorConfigurations(
-                        //       controller: _controller,
-                        //       readOnly: false,
-                        //       sharedConfigurations: const QuillSharedConfigurations(
-                        //         locale: Locale('de'),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // )
                         ],
                       ),
 

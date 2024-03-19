@@ -49,7 +49,7 @@ import '../../cubit/myactivity/myactivity_cubit.dart';
 import 'package:time_picker_sheet/widget/sheet.dart';
 import 'package:time_picker_sheet/widget/time_picker.dart';
 import '../../utils/app_media_query.dart';
-import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill/flutter_quill.dart'as quill;
 
 part 'ramayana_myactivity_new.dart';
 part 'ramayana_myactivity_project.dart';
