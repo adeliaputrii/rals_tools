@@ -44,14 +44,15 @@ class _ReportSalesDetailPagerState extends State<ReportSalesDetailPager> {
         ),
         backgroundColor: baseColor.primaryColor,
       ),
-      body: ReportViewPager(url: widget.url),
+      body: ReportViewPager(url: widget.url, title: widget.title),
     );
   }
 }
 
 class ReportViewPager extends StatefulWidget {
+  String title;
   String? url;
-  ReportViewPager({super.key, required this.url});
+  ReportViewPager({super.key, required this.url, required this.title});
 
   @override
   State<ReportViewPager> createState() => _ReportViewPagerState();
@@ -117,30 +118,64 @@ class _ReportViewPagerState extends State<ReportViewPager> with TickerProviderSt
             children: <Widget>[
               PageView(
                 controller: _pageViewController,
+                allowImplicitScrolling: true,
                 onPageChanged: _handlePageViewChanged,
                 children: <Widget>[
-                  for (var data in reportWebviewModel) Center(child: ReportWebview(reportModel: data)),
+                  for (var data in reportWebviewModel) Center(child: ReportWebview(reportModel: data, title: widget.title)),
                 ],
               ),
               reportWebviewModel.length > 1
                   ? Positioned(
-                      bottom: 15,
+                      bottom: 20,
                       left: 0,
                       right: 0,
                       child: Container(
                         // Wrap SmoothPageIndicator with Container to center it
                         width: screenSize.width, // Set width to screen width
                         child: Center(
-                          child: SmoothPageIndicator(
-                            controller: _pageViewController,
-                            count: reportWebviewModel.length,
-                            effect: const WormEffect(
-                              dotHeight: 12,
-                              dotWidth: 12,
-                              activeDotColor: baseColor.primaryColor,
-                              dotColor: baseColor.graySecondary,
-                              type: WormType.thinUnderground,
-                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    if (_currentPageIndex > 0) {
+                                      _currentPageIndex--;
+                                      _updateCurrentPageIndex(_currentPageIndex);
+                                    } else {
+                                      null;
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_back_ios,
+                                    color: Colors.white38,
+                                    size: 30,
+                                  )),
+                              SmoothPageIndicator(
+                                controller: _pageViewController,
+                                count: reportWebviewModel.length,
+                                effect: const WormEffect(
+                                  dotHeight: 13,
+                                  dotWidth: 13,
+                                  activeDotColor: baseColor.primaryColor,
+                                  dotColor: baseColor.graySecondary,
+                                  type: WormType.thinUnderground,
+                                ),
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    if (_currentPageIndex < reportWebviewModel.length) {
+                                      _currentPageIndex++;
+                                      _updateCurrentPageIndex(_currentPageIndex);
+                                    } else {
+                                      null;
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Colors.white38,
+                                    size: 30,
+                                  )),
+                            ],
                           ),
                         ),
                       ),

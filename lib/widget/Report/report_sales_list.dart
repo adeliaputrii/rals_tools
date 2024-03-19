@@ -9,22 +9,27 @@ class ReportSalesList extends StatefulWidget {
 class _ReportSalesListState extends State<ReportSalesList> {
   TransformationController controller = TransformationController();
   TextEditingController searchController = TextEditingController();
-  bool isLoading = true;
-  int progressBar = 0;
-  String urlDetail = 'https://www.youtube.com/';
-  bool isSearch = false;
-  late ReportCubit reportCubit;
-  late LoginCubit loginCubit;
+
   List<ReportListResponse> listReport = [];
   List<ReportListResponse> listReportSearch = [];
   List<PagingResponse.Data> listDataSearch = [];
   List<PagingResponse.Data> listDataPaging = [];
+
+  bool isLoaded = false;
+  bool isLoading = true;
+  bool isSearch = false;
+
+  late ReportCubit reportCubit;
+  late LoginCubit loginCubit;
+  late PopUpWidget popUpWidget;
+
   String searchQuery = '';
   String title = "";
   String? nextUrlCursor;
-  bool isLoaded = false;
+  String urlDetail = 'https://www.youtube.com/';
+
+  int progressBar = 0;
   final scrollController = ScrollController();
-  late PopUpWidget popUpWidget;
   Timer? _debounceTimer;
 
   @override
@@ -48,7 +53,6 @@ class _ReportSalesListState extends State<ReportSalesList> {
   void scrollListener() {
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent == scrollController.offset) {
-        debugPrint('on bottom scroll');
         getListReport();
       }
     });
@@ -61,7 +65,7 @@ class _ReportSalesListState extends State<ReportSalesList> {
       nextUrlCursor = "null";
       title = text;
     });
-    // KeyboardUtils().dissmissKeyboard(context);
+
     getListReport();
   }
 

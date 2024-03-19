@@ -2,7 +2,8 @@ part of 'import.dart';
 
 class ReportWebview extends StatefulWidget {
   ReportSalesWebviewModel reportModel;
-  ReportWebview({super.key, required this.reportModel});
+  String title;
+  ReportWebview({super.key, required this.reportModel, required this.title});
 
   @override
   State<ReportWebview> createState() => _ReportWebviewState();
@@ -30,7 +31,12 @@ class _ReportWebviewState extends State<ReportWebview> with AutomaticKeepAliveCl
             widget.reportModel.isLoading = false;
           });
         },
-        onWebResourceError: (WebResourceError error) {},
+        onWebResourceError: (WebResourceError error) {
+          setState(() {
+            widget.reportModel.isLoading = false;
+          });
+          PopUpWidget(context).showToastMessage('Gagal memuat URL ${widget.title}');
+        },
         onNavigationRequest: (NavigationRequest request) {
           if (request.url == 'https://m.youtube.com/') {
             return NavigationDecision.prevent;
@@ -53,6 +59,10 @@ class _ReportWebviewState extends State<ReportWebview> with AutomaticKeepAliveCl
     return widget.reportModel.isLoading ?? true
         ? AppWidget().LoadingWidget()
         : WebViewWidget(
+            gestureRecognizers: Set()
+              ..add(Factory<OneSequenceGestureRecognizer>(
+                () => EagerGestureRecognizer(),
+              )),
             controller: widget.reportModel.webController!,
           );
   }
