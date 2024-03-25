@@ -2,8 +2,7 @@ part of 'import.dart';
 
 class RamayanaMyActivity extends StatefulWidget {
   RamayanaMyActivity(
-      {
-      super.key,
+      {super.key,
       this.response,
       this.responseEdit,
       this.projectId,
@@ -36,7 +35,7 @@ class RamayanaMyActivity extends StatefulWidget {
 
 class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   @override
-  final QuillEditorController descriptionController = QuillEditorController();
+  // final QuillEditorController descriptionController = QuillEditorController();
 
   UserData userData = UserData();
 
@@ -72,7 +71,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   String myActId = '';
   String? base64File;
   String formattedDate = DateFormat('d MMMM yyyy').format(DateTime.now());
-
 
   List<String> result = [];
   List<String> resultProject = [];
@@ -146,8 +144,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     final result = await showCupertinoModalPopup(context: context, builder: (context) => MyActivityEdit());
 
     myActId = result['id'].toString();
-    descriptionController.setText(result['desc']);
-    debugPrint('desc controller ${descriptionController}');
+    // descriptionController.setText(result['desc']);
+    // debugPrint('desc controller ${descriptionController}');
     widget.desc = result['desc'];
     dateTimeSelected = DateTimeUtils.convertStringToDateTime(result['timeStart']);
     dateTimeSelectedEnd = DateTimeUtils.convertStringToDateTime(result['timeEnd']);
@@ -235,27 +233,27 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   }
 
   _openFileExplorerQuill() async {
-  try {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowMultiple: false,
-      allowedExtensions: ['jpg', 'jpeg', 'png'],
-    );
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowMultiple: false,
+        allowedExtensions: ['jpg', 'jpeg', 'png'],
+      );
 
-    if (result != null && result.files.isNotEmpty) {
+      if (result != null && result.files.isNotEmpty) {
         PlatformFile file = result.files.first;
         if (file.path != null) {
           final _imagePath = file.path;
           final imageData = await File(_imagePath!).readAsBytes();
           final imageBase64 = base64Encode(imageData);
-          descriptionController!.embedImage(
-            'data:image/png;base64,$imageBase64',
-          );
+          // descriptionController!.embedImage(
+          //   'data:image/png;base64,$imageBase64',
+          // );
         }
       }
-    }on PlatformException catch (e) {
-    print("Error picking image: $e");
-  }
+    } on PlatformException catch (e) {
+      print("Error picking image: $e");
+    }
   }
 
   void resetState(String info2) {
@@ -266,7 +264,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     dateTimeSelected = DateTime.now();
     dateTimeSelectedEnd = DateTime.now();
     widget.status = 'Perbarui Status';
-    descriptionController.clear();
+    // descriptionController.clear();
     uploadEdit = true;
     loginCubit.createLog(baseParam.logInfoActivityPage, info2, urlApi);
   }
@@ -415,11 +413,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                             )),
                       ],
                     ),
-              
+
                     SizedBox(
                       height: 10,
                     ),
-              
+
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -436,7 +434,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                               onPressed: () {
                                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return RamayanaMyActivityProject(update: widget.update, desc: descriptionController.toString(), id: widget.id);
+                                  return RamayanaMyActivityProject(update: widget.update, desc: 'descriptionController.toString()', id: widget.id);
                                 }));
                               },
                               child: Row(
@@ -466,7 +464,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                     SizedBox(
                       height: 10,
                     ),
-              
+
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -483,7 +481,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                 if (widget.projectId == null) {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                                     return RamayanaMyActivityTask(
-                                        desc: descriptionController.toString(),
+                                        desc: 'descriptionController.toString()',
                                         update: widget.update,
                                         projectId: 'P202300001',
                                         projectDesc: 'Reguler',
@@ -492,7 +490,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                 } else {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                                     return RamayanaMyActivityTask(
-                                        desc: descriptionController.toString(),
+                                        desc: 'descriptionController.toString()',
                                         update: widget.update,
                                         projectId: '${widget.projectId}',
                                         projectDesc: '${widget.projectDesc}',
@@ -527,7 +525,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                     SizedBox(
                       height: 15,
                     ),
-              
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -578,11 +576,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         ]),
                       ],
                     ),
-              
+
                     SizedBox(
                       height: 15,
                     ),
-              
+
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -626,96 +624,96 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                             )),
                       ],
                     ),
-              
+
                     SizedBox(
                       height: 10,
                     ),
-              
+
                     Text('Deskripsi', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
                     SizedBox(
                       height: 10,
                     ),
-                    ToolBar(
-                      toolBarColor: baseColors.primaryColor,
-                      padding: const EdgeInsets.all(8),
-                      iconSize: 25,
-                      iconColor: Colors.white,
-                      activeIconColor: Colors.cyan,
-                      controller: descriptionController,
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      direction: Axis.horizontal,
-                      toolBarConfig: [
-                        ToolBarStyle.bold,
-                        ToolBarStyle.italic,
-                        ToolBarStyle.underline,
-                        ToolBarStyle.strike,
-                        ToolBarStyle.size,
-                        ToolBarStyle.color,
-                        ToolBarStyle.listBullet,
-                        ToolBarStyle.listOrdered,
-                        ToolBarStyle.align,
-                        ToolBarStyle.addTable,
-                        // ToolBarStyle.image,
-                        ],
-                        customButtons: [
-                          InkWell(onTap: () {
-                            _openFileExplorerQuill();
-                          }, 
-                          child: const Icon(
-                            Icons.image,
-                            color: Colors.white,
-                            )),
-                        ],
-                        ),
+                    // ToolBar(
+                    //   toolBarColor: baseColors.primaryColor,
+                    //   padding: const EdgeInsets.all(8),
+                    //   iconSize: 25,
+                    //   iconColor: Colors.white,
+                    //   activeIconColor: Colors.cyan,
+                    //   controller: descriptionController,
+                    //   crossAxisAlignment: WrapCrossAlignment.start,
+                    //   direction: Axis.horizontal,
+                    //   toolBarConfig: [
+                    //     ToolBarStyle.bold,
+                    //     ToolBarStyle.italic,
+                    //     ToolBarStyle.underline,
+                    //     ToolBarStyle.strike,
+                    //     ToolBarStyle.size,
+                    //     ToolBarStyle.color,
+                    //     ToolBarStyle.listBullet,
+                    //     ToolBarStyle.listOrdered,
+                    //     ToolBarStyle.align,
+                    //     ToolBarStyle.addTable,
+                    //     // ToolBarStyle.image,
+                    //     ],
+                    //     customButtons: [
+                    //       InkWell(onTap: () {
+                    //         _openFileExplorerQuill();
+                    //       },
+                    //       child: const Icon(
+                    //         Icons.image,
+                    //         color: Colors.white,
+                    //         )),
+                    //     ],
+                    //     ),
 
-                         SizedBox(
-                           height: 15,
-                           ),
+                    SizedBox(
+                      height: 15,
+                    ),
 
-                        QuillHtmlEditor(
-                          text: '',
-                          hintText: 'Masukkan Deskripsi',
-                          controller: descriptionController,
-                          isEnabled: true,
-                          ensureVisible: false,
-                          minHeight: 250,
-                          autoFocus: false,
-                          textStyle: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
-                          hintTextStyle: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
-                          hintTextAlign: TextAlign.start,
-                          padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
-                          hintTextPadding: const EdgeInsets.only(left: 20,right: 20),
-                          backgroundColor: Color(0xFFEFECF1),
-                          inputAction: InputAction.newline,
-                          onEditingComplete: (s) => debugPrint('Editing completed $s'),
-                          loadingBuilder: (context) {
-                            requestPermission();
-                            return const Center(
-                              child: SpinKitCircle(
-                                color: Color.fromARGB(255, 255, 17, 17),
-                                size: 60.0,
-                                ));
-                                  },
-                                  onFocusChanged: (focus) {
-                                    debugPrint('has focus $focus');
-                                    setState(() {
-                                      debugPrint('widget text change $focus');
-                                    });
-                                  },
-                                  onTextChanged: (text) => debugPrint('widget text change $text'),
-                                  onEditorCreated: () {
-                                    debugPrint('Editor has been loaded');
-                                    // setHtmlText('Testing text on load');
-                                  },
-                                  onEditorResized: (height) =>
-                                      debugPrint('Editor resized $height'),
-                                  onSelectionChanged: (sel) =>
-                                      debugPrint('index ${sel.index}, range ${sel.length}'),
-                                ),
-              
+                    // QuillHtmlEditor(
+                    //   text: '',
+                    //   hintText: 'Masukkan Deskripsi',
+                    //   controller: descriptionController,
+                    //   isEnabled: true,
+                    //   ensureVisible: false,
+                    //   minHeight: 250,
+                    //   autoFocus: false,
+                    //   textStyle: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
+                    //   hintTextStyle: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
+                    //   hintTextAlign: TextAlign.start,
+                    //   padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
+                    //   hintTextPadding: const EdgeInsets.only(left: 20,right: 20),
+                    //   backgroundColor: Color(0xFFEFECF1),
+                    //   inputAction: InputAction.newline,
+                    //   onEditingComplete: (s) => debugPrint('Editing completed $s'),
+                    //   loadingBuilder: (context) {
+                    //     requestPermission();
+                    //     return const Center(
+                    //       child: SpinKitCircle(
+                    //         color: Color.fromARGB(255, 255, 17, 17),
+                    //         size: 60.0,
+                    //         ));
+                    //           },
+                    //           onFocusChanged: (focus) {
+                    //             debugPrint('has focus $focus');
+                    //             setState(() {
+                    //               debugPrint('widget text change $focus');
+                    //             });
+                    //           },
+                    //           onTextChanged: (text) => debugPrint('widget text change $text'),
+                    //           onEditorCreated: () {
+                    //             debugPrint('Editor has been loaded');
+                    //             // setHtmlText('Testing text on load');
+                    //           },
+                    //           onEditorResized: (height) =>
+                    //               debugPrint('Editor resized $height'),
+                    //           onSelectionChanged: (sel) =>
+                    //               debugPrint('index ${sel.index}, range ${sel.length}'),
+                    //         ),
+
                     // -------------------------------------------UPLOAD DOKUMEN ----------------------------------------------
                     SizedBox(height: 10),
-              
+
                     Builder(
                         builder: (BuildContext context) => uploadEdit
                             ? ListTile(
@@ -739,10 +737,10 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                                 final bool isMultiPath = _paths != null && _paths!.isNotEmpty;
                                                 nameFile = (isMultiPath ? _paths!.map((e) => e.name).toList()[index] : _fileName ?? '...');
                                                 paths = _paths!.map((e) => e.path).toList()[index].toString();
-              
+
                                                 file = File(paths);
                                                 print(file);
-              
+
                                                 return ListTile(
                                                   title: Text(
                                                     nameFile!,
@@ -754,7 +752,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                             )),
                                           )
                                         : const SizedBox()),
-              
+
                     Container(
                       margin: EdgeInsets.only(right: 200),
                       child: MaterialButton(
@@ -779,9 +777,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         },
                       ),
                     ),
-              
+
                     SizedBox(height: 20),
-              
+
                     Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       MaterialButton(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -789,7 +787,6 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         height: 50,
                         color: baseColors.primaryColor,
                         onPressed: () async {
-                        
                           editActivity();
                           widget.timeStart = null;
                         },
@@ -812,7 +809,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                   onPressed: () async {
                                     if (dateTimeSelected.isBefore(dateTimeSelectedEnd)) {
                                       updateActivity();
-                                    }else{
+                                    } else {
                                       PopUpWidget(context).showPopUpWarning('Waktu Mulai Harus Sebelum Waktu Selesai!', 'Ok');
                                     }
                                   },
@@ -827,14 +824,13 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                   height: 50,
                                   color: baseColors.primaryColor,
                                   onPressed: () async {
-                                  getHtmlText();
-                                   
-                                      if (dateTimeSelected.isBefore(dateTimeSelectedEnd)) {
-                                        submitActivity();
-                                      }else{
-                                         PopUpWidget(context).showPopUpWarning('Waktu Mulai Harus Sebelum Waktu Selesai!', 'Ok');
-                                      }
-                                    
+                                    getHtmlText();
+
+                                    if (dateTimeSelected.isBefore(dateTimeSelectedEnd)) {
+                                      submitActivity();
+                                    } else {
+                                      PopUpWidget(context).showPopUpWarning('Waktu Mulai Harus Sebelum Waktu Selesai!', 'Ok');
+                                    }
                                   },
                                   child: Text(
                                     "Save",
@@ -852,8 +848,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   }
 
   submitActivity() async {
-    final descBody = '${descriptionController.getSelectedHtmlText()}';
-    debugPrint('descriptionController cont 1${descriptionController.toString()}');
+    final descBody = '';
+    // debugPrint('descriptionController cont 1${descriptionController.toString()}');
     if (_paths != null && _paths!.isNotEmpty) {
       // Ubah PlatformFile menjadi File
       File file = File(_paths!.first.path!);
@@ -861,7 +857,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
       List<int> fileBytes = await file.readAsBytes();
       // Encode bytes sebagai base64
       base64File = base64Encode(fileBytes);
-      debugPrint('descriptionController descriptionController ${descriptionController.toString()}');
+      // debugPrint('descriptionController descriptionController ${descriptionController.toString()}');
       // Buat dan kirim body permintaan setelah pemilihan file selesai
       final body = MyActivityBody(
         user_create: '${userData.getUsername7()}',
@@ -899,7 +895,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   }
 
   updateActivity() async {
-    widget.desc = descriptionController.toString();
+    // widget.desc = descriptionController.toString();
     widget.id;
     final body = MyActivityUpdateBody(
         user_create: '${userData.getUsername7()}',
@@ -929,15 +925,15 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   }
 
   Future<String> getHtmlText() async {
-    String? htmlText = await descriptionController.getText();
-    debugPrint(htmlText);
-    return htmlText;
+    // String? htmlText = await descriptionController.getText();
+    // debugPrint(htmlText);
+    return 'htmlText';
   }
 
   Future<String?> fromHtmlText(String text) async {
-    String? htmlText = await descriptionController.setText(text);
-    debugPrint(htmlText);
-    return htmlText;
+    // String? htmlText = await descriptionController.setText(text);
+    // debugPrint(htmlText);
+    return 'htmlText';
   }
 
   bool _checkStatusMandatory() {
@@ -948,4 +944,3 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     return true;
   }
 }
-

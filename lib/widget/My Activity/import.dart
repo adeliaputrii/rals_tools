@@ -1,4 +1,5 @@
 library quill_html_converter;
+
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:developer';
@@ -23,7 +24,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:notification_permissions/notification_permissions.dart' as notifPermission;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:quill_html_editor/quill_html_editor.dart';
+// import 'package:quill_html_editor/quill_html_editor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_picker_sheet/widget/sheet.dart';
 import 'package:time_picker_sheet/widget/time_picker.dart';
@@ -56,4 +57,3 @@ part 'ramayana_myactivity_new.dart';
 part 'ramayana_myactivity_popup.dart';
 part 'ramayana_myactivity_project.dart';
 part 'ramayana_myactivity_task.dart';
-
