@@ -86,14 +86,16 @@ class _MyActivityEditState extends State<MyActivityEdit> {
                           shrinkWrap: true,
                           itemCount: state.response.data!.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return Container(
+                             final String? myactivityDesc = state.response.data?[index].myactivityDesc;                            return Container(
                                 margin: EdgeInsets.fromLTRB(20, 2, 20, 10),
                                 height: 70,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   color: Colors.white,
                                 ),
-                                child: MaterialButton(
+                                child: 
+                                
+                                MaterialButton(
                                   onPressed: () async {
                                     cubit.getProject();
                                     cubit.getTaskUser();
@@ -109,7 +111,8 @@ class _MyActivityEditState extends State<MyActivityEdit> {
                                     });
                                     debugPrint('ID PROJECT ${state.response.data?[index].myactivityId}');
                                   },
-                                  child: ListTile(
+                                  child: 
+                                  ListTile(
                                     leading: Container(
                                       // color: Colors.amber,
                                       child: FadeInImageWidget(
@@ -118,12 +121,10 @@ class _MyActivityEditState extends State<MyActivityEdit> {
                                       height: 50,
                                       width: 50,
                                     ),
-                                    title: Text(
-                                      '${state.response.data?[index].myactivityDesc}',
-                                      style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.black),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                    ),
+                                    title: 
+                                    Container(
+                                    height: 40,
+                                    child: Html(data: myactivityDesc)),
                                     subtitle: Text(
                                       '${state.response.data?[index].timeStart} s/d ${state.response.data?[index].timeEnd}',
                                       style: GoogleFonts.plusJakartaSans(fontSize: 13, color: Colors.grey),

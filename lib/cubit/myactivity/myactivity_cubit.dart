@@ -75,23 +75,28 @@ class MyActivityCubit extends Cubit<MyActivityState> {
     });
   }
 
-  void submitactivity(MyActivityBody body) async {
-    emit(MyActivityButtonLoading());
-    await repositories.submitActivity(body).then((value) {
-      if (value != null) {
-        if (value.isSuccess && value.dataResponse is MyActivityResponse) {
-          final res = value.dataResponse as MyActivityResponse;
-          emit(MyActivitySuccessSubmit(res));
-          debugPrint('Success Submit: $res');
-        } else {
-          emit(MyActivityFailure(message: value.dataResponse.toString()));
-          debugPrint('Failed' + value.dataResponse.toString());
-        }
+void submitactivity(MyActivityBody body) async {
+  emit(MyActivityButtonLoading());
+  try {
+    final value = await repositories.submitActivity(body);
+    if (value != null) {
+      if (value.isSuccess && value.dataResponse is MyActivityResponse) {
+        final res = value.dataResponse as MyActivityResponse;
+        emit(MyActivitySuccessSubmit(res));
+        debugPrint('Success Submit: $res');
       } else {
-        debugPrint('value is null');
+        emit(MyActivityFailure(message: value.dataResponse.toString()));
+        debugPrint('Failed' + value.dataResponse.toString());
       }
-    });
+    } else {
+      emit(MyActivityFailure(message: 'Failed to submit activity'));
+      debugPrint('value is null');
+    }
+  } catch (error, stackTrace) {
+    emit(MyActivityFailure(message: 'An error occurred: $error'));
+    debugPrint('An error occurred: $error\nStack Trace: $stackTrace');
   }
+}
 
   void updateactivity(MyActivityUpdateBody body) async {
     emit(MyActivityButtonLoading());

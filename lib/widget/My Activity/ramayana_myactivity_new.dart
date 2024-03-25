@@ -2,7 +2,8 @@ part of 'import.dart';
 
 class RamayanaMyActivity extends StatefulWidget {
   RamayanaMyActivity(
-      {super.key,
+      {
+      super.key,
       this.response,
       this.responseEdit,
       this.projectId,
@@ -34,9 +35,9 @@ class RamayanaMyActivity extends StatefulWidget {
 }
 
 class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
-  TextEditingController descriptionController = TextEditingController();
+  final QuillEditorController descriptionController = QuillEditorController();
+
   UserData userData = UserData();
 
   late MyActivityCubit cubit;
@@ -72,6 +73,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   String? base64File;
   String formattedDate = DateFormat('d MMMM yyyy').format(DateTime.now());
 
+
   List<String> result = [];
   List<String> resultProject = [];
 
@@ -104,6 +106,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     loginCubit = context.read<LoginCubit>();
     setData(widget.response);
     popUpWidget = PopUpWidget(context);
+    Permission.camera.request();
   }
 
   void setData(GetTaskResponse.Data? response) {
@@ -143,7 +146,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     final result = await showCupertinoModalPopup(context: context, builder: (context) => MyActivityEdit());
 
     myActId = result['id'].toString();
-    descriptionController.text = result['desc'];
+    descriptionController.setText(result['desc']);
+    debugPrint('desc controller ${descriptionController}');
     widget.desc = result['desc'];
     dateTimeSelected = DateTimeUtils.convertStringToDateTime(result['timeStart']);
     dateTimeSelectedEnd = DateTimeUtils.convertStringToDateTime(result['timeEnd']);
@@ -164,6 +168,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     await notifPermission.NotificationPermissions.requestNotificationPermissions;
     await notifPermission.NotificationPermissions.getNotificationPermissionStatus();
     await Permission.manageExternalStorage.request();
+    await Permission.camera.request();
 
     final result = await permission.request();
 
@@ -229,6 +234,30 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     });
   }
 
+  _openFileExplorerQuill() async {
+  try {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowMultiple: false,
+      allowedExtensions: ['jpg', 'jpeg', 'png'],
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+        PlatformFile file = result.files.first;
+        if (file.path != null) {
+          final _imagePath = file.path;
+          final imageData = await File(_imagePath!).readAsBytes();
+          final imageBase64 = base64Encode(imageData);
+          descriptionController!.embedImage(
+            'data:image/png;base64,$imageBase64',
+          );
+        }
+      }
+    }on PlatformException catch (e) {
+    print("Error picking image: $e");
+  }
+  }
+
   void resetState(String info2) {
     widget.projectDesc = 'Reguler';
     widget.projectId = 'P202300001';
@@ -244,7 +273,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
@@ -355,440 +384,476 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
               }
             },
             child: Stack(children: [
-              Form(
-                key: _formKey,
-                child: Container(
-                  margin: EdgeInsets.only(top: 10, left: 30, right: 30),
-                  // height: 450,
-                  // width: 300,
-                  child: ListView(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Tanggal', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                              height: 60,
-                              decoration: BoxDecoration(color: Color(0xFFEFECF1), borderRadius: BorderRadius.circular(25)),
+              Container(
+                margin: EdgeInsets.only(top: 10, left: 30, right: 30),
+                // height: 450,
+                // width: 300,
+                child: ListView(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Tanggal', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                            height: 60,
+                            decoration: BoxDecoration(color: Color(0xFFEFECF1), borderRadius: BorderRadius.circular(25)),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20, right: 10),
+                                  child: Image.asset('assets/calender.png'),
+                                ),
+                                Text(
+                                  '${formattedDate}',
+                                  style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
+                                )
+                              ],
+                            )),
+                      ],
+                    ),
+              
+                    SizedBox(
+                      height: 10,
+                    ),
+              
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Project', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                            height: 60,
+                            decoration: BoxDecoration(color: Color(0xFFEFECF1), borderRadius: BorderRadius.circular(25)),
+                            child: MaterialButton(
+                              // color: Colors.amber,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return RamayanaMyActivityProject(update: widget.update, desc: descriptionController.toString(), id: widget.id);
+                                }));
+                              },
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20, right: 10),
-                                    child: Image.asset('assets/calender.png'),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 5, right: 15),
+                                        child: Image.asset('assets/project.png'),
+                                      ),
+                                      Text(
+                                        widget.projectDesc == null ? 'Reguler' : '${widget.projectDesc}',
+                                        style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    '${formattedDate}',
-                                    style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
-                                  )
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Image.asset('assets/dropdown2.png'),
+                                  ),
                                 ],
-                              )),
-                        ],
-                      ),
-
-                      SizedBox(
-                        height: 10,
-                      ),
-
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Project', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                              height: 60,
-                              decoration: BoxDecoration(color: Color(0xFFEFECF1), borderRadius: BorderRadius.circular(25)),
-                              child: MaterialButton(
-                                // color: Colors.amber,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                onPressed: () {
+                              ),
+                            )),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+              
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Tugas', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
+                        Container(
+                            margin: EdgeInsets.only(top: 5),
+                            height: 60,
+                            decoration: BoxDecoration(color: Color(0xFFEFECF1), borderRadius: BorderRadius.circular(25)),
+                            child: MaterialButton(
+                              // color: Colors.amber,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              onPressed: () {
+                                if (widget.projectId == null) {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return RamayanaMyActivityProject(update: widget.update, desc: descriptionController.text, id: widget.id);
+                                    return RamayanaMyActivityTask(
+                                        desc: descriptionController.toString(),
+                                        update: widget.update,
+                                        projectId: 'P202300001',
+                                        projectDesc: 'Reguler',
+                                        id: widget.id);
                                   }));
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 5, right: 15),
-                                          child: Image.asset('assets/project.png'),
-                                        ),
-                                        Text(
-                                          widget.projectDesc == null ? 'Reguler' : '${widget.projectDesc}',
-                                          style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 10),
-                                      child: Image.asset('assets/dropdown2.png'),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Tugas', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
+                                } else {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                    return RamayanaMyActivityTask(
+                                        desc: descriptionController.toString(),
+                                        update: widget.update,
+                                        projectId: '${widget.projectId}',
+                                        projectDesc: '${widget.projectDesc}',
+                                        id: widget.id);
+                                  }));
+                                }
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 5, right: 15),
+                                        child: Image.asset('assets/task.png'),
+                                      ),
+                                      Text(
+                                        widget.taskDesc == null ? 'My Task' : '${widget.taskDesc}',
+                                        style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Image.asset('assets/dropdown2.png'),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+              
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Text('Waktu Mulai', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
                           Container(
-                              margin: EdgeInsets.only(top: 5),
-                              height: 60,
-                              decoration: BoxDecoration(color: Color(0xFFEFECF1), borderRadius: BorderRadius.circular(25)),
-                              child: MaterialButton(
-                                // color: Colors.amber,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                            margin: EdgeInsets.only(top: 5),
+                            width: 150,
+                            height: 40,
+                            child: MaterialButton(
                                 onPressed: () {
-                                  if (widget.projectId == null) {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                      return RamayanaMyActivityTask(
-                                          desc: descriptionController.text,
-                                          update: widget.update,
-                                          projectId: 'P202300001',
-                                          projectDesc: 'Reguler',
-                                          id: widget.id);
-                                    }));
-                                  } else {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                      return RamayanaMyActivityTask(
-                                          desc: descriptionController.text,
-                                          update: widget.update,
-                                          projectId: '${widget.projectId}',
-                                          projectDesc: '${widget.projectDesc}',
-                                          id: widget.id);
-                                    }));
-                                  }
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 5, right: 15),
-                                          child: Image.asset('assets/task.png'),
-                                        ),
-                                        Text(
-                                          widget.taskDesc == null ? 'My Task' : '${widget.taskDesc}',
-                                          style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 10),
-                                      child: Image.asset('assets/dropdown2.png'),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            Text('Waktu Mulai', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
-                            Container(
-                              margin: EdgeInsets.only(top: 5),
-                              width: 150,
-                              height: 40,
-                              child: MaterialButton(
-                                  onPressed: () {
-                                    _openTimePickerSheet(context);
-                                  },
-                                  color: Color(0xFFEFECF1),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                  child: widget.timeStart != null
-                                      ? Text('${widget.timeStart!.hour}:${widget.timeStart!.minute}',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                          ))
-                                      : Text('${DateTimeUtils.convertTohhmm(dateTimeSelected)}',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                          ))),
-                            )
-                          ]),
-                          Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            Text('Waktu Selesai', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
-                            Container(
-                              margin: EdgeInsets.only(top: 5),
-                              width: 150,
-                              height: 40,
-                              child: MaterialButton(
-                                onPressed: () {
-                                  _openTimePickerSheetEnd(context);
+                                  _openTimePickerSheet(context);
                                 },
                                 color: Color(0xFFEFECF1),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                child: Text('${DateTimeUtils.convertTohhmm(dateTimeSelectedEnd)}',
-                                    style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                    )),
-                              ),
-                            )
-                          ]),
-                        ],
-                      ),
-
-                      SizedBox(
-                        height: 15,
-                      ),
-
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Status Tugas', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
+                                child: widget.timeStart != null
+                                    ? Text('${widget.timeStart!.hour}:${widget.timeStart!.minute}',
+                                        style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                        ))
+                                    : Text('${DateTimeUtils.convertTohhmm(dateTimeSelected)}',
+                                        style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                        ))),
+                          )
+                        ]),
+                        Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Text('Waktu Selesai', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
                           Container(
-                              margin: EdgeInsets.only(top: 10),
-                              height: 60,
-                              decoration: BoxDecoration(color: Color(0xFFEFECF1), borderRadius: BorderRadius.circular(25)),
-                              child: MaterialButton(
-                                // color: Colors.amber,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                onPressed: () {
-                                  popUpTaskStatus();
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 10),
-                                          child: Image.asset('assets/progress.png'),
-                                        ),
-                                        Text(
-                                          widget.status == null
-                                              ? 'Perbarui Status'
-                                              : widget.status! == 'Verification'
-                                                  ? 'Closed'
-                                                  : widget.status!,
-                                          style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 10),
-                                      child: Image.asset('assets/dropdown2.png'),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ],
-                      ),
-
-                      SizedBox(
-                        height: 10,
-                      ),
-
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Deskripsi', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextFormField(
-                            validator: RequiredValidator(errorText: ' Please Enter'),
-                            onChanged: (value) {
-                              widget.desc = value;
-                              // descriptionController..text = value;
-                            },
-                            // controller: descriptionController,
-                            controller: descriptionController,
-                            maxLines: 7,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(color: Colors.black),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(color: Colors.black),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(color: Colors.black),
-                              ),
-                              disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(color: Colors.black),
-                              ),
-                              labelText: 'Deskripsi',
-                              labelStyle: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.red),
-                              prefixIcon: Image.asset('assets/note.png'),
-                              // fillColor: Colors.grey[200],
-                              filled: true,
+                            margin: EdgeInsets.only(top: 5),
+                            width: 150,
+                            height: 40,
+                            child: MaterialButton(
+                              onPressed: () {
+                                _openTimePickerSheetEnd(context);
+                              },
+                              color: Color(0xFFEFECF1),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              child: Text('${DateTimeUtils.convertTohhmm(dateTimeSelectedEnd)}',
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  )),
                             ),
-                            style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
-                          ),
-                        ],
-                      ),
-
-                      // -------------------------------------------UPLOAD DOKUMEN ----------------------------------------------
-                      SizedBox(height: 10),
-
-                      Builder(
-                          builder: (BuildContext context) => uploadEdit
-                              ? ListTile(
-                                  title: Text(dokumen),
-                                )
-                              : _loadingPath
-                                  ? AppWidget().LoadingWidget()
-                                  : _directoryPath != null
-                                      ? ListTile(
-                                          title: const Text('Directory path'),
-                                          subtitle: Text(_directoryPath!),
-                                        )
-                                      : _paths != null
-                                          ? Container(
-                                              // padding: const EdgeInsets.only(bottom: 30),
-                                              height: 80,
-                                              child: Scrollbar(
-                                                  child: ListView.separated(
-                                                itemCount: _paths != null && _paths!.isNotEmpty ? _paths!.length : 1,
-                                                itemBuilder: (BuildContext context, int index) {
-                                                  final bool isMultiPath = _paths != null && _paths!.isNotEmpty;
-                                                  nameFile = (isMultiPath ? _paths!.map((e) => e.name).toList()[index] : _fileName ?? '...');
-                                                  paths = _paths!.map((e) => e.path).toList()[index].toString();
-
-                                                  file = File(paths);
-                                                  print(file);
-
-                                                  return ListTile(
-                                                    title: Text(
-                                                      nameFile!,
-                                                    ),
-                                                    subtitle: Text(paths),
-                                                  );
-                                                },
-                                                separatorBuilder: (BuildContext context, int index) => const Divider(),
-                                              )),
-                                            )
-                                          : const SizedBox()),
-
-                      Container(
-                        margin: EdgeInsets.only(right: 200),
-                        child: MaterialButton(
-                          height: 45,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          color: Color(0xFFEFECF1),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset('assets/upload.png'),
-                              Text(
-                                'Upload Document',
-                                style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.black),
-                              )
-                            ],
-                          ),
-                          onPressed: () {
-                            requestPermission();
-                            _openFileExplorer();
-                          },
-                        ),
-                      ),
-
-                      SizedBox(height: 20),
-
-                      Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                        MaterialButton(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                          minWidth: 1000,
-                          height: 50,
-                          color: baseColors.primaryColor,
-                          onPressed: () async {
-                            editActivity();
-                            widget.timeStart = null;
-                          },
-                          child: Text(
-                            "Edit",
-                            style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.white),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        _loadingButton
-                            ? AppWidget().LoadingWidget()
-                            : widget.update
-                                ? MaterialButton(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                                    minWidth: 1000,
-                                    height: 50,
-                                    color: baseColors.primaryColor,
-                                    onPressed: () async {
-                                      if (dateTimeSelected.isBefore(dateTimeSelectedEnd)) {
-                                        updateActivity();
-                                      }else{
-                                        PopUpWidget(context).showPopUpWarning('Waktu Mulai Harus Sebelum Waktu Selesai!', 'Ok');
-                                      }
-                                    },
-                                    child: Text(
-                                      "Update",
-                                      style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.white),
-                                    ),
-                                  )
-                                : MaterialButton(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                                    minWidth: 1000,
-                                    height: 50,
-                                    color: baseColors.primaryColor,
-                                    onPressed: () async {
-                                      if (_formKey.currentState!.validate()) {
-                                        if (dateTimeSelected.isBefore(dateTimeSelectedEnd)) {
-                                          submitActivity();
-                                        }else{
-                                           PopUpWidget(context).showPopUpWarning('Waktu Mulai Harus Sebelum Waktu Selesai!', 'Ok');
-                                        }
-                                      }
-                                    },
-                                    child: Text(
-                                      "Save",
-                                      style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.white),
-                                    ),
+                          )
+                        ]),
+                      ],
+                    ),
+              
+                    SizedBox(
+                      height: 15,
+                    ),
+              
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Status Tugas', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
+                        Container(
+                            margin: EdgeInsets.only(top: 10),
+                            height: 60,
+                            decoration: BoxDecoration(color: Color(0xFFEFECF1), borderRadius: BorderRadius.circular(25)),
+                            child: MaterialButton(
+                              // color: Colors.amber,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              onPressed: () {
+                                popUpTaskStatus();
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 10),
+                                        child: Image.asset('assets/progress.png'),
+                                      ),
+                                      Text(
+                                        widget.status == null
+                                            ? 'Perbarui Status'
+                                            : widget.status! == 'Verification'
+                                                ? 'Closed'
+                                                : widget.status!,
+                                        style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
+                                      ),
+                                    ],
                                   ),
-                      ]),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Image.asset('assets/dropdown2.png'),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+              
+                    SizedBox(
+                      height: 10,
+                    ),
+              
+                    Text('Deskripsi', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500)),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    ToolBar(
+                      toolBarColor: baseColors.primaryColor,
+                      padding: const EdgeInsets.all(8),
+                      iconSize: 25,
+                      iconColor: Colors.white,
+                      activeIconColor: Colors.cyan,
+                      controller: descriptionController,
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      direction: Axis.horizontal,
+                      toolBarConfig: [
+                        ToolBarStyle.bold,
+                        ToolBarStyle.italic,
+                        ToolBarStyle.underline,
+                        ToolBarStyle.strike,
+                        ToolBarStyle.size,
+                        ToolBarStyle.color,
+                        ToolBarStyle.listBullet,
+                        ToolBarStyle.listOrdered,
+                        ToolBarStyle.align,
+                        ToolBarStyle.addTable,
+                        // ToolBarStyle.image,
+                        ],
+                        customButtons: [
+                          InkWell(onTap: () {
+                            _openFileExplorerQuill();
+                          }, 
+                          child: const Icon(
+                            Icons.image,
+                            color: Colors.white,
+                            )),
+                        ],
+                        ),
+
+                         SizedBox(
+                           height: 15,
+                           ),
+
+                        QuillHtmlEditor(
+                          text: '',
+                          hintText: 'Masukkan Deskripsi',
+                          controller: descriptionController,
+                          isEnabled: true,
+                          ensureVisible: false,
+                          minHeight: 250,
+                          autoFocus: false,
+                          textStyle: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
+                          hintTextStyle: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
+                          hintTextAlign: TextAlign.start,
+                          padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
+                          hintTextPadding: const EdgeInsets.only(left: 20,right: 20),
+                          backgroundColor: Color(0xFFEFECF1),
+                          inputAction: InputAction.newline,
+                          onEditingComplete: (s) => debugPrint('Editing completed $s'),
+                          loadingBuilder: (context) {
+                            requestPermission();
+                            return const Center(
+                              child: SpinKitCircle(
+                                color: Color.fromARGB(255, 255, 17, 17),
+                                size: 60.0,
+                                ));
+                                  },
+                                  onFocusChanged: (focus) {
+                                    debugPrint('has focus $focus');
+                                    setState(() {
+                                      debugPrint('widget text change $focus');
+                                    });
+                                  },
+                                  onTextChanged: (text) => debugPrint('widget text change $text'),
+                                  onEditorCreated: () {
+                                    debugPrint('Editor has been loaded');
+                                    // setHtmlText('Testing text on load');
+                                  },
+                                  onEditorResized: (height) =>
+                                      debugPrint('Editor resized $height'),
+                                  onSelectionChanged: (sel) =>
+                                      debugPrint('index ${sel.index}, range ${sel.length}'),
+                                ),
+              
+                    // -------------------------------------------UPLOAD DOKUMEN ----------------------------------------------
+                    SizedBox(height: 10),
+              
+                    Builder(
+                        builder: (BuildContext context) => uploadEdit
+                            ? ListTile(
+                                title: Text(dokumen),
+                              )
+                            : _loadingPath
+                                ? AppWidget().LoadingWidget()
+                                : _directoryPath != null
+                                    ? ListTile(
+                                        title: const Text('Directory path'),
+                                        subtitle: Text(_directoryPath!),
+                                      )
+                                    : _paths != null
+                                        ? Container(
+                                            // padding: const EdgeInsets.only(bottom: 30),
+                                            height: 80,
+                                            child: Scrollbar(
+                                                child: ListView.separated(
+                                              itemCount: _paths != null && _paths!.isNotEmpty ? _paths!.length : 1,
+                                              itemBuilder: (BuildContext context, int index) {
+                                                final bool isMultiPath = _paths != null && _paths!.isNotEmpty;
+                                                nameFile = (isMultiPath ? _paths!.map((e) => e.name).toList()[index] : _fileName ?? '...');
+                                                paths = _paths!.map((e) => e.path).toList()[index].toString();
+              
+                                                file = File(paths);
+                                                print(file);
+              
+                                                return ListTile(
+                                                  title: Text(
+                                                    nameFile!,
+                                                  ),
+                                                  subtitle: Text(paths),
+                                                );
+                                              },
+                                              separatorBuilder: (BuildContext context, int index) => const Divider(),
+                                            )),
+                                          )
+                                        : const SizedBox()),
+              
+                    Container(
+                      margin: EdgeInsets.only(right: 200),
+                      child: MaterialButton(
+                        height: 45,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        color: Color(0xFFEFECF1),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset('assets/upload.png'),
+                            Text(
+                              'Upload Document',
+                              style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.black),
+                            )
+                          ],
+                        ),
+                        onPressed: () {
+                          requestPermission();
+                          _openFileExplorer();
+                        },
+                      ),
+                    ),
+              
+                    SizedBox(height: 20),
+              
+                    Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                      MaterialButton(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                        minWidth: 1000,
+                        height: 50,
+                        color: baseColors.primaryColor,
+                        onPressed: () async {
+                        
+                          editActivity();
+                          widget.timeStart = null;
+                        },
+                        child: Text(
+                          "Edit",
+                          style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.white),
+                        ),
+                      ),
                       SizedBox(
-                        height: 30,
-                      )
-                    ],
-                  ),
+                        height: 20,
+                      ),
+                      _loadingButton
+                          ? AppWidget().LoadingWidget()
+                          : widget.update
+                              ? MaterialButton(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                                  minWidth: 1000,
+                                  height: 50,
+                                  color: baseColors.primaryColor,
+                                  onPressed: () async {
+                                    if (dateTimeSelected.isBefore(dateTimeSelectedEnd)) {
+                                      updateActivity();
+                                    }else{
+                                      PopUpWidget(context).showPopUpWarning('Waktu Mulai Harus Sebelum Waktu Selesai!', 'Ok');
+                                    }
+                                  },
+                                  child: Text(
+                                    "Update",
+                                    style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.white),
+                                  ),
+                                )
+                              : MaterialButton(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                                  minWidth: 1000,
+                                  height: 50,
+                                  color: baseColors.primaryColor,
+                                  onPressed: () async {
+                                  getHtmlText();
+                                   
+                                      if (dateTimeSelected.isBefore(dateTimeSelectedEnd)) {
+                                        submitActivity();
+                                      }else{
+                                         PopUpWidget(context).showPopUpWarning('Waktu Mulai Harus Sebelum Waktu Selesai!', 'Ok');
+                                      }
+                                    
+                                  },
+                                  child: Text(
+                                    "Save",
+                                    style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.white),
+                                  ),
+                                ),
+                    ]),
+                    SizedBox(
+                      height: 30,
+                    )
+                  ],
                 ),
               )
             ])));
   }
 
   submitActivity() async {
-    final descBody = descriptionController.text;
-    debugPrint('descriptionController cont 1${descriptionController.text}');
+    final descBody = '${descriptionController.getSelectedHtmlText()}';
+    debugPrint('descriptionController cont 1${descriptionController.toString()}');
     if (_paths != null && _paths!.isNotEmpty) {
       // Ubah PlatformFile menjadi File
       File file = File(_paths!.first.path!);
@@ -796,7 +861,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
       List<int> fileBytes = await file.readAsBytes();
       // Encode bytes sebagai base64
       base64File = base64Encode(fileBytes);
-      debugPrint('descriptionController controller ${descriptionController.text}');
+      debugPrint('descriptionController descriptionController ${descriptionController.toString()}');
       // Buat dan kirim body permintaan setelah pemilihan file selesai
       final body = MyActivityBody(
         user_create: '${userData.getUsername7()}',
@@ -804,7 +869,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
         time_end: '${dateTimeSelectedEnd}',
         task_id: '${widget.taskId ?? 'P202300001-001'}',
         projek_id: '${widget.projectId ?? 'P202300001'}',
-        myactivity_desc: descBody,
+        myactivity_desc: await getHtmlText(),
         task_tech_status: '${widget.status}',
         dokumen: base64File,
         date_create: '${DateTime.now()}',
@@ -819,7 +884,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
         time_end: '${dateTimeSelectedEnd}',
         task_id: '${widget.taskId ?? 'P202300001-001'}',
         projek_id: '${widget.projectId ?? 'P202300001'}',
-        myactivity_desc: descriptionController.text,
+        myactivity_desc: await getHtmlText(),
         task_tech_status: '${widget.status}',
         dokumen: '',
         date_create: '${DateTime.now()}',
@@ -833,8 +898,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     debugPrint('Dokumen yg dipilih : tidak ada');
   }
 
-  updateActivity() {
-    widget.desc = descriptionController.text;
+  updateActivity() async {
+    widget.desc = descriptionController.toString();
     widget.id;
     final body = MyActivityUpdateBody(
         user_create: '${userData.getUsername7()}',
@@ -842,7 +907,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
         time_end: '${dateTimeSelectedEnd}',
         task_id: '${widget.taskId ?? 'P202300001-001'}',
         projek_id: '${widget.projectId ?? 'P202300001'}',
-        myactivity_desc: descriptionController.text,
+        myactivity_desc: await getHtmlText(),
         myactivity_id: myActId,
         task_tech_status: '${widget.status}',
         dokumen: '',
@@ -863,6 +928,18 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     popupEdit();
   }
 
+  Future<String> getHtmlText() async {
+    String? htmlText = await descriptionController.getText();
+    debugPrint(htmlText);
+    return htmlText;
+  }
+
+  Future<String?> fromHtmlText(String text) async {
+    String? htmlText = await descriptionController.setText(text);
+    debugPrint(htmlText);
+    return htmlText;
+  }
+
   bool _checkStatusMandatory() {
     if (widget.status == null) {
       return false;
@@ -871,3 +948,4 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     return true;
   }
 }
+
