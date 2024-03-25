@@ -1,20 +1,22 @@
 part of 'import.dart';
 
 class CardReport extends StatelessWidget {
+  ReportCubit cubit;
   PagingResponse.Data response;
-  CardReport({super.key, required this.response});
+  CardReport({super.key, required this.response, required this.cubit});
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
+        cubit.insertViewer(response.idReport.toString());
         AppNavigator.navigateToReportSalesDetail(context, response.properties, response.header1!);
       },
       child: Container(
           margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
           decoration: BoxDecoration(color: baseColor.cardReportColor, borderRadius: BorderRadius.circular(20)),
-          height: screenSize.height/9,
+          height: screenSize.height / 9,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -54,15 +56,43 @@ class CardReport extends StatelessWidget {
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              Text('${response.createDate}',
-                                  style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w400, color: baseColor.graySecondary))
+                              Row(
+                                children: [
+                                  Text('${response.createDate}',
+                                      style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w400, color: baseColor.graySecondary)),
+                                  SizedBox(width: 10),
+                                ],
+                              ),
                             ],
                           ),
                         ),
-                        Image(
-                          width: 40,
-                          height: 40,
-                          image: AssetImage(baseAsset.icReportArrow),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Visibility(
+                              visible: false,
+                              child: Image(
+                                image: AssetImage(baseAsset.icEyes),
+                              ),
+                            ),
+                            Image(
+                              width: 40,
+                              height: 40,
+                              image: AssetImage(baseAsset.icReportArrow),
+                            ),
+                            Row(
+                              children: [
+                                Image(
+                                  width: 15,
+                                  height: 15,
+                                  image: AssetImage(baseAsset.icEyes),
+                                ),
+                                const SizedBox(width: 10),
+                                Text('${response.viewer}',
+                                    style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w400, color: baseColor.graySecondary)),
+                              ],
+                            )
+                          ],
                         ),
                       ],
                     ),

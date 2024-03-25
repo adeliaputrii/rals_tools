@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myactivity_project/data/model/data_customer_response.dart';
 import 'package:myactivity_project/data/model/report_list_response.dart';
+import 'package:myactivity_project/tools/settingsralstools.dart';
 import '../../data/model/report_list_pagination_response.dart';
+import '../../data/model/report_viewer_response.dart';
 import '../../data/repository/report_repository.dart';
 import '../../service/SP_service/SP_service.dart';
 
@@ -16,7 +18,6 @@ class ReportCubit extends Cubit<ReportState> {
   UserData userData = UserData();
 
   void getListReport() async {
-    emit(ReportLoading());
     await repositories.getListReport().then((value) {
       if (value.isSuccess && value.dataResponse is List<ReportListResponse>) {
         final res = value.dataResponse as List<ReportListResponse>;
@@ -29,7 +30,7 @@ class ReportCubit extends Cubit<ReportState> {
 
   void getListReportPagination(String? cursor, String? title, String? startDate, String? endDate) async {
     emit(ReportLoading());
-    await repositories.getListReportPagination(cursor, title, startDate, endDate).then((value) {
+    await repositories.getListReportPagination(cursor, title, startDate, endDate, versi).then((value) {
       if (value.isSuccess && value.dataResponse is ReportListPaginationResponse) {
         final res = value.dataResponse as ReportListPaginationResponse;
         emit(ReportPaginationSuccess(res));
@@ -41,12 +42,23 @@ class ReportCubit extends Cubit<ReportState> {
 
   void searchListReport(String? cursor, String? title, String? startDate, String? endDate) async {
     emit(ReportLoading());
-    await repositories.searchListReport(cursor, title, startDate, endDate).then((value) {
+    await repositories.searchListReport(cursor, title, startDate, endDate, versi).then((value) {
       if (value.isSuccess && value.dataResponse is ReportListPaginationResponse) {
         final res = value.dataResponse as ReportListPaginationResponse;
         emit(ReportSearchSuccess(res));
       } else {
-        emit(ReportFailure(message: value.dataResponse!));
+        emit(ReportFailure(message: value.dataResponse));
+      }
+    });
+  }
+
+  void insertViewer(String idReport) async {
+    emit(ReportLoading());
+    await repositories.insertViewer(idReport).then((value) {
+      if (value.isSuccess) {
+        emit(ReportInsertViewerSuccess());
+      } else {
+        emit(ReportFailure(message: value.dataResponse));
       }
     });
   }

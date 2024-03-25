@@ -45,6 +45,8 @@ class Data {
   String? status;
   String? properties;
   String? createDate;
+  int? idReport;
+  int? viewer;
 
   Data({this.header1, this.header2, this.tipe, this.status, this.properties, this.createDate});
 
@@ -55,6 +57,8 @@ class Data {
     tipe = json['tipe'];
     properties = json['properties'];
     createDate = json['create_date'];
+    idReport = json['id_report'];
+    viewer = json['viewer'];
   }
 
   Map<String, dynamic> toJson() {
@@ -65,6 +69,8 @@ class Data {
     data['status'] = this.status;
     data['properties'] = this.properties;
     data['create_date'] = this.createDate;
+    data['id_report'] = this.idReport;
+    data['viewer'] = this.viewer;
     return data;
   }
 }

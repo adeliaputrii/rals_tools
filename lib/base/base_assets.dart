@@ -17,3 +17,4 @@ const String reportSalesLogo = 'assets/ic_report_sales.png';
 const String reportPoolingLogo = 'assets/ic_report_pooling.png';
 const String icReportList = 'assets/ic_report_list.png';
 const String icReportArrow = 'assets/ic_report_arrow.png';
+const String icEyes = 'assets/ic_eyes.png';

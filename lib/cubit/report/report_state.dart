@@ -37,6 +37,8 @@ class ReportSearchSuccess extends ReportState {
   List<Object?> get props => [response];
 }
 
+class ReportInsertViewerSuccess extends ReportState {}
+
 class ReportLoading extends ReportState {}
 
 class ReportFailure extends ReportState {

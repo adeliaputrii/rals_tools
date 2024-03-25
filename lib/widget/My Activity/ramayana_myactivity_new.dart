@@ -35,8 +35,6 @@ class RamayanaMyActivity extends StatefulWidget {
 
 class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   @override
-  // final QuillEditorController descriptionController = QuillEditorController();
-
   UserData userData = UserData();
 
   late MyActivityCubit cubit;

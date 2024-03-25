@@ -29,3 +29,5 @@ const String api_get_news_list = 'v1/news/get';
 
 const String api_report_list = 'v1/report/get';
 const String api_report_list_pagination = '/v1/report/get?cursor=';
+const String api_report_insert_viewer = '/v1/report/insert_viewer';
+const String api_report_get_viewer = '/v1/report/get_viewer';

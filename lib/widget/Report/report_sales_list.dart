@@ -223,7 +223,10 @@ class _ReportSalesListState extends State<ReportSalesList> {
         shrinkWrap: true,
         itemCount: listDataSearch.length,
         itemBuilder: (context, index) {
-          return CardReport(response: listDataSearch[index]);
+          return CardReport(
+            response: listDataSearch[index],
+            cubit: reportCubit,
+          );
         });
   }
 
@@ -234,7 +237,7 @@ class _ReportSalesListState extends State<ReportSalesList> {
         itemBuilder: (builder, index) {
           if (index < listDataPaging.length) {
             final item = listDataPaging[index];
-            return CardReport(response: item);
+            return CardReport(response: item, cubit: reportCubit);
           } else {
             return Center(
               child: isLoaded
