@@ -35,6 +35,8 @@ class RamayanaMyActivity extends StatefulWidget {
 
 class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   @override
+  final QuillEditorController descriptionController = QuillEditorController();
+
   UserData userData = UserData();
 
   late MyActivityCubit cubit;
@@ -142,8 +144,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     final result = await showCupertinoModalPopup(context: context, builder: (context) => MyActivityEdit());
 
     myActId = result['id'].toString();
-    // descriptionController.setText(result['desc']);
-    // debugPrint('desc controller ${descriptionController}');
+    descriptionController.setText(result['desc']);
+    debugPrint('desc controller ${descriptionController}');
     widget.desc = result['desc'];
     dateTimeSelected = DateTimeUtils.convertStringToDateTime(result['timeStart']);
     dateTimeSelectedEnd = DateTimeUtils.convertStringToDateTime(result['timeEnd']);
@@ -244,9 +246,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
           final _imagePath = file.path;
           final imageData = await File(_imagePath!).readAsBytes();
           final imageBase64 = base64Encode(imageData);
-          // descriptionController!.embedImage(
-          //   'data:image/png;base64,$imageBase64',
-          // );
+          descriptionController!.embedImage(
+            'data:image/png;base64,$imageBase64',
+          );
         }
       }
     } on PlatformException catch (e) {
@@ -262,7 +264,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     dateTimeSelected = DateTime.now();
     dateTimeSelectedEnd = DateTime.now();
     widget.status = 'Perbarui Status';
-    // descriptionController.clear();
+    descriptionController.clear();
     uploadEdit = true;
     loginCubit.createLog(baseParam.logInfoActivityPage, info2, urlApi);
   }
@@ -299,7 +301,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                 widget.projectDesc;
                 widget.taskDesc;
                 widget.id;
-                // widget.descriptionController = description;
+                // widget.desc = '${descriptionController.toString()}';
+                
               });
               if (state is MyActivityLoading) {
                 setState(() {
@@ -432,7 +435,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                               onPressed: () {
                                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return RamayanaMyActivityProject(update: widget.update, desc: 'descriptionController.toString()', id: widget.id);
+                                  return RamayanaMyActivityProject(update: widget.update, desc: '${descriptionController.getDelta}', id: widget.id);
                                 }));
                               },
                               child: Row(
@@ -631,83 +634,87 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                     SizedBox(
                       height: 10,
                     ),
-                    // ToolBar(
-                    //   toolBarColor: baseColors.primaryColor,
-                    //   padding: const EdgeInsets.all(8),
-                    //   iconSize: 25,
-                    //   iconColor: Colors.white,
-                    //   activeIconColor: Colors.cyan,
-                    //   controller: descriptionController,
-                    //   crossAxisAlignment: WrapCrossAlignment.start,
-                    //   direction: Axis.horizontal,
-                    //   toolBarConfig: [
-                    //     ToolBarStyle.bold,
-                    //     ToolBarStyle.italic,
-                    //     ToolBarStyle.underline,
-                    //     ToolBarStyle.strike,
-                    //     ToolBarStyle.size,
-                    //     ToolBarStyle.color,
-                    //     ToolBarStyle.listBullet,
-                    //     ToolBarStyle.listOrdered,
-                    //     ToolBarStyle.align,
-                    //     ToolBarStyle.addTable,
-                    //     // ToolBarStyle.image,
-                    //     ],
-                    //     customButtons: [
-                    //       InkWell(onTap: () {
-                    //         _openFileExplorerQuill();
-                    //       },
-                    //       child: const Icon(
-                    //         Icons.image,
-                    //         color: Colors.white,
-                    //         )),
-                    //     ],
-                    //     ),
+                    ToolBar(
+                      toolBarColor: baseColors.primaryColor,
+                      padding: const EdgeInsets.all(8),
+                      iconSize: 25,
+                      iconColor: Colors.white,
+                      activeIconColor: Colors.cyan,
+                      controller: descriptionController,
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      direction: Axis.horizontal,
+                      toolBarConfig: [
+                        ToolBarStyle.bold,
+                        ToolBarStyle.italic,
+                        ToolBarStyle.underline,
+                        ToolBarStyle.strike,
+                        ToolBarStyle.size,
+                        ToolBarStyle.color,
+                        ToolBarStyle.listBullet,
+                        ToolBarStyle.listOrdered,
+                        ToolBarStyle.align,
+                        ToolBarStyle.addTable,
+                        // ToolBarStyle.image,
+                        ],
+                        customButtons: [
+                          InkWell(onTap: () {
+                            _openFileExplorerQuill();
+                          },
+                          child: const Icon(
+                            Icons.image,
+                            color: Colors.white,
+                            )),
+                        ],
+                        ),
 
                     SizedBox(
                       height: 15,
                     ),
 
-                    // QuillHtmlEditor(
-                    //   text: '',
-                    //   hintText: 'Masukkan Deskripsi',
-                    //   controller: descriptionController,
-                    //   isEnabled: true,
-                    //   ensureVisible: false,
-                    //   minHeight: 250,
-                    //   autoFocus: false,
-                    //   textStyle: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
-                    //   hintTextStyle: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
-                    //   hintTextAlign: TextAlign.start,
-                    //   padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
-                    //   hintTextPadding: const EdgeInsets.only(left: 20,right: 20),
-                    //   backgroundColor: Color(0xFFEFECF1),
-                    //   inputAction: InputAction.newline,
-                    //   onEditingComplete: (s) => debugPrint('Editing completed $s'),
-                    //   loadingBuilder: (context) {
-                    //     requestPermission();
-                    //     return const Center(
-                    //       child: SpinKitCircle(
-                    //         color: Color.fromARGB(255, 255, 17, 17),
-                    //         size: 60.0,
-                    //         ));
-                    //           },
-                    //           onFocusChanged: (focus) {
-                    //             debugPrint('has focus $focus');
-                    //             setState(() {
-                    //               debugPrint('widget text change $focus');
-                    //             });
-                    //           },
-                    //           onTextChanged: (text) => debugPrint('widget text change $text'),
-                    //           onEditorCreated: () {
-                    //             debugPrint('Editor has been loaded');
-                    //             // setHtmlText('Testing text on load');
-                    //           },
-                    //           onEditorResized: (height) =>
-                    //               debugPrint('Editor resized $height'),
-                    //           onSelectionChanged: (sel) =>
-                    //               debugPrint('index ${sel.index}, range ${sel.length}'),
-                    //         ),
+                    QuillHtmlEditor(
+                      text: '',
+                      hintText: 'Masukkan Deskripsi',
+                      controller: descriptionController,
+                      isEnabled: true,
+                      ensureVisible: false,
+                      minHeight: 250,
+                      autoFocus: false,
+                      textStyle: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
+                      hintTextStyle: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
+                      hintTextAlign: TextAlign.start,
+                      padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
+                      hintTextPadding: const EdgeInsets.only(left: 20,right: 20),
+                      backgroundColor: Color(0xFFEFECF1),
+                      inputAction: InputAction.newline,
+                      onEditingComplete: (s) => debugPrint('Editing completed $s'),
+                      loadingBuilder: (context) {
+                      //   if (widget.update) {
+                      //   descriptionController.setText(widget.desc ?? ''); 
+                      //   debugPrint('update : ${widget.desc}');
+                      // }
+                        requestPermission();
+                        return const Center(
+                          child: SpinKitCircle(
+                            color: Color.fromARGB(255, 255, 17, 17),
+                            size: 60.0,
+                            ));
+                              },
+                              onFocusChanged: (focus) {
+                                debugPrint('has focus $focus');
+                                setState(() {
+                                  debugPrint('widget text change $focus');
+                                });
+                              },
+                              onTextChanged: (text) => debugPrint('widget text change $text'),
+                              onEditorCreated: () {
+                                debugPrint('Editor has been loaded');
+                                // setHtmlText('Testing text on load');
+                              },
+                              onEditorResized: (height) =>
+                                  debugPrint('Editor resized $height'),
+                              onSelectionChanged: (sel) =>
+                                  debugPrint('index ${sel.index}, range ${sel.length}'),
+                            ),
 
                     // -------------------------------------------UPLOAD DOKUMEN ----------------------------------------------
                     SizedBox(height: 10),
@@ -923,9 +930,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   }
 
   Future<String> getHtmlText() async {
-    // String? htmlText = await descriptionController.getText();
-    // debugPrint(htmlText);
-    return 'htmlText';
+    String? htmlText = await descriptionController.getText();
+    debugPrint('html text : $htmlText');
+    return htmlText;
   }
 
   Future<String?> fromHtmlText(String text) async {
