@@ -475,51 +475,22 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                             margin: EdgeInsets.only(top: 5),
                             height: 60,
                             decoration: BoxDecoration(color: Color(0xFFEFECF1), borderRadius: BorderRadius.circular(25)),
-                            child: MaterialButton(
-                              // color: Colors.amber,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                              onPressed: () {
-                                if (widget.projectId == null) {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return RamayanaMyActivityTask(
-                                        desc: 'descriptionController.toString()',
-                                        update: widget.update,
-                                        projectId: 'P202300001',
-                                        projectDesc: 'Reguler',
-                                        id: widget.id);
-                                  }));
-                                } else {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return RamayanaMyActivityTask(
-                                        desc: 'descriptionController.toString()',
-                                        update: widget.update,
-                                        projectId: '${widget.projectId}',
-                                        projectDesc: '${widget.projectDesc}',
-                                        id: widget.id);
-                                  }));
-                                }
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 5, right: 15),
-                                        child: Image.asset('assets/task.png'),
-                                      ),
-                                      Text(
-                                        widget.taskDesc == null ? 'My Task' : '${widget.taskDesc}',
-                                        style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
-                                      ),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: Image.asset('assets/dropdown2.png'),
-                                  ),
-                                ],
-                              ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 15, right: 15),
+                                      child: Image.asset('assets/task.png'),
+                                    ),
+                                    Text(
+                                      widget.taskDesc == null ? 'My Task' : '${widget.taskDesc}',
+                                      style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             )),
                       ],
                     ),
