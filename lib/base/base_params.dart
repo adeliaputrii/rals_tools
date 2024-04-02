@@ -63,6 +63,11 @@ const String logInfoVoidPage = 'Void Page';
 const String logInfoVoidSucc = 'Generate Void - ';
 const String logInfoVoidOfflinePage = 'Void Offline Page';
 
+//*Log Tukar Poin
+const String logCantEmpty = 'Masukkan 4 digit kode pada mesin kassa';
+const String logtukarPoinPage = 'Tukar Poin Page';
+const String logtukarPoinP = 'Aktivitas Tukar Poin';
+
 //*Log Report Page*//
 const String logInfoReportPage = 'Report Page';
 const String logInfoNavigateReportPage = 'Navigate Report List Page';
