@@ -124,9 +124,9 @@ class AppNavigator {
     }
   }
 
-  static void navigateToReportSalesDetail(BuildContext context, String? url, String title) async {
+  static void navigateToReportSalesDetail(BuildContext context, String id, String? url, String title) async {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return ReportSalesDetailPager(url: url, title: title);
+      return ReportSalesDetailPager(id: id, url: url, title: title);
     }));
   }
 

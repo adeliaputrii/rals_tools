@@ -18,10 +18,10 @@ abstract class ReportService {
   @GET('${basePath.api_report_list_pagination}{cursor}')
   Future<ReportListPaginationResponse> getListReportPagination(@Path("cursor") String query);
 
-  @GET('${basePath.api_report_list_pagination}{cursor}&header={title}&start_date={startdate}&end_date={enddate}')
+  @GET('${basePath.api_report_list_pagination}{cursor}&header={title}&start_date={startdate}&end_date={enddate}&version={version}')
   Future<ReportListPaginationResponse> searchListReport(@Path("cursor") String? cursor, @Path("title") String? title,
       @Path("startdate") String? startDate, @Path("enddate") String? endDate, @Path("version") String? version);
 
   @POST('${basePath.api_report_insert_viewer}')
-  Future<void> insertViewer(@Body() String idReport);
+  Future<ReportListPaginationResponse> insertViewer(@Body() Map<String, dynamic> idReport);
 }

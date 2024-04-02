@@ -1038,11 +1038,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                   borderRadius: BorderRadius.circular(90)),
                                               margin: EdgeInsets.only(right: 10),
                                               child: ElevatedButton(
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: Colors.transparent,
-                                                    foregroundColor: Colors.black,
-                                                    elevation: 0,
-                                                  ),
+                                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(baseColor.primaryColor)),
                                                   onPressed: () async {
                                                     // alertMenu();
                                                     showMenuBottomSheet(baseParam.menuAll);
@@ -1101,11 +1097,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                             borderRadius: BorderRadius.circular(90)),
                                                         margin: EdgeInsets.only(right: 10),
                                                         child: ElevatedButton(
-                                                            style: ElevatedButton.styleFrom(
-                                                              backgroundColor: Colors.transparent,
-                                                              foregroundColor: Colors.black,
-                                                              elevation: 0,
-                                                            ),
+                                                            style: ButtonStyle(
+                                                                backgroundColor: MaterialStateProperty.all<Color>(baseColor.primaryColor)),
                                                             onPressed: () async {
                                                               Navigator.push(
                                                                   context,
@@ -1254,11 +1247,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                     borderRadius: BorderRadius.circular(90)),
                                                                 margin: EdgeInsets.only(right: 10),
                                                                 child: ElevatedButton(
-                                                                    style: ElevatedButton.styleFrom(
-                                                                      backgroundColor: Colors.transparent,
-                                                                      foregroundColor: Colors.black,
-                                                                      elevation: 0,
-                                                                    ),
+                                                                    style: ButtonStyle(
+                                                                        backgroundColor: MaterialStateProperty.all<Color>(baseColor.primaryColor)),
                                                                     onPressed: () async {
                                                                       await read_task();
                                                                       print('read data');
@@ -1293,11 +1283,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                         borderRadius: BorderRadius.circular(90)),
                                                                     margin: EdgeInsets.only(right: 10),
                                                                     child: ElevatedButton(
-                                                                        style: ElevatedButton.styleFrom(
-                                                                          backgroundColor: Colors.transparent,
-                                                                          foregroundColor: Colors.black,
-                                                                          elevation: 0,
-                                                                        ),
                                                                         onPressed: () async {
                                                                           await read_task();
                                                                           Navigator.push(

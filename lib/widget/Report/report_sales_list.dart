@@ -6,7 +6,7 @@ class ReportSalesList extends StatefulWidget {
   State<ReportSalesList> createState() => _ReportSalesListState();
 }
 
-class _ReportSalesListState extends State<ReportSalesList> {
+class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAliveClientMixin {
   TransformationController controller = TransformationController();
   TextEditingController searchController = TextEditingController();
 
@@ -83,6 +83,8 @@ class _ReportSalesListState extends State<ReportSalesList> {
     }
   }
 
+  @override
+  bool get wantKeepAlive => true;
   @override
   void dispose() {
     searchController.dispose();
@@ -165,6 +167,7 @@ class _ReportSalesListState extends State<ReportSalesList> {
               ],
             ),
             body: BlocBuilder<ReportCubit, ReportState>(builder: (context, state) {
+              debugPrint('state is' + state.toString());
               if (state is ReportInitial) {
                 return Center(child: AppWidget().LoadingWidget());
               }
@@ -203,18 +206,60 @@ class _ReportSalesListState extends State<ReportSalesList> {
                     }
                     // listDataPaging.add(element);
                   });
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: searchEmpty(),
-                  );
-                } else {
-                  return Center(child: AppWidget().EmptyHandler(baseParam.emptyDataReportMessage));
+                  if (listDataPaging.isNotEmpty) {
+                    debugPrint('data length ${listDataPaging.length}');
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: searchEmpty(),
+                    );
+                  } else {
+                    return Center(child: AppWidget().EmptyHandler(baseParam.emptyDataReportMessage));
+                  }
                 }
               }
+
+              if (state is ReportInsertViewerSuccess) {
+                listDataPaging.clear();
+                String? url = state.response.nextPageUrl;
+                debugPrint('next url ${url}');
+
+                if (url != null) {
+                  isLoaded = false;
+                  Uri uri = Uri.parse(url);
+                  Map<String, dynamic> queryParams = uri.queryParameters;
+                  String cursorValue = queryParams['cursor'];
+                  nextUrlCursor = cursorValue;
+                } else {
+                  nextUrlCursor = null;
+                  isLoaded = true;
+                }
+
+                if (state.response.data?.isNotEmpty ?? false) {
+                  debugPrint('here?');
+
+                  state.response.data?.forEach((element) {
+                    bool headerExists = listDataPaging.any((existingElement) => existingElement.header1 == element.header1);
+                    if (!headerExists) {
+                      listDataPaging.add(element);
+                    }
+                    // listDataPaging.add(element);
+                  });
+                  if (listDataPaging.isNotEmpty) {
+                    debugPrint('data length ${listDataPaging.length}');
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: searchEmpty(),
+                    );
+                  } else {
+                    return Center(child: AppWidget().EmptyHandler(baseParam.emptyDataReportMessage));
+                  }
+                }
+              }
+
               if (state is ReportFailure) {
                 return AppWidget().ErrorHandler(baseParam.errorReportMessage, getListReport);
               }
-              return AppWidget().ErrorHandler(baseParam.errorReportMessage, getListReport);
+              return searchEmpty();
             })));
   }
 
@@ -223,10 +268,7 @@ class _ReportSalesListState extends State<ReportSalesList> {
         shrinkWrap: true,
         itemCount: listDataSearch.length,
         itemBuilder: (context, index) {
-          return CardReport(
-            response: listDataSearch[index],
-            cubit: reportCubit,
-          );
+          return CardReport(response: listDataSearch[index]);
         });
   }
 
@@ -237,7 +279,7 @@ class _ReportSalesListState extends State<ReportSalesList> {
         itemBuilder: (builder, index) {
           if (index < listDataPaging.length) {
             final item = listDataPaging[index];
-            return CardReport(response: item, cubit: reportCubit);
+            return CardReport(response: item);
           } else {
             return Center(
               child: isLoaded

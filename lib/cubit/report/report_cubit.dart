@@ -55,10 +55,11 @@ class ReportCubit extends Cubit<ReportState> {
   void insertViewer(String idReport) async {
     emit(ReportLoading());
     await repositories.insertViewer(idReport).then((value) {
-      if (value.isSuccess) {
-        emit(ReportInsertViewerSuccess());
+      if (value.isSuccess && value.dataResponse is ReportListPaginationResponse) {
+        final res = value.dataResponse as ReportListPaginationResponse;
+        emit(ReportInsertViewerSuccess(res));
       } else {
-        emit(ReportFailure(message: value.dataResponse));
+        emit(ReportFailure(message: value.dataResponse!));
       }
     });
   }

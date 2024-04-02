@@ -105,24 +105,23 @@ class NumPad extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               // this button is used to delete the last number
-               MaterialButton(
-                  minWidth: buttonSize,
-                  height: buttonSize,
-                    color: Color.fromARGB(255, 228, 228, 228),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(buttonSize / 2),
-                    ),
-                  
-                  onPressed: () {
-                   delete();
-                  },
-                  child: Icon(Icons.arrow_circle_left_sharp,
-                                size: 35,
-                                color: Color.fromARGB(255, 255, 17, 17),
-                                ),
-                  
+              MaterialButton(
+                minWidth: buttonSize,
+                height: buttonSize,
+                color: Color.fromARGB(255, 228, 228, 228),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(buttonSize / 2),
                 ),
-              
+                onPressed: () {
+                  delete();
+                },
+                child: Icon(
+                  Icons.arrow_circle_left_sharp,
+                  size: 35,
+                  color: Color.fromARGB(255, 255, 17, 17),
+                ),
+              ),
+
               // IconButton(
               //   onPressed: () => delete(),
               //   icon: FaIcon(FontAwesomeIcons.deleteLeft),
@@ -136,23 +135,22 @@ class NumPad extends StatelessWidget {
                 controller: controller,
               ),
               // this button is used to submit the entered value
-               MaterialButton(
-                  minWidth: buttonSize,
-                  height: buttonSize,
-                    color: Color.fromARGB(255, 228, 228, 228),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(buttonSize / 2),
-                    ),
-                  
-                  onPressed: () {
-                   onSubmit();
-                  },
-                  child:  Icon(Icons.done_outline_rounded,
-                                size: 35,
-                                color: Colors.green,
-                                ),
-                  
+              MaterialButton(
+                minWidth: buttonSize,
+                height: buttonSize,
+                color: Color.fromARGB(255, 228, 228, 228),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(buttonSize / 2),
                 ),
+                onPressed: () {
+                  onSubmit();
+                },
+                child: Icon(
+                  Icons.done_outline_rounded,
+                  size: 35,
+                  color: Colors.green,
+                ),
+              ),
             ],
           ),
         ],
@@ -195,8 +193,7 @@ class NumberButton extends StatelessWidget {
         child: Center(
           child: Text(
             number.toString(),
-            style: const TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 30),
+            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 30),
           ),
         ),
       ),

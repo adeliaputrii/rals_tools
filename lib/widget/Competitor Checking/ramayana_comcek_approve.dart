@@ -24,10 +24,9 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
   UserData userData = UserData();
   fetchProduk({required String m1}) async {
     ApproveModel1.approvelist1.clear();
-    final responseku =
-        await http.post(Uri.parse('${tipeurl}v1/activity/tbl_commcheck'),
-            // Uri.parse('https://v1/activity/tbl_commcheck'),
-            body: {'m1': m1});
+    final responseku = await http.post(Uri.parse('${tipeurl}v1/activity/tbl_commcheck'),
+        // Uri.parse('https://v1/activity/tbl_commcheck'),
+        body: {'m1': m1});
 
     var data = jsonDecode(responseku.body);
 
@@ -81,8 +80,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
   List controllersEnd = [];
 
   int get selectedItems => _rowSelectedCount;
-  int get selectedItemsAll =>
-      ApproveModel1.approvelist1.length - _rowSelectedCount;
+  int get selectedItemsAll => ApproveModel1.approvelist1.length - _rowSelectedCount;
 
   void approve1() async {
     if (selectedItems == 0) {
@@ -111,10 +109,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
           child: Center(
             child: Text(
               'Anda Tidak Menyetujui Apapun',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ),
         ),
@@ -135,8 +130,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
         ' devicename': '${info.device}',
         'TOKEN': 'R4M4Y4N4'
       });
-      loginCubit.createLog(
-          baseParam.logInfoComCekApprPage, baseParam.logInfoComCekSucc, "");
+      loginCubit.createLog(baseParam.logInfoComCekApprPage, baseParam.logInfoComCekSucc, "");
       // var response =
       //     await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
       print('berhasil $_udid');
@@ -182,10 +176,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
               ),
               Text(
                 'Apakah Anda yakin ingin menyetujui pengajuan ini?',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -195,8 +186,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 height: 40,
                 color: Color.fromARGB(255, 255, 17, 17),
                 onPressed: () {
@@ -204,28 +194,18 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                 },
                 child: Text(
                   'Cancel',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
                 ),
               ),
               MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 height: 40,
                 color: Colors.green,
                 onPressed: () async {
                   APIApproveService api = APIApproveService();
-                  List<ApproveModel1> modelyangsudahdiapprove = ApproveModel1
-                      .approvelist1
-                      .where((tiapitem) => tiapitem.isSelected)
-                      .toList();
+                  List<ApproveModel1> modelyangsudahdiapprove = ApproveModel1.approvelist1.where((tiapitem) => tiapitem.isSelected).toList();
 
-                  await api.ApproveSKU(
-                      user_approv: 'user_testing1',
-                      is_approv: '1',
-                      approvedModelsList: modelyangsudahdiapprove);
+                  await api.ApproveSKU(user_approv: 'user_testing1', is_approv: '1', approvedModelsList: modelyangsudahdiapprove);
 
                   print('Berhasil');
 
@@ -240,10 +220,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                 },
                 child: Text(
                   'Approve',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
                 ),
               ),
             ],
@@ -262,10 +239,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
         appBar: AppBar(
           title: Text(
             'Approve',
-            style: TextStyle(
-                fontSize: 23,
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 23, color: Color.fromARGB(255, 255, 255, 255), fontWeight: FontWeight.bold),
           ),
           backgroundColor: Color.fromARGB(255, 255, 14, 14),
           elevation: 5,
@@ -290,30 +264,19 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
               )),
           Container(
             margin: EdgeInsets.only(left: 10, top: 20),
-            child: Text('List Approve',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.w700)),
+            child: Text('List Approve', style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w700)),
           ),
           Container(
               margin: EdgeInsets.only(right: 0, top: 70, left: 10),
               child: ListTile(
-                  trailing: Text(
-                      '${userData.getFullname()} ${userData.getUsernameID()}',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500)))),
+                  trailing: Text('${userData.getFullname()} ${userData.getUsernameID()}',
+                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500)))),
           Container(
             margin: EdgeInsets.fromLTRB(0, 125, 0, 0),
             height: 60,
             decoration: BoxDecoration(
               color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black12, spreadRadius: 5, blurRadius: 15)
-              ],
+              boxShadow: [BoxShadow(color: Colors.black12, spreadRadius: 5, blurRadius: 15)],
             ),
             child: Container(
               margin: EdgeInsets.only(left: 30, right: 30),
@@ -325,10 +288,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                       value: selected2,
                       hint: Text(
                         'TOKO',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 255, 17, 17),
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500),
+                        style: TextStyle(color: Color.fromARGB(255, 255, 17, 17), fontSize: 17, fontWeight: FontWeight.w500),
                       ),
                       onChanged: (value) {
                         print(value);
@@ -342,10 +302,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                               value: e,
                               child: Text(
                                 e,
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color.fromARGB(255, 255, 17, 17)),
+                                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: Color.fromARGB(255, 255, 17, 17)),
                               ),
                             ),
                           )
@@ -354,10 +311,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                       value: selected1,
                       hint: Text(
                         'MD',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 255, 17, 17),
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500),
+                        style: TextStyle(color: Color.fromARGB(255, 255, 17, 17), fontSize: 17, fontWeight: FontWeight.w500),
                       ),
                       onChanged: (value) {
                         print(value);
@@ -371,10 +325,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                               value: e,
                               child: Text(
                                 e,
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color.fromARGB(255, 255, 17, 17)),
+                                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: Color.fromARGB(255, 255, 17, 17)),
                               ),
                             ),
                           )
@@ -393,35 +344,25 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                               var m1nie = '${element.m1}';
                               kondisiSku() {
                                 List<String> resultSku = iniSkuStr.split('');
-                                final nol =
-                                    List.filled(8 - resultSku.length, 0);
-                                final List<String> strs =
-                                    nol.map((e) => e.toString()).toList();
+                                final nol = List.filled(8 - resultSku.length, 0);
+                                final List<String> strs = nol.map((e) => e.toString()).toList();
                                 var resultSkuAdd = strs + resultSku;
                                 var resultSkuDone = resultSkuAdd.join('');
                                 return resultSkuDone;
                               }
 
                               element.isSelected = value;
-                              if (checkedAll == true &&
-                                  selectedData.indexOf(element) < 0 &&
-                                  selectedData2.indexOf(element) < 0) {
+                              if (checkedAll == true && selectedData.indexOf(element) < 0 && selectedData2.indexOf(element) < 0) {
                                 selectedData.add(kondisiSku());
                                 selectedData2.add(element.m1);
 
-                                _rowSelectedCount = element.isSelected
-                                    ? ApproveModel1.approvelist1.length
-                                    : 0;
+                                _rowSelectedCount = element.isSelected ? ApproveModel1.approvelist1.length : 0;
                               } else {
-                                selectedData.removeRange(
-                                    0, selectedData.length);
-                                selectedData2.removeRange(
-                                    0, selectedData2.length);
+                                selectedData.removeRange(0, selectedData.length);
+                                selectedData2.removeRange(0, selectedData2.length);
                                 //  selectedData.remove(element.isSelected ? '' : kondisiSku());
                                 // selectedData2.remove(element.isSelected ? '' : m1nie);
-                                _rowSelectedCount = element.isSelected
-                                    ? ApproveModel1.approvelist1.length
-                                    : 0;
+                                _rowSelectedCount = element.isSelected ? ApproveModel1.approvelist1.length : 0;
                               }
                               print(element.sku);
                             },
@@ -528,8 +469,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                       resultHjb.remove('0');
                       resultHjb.insert(resultHjb.length - 2, ',');
                       resultHjb.insert((resultHjb.length - 6), '.');
-                    } else if (resultHjb.length >= 10 &&
-                        resultHjb.length <= 12) {
+                    } else if (resultHjb.length >= 10 && resultHjb.length <= 12) {
                       resultHjb.remove(hapus);
                       resultHjb.remove('0');
                       resultHjb.insert(resultHjb.length - 2, ',');
@@ -557,13 +497,11 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                       resultSelisih.remove(strip);
                       resultSelisih.insert(resultSelisih.length - 1, ',');
                       resultSelisih;
-                    } else if (resultSelisih.length >= 5 &&
-                        resultSelisih.length < 8) {
+                    } else if (resultSelisih.length >= 5 && resultSelisih.length < 8) {
                       resultSelisih.remove(hapus);
                       resultSelisih.insert(resultSelisih.length - 1, ',');
                       resultSelisih.insert((resultSelisih.length - 5), '.');
-                    } else if (resultSelisih.length >= 8 &&
-                        resultSelisih.length < 12) {
+                    } else if (resultSelisih.length >= 8 && resultSelisih.length < 12) {
                       resultSelisih.remove(hapus);
                       resultSelisih.insert(resultSelisih.length - 1, ',');
                       resultSelisih.insert((resultSelisih.length - 5), '.');
@@ -583,8 +521,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                     List<String> resultSku = iniSkuStr.split('');
                     final nol = List.filled(8 - resultSku.length, 0);
                     print(nol);
-                    final List<String> strs =
-                        nol.map((e) => e.toString()).toList();
+                    final List<String> strs = nol.map((e) => e.toString()).toList();
                     var resultSkuAdd = strs + resultSku;
                     var resultSkuDone = resultSkuAdd.join('');
                     return resultSkuDone;
@@ -606,9 +543,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AnimatedCrossFade(
-                        crossFadeState: e.isSelectedCont
-                            ? CrossFadeState.showFirst
-                            : CrossFadeState.showSecond,
+                        crossFadeState: e.isSelectedCont ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                         duration: Duration(milliseconds: 800),
                         firstChild: Container(
                           margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -628,105 +563,80 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                  Text(
+                                    '${e.deskripsi_brg}',
+                                    style: TextStyle(color: Color.fromARGB(255, 255, 0, 0), fontSize: 15, fontWeight: FontWeight.w500),
+                                  ),
+                                  Row(
                                     children: [
-                                      Text(
-                                        '${e.deskripsi_brg}',
-                                        style: TextStyle(
-                                            color:
-                                                Color.fromARGB(255, 255, 0, 0),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            height: 26,
-                                            width: 50,
-                                            decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            child: Center(
-                                              child: Text(
-                                                '${e.m1}',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
+                                      Container(
+                                        height: 26,
+                                        width: 50,
+                                        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(20)),
+                                        child: Center(
+                                          child: Text(
+                                            '${e.m1}',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          Checkbox(
-                                              // tileColor: Colors.greenAccent,
-                                              activeColor: Colors.red,
-                                              value: e.isSelected,
-                                              onChanged: (bool? value) {
-                                                //itemChange(newValue!, index);
-                                                setState(() {
-                                                  e.isSelected = value!;
-                                                  final check = ApproveModel1
-                                                      .approvelist1
-                                                      .every((element) =>
-                                                          element.isSelected);
-                                                  checkedAll = check;
-                                                  if (e.isSelected == true) {
-                                                    selectedData
-                                                        .add(kondisiSku());
-                                                    selectedData2.add(e.m1);
-                                                    _rowSelectedCount +=
-                                                        value ? 1 : -1;
-                                                  }
-                                                  // else if (checkedAll == true) {
-                                                  //   selectedData.removeRange(0, selected)
-                                                  // }
-                                                  else {
-                                                    selectedData.remove(
-                                                        e.isSelected
-                                                            ? ''
-                                                            : kondisiSku());
-                                                    selectedData2.remove(
-                                                        e.isSelected
-                                                            ? ''
-                                                            : m1nie);
-                                                    _rowSelectedCount +=
-                                                        value ? 1 : -1;
-                                                  }
-                                                  print(selectedData);
-                                                  print(selectedData2);
-                                                  print(controllersStart);
-                                                  print(controllersStart);
-                                                });
-                                              }),
-                                        ],
+                                        ),
                                       ),
-                                    ]),
+                                      Checkbox(
+                                          // tileColor: Colors.greenAccent,
+                                          activeColor: Colors.red,
+                                          value: e.isSelected,
+                                          onChanged: (bool? value) {
+                                            //itemChange(newValue!, index);
+                                            setState(() {
+                                              e.isSelected = value!;
+                                              final check = ApproveModel1.approvelist1.every((element) => element.isSelected);
+                                              checkedAll = check;
+                                              if (e.isSelected == true) {
+                                                selectedData.add(kondisiSku());
+                                                selectedData2.add(e.m1);
+                                                _rowSelectedCount += value ? 1 : -1;
+                                              }
+                                              // else if (checkedAll == true) {
+                                              //   selectedData.removeRange(0, selected)
+                                              // }
+                                              else {
+                                                selectedData.remove(e.isSelected ? '' : kondisiSku());
+                                                selectedData2.remove(e.isSelected ? '' : m1nie);
+                                                _rowSelectedCount += value ? 1 : -1;
+                                              }
+                                              print(selectedData);
+                                              print(selectedData2);
+                                              print(controllersStart);
+                                              print(controllersStart);
+                                            });
+                                          }),
+                                    ],
+                                  ),
+                                ]),
                                 Container(
                                   child: Row(
                                     children: [
                                       Text(
                                         '${kondisiHj()}',
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 15),
+                                        style: TextStyle(color: Colors.black, fontSize: 15),
                                       ),
                                       SizedBox(
                                         width: 20,
                                       ),
                                       Text(
                                         '${kondisiHjb()}',
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 15),
+                                        style: TextStyle(color: Colors.black, fontSize: 15),
                                       ),
                                       SizedBox(
                                         width: 20,
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 5),
-                                        child: double.parse(e.hbeli) >
-                                                double.parse(e.hjualBaru)
+                                        child: double.parse(e.hbeli) > double.parse(e.hjualBaru)
                                             ? Text("${kondisiSelisih()}",
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
@@ -745,8 +655,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                                       ),
                                       Text(
                                         '${kondisiHjb()}',
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 15),
+                                        style: TextStyle(color: Colors.black, fontSize: 15),
                                       ),
                                     ],
                                   ),
@@ -776,24 +685,16 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                                 Container(
                                   margin: EdgeInsets.only(top: 10),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         '${e.deskripsi_brg}',
-                                        style: TextStyle(
-                                            color:
-                                                Color.fromARGB(255, 255, 0, 0),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
+                                        style: TextStyle(color: Color.fromARGB(255, 255, 0, 0), fontSize: 16, fontWeight: FontWeight.w500),
                                       ),
                                       Container(
                                         height: 26,
                                         width: 50,
-                                        decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
+                                        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(20)),
                                         child: Center(
                                           child: Text(
                                             '${e.m1}',
@@ -814,24 +715,21 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                                     children: [
                                       Text(
                                         '${kondisiHj()}',
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 15),
+                                        style: TextStyle(color: Colors.black, fontSize: 15),
                                       ),
                                       SizedBox(
                                         width: 20,
                                       ),
                                       Text(
                                         '${kondisiHjb()}',
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 15),
+                                        style: TextStyle(color: Colors.black, fontSize: 15),
                                       ),
                                       SizedBox(
                                         width: 20,
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 5),
-                                        child: double.parse(e.hbeli) >
-                                                double.parse(e.hjualBaru)
+                                        child: double.parse(e.hbeli) > double.parse(e.hjualBaru)
                                             ? Text("${kondisiSelisih()}",
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
@@ -850,8 +748,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                                       ),
                                       Text(
                                         '${kondisiHjb()}',
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 15),
+                                        style: TextStyle(color: Colors.black, fontSize: 15),
                                       ),
                                     ],
                                   ),
@@ -859,91 +756,58 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                                 Container(
                                   margin: EdgeInsets.only(top: 10),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
                                           Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  0, 0, 0, 0),
+                                              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                                               decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    width: 1,
-                                                    color: Colors.red),
+                                                border: Border.all(width: 1, color: Colors.red),
                                                 color: Colors.white,
                                               ),
                                               height: 35,
                                               width: 130,
                                               child: Container(
-                                                margin: EdgeInsets.only(
-                                                    left: 23, top: 15),
+                                                margin: EdgeInsets.only(left: 23, top: 15),
                                                 child: TextField(
                                                   controller: e.startDate,
                                                   decoration: InputDecoration(
-                                                      border:
-                                                          UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color: Colors.red,
-                                                            width: 5.0),
+                                                      border: UnderlineInputBorder(
+                                                        borderSide: BorderSide(color: Colors.red, width: 5.0),
                                                       ),
-                                                      hintText:
-                                                          '${e.periode_awal}',
-                                                      labelStyle: TextStyle(
-                                                          color: Colors.red),
+                                                      hintText: '${e.periode_awal}',
+                                                      labelStyle: TextStyle(color: Colors.red),
                                                       hintStyle: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 15,
                                                       ),
-                                                      enabledBorder:
-                                                          UnderlineInputBorder(
-                                                        borderSide:
-                                                            new BorderSide(
+                                                      enabledBorder: UnderlineInputBorder(
+                                                        borderSide: new BorderSide(
                                                           color: Colors.red,
                                                         ),
                                                       ),
-                                                      focusedBorder:
-                                                          UnderlineInputBorder(
-                                                        borderSide:
-                                                            new BorderSide(
-                                                                color:
-                                                                    Colors.red),
+                                                      focusedBorder: UnderlineInputBorder(
+                                                        borderSide: new BorderSide(color: Colors.red),
                                                       )),
                                                   readOnly: true,
                                                   //  aku disini
                                                   onTap: () async {
-                                                    DateTime? pickedDate =
-                                                        await showDatePicker(
+                                                    DateTime? pickedDate = await showDatePicker(
                                                       context: context,
-                                                      initialDate:
-                                                          DateTime.now(),
+                                                      initialDate: DateTime.now(),
                                                       firstDate: DateTime(1950),
                                                       lastDate: DateTime(2100),
-                                                      builder:
-                                                          (context, child) {
+                                                      builder: (context, child) {
                                                         return Theme(
-                                                          data:
-                                                              Theme.of(context)
-                                                                  .copyWith(
-                                                            colorScheme:
-                                                                ColorScheme
-                                                                    .light(
-                                                              primary: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      255,
-                                                                      17,
-                                                                      17),
-                                                              onPrimary:
-                                                                  Colors.white,
-                                                              onSurface:
-                                                                  Colors.black,
+                                                          data: Theme.of(context).copyWith(
+                                                            colorScheme: ColorScheme.light(
+                                                              primary: Color.fromARGB(255, 255, 17, 17),
+                                                              onPrimary: Colors.white,
+                                                              onSurface: Colors.black,
                                                             ),
-                                                            textButtonTheme: TextButtonThemeData(
-                                                                style: TextButton
-                                                                    .styleFrom(
-                                                                        primary:
-                                                                            Colors.red)),
+                                                            textButtonTheme:
+                                                                TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: Colors.red)),
                                                           ),
                                                           child: child!,
                                                         );
@@ -953,19 +817,12 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                                                     if (pickedDate != null) {
                                                       //  print(
                                                       //      pickedDate);
-                                                      String formattedDate =
-                                                          DateFormat(
-                                                                  'yyyy-MM-dd')
-                                                              .format(
-                                                                  pickedDate);
+                                                      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
                                                       print(formattedDate);
                                                       print('damn 33');
                                                       setState(() {
-                                                        e.startDate.text =
-                                                            formattedDate;
-                                                        controllersStart.add(e
-                                                            .startDate.text
-                                                            .toString());
+                                                        e.startDate.text = formattedDate;
+                                                        controllersStart.add(e.startDate.text.toString());
                                                         // print(controllersStart);
                                                       });
                                                     } else {}
@@ -976,84 +833,52 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                                           Text('s/d'),
                                           SizedBox(width: 10),
                                           Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  0, 0, 0, 0),
+                                              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                                               decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    width: 1,
-                                                    color: Colors.red),
+                                                border: Border.all(width: 1, color: Colors.red),
                                                 color: Colors.white,
                                               ),
                                               height: 35,
                                               width: 130,
                                               child: Container(
-                                                margin: EdgeInsets.only(
-                                                    left: 23, top: 15),
+                                                margin: EdgeInsets.only(left: 23, top: 15),
                                                 child: TextField(
                                                   controller: e.endDate,
                                                   decoration: InputDecoration(
-                                                      border:
-                                                          UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color: Colors.red,
-                                                            width: 5.0),
+                                                      border: UnderlineInputBorder(
+                                                        borderSide: BorderSide(color: Colors.red, width: 5.0),
                                                       ),
-                                                      hintText:
-                                                          '${e.periode_akhir}',
-                                                      labelStyle: TextStyle(
-                                                          color: Colors.red),
+                                                      hintText: '${e.periode_akhir}',
+                                                      labelStyle: TextStyle(color: Colors.red),
                                                       hintStyle: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 15,
                                                       ),
-                                                      enabledBorder:
-                                                          UnderlineInputBorder(
-                                                        borderSide:
-                                                            new BorderSide(
+                                                      enabledBorder: UnderlineInputBorder(
+                                                        borderSide: new BorderSide(
                                                           color: Colors.red,
                                                         ),
                                                       ),
-                                                      focusedBorder:
-                                                          UnderlineInputBorder(
-                                                        borderSide:
-                                                            new BorderSide(
-                                                                color:
-                                                                    Colors.red),
+                                                      focusedBorder: UnderlineInputBorder(
+                                                        borderSide: new BorderSide(color: Colors.red),
                                                       )),
                                                   readOnly: true,
                                                   onTap: () async {
-                                                    DateTime? pickedDate =
-                                                        await showDatePicker(
+                                                    DateTime? pickedDate = await showDatePicker(
                                                       context: context,
-                                                      initialDate:
-                                                          DateTime.now(),
+                                                      initialDate: DateTime.now(),
                                                       firstDate: DateTime(1950),
                                                       lastDate: DateTime(2100),
-                                                      builder:
-                                                          (context, child) {
+                                                      builder: (context, child) {
                                                         return Theme(
-                                                          data:
-                                                              Theme.of(context)
-                                                                  .copyWith(
-                                                            colorScheme:
-                                                                ColorScheme
-                                                                    .light(
-                                                              primary: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      255,
-                                                                      17,
-                                                                      17),
-                                                              onPrimary:
-                                                                  Colors.white,
-                                                              onSurface:
-                                                                  Colors.black,
+                                                          data: Theme.of(context).copyWith(
+                                                            colorScheme: ColorScheme.light(
+                                                              primary: Color.fromARGB(255, 255, 17, 17),
+                                                              onPrimary: Colors.white,
+                                                              onSurface: Colors.black,
                                                             ),
-                                                            textButtonTheme: TextButtonThemeData(
-                                                                style: TextButton
-                                                                    .styleFrom(
-                                                                        primary:
-                                                                            Colors.red)),
+                                                            textButtonTheme:
+                                                                TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: Colors.red)),
                                                           ),
                                                           child: child!,
                                                         );
@@ -1063,19 +888,12 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                                                     if (pickedDate != null) {
                                                       //  print(
                                                       //      pickedDate);
-                                                      String formattedDate =
-                                                          DateFormat(
-                                                                  'yyyy-MM-dd')
-                                                              .format(
-                                                                  pickedDate);
+                                                      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
                                                       //  print(
                                                       //      formattedDate);
                                                       setState(() {
-                                                        e.endDate.text =
-                                                            formattedDate;
-                                                        controllersEnd.add(e
-                                                            .endDate.text
-                                                            .toString());
+                                                        e.endDate.text = formattedDate;
+                                                        controllersEnd.add(e.endDate.text.toString());
                                                         //  print(controllersEnd);
                                                       });
                                                     } else {}
@@ -1091,24 +909,16 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                                             //itemChange(newValue!, index);
                                             setState(() {
                                               e.isSelected = value!;
-                                              final check = ApproveModel1
-                                                  .approvelist1
-                                                  .every((element) =>
-                                                      element.isSelected);
+                                              final check = ApproveModel1.approvelist1.every((element) => element.isSelected);
                                               checkedAll = check;
                                               if (e.isSelected == true) {
                                                 selectedData.add(kondisiSku());
                                                 selectedData2.add(e.m1);
-                                                _rowSelectedCount +=
-                                                    value ? 1 : -1;
+                                                _rowSelectedCount += value ? 1 : -1;
                                               } else {
-                                                selectedData.remove(e.isSelected
-                                                    ? ''
-                                                    : kondisiSku());
-                                                selectedData2.remove(
-                                                    e.isSelected ? '' : m1nie);
-                                                _rowSelectedCount +=
-                                                    value ? 1 : -1;
+                                                selectedData.remove(e.isSelected ? '' : kondisiSku());
+                                                selectedData2.remove(e.isSelected ? '' : m1nie);
+                                                _rowSelectedCount += value ? 1 : -1;
                                               }
                                               print(selectedData);
                                               print(selectedData2);
@@ -1124,8 +934,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                                   child: Column(
                                     children: [
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Container(
                                             width: 120,
@@ -1149,8 +958,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                                       ),
                                       SizedBox(height: 10),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Container(
                                             width: 120,
@@ -1174,8 +982,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                                       ),
                                       SizedBox(height: 10),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Container(
                                             width: 120,
@@ -1200,8 +1007,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
                                       ),
                                       SizedBox(height: 10),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Container(
                                             width: 120,
@@ -1259,10 +1065,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
         value: item,
         child: Text(
           item,
-          style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 13,
-              color: Color.fromARGB(255, 255, 17, 17)),
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 13, color: Color.fromARGB(255, 255, 17, 17)),
         ),
       );
 }

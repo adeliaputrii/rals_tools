@@ -37,7 +37,13 @@ class ReportSearchSuccess extends ReportState {
   List<Object?> get props => [response];
 }
 
-class ReportInsertViewerSuccess extends ReportState {}
+class ReportInsertViewerSuccess extends ReportState {
+  final ReportListPaginationResponse response;
+  const ReportInsertViewerSuccess(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
 
 class ReportLoading extends ReportState {}
 

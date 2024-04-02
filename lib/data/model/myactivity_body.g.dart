@@ -16,7 +16,7 @@ MyActivityBody _$MyActivityBodyFromJson(Map<String, dynamic> json) =>
       myactivity_desc: json['myactivity_desc'] as String?,
       dokumen: json['dokumen'] as String?,
       date_create: json['date_create'] as String?,
-      task_tech_status: json['task_tech_status'] as String,
+      task_tech_status: json['task_tech_status'] as String?,
     );
 
 Map<String, dynamic> _$MyActivityBodyToJson(MyActivityBody instance) =>

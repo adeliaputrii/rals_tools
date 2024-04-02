@@ -1,22 +1,22 @@
 part of 'import.dart';
 
 class CardReport extends StatelessWidget {
-  ReportCubit cubit;
   PagingResponse.Data response;
-  CardReport({super.key, required this.response, required this.cubit});
+
+  CardReport({super.key, required this.response});
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        cubit.insertViewer(response.idReport.toString());
-        AppNavigator.navigateToReportSalesDetail(context, response.properties, response.header1!);
+        debugPrint('sales card ${response.idReport}');
+        AppNavigator.navigateToReportSalesDetail(context, response.idReport.toString(), response.properties, response.header1!);
       },
       child: Container(
           margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
           decoration: BoxDecoration(color: baseColor.cardReportColor, borderRadius: BorderRadius.circular(20)),
-          height: screenSize.height / 9,
+          height: screenSize.height / 8,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(

@@ -3,7 +3,8 @@ part of 'import.dart';
 class ReportSalesDetailPager extends StatefulWidget {
   String? url;
   String title;
-  ReportSalesDetailPager({super.key, required this.url, required this.title});
+  String id;
+  ReportSalesDetailPager({super.key, required this.id, required this.url, required this.title});
 
   @override
   State<ReportSalesDetailPager> createState() => _ReportSalesDetailPagerState();
@@ -11,10 +12,14 @@ class ReportSalesDetailPager extends StatefulWidget {
 
 class _ReportSalesDetailPagerState extends State<ReportSalesDetailPager> {
   late LoginCubit loginCubit;
+  late ReportCubit reportCubit;
 
   @override
   void initState() {
+    reportCubit = context.read<ReportCubit>();
     super.initState();
+    debugPrint('id report${widget.id}');
+    reportCubit.insertViewer(widget.id);
   }
 
   void _onBackPressed() {

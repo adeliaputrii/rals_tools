@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:myactivity_project/tools/settingsralstools.dart';
 
 import '../model/repositories_response.dart';
 import '../service/report_service.dart';
@@ -90,9 +92,12 @@ class ReportRepositories {
     late RepositoriesResponse response;
 
     try {
-      await services.insertViewer(idReport).then((value) {
-        response = RepositoriesResponse(isSuccess: true, statusCode: 200, dataResponse: "Sukses");
+      var idReportJson = {'id_report': idReport, 'version': versi};
+      print('insert viewer ');
+      await services.insertViewer(idReportJson).then((value) {
+        response = RepositoriesResponse(isSuccess: true, statusCode: 200, dataResponse: value);
       });
+      print('insert viewer sucess');
     } catch (e) {
       if (e is IOException) {
         response = RepositoriesResponse(isSuccess: false, statusCode: 500, dataResponse: e.toString());
@@ -106,6 +111,8 @@ class ReportRepositories {
             statusCode: e.response?.statusCode,
             dataResponse: e.response?.data['message'].toString() ?? 'Please check your connection..');
       }
+
+      print('insert viewer failed ${e.toString()}');
     }
     return response;
   }
