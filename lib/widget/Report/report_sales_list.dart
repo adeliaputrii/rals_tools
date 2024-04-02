@@ -167,7 +167,6 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
               ],
             ),
             body: BlocBuilder<ReportCubit, ReportState>(builder: (context, state) {
-              debugPrint('state is' + state.toString());
               if (state is ReportInitial) {
                 return Center(child: AppWidget().LoadingWidget());
               }
@@ -197,8 +196,6 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
                 }
 
                 if (state.response.data?.isNotEmpty ?? false) {
-                  debugPrint('here?');
-
                   state.response.data?.forEach((element) {
                     bool headerExists = listDataPaging.any((existingElement) => existingElement.header1 == element.header1);
                     if (!headerExists) {
@@ -221,7 +218,6 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
               if (state is ReportInsertViewerSuccess) {
                 listDataPaging.clear();
                 String? url = state.response.nextPageUrl;
-                debugPrint('next url ${url}');
 
                 if (url != null) {
                   isLoaded = false;
@@ -235,8 +231,6 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
                 }
 
                 if (state.response.data?.isNotEmpty ?? false) {
-                  debugPrint('here?');
-
                   state.response.data?.forEach((element) {
                     bool headerExists = listDataPaging.any((existingElement) => existingElement.header1 == element.header1);
                     if (!headerExists) {
@@ -245,7 +239,6 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
                     // listDataPaging.add(element);
                   });
                   if (listDataPaging.isNotEmpty) {
-                    debugPrint('data length ${listDataPaging.length}');
                     return Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: searchEmpty(),
@@ -291,48 +284,5 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
             );
           }
         });
-  }
-}
-
-class SearchInputReport extends StatelessWidget {
-  TextEditingController controller;
-  final void Function(String) onSelectedCallback;
-  SearchInputReport({super.key, required this.controller, required this.onSelectedCallback});
-
-  List<String> titleReport = [];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 0),
-      height: MediaQuery.of(context).size.height / 25,
-      child: TextField(
-        readOnly: false,
-        keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.search,
-        controller: controller,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Color.fromARGB(255, 236, 236, 236),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              width: 2,
-              color: Color.fromARGB(255, 236, 236, 236),
-            ), //<-- SEE HERE
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              width: 2,
-              color: Color.fromARGB(255, 236, 236, 236),
-            ), //<-- SEE HERE
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-        ),
-        onChanged: (text) {
-          onSelectedCallback(text);
-        },
-      ),
-    );
   }
 }
