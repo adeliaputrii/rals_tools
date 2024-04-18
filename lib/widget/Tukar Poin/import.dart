@@ -20,6 +20,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:myactivity_project/cubit/id_cash/id_cash_cubit.dart';
 import 'package:myactivity_project/cubit/login/login_cubit.dart';
+import 'package:myactivity_project/data/model/data_member_card_body.dart';
 import 'package:myactivity_project/database/db_log.dart';
 import 'package:myactivity_project/models/model_log.dart';
 import 'package:myactivity_project/utils/popup_widget.dart';

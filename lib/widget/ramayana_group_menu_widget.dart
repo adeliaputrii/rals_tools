@@ -49,7 +49,7 @@ class ToolsMenuWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               menuIcon(baseParam.menuSuratJalan, baseAsset.suratJalanLogo, navigate: () => AppNavigator.navigateToSuratJalan(context)),
-              menuIcon(baseParam.menuKartuPerusahaan, baseAsset.companyCardLogo, navigate: () => AppNavigator.navigateToKartuPerusahaan(context)),
+              menuIcon(baseParam.menuMemberPerusahaan, baseAsset.companyCardLogo, navigate: () => AppNavigator.navigateToKartuPerusahaan(context)),
               menuIcon(baseParam.menuVoid, baseAsset.voidLogo, navigate: () => AppNavigator.navigateToVoid(context))
             ]),
           ),
@@ -120,7 +120,7 @@ class AllMenuWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20.0),
                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                    menuIcon(baseParam.menuKartuPerusahaan, baseAsset.companyCardLogo,
+                    menuIcon(baseParam.menuMemberPerusahaan, baseAsset.companyCardLogo,
                         navigate: () => AppNavigator.navigateToKartuPerusahaan(context)),
                     menuIcon(baseParam.menuTukarPoin, baseAsset.tukarPoinLogo, navigate: () => AppNavigator.navigateToTukarPoin(context)),
                     menuIcon(baseParam.menuIdCash, baseAsset.idCashLogo, navigate: () => AppNavigator.navigateToIdCash(context)),

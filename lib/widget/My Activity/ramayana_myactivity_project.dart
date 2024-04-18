@@ -25,7 +25,7 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
 
   void _navigateToListTask(String projectId, String projectDesc) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return RamayanaMyActivityTask(
+      return RamayanaMyActivity(
         update: widget.update,
         desc: widget.desc,
         id: widget.id,
@@ -104,26 +104,6 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
                                       style: GoogleFonts.plusJakartaSans(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500)),
                                 ]),
                               ),
-                              MaterialButton(
-                                padding: const EdgeInsets.only(right: 10),
-                                onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return RamayanaMyActivityTask(
-                                      update: widget.update,
-                                      desc: widget.desc,
-                                      id: widget.id,
-                                      projectId: '${state.response.data?[index].projectId}',
-                                      projectDesc: '${state.response.data?[index].projectDesc}',
-                                    );
-                                  }));
-                                },
-                                child: Row(
-                                  children: [
-                                    Text('Pilih Task', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.grey)),
-                                    Image.asset('assets/dropdown.png'),
-                                  ],
-                                ),
-                              )
                             ],
                           ),
                         ),

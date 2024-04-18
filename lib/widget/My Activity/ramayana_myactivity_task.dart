@@ -41,13 +41,6 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            // Navigator.pushAndRemoveUntil(
-            //     context,
-            //     MaterialPageRoute(
-            //       builder: (context) =>
-            //           DefaultBottomBarController(child: RamayanaMyActivityProject(update: widget.update, desc: widget.desc, id: widget.id)),
-            //     ),
-            //     (Route<dynamic> route) => false);
             Navigator.pop(context);
           },
           icon: Icon(
@@ -73,6 +66,13 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
                 );
               }
               if (state is MyActivitySuccessTask) {
+                if(state.response.data!.isEmpty) {
+                  return Center(
+                    child: Text('Tidak tersedia tugas',
+                    style: GoogleFonts.plusJakartaSans(fontSize: 18, color: baseColors.primaryColor)
+                    ),
+                  );
+                } else {
                 return ListView.builder(
                     shrinkWrap: true,
                     itemCount: state.response.data!.length,
@@ -134,6 +134,7 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
                         ),
                       );
                     });
+              }
               }
               if (state is MyActivityFailure) {
                 Center(

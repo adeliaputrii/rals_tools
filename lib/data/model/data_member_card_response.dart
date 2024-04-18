@@ -39,6 +39,7 @@ class Data {
   String? nohp;
   String? email;
   String? saldo;
+  String? poin;
   int? saldoPemakaian;
 
   Data(
@@ -47,6 +48,7 @@ class Data {
       this.nohp,
       this.email,
       this.saldo,
+      this.poin,
       this.saldoPemakaian});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -55,6 +57,7 @@ class Data {
     nohp = json['nohp'];
     email = json['email'];
     saldo = json['saldo'];
+    poin = json['poin'];
     saldoPemakaian = json['saldo_pemakaian'];
   }
 
@@ -65,6 +68,7 @@ class Data {
     data['nohp'] = this.nohp;
     data['email'] = this.email;
     data['saldo'] = this.saldo;
+    data['poin'] = this.poin;
     data['saldo_pemakaian'] = this.saldoPemakaian;
     return data;
   }

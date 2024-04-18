@@ -113,27 +113,27 @@ const String sjLspb = 'LSPB';
 const String sjKoliDiterima = 'Koli Diterima';
 const String sjKoliHilang = 'Koli Hilang';
 const String sjCatatan = 'Catatan';
-//Popup Kartu Tambahan
+//Popup Member Tambahan
 const String companyCardTitle = 'Member Perusahaan';
 const String cantempty = "Masukkan 6 digit kode POS";
 const String notFoundTransaction = "Belum ada Transaksi";
-const String cardNotFound = "Anda tidak mempunyai Kartu Perusahaan";
+const String cardNotFound = "Anda tidak mempunyai Member Perusahaan";
 const String cardError = "Gagal mengambil data";
 const String page = "Member Perusahaan Password";
 const String cardSuccess = "Member Perusahaan Password Sukses";
 const String cardFailed = "Member Perusahaan Password Gagal";
-const String chooseCard = "Pilih Kartu";
-const String trrCard = "Kartu TRR";
-const String rmsCard = "Kartu RMS";
-const String ifsCard = "Kartu IFS";
-const String rmsCardPage = "Halaman Kartu RMS";
-const String trrCardPage = "Halaman Kartu TRR";
-const String ifsCardPage = "Halaman Kartu IFS";
+const String chooseCard = "Pilih Member";
+const String trrCard = "Member TRR";
+const String rmsCard = "Member RMS";
+const String ifsCard = "Member IFS";
+const String rmsCardPage = "Halaman Member RMS";
+const String trrCardPage = "Halaman Member TRR";
+const String ifsCardPage = "Halaman Member IFS";
 const String navigatePayment = "Navigasi Pembayaran";
 const String navigateHistory = "Navigasi Riwayat Transaksi";
-const String paymentTrrPage = "Halaman Pembayaran Kartu TRR";
-const String paymentRmsPage = "Halaman Pembayaran Kartu RMS";
-const String paymentIfsPage = "Halaman Pembayaran Kartu IFS";
+const String paymentTrrPage = "Halaman Pembayaran Member TRR";
+const String paymentRmsPage = "Halaman Pembayaran Member RMS";
+const String paymentIfsPage = "Halaman Pembayaran Member IFS";
 const String posCode = "Generate Kode POS - ";
 
 //Tipe Transaksi Payment
@@ -153,7 +153,7 @@ const menuAll = 'All Menu';
 
 const String menuIdCash = 'ID\nCash';
 const String menuTukarPoin = 'Tukar\nPoin';
-const String menuKartuPerusahaan = 'Kartu\nPerusahaan';
+const String menuMemberPerusahaan = 'Member\nPerusahaan';
 
 const String menuSuratJalan = 'Surat\nJalan';
 const String menuMyActivity = 'My\nActivity';

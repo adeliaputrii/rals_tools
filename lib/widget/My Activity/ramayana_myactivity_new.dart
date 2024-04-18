@@ -102,6 +102,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     super.initState();
     cubit = context.read<MyActivityCubit>();
     loginCubit = context.read<LoginCubit>();
+    cubit.getTaskById(widget.projectId ?? 'P202300001');
     setData(widget.response);
     popUpWidget = PopUpWidget(context);
     Permission.camera.request();
@@ -143,7 +144,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   popupEdit() async {
     final result = await showCupertinoModalPopup(context: context, builder: (context) => MyActivityEdit());
 
-    myActId = result['id'].toString();
+    widget.id = result['id'].toString();
     descriptionController.setText(result['desc']);
     debugPrint('desc controller ${descriptionController}');
     widget.desc = result['desc'];
@@ -475,22 +476,65 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                             margin: EdgeInsets.only(top: 5),
                             height: 60,
                             decoration: BoxDecoration(color: Color(0xFFEFECF1), borderRadius: BorderRadius.circular(25)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 15, right: 15),
-                                      child: Image.asset('assets/task.png'),
-                                    ),
-                                    Text(
-                                      widget.taskDesc == null ? 'My Task' : '${widget.taskDesc}',
-                                      style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                            child: MaterialButton(
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return RamayanaMyActivityTask(
+                                    update: widget.update, 
+                                    desc: '${descriptionController.getText()}', 
+                                    id: widget.id, 
+                                    projectId: widget.projectId ?? 'P202300001',
+                                    projectDesc: widget.projectDesc,
+                                    );
+                                }));
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 5, right: 15),
+                                        child: Image.asset('assets/task.png'),
+                                      ),
+                                      BlocBuilder<MyActivityCubit, MyActivityState>(builder: (context, state) {
+                                      if (state is MyActivityLoading) {
+                                        return Text(
+                                            '${widget.taskDesc ?? 'My Task'}',
+                                            style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
+                                          );
+                                      }
+                                      if (state is MyActivitySuccessTask) {
+                                        if (state.response.data!.isEmpty) {
+                                          return Text(
+                                            'Pilih Task',
+                                            style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
+                                          );
+                                        } else {
+                                        widget.taskId = widget.taskId ?? state.response.data?.first.taskId ?? '${widget.taskId}';
+                                        final taskDesc = widget.taskDesc ?? state.response.data?.first.taskDesc ?? '${widget.taskDesc}';
+                                          return Text(
+                                            '${taskDesc}',
+                                            style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
+                                          );
+                                        }
+                                        } else {
+                                          return Text(
+                                            '${widget.taskDesc ?? 'My Task'}',
+                                            style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black),
+                                          );
+                                        }
+                                      }
+                                      )
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Image.asset('assets/dropdown2.png'),
+                                  ),
+                                ],
+                              ),
                             )),
                       ],
                     ),
@@ -880,7 +924,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
         task_id: '${widget.taskId ?? 'P202300001-001'}',
         projek_id: '${widget.projectId ?? 'P202300001'}',
         myactivity_desc: await getHtmlText(),
-        myactivity_id: myActId,
+        myactivity_id: widget.id,
         task_tech_status: '${widget.status}',
         dokumen: '',
         date_create: '${DateTime.now()}');

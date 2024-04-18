@@ -97,9 +97,9 @@ Future<void> registerAppServices(String packageName) async {
   appUtil.initNetwork();
   final appServices = AppServices(GetIt.I.get<Dio>());
 
-  // final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_prod}' : '${basePath.base_url_dev}';
+  final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_prod}' : '${basePath.base_url_dev}';
 
-  final url = '${basePath.base_url_dev}';
+  // final url = '${basePath.base_url_dev}';
   await appServices.registerAppServices(url);
 }
 

@@ -1502,7 +1502,7 @@ class _FadeInImageWidgetState extends State<FadeInImageWidget> with TickerProvid
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 250,
+      height: 300,
       width: 300,
       // color: Colors.amber,
       child: FadeTransition(
