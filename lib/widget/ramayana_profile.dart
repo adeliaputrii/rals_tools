@@ -21,6 +21,7 @@ class _ProfileeState extends State<Profilee> {
   String _email = '';
   var _member = '';
   var noMember = '';
+  var poin = '';
   String _divisi = '';
   String _udid = 'Unknown';
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -61,43 +62,6 @@ class _ProfileeState extends State<Profilee> {
     print(tipeurl);
     final body = DataMemberCardBody(idUser: id_user);
     cubit.getDataMember(body);
-    // ApprovalIdcashCustomer.approvalidcashcust.clear();
-    // final responseku = await http.post(
-    //     Uri.parse('${tipeurl}v1/membercards/tbl_customer'),
-    //     body: {'id_user': '${userData.getUsername7()}'});
-
-    // var data = jsonDecode(responseku.body);
-
-    // if (data['status'] == 200) {
-    //   print("API Success oooo");
-    //   print(data);
-    //   int count = data['data'].length;
-    //   final Map<String, ApprovalIdcashCustomer> profileMap = new Map();
-    //   final Map<String, LogOffline> profileMap1 = new Map();
-    //   for (int i = 0; i < count; i++) {
-    //     ApprovalIdcashCustomer.approvalidcashcust
-    //         .add(ApprovalIdcashCustomer.fromjson(data['data'][i]));
-    //   }
-    //   ApprovalIdcashCustomer.approvalidcashcust.forEach((element) {
-    //     profileMap[element.nokartu] = element;
-    //     setState(() {
-    //       debugPrint('no member ${element.nokartu}');
-    //       _member = '${element.nokartu}';
-    //       noMember = '${element.nokartu}';
-    //       debugPrint('no member ${noMember}');
-    //     });
-    //     ApprovalIdcashCustomer.approvalidcashcust = profileMap.values.toList();
-    //     print('yaa');
-    //     print(profileMap);
-    //     print(ApprovalIdcashCustomer.approvalidcashcust);
-    //   });
-    //   print('check length ${ApprovalIdcashCustomer.approvalidcashcust.length}');
-    //   print(data['data'].toString());
-    // } else {
-    //   print('NO DATA');
-    // }
-
-    // setState(() {});
   }
 
   Future<void> dapetinData() async {
@@ -271,7 +235,10 @@ class _ProfileeState extends State<Profilee> {
     return BlocListener<IDCashCubit, IDCashState>(
         listener: (context, state) {
           if (state is IDCashSuccess) {
+            setState(() {
             noMember = state.response.data!.first.nokartu.toString();
+            poin = state.response.data!.first.poin.toString();
+            });
           }
         },
         child: Scaffold(
@@ -386,7 +353,7 @@ class _ProfileeState extends State<Profilee> {
                                 Container(
                                   margin: EdgeInsets.only(left: 20),
                                   child: CircleAvatar(
-                                      backgroundColor: Color.fromARGB(255, 210, 14, 0), radius: 30, backgroundImage: AssetImage('assets/email.png')),
+                                      backgroundColor: baseColors.primaryColor, radius: 30, backgroundImage: AssetImage('assets/email.png')),
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(top: 12),
@@ -420,61 +387,9 @@ class _ProfileeState extends State<Profilee> {
                               ],
                             ),
                           ),
-
-                          // Container(
-                          //        height: 80,
-                          //        margin: EdgeInsets.only(bottom: 20),
-                          //        decoration: BoxDecoration(
-                          //       color: Colors.grey[200],
-                          //       borderRadius: BorderRadius.circular(20)
-                          //     ),
-                          //     child: Row(
-                          //       children: [
-                          //         Container(
-                          //           margin: EdgeInsets.only(left: 20),
-                          //           child: CircleAvatar(
-                          //           backgroundColor: Color.fromARGB(255, 210, 14, 0),
-                          //           radius: 30,
-                          //           backgroundImage: AssetImage('assets/telp.png')),
-                          //         ),
-                          //         Container(
-                          //           margin: EdgeInsets.only(top: 12),
-                          //           child: Column(
-                          //             mainAxisAlignment: MainAxisAlignment.start,
-                          //             crossAxisAlignment: CrossAxisAlignment.start,
-                          //             children: [
-                          //                 Container(
-                          //                   margin: EdgeInsets.only(left: 20),
-                          //                   child: Text('No. HP',
-                          //                   style: GoogleFonts.plusJakartaSans(
-                          //                     textStyle: TextStyle(
-                          //                       fontSize: 19,
-                          //                       color: Color.fromARGB(255, 71, 70, 70),
-                          //                       fontWeight: FontWeight.w500
-                          //                       )
-                          //                   ),
-                          //                   ),
-                          //                 ),
-                          //                 SizedBox(
-                          //                   height: 5,
-                          //                 ),
-                          //                  Container(
-                          //                   margin: EdgeInsets.only(left: 20),
-                          //                    child: Text(userData.getPhone() != null ? '-' : '${userData.getPhone()}',
-                          //                     style: GoogleFonts.plusJakartaSans(
-                          //                     textStyle: TextStyle(
-                          //                       fontSize: 17,
-                          //                       color: Color.fromARGB(255, 71, 70, 70))), ),
-                          //                  ),
-                          //             ],),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ),
-
                           Container(
                             height: 80,
-                            margin: EdgeInsets.only(bottom: 30),
+                            margin: EdgeInsets.only(bottom: 20),
                             decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(20)),
                             child: Row(
                               children: [
@@ -515,6 +430,56 @@ class _ProfileeState extends State<Profilee> {
                               ],
                             ),
                           ),
+                          Container(
+                                 height: 80,
+                                 margin: EdgeInsets.only(bottom: 30),
+                                 decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(20)
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(left: 20),
+                                    child: CircleAvatar(
+                                    backgroundColor: Color.fromARGB(255, 210, 14, 0),
+                                    radius: 30,
+                                    backgroundImage: AssetImage('assets/poin.png')),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 12),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                          Container(
+                                            margin: EdgeInsets.only(left: 20),
+                                            child: Text('Poin',
+                                            style: GoogleFonts.plusJakartaSans(
+                                              textStyle: TextStyle(
+                                                fontSize: 19,
+                                                color: Color.fromARGB(255, 71, 70, 70),
+                                                fontWeight: FontWeight.w500
+                                                )
+                                            ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                           Container(
+                                            margin: EdgeInsets.only(left: 20),
+                                             child: Text('${poin}',
+                                              style: GoogleFonts.plusJakartaSans(
+                                              textStyle: TextStyle(
+                                                fontSize: 17,
+                                                color: Color.fromARGB(255, 71, 70, 70))), ),
+                                           ),
+                                      ],),
+                                  ),
+                                ],
+                              ),
+                            ),
 
                           Center(
                             child: Container(

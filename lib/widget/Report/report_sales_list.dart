@@ -133,7 +133,7 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
                       },
                     )
                   : Text(
-                      'Laporan',
+                      'LAPORAN',
                       style: TextStyle(color: Colors.white),
                     ),
               centerTitle: true,

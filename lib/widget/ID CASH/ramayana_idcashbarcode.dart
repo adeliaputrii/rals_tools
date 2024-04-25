@@ -90,13 +90,13 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
         ),
         title: Container(
             margin: EdgeInsets.only(left: 100, right: 115),
-            child: Text('Kode ID Cash',
+            child: Text('KODE ID CASH',
                 style: GoogleFonts.plusJakartaSans(
                     textStyle: TextStyle(
                         fontSize: 23,
                         color: Colors.white,
                         fontWeight: FontWeight.w500)))),
-        backgroundColor: Color.fromARGB(255, 255, 0, 0),
+        backgroundColor: baseColors.primaryColor,
         elevation: 0,
         toolbarHeight: 80,
       ),
@@ -106,12 +106,10 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
           color: Color.fromARGB(255, 227, 222, 222),
         ),
         Container(
-          color: Color.fromARGB(255, 255, 0, 0),
+          color: baseColors.primaryColor,
           height: 200,
         ),
         Container(
-          //  height: MediaQuery.of(context).size.height/1.129,
-          //  color: Colors.green,
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -244,7 +242,7 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
                             style: GoogleFonts.plusJakartaSans(
                                 textStyle: TextStyle(
                                     fontSize: 20, color: Colors.white))),
-                        color: Color.fromARGB(255, 255, 17, 17),
+                        color: baseColors.primaryColor,
                         onPressed: () async {
                           _unsecureScreen();
                           loginCubit.createLog(baseParam.logInfoIdcashPage,

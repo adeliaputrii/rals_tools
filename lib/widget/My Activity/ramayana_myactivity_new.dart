@@ -294,7 +294,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
           title: Text('My Activity', style: GoogleFonts.plusJakartaSans(fontSize: 23, color: Colors.white)),
           backgroundColor: baseColors.primaryColor,
           elevation: 5,
-          toolbarHeight: 80,
+          toolbarHeight: 70,
         ),
         body: BlocListener<MyActivityCubit, MyActivityState>(
             listener: (context, state) {

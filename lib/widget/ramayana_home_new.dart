@@ -490,7 +490,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(16), topLeft: Radius.circular(16))),
-      backgroundColor: baseColor.primaryColor,
+      backgroundColor: baseColors.primaryColor,
       isScrollControlled: true,
       useSafeArea: true,
       isDismissible: true,
@@ -921,7 +921,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                 child: Container(
                                   margin: EdgeInsets.only(top: 0),
                                   height: 300,
-                                  color: Color.fromARGB(255, 210, 14, 0),
+                                  color: baseColors.primaryColor
                                 ),
                               ),
                               Row(
@@ -1038,7 +1038,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                   borderRadius: BorderRadius.circular(90)),
                                               margin: EdgeInsets.only(right: 10),
                                               child: ElevatedButton(
-                                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(baseColor.primaryColor)),
+                                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(baseColors.primaryColor)),
                                                   onPressed: () async {
                                                     // alertMenu();
                                                     showMenuBottomSheet(baseParam.menuAll);
@@ -1098,7 +1098,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                         margin: EdgeInsets.only(right: 10),
                                                         child: ElevatedButton(
                                                             style: ButtonStyle(
-                                                                backgroundColor: MaterialStateProperty.all<Color>(baseColor.primaryColor)),
+                                                                backgroundColor: MaterialStateProperty.all<Color>(baseColors.primaryColor)),
                                                             onPressed: () async {
                                                               Navigator.push(
                                                                   context,
@@ -1248,7 +1248,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                 margin: EdgeInsets.only(right: 10),
                                                                 child: ElevatedButton(
                                                                     style: ButtonStyle(
-                                                                        backgroundColor: MaterialStateProperty.all<Color>(baseColor.primaryColor)),
+                                                                        backgroundColor: MaterialStateProperty.all<Color>(baseColors.primaryColor)),
                                                                     onPressed: () async {
                                                                       await read_task();
                                                                       print('read data');

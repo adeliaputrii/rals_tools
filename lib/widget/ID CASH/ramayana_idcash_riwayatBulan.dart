@@ -131,15 +131,15 @@ class _RamayanaRiwayatIDCashBulanState extends State<RamayanaRiwayatIDCashBulan>
         ),
         title: Container(
             margin: EdgeInsets.only(left: 70, right: 70),
-            child: Text('Riwayat Transaksi',
+            child: Text('RIWAYAT TRANSAKSI',
                 style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 23, color: Colors.white, fontWeight: FontWeight.w500)))),
-        backgroundColor: Color.fromARGB(255, 255, 0, 0),
+        backgroundColor: baseColors.primaryColor,
         elevation: 0,
         toolbarHeight: 80,
       ),
       body: Stack(fit: StackFit.loose, children: [
         Container(
-          color: Color.fromARGB(255, 255, 0, 0),
+          color: baseColors.primaryColor,
         ),
         Container(
           margin: EdgeInsets.only(top: 30, left: 5, right: 5, bottom: 10),

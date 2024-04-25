@@ -108,6 +108,7 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                 color: Colors.white,
               ),
             ),
+            centerTitle: true,
             title: Text(
               'ID CASH',
               style: GoogleFonts.plusJakartaSans(
@@ -116,21 +117,20 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                       color: Colors.white,
                       fontWeight: FontWeight.w500)),
             ),
-            backgroundColor: Color.fromARGB(255, 210, 14, 0),
-            elevation: 5,
-            toolbarHeight: 90,
+            backgroundColor: baseColors.primaryColor,
+            toolbarHeight: 70,
           ),
           body: Stack(fit: StackFit.loose, children: <Widget>[
             Container(
                 // height: MediaQuery.of(context).size.height/1.14,
                 decoration: BoxDecoration(
-              color: Color.fromARGB(255, 210, 14, 0),
+              color: baseColors.primaryColor,
             )),
             Container(
               width: 100000,
               height: 300,
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 210, 14, 0),
+                color: baseColors.primaryColor,
                 // borderRadius: BorderRadius.circular(20)
               ),
               child: Column(
@@ -157,115 +157,6 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                                   fontWeight: FontWeight.w500)))
                     ],
                   ),
-
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //   children: splitted.map((map) {
-                  //       getNameMenu() {
-                  //         var menu = '${map}';
-                  //         print(map);
-                  //         if (menu == "[ nokartu"){
-                  //           return 'No.Kartu ID CASH';
-                  //         }  else if (menu == "[ nokartu]]") {
-                  //           return 'No.Kartu ID CASH';
-                  //         } else if (menu == " transaksi]") {
-                  //           return 'Riwayat Transaksi';
-                  //         } else if (menu == " transaksi]]") {
-                  //           return 'Riwayat Transaksi';
-                  //         } else if (menu == "[ transaksi]]") {
-                  //           return 'Riwayat Transaksi';
-                  //         }  else {
-                  //           return map;
-                  //         }
-                  //       }
-
-                  //       getIconMenu() {
-                  //         var menu = '${map}';
-                  //         if (menu == "[ nokartu"){
-                  //           return Icon(Icons.payment_outlined,
-                  //               size: 35,
-                  //               color: Color.fromARGB(255, 210, 14, 0),
-                  //               );
-                  //         } else if (menu == "[ nokartu]]") {
-                  //         return Icon(Icons.payment_outlined,
-                  //                size: 35,
-                  //               color: Color.fromARGB(255, 210, 14, 0),
-                  //               );
-                  //         } else if (menu == " transaksi]") {
-                  //         return Icon(Icons.bar_chart,
-                  //                size: 35,
-                  //               color: Color.fromARGB(255, 210, 14, 0),
-                  //               );
-                  //         } else if (menu == " transaksi]]") {
-                  //         return Icon(Icons.bar_chart,
-                  //                size: 35,
-                  //               color: Color.fromARGB(255, 210, 14, 0),
-                  //               );
-                  //         } else if (menu == "[ transaksi]]") {
-                  //         return Icon(Icons.bar_chart,
-                  //                size: 35,
-                  //               color: Color.fromARGB(255, 210, 14, 0),
-                  //               );
-                  //         } else {
-                  //            Icon(Icons.menu,
-                  //               size: 35,
-                  //               color: Colors.white,
-                  //               );
-                  //         }
-                  //       }
-                  //       return
-                  //     Column(
-
-                  //       children: ApprovalIdcashCustomer.approvalidcashcust.map((e) {
-                  //             return
-                  //         Column(
-                  //           children: [
-                  //             MaterialButton(
-                  //                       minWidth:  MediaQuery.of(context).size.width/7,
-                  //                       height:  MediaQuery.of(context).size.height/15,
-                  //                       shape: RoundedRectangleBorder(
-                  //                       borderRadius: BorderRadius.circular(50)
-                  //                       ),
-                  //                       color: Colors.white,
-                  //                       onPressed: () {
-                  //                         Navigator.push(context, MaterialPageRoute(builder: (context){
-                  //                            var nameControllerAkses = '${map}';
-                  //                            if (nameControllerAkses == "[ nokartu") {
-                  //                             return RamayanaPin();
-                  //                            } else if (nameControllerAkses == '[ nokartu]]') {
-                  //                              return RamayanaPin();
-                  //                            } else if (nameControllerAkses == ' transaksi]') {
-                  //                              ApprovalIdcash.approvalidcash.add(e.nokartu);
-                  //                              print(ApprovalIdcash.approvalidcash);
-                  //                             return RamayanaRiwayatIDCash();
-                  //                            } else if (nameControllerAkses == ' transaksi]]') {
-                  //                              ApprovalIdcash.approvalidcash.add(e.nokartu);
-                  //                              print(ApprovalIdcash.approvalidcash);
-                  //                             return RamayanaRiwayatIDCash();
-                  //                            } else if (nameControllerAkses == '[ transaksi]]') {
-                  //                              ApprovalIdcash.approvalidcash.add(e.nokartu);
-                  //                              print(ApprovalIdcash.approvalidcash);
-                  //                             return RamayanaRiwayatIDCash();
-                  //                            } else {
-                  //                            return RamayanaIDCash();
-                  //                            }
-
-                  //                       }));
-                  //                       },
-                  //                      child:  getIconMenu()
-
-                  //                       ),
-                  //                        SizedBox(
-                  //                     height: 10,
-                  //                   ),
-                  //           Text('${getNameMenu()}', style: TextStyle(color: Colors.white, fontSize: 16, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500),),
-                  //           ],
-                  //         );
-
-                  //       },).toList(),
-                  //     );
-                  //     }).toList()
-                  // )
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -288,7 +179,7 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                               child: Icon(
                                 Icons.payment_outlined,
                                 size: 35,
-                                color: Color.fromARGB(255, 210, 14, 0),
+                                color: baseColors.primaryColor,
                               )),
                           SizedBox(
                             height: 10,
@@ -323,7 +214,7 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                               child: Icon(
                                 Icons.bar_chart,
                                 size: 35,
-                                color: Color.fromARGB(255, 210, 14, 0),
+                                color: baseColors.primaryColor,
                               )),
                           SizedBox(
                             height: 10,

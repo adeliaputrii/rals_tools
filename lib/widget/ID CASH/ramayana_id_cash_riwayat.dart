@@ -119,21 +119,22 @@ class _RamayanaRiwayatIDCashState extends State<RamayanaRiwayatIDCash> {
           icon: Icon(Icons.arrow_back_ios,
               color: Colors.white,),
         ),
+        centerTitle: true,
         title: Container(
             margin: EdgeInsets.only(left: 70, right: 70),
-            child: Text('Riwayat Transaksi',
+            child: Text('RIWAYAT  TRANSAKSI',
                 style: GoogleFonts.plusJakartaSans(
                     textStyle: TextStyle(
                         fontSize: 23,
                         color: Colors.white,
                         fontWeight: FontWeight.w500)))),
-        backgroundColor: Color.fromARGB(255, 255, 0, 0),
+        backgroundColor: baseColors.primaryColor,
         elevation: 0,
-        toolbarHeight: 80,
+        toolbarHeight: 70,
       ),
       body: Stack(fit: StackFit.loose, children: [
         Container(
-          color: Color.fromARGB(255, 255, 0, 0),
+          color: baseColors.primaryColor,
         ),
         Container(
           margin: EdgeInsets.only(top: 30, left: 5, right: 5, bottom: 10),
@@ -258,7 +259,7 @@ class _RamayanaRiwayatIDCashState extends State<RamayanaRiwayatIDCash> {
                   ),
                   child: ListTile(
                     leading: CircleAvatar(
-                      backgroundColor: Color.fromARGB(255, 255, 17, 17),
+                      backgroundColor: baseColors.primaryColor,
                       child: Icon(
                         Icons.attach_money_outlined,
                         color: Colors.white,

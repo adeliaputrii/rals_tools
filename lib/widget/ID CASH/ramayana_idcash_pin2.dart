@@ -73,56 +73,6 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
           versi: versi);
       print(username);
       loginCubit.login(loginBody: body);
-
-      //     http.Response response =
-      //         //  await AuthServices.login(username.text, pass.text);
-      //         await AuthServicesLog.login(
-      //       //' ini versi yang sama kaya diataskan ya del?
-      //       '${username}',
-      //       passwordController.text,
-      //       'RALS-TOOLS',
-      //       '${versi}',
-      //       '${DateTime.now()}',
-      //       'Login Aplikasi RALS',
-      //       '${imei}',
-      //       '${userData.getUsername7()}',
-      //       'toko',
-      //       'xiaomi',
-      //       '${_udid}',
-      //       // '${imei}${info.device}',
-      //     );
-      //     Map responseMap = jsonDecode(response.body);
-      //     print(responseMap);
-      //     if (responseMap['userpass'] == "0") {
-      //       await userData.setUser(data: responseMap);
-      //       var formData = FormData.fromMap({
-      //         'progname': '${app_name} ',
-      //         'versi': '${versi}',
-      //         'date_run': '${DateTime.now()}',
-      //         'info1': 'Enter PIN ID CASH',
-      //         ' info2': '${_udid} ',
-      //         'userid': '${userData.getUsernameID()}',
-      //         ' toko': '${userData.getUserToko()}',
-      //         ' devicename': '${info.device}',
-      //         'TOKEN': 'R4M4Y4N4'
-      //       });
-
-      //       var response = await dio.post('${tipeurl}v1/activity/createmylog',
-      //           data: formData);
-      //       print('berhasil $_udid');
-
-      //       Navigator.pushAndRemoveUntil(
-      //           context,
-      //           MaterialPageRoute(builder: (context) => RamayanaBarcode()),
-      //           (Route<dynamic> route) => false);
-      //     } else if (responseMap['status'] == 201) {
-      //       snackBar('PIN SALAH');
-      //     }
-      //   }
-      // } on Exception {
-      //   return snackBar('PIN TIDAK SESUAI');
-      //   //ini buka nya dimana ya del
-      // }
     }
   }
 
@@ -171,7 +121,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                 ),
                 Container(
                   height: 500,
-                  color: Color.fromARGB(255, 210, 14, 0),
+                  color: baseColors.primaryColor,
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 20, top: 50, right: 20),
@@ -203,7 +153,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                         onPressed: () {},
                         icon: Icon(
                           Icons.arrow_back,
-                          color: Color.fromARGB(255, 210, 14, 0),
+                          color: baseColors.primaryColor,
                           size: 30,
                         ),
                       )
@@ -280,14 +230,12 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                                                 BorderRadius.circular(10)),
                                         errorBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
-                                              color: Color.fromARGB(
-                                                  255, 255, 17, 17),
+                                              color: baseColors.primaryColor,
                                             ),
                                             borderRadius:
                                                 BorderRadius.circular(10)),
                                         errorStyle: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 255, 17, 17),
+                                            color: baseColors.primaryColor,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w400),
                                         labelStyle:
@@ -298,8 +246,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                                             _passwordControllerVisible
                                                 ? Icons.visibility
                                                 : Icons.visibility_off,
-                                            color: Color.fromARGB(
-                                                255, 255, 17, 17),
+                                            color: baseColors.primaryColor,
                                           ),
                                           onPressed: () {
                                             // Update the state i.e. toogle the state of passwordControllerVisible variable
@@ -312,7 +259,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                                         prefixIcon: Icon(
                                           Icons.lock,
                                           color:
-                                              Color.fromARGB(255, 255, 17, 17),
+                                              baseColors.primaryColor,
                                         ),
                                         hintStyle: TextStyle(
                                             color: Colors.black, fontSize: 20),
@@ -332,7 +279,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                               ),
                               isLoading
                                   ? SpinKitCircle(
-                                      color: Color.fromARGB(255, 255, 17, 17),
+                                      color: baseColors.primaryColor,
                                       size: 60.0,
                                     )
                                   : MaterialButton(
@@ -353,10 +300,10 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(20),
                                       ),
-                                      color: Color.fromARGB(255, 255, 17, 17),
+                                      color: baseColors.primaryColor,
                                       height: 50,
                                       minWidth: 200,
-                                      child: Text('Kirim',
+                                      child: Text('KIRIM',
                                           style: GoogleFonts.plusJakartaSans(
                                               textStyle: TextStyle(
                                             fontSize: 18,

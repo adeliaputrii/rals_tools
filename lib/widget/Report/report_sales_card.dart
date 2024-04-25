@@ -8,6 +8,7 @@ class CardReport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final String date = '${response.createDate}';
     return GestureDetector(
       onTap: () {
         debugPrint('sales card ${response.idReport}');
@@ -16,7 +17,7 @@ class CardReport extends StatelessWidget {
       child: Container(
           margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
           decoration: BoxDecoration(color: baseColor.cardReportColor, borderRadius: BorderRadius.circular(20)),
-          height: screenSize.height / 8,
+          height: screenSize.height / 12,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -41,27 +42,27 @@ class CardReport extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                '${response.status}',
-                                style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w500, color: baseColor.graySecondary),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '${response.status}',
+                                    style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w500, color: baseColor.graySecondary),
+                                  ),
+                                  Text('${date.substring(0, 10)}',
+                                    style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w400, color: baseColor.graySecondary)),
+                                ],
                               ),
                               Text(
-                                '${response.header1}',
+                                '${response.header1?.toUpperCase()}',
                                 style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w900,
                                   color: baseColor.grayPrimary,
                                   wordSpacing: 2,
                                 ),
-                                maxLines: 2,
+                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                              ),
-                              Row(
-                                children: [
-                                  Text('${response.createDate}',
-                                      style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w400, color: baseColor.graySecondary)),
-                                  SizedBox(width: 10),
-                                ],
                               ),
                             ],
                           ),

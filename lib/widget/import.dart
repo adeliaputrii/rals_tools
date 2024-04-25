@@ -74,7 +74,7 @@ import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:myactivity_project/widget/VOID/import.dart';
 import 'package:myactivity_project/base/base_params.dart' as baseParam;
 import 'package:myactivity_project/base/base_paths.dart' as basePath;
-import 'package:myactivity_project/base/base_colors.dart' as baseColor;
+import 'package:myactivity_project/base/base_colors.dart' as baseColors;
 import 'package:myactivity_project/base/base_assets.dart' as baseAsset;
 import 'package:myactivity_project/base/base_sizes.dart' as baseSize;
 import '../cubit/home/home_cubit.dart';

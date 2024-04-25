@@ -41,5 +41,6 @@ import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:http/http.dart' as http;
 import 'package:myactivity_project/base/base_params.dart' as baseParam;
 import 'package:myactivity_project/base/base_paths.dart' as basePath;
+import 'package:myactivity_project/base/base_colors.dart' as baseColors;
 part 'ramayana_tukar_poin2.dart';
 // part 'ramayana_tukar_poin2.dart';

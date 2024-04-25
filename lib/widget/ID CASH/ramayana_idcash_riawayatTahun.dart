@@ -31,10 +31,6 @@ class _RamayanaRiwayatIDCash2State extends State<RamayanaRiwayatIDCash2> {
         ApprovalIdcashCustomerBulan.approvalidcashbulan
             .add(ApprovalIdcashCustomerBulan.fromjson(data['data'][i]));
       }
-      // ApprovalIdcashCustomerBulan.approvalidcashbulan.forEach((element) {
-      //   profileMap[element.month] = element;
-      //    ApprovalIdcashCustomerBulan.approvalidcashbulan = profileMap.values.toList();
-      //  });
       print(
           'check length ${ApprovalIdcashCustomerBulan.approvalidcashbulan.length}');
       print(data['data'].toString());
@@ -87,7 +83,6 @@ class _RamayanaRiwayatIDCash2State extends State<RamayanaRiwayatIDCash2> {
   void initState() {
     super.initState();
     fetchDataBulan(nokartu: '${widget.noMember}', tahun: '${widget.year}');
-    // fetchDataBulan(nokartu: '1100180309385576', tahun: '${ApprovalIdcash.approvalidcash[1]}');
   }
 
   @override
@@ -109,19 +104,19 @@ class _RamayanaRiwayatIDCash2State extends State<RamayanaRiwayatIDCash2> {
         ),
         title: Container(
             margin: EdgeInsets.only(left: 70, right: 70),
-            child: Text('Riwayat Transaksi',
+            child: Text('RIWAYAT TRANSAKSI',
                 style: GoogleFonts.plusJakartaSans(
                     textStyle: TextStyle(
                         fontSize: 23,
                         color: Colors.white,
                         fontWeight: FontWeight.w500)))),
-        backgroundColor: Color.fromARGB(255, 255, 0, 0),
+        backgroundColor: baseColors.primaryColor,
         elevation: 0,
         toolbarHeight: 80,
       ),
       body: Stack(fit: StackFit.loose, children: [
         Container(
-          color: Color.fromARGB(255, 255, 0, 0),
+          color: baseColors.primaryColor,
         ),
         Container(
           margin: EdgeInsets.only(top: 30, left: 5, right: 5, bottom: 10),
@@ -269,7 +264,7 @@ class _RamayanaRiwayatIDCash2State extends State<RamayanaRiwayatIDCash2> {
                     ),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: Color.fromARGB(255, 255, 17, 17),
+                        backgroundColor: baseColors.primaryColor,
                         child: Icon(
                           Icons.attach_money_outlined,
                           color: Colors.white,
