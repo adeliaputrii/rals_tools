@@ -153,7 +153,7 @@ Future<void> deleteToko()async{
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      DefaultBottomBarController(child: Ramayana()),
+                      Ramayana(),
                 ),
                 (Route<dynamic> route) => false);
           },
@@ -330,7 +330,7 @@ Future<void> deleteToko()async{
       onWillPop: () async {
         if (true) {
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-              return DefaultBottomBarController(child: Ramayana());
+              return Ramayana();
             }), (route) => false);
             return true;
         }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:http/http.dart' as http;

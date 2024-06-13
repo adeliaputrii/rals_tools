@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:developer' as developer;
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -208,7 +208,7 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => DefaultBottomBarController(child: Ramayana()),), (Route<dynamic> route) => false);
+           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Ramayana(),), (Route<dynamic> route) => false);
           },
           icon: Icon(Icons.arrow_back),
           ),

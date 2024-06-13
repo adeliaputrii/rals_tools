@@ -170,7 +170,7 @@
 //                     context,
 //                     MaterialPageRoute(
 //                       builder: (context) =>
-//                           DefaultBottomBarController(child: Ramayana()),
+//                           Ramayana(),
 //                     ),
 //                     (Route<dynamic> route) => false);
 //               },
@@ -500,7 +500,7 @@
 //         if (true) {
 //           Navigator.pushAndRemoveUntil(context,
 //               MaterialPageRoute(builder: (context) {
-//             return DefaultBottomBarController(child: Ramayana());
+//             return Ramayana();
 //           }), (route) => false);
 //           return true;
 //         }

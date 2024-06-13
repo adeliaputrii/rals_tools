@@ -102,7 +102,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => DefaultBottomBarController(child: Ramayana()),
+            builder: (context) => Ramayana(),
           ),
           (Route<dynamic> route) => false);
     } else {
@@ -274,7 +274,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DefaultBottomBarController(child: Ramayana()),
+                      builder: (context) => Ramayana(),
                     ),
                     (Route<dynamic> route) => false);
               } else {

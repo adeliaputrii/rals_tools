@@ -100,7 +100,7 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                 print(ApprovalIdcash.approvalidcash);
                 Navigator.pushAndRemoveUntil(context,
                     MaterialPageRoute(builder: (context) {
-                  return DefaultBottomBarController(child: Ramayana());
+                  return Ramayana();
                 }), (route) => false);
               },
               icon: Icon(

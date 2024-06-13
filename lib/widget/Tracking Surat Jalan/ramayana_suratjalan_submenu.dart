@@ -15,7 +15,7 @@ class _RamayanaSuratJalanState extends State<RamayanaSuratJalan> {
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => DefaultBottomBarController(child: Ramayana()),
+          builder: (context) => Ramayana(),
         ),
         (Route<dynamic> route) => false);
   }
