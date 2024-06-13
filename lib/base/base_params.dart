@@ -158,6 +158,7 @@ const String menuMemberPerusahaan = 'Member\nPerusahaan';
 const String menuSuratJalan = 'Surat\nJalan';
 const String menuMyActivity = 'My\nActivity';
 const String menuVoid = 'Void\n  ';
+const String menuSo = 'Stock\nOpname';
 const String menuCekHarga = 'Cek\nHarga';
 const String menuComCheck = 'Competitor\nChecking';
 const String menuApprReturn = 'Approval\nReturn';
@@ -168,6 +169,7 @@ const String menuLaporanPooling = 'Laporan\nPooling';
 
 const String menuKeyIdCash = 'masteridcash.idcash';
 const String menuKeyVoid = 'mastervoid.void';
+const String menuKeySo = 'mastervoid.void';
 const String menuKeyApprovalReturn = 'approvalreturn.approvalreturn';
 const String menuKeyCekPrice = 'cekprice.cekprice';
 const String menuKeyTukarPoin = 'tukarpoin.tukarpoin';

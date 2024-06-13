@@ -9,6 +9,7 @@ const String tukarPoinLogo = 'assets/tukarpoin.png';
 const String myActivityLogo = 'assets/myactivity.png';
 const String suratJalanLogo = 'assets/sjalan.png';
 const String voidLogo = 'assets/void.png';
+const String soLogo = 'assets/so.png';
 const String checkPriceLogo = 'assets/cekharga.png';
 const String appReturnLogo = 'assets/approval.png';
 const String comCheckLogo = 'assets/comcek.png';

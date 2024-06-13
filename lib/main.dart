@@ -17,6 +17,7 @@ import 'package:myactivity_project/utils/app_shared_pref.dart';
 import 'package:myactivity_project/widget/Login/import.dart';
 import 'package:myactivity_project/widget/My%20List%20Task/import.dart';
 import 'package:myactivity_project/widget/Splashscreen/import.dart';
+import 'package:myactivity_project/widget/Stock%20Opname/import.dart';
 import 'package:myactivity_project/widget/VOID/import.dart';
 import 'package:myactivity_project/widget/import.dart';
 import 'package:native_id/native_id.dart';
@@ -97,9 +98,9 @@ Future<void> registerAppServices(String packageName) async {
   appUtil.initNetwork();
   final appServices = AppServices(GetIt.I.get<Dio>());
 
-  final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_prod}' : '${basePath.base_url_dev}';
+  // final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_prod}' : '${basePath.base_url_dev}';
 
-  // final url = '${basePath.base_url_dev}';
+  final url = '${basePath.base_url_dev}';
   await appServices.registerAppServices(url);
 }
 

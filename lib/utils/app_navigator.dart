@@ -6,6 +6,7 @@ import 'package:myactivity_project/utils/app_check_user.dart';
 import 'package:myactivity_project/utils/popup_widget.dart';
 import 'package:myactivity_project/widget/Membercard/import.dart';
 import 'package:myactivity_project/base/base_params.dart' as baseParam;
+import 'package:myactivity_project/widget/Stock%20Opname/import.dart';
 import '../widget/Approval Return/import.dart';
 import '../widget/Cek Harga/import.dart';
 import '../widget/Competitor Checking/import.dart';
@@ -85,6 +86,17 @@ class AppNavigator {
         return RamayanaVoid(
           isOffline: false,
         );
+      }));
+    } else {
+      showRestrictMessenger(context);
+    }
+  }
+
+    static void navigateToSo(BuildContext context) async {
+    final listAccess = await SharedPref.getUserAccess() ?? '';
+    if (listAccess.contains(baseParam.menuKeySo)) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return RamayanaSo();
       }));
     } else {
       showRestrictMessenger(context);
