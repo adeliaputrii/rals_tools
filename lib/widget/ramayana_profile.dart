@@ -217,7 +217,7 @@ class _ProfileeState extends State<Profilee> {
         sweatAlert();
       } else if (_selectedIndex == 1) {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
-          return DefaultBottomBarController(child: Ramayana());
+          return Ramayana();
         }));
       }
     });
@@ -247,7 +247,7 @@ class _ProfileeState extends State<Profilee> {
               leading: IconButton(
                   onPressed: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
-                      return DefaultBottomBarController(child: Ramayana());
+                      return Ramayana();
                     }));
                   },
                   icon: Icon(

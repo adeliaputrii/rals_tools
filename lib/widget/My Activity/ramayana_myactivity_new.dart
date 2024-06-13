@@ -280,7 +280,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DefaultBottomBarController(child: Ramayana()),
+                    builder: (context) => Ramayana(),
                   ),
                   (Route<dynamic> route) => false);
             },

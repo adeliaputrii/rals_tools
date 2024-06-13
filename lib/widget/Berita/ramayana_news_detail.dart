@@ -63,7 +63,7 @@ class _NewsDetailState extends State<NewsDetail> {
             Navigator.pop(context);
           } else {
             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-              return DefaultBottomBarController(child: Ramayana());
+              return Ramayana();
             }), (route) => false);
           }
           return true;
@@ -77,7 +77,7 @@ class _NewsDetailState extends State<NewsDetail> {
                   Navigator.pop(context);
                 } else {
                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-                    return DefaultBottomBarController(child: Ramayana());
+                    return Ramayana();
                   }), (route) => false);
                 }
               },

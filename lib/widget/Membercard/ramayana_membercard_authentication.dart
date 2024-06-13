@@ -128,7 +128,7 @@ class _RamayanaMembercardAuthenticationState
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        DefaultBottomBarController(child: Ramayana()),
+                        Ramayana(),
                   ),
                   (Route<dynamic> route) => false);
             },

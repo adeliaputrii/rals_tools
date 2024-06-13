@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get_it/get_it.dart';
 import 'package:myactivity_project/firebase/firebase_api.dart';
-import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -143,7 +142,7 @@ class HomeMainApp extends StatelessWidget {
       routes: {RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()), RamayanaLogin.route: ((context) => const RamayanaLogin())},
       title: '${app_name}',
       debugShowCheckedModeBanner: false,
-      home: DefaultBottomBarController(child: Ramayana()),
+      home: Ramayana(),
     );
   }
 }

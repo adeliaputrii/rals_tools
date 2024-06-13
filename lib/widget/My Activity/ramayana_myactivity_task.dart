@@ -89,8 +89,8 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => DefaultBottomBarController(
-                                      child: RamayanaMyActivity(
+                                  builder: (context) =>
+                                  RamayanaMyActivity(
                                     id: widget.id,
                                     desc: widget.desc,
                                     update: widget.update,
@@ -99,7 +99,7 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
                                     taskId: '${state.response.data?[index].taskId}',
                                     taskDesc: '${state.response.data?[index].taskDesc}',
                                     status: '${state.response.data?[index].taskStatus}',
-                                  )),
+                                  ),
                                 ),
                                 (Route<dynamic> route) => false);
                           },

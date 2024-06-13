@@ -49,7 +49,6 @@ dependencies:
   pretty_qr_code: ^2.0.2
   # barcode_flutter: ^1.1.2
   tbib_splash_screen: ^0.0.6
-  expandable_bottom_bar: ^2.0.2
   flutter_iconly: ^1.0.2
   rflutter_alert: ^2.0.7
   motion_toast: ^2.5.40

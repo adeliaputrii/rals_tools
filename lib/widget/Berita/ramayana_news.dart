@@ -25,7 +25,7 @@ class _RamayanaInformasiState extends State<RamayanaInformasi> {
             onPressed: () {
               Navigator.pushAndRemoveUntil(context,
                   MaterialPageRoute(builder: (context) {
-                return DefaultBottomBarController(child: Ramayana());
+                return Ramayana();
               }), (route) => false);
             },
             icon: Icon(

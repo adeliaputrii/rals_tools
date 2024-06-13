@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:math';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

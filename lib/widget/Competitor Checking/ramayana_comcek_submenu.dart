@@ -278,7 +278,7 @@ class _RamayanaCompetitorCekState extends State<RamayanaCompetitorCek> {
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
                             context, MaterialPageRoute(builder: (context) => 
-                            DefaultBottomBarController(child: Ramayana()),), 
+                            Ramayana(),), 
                             (Route<dynamic> route) => false);},
                           color: Color.fromARGB(255, 255, 17, 17),
                           shape:RoundedRectangleBorder(

@@ -9,7 +9,7 @@ import 'dart:math';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
