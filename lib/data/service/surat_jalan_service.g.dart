@@ -20,10 +20,10 @@ class _SuratJalanService implements SuratJalanService {
 
   @override
   Future<SuratJalanResponse> getScanTracking(String noSJ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<SuratJalanResponse>(Options(
       method: 'GET',
@@ -47,7 +47,7 @@ class _SuratJalanService implements SuratJalanService {
 
   @override
   Future<ScanSJResponse> postTrackingStoreline(TrackingSJBody body) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -75,7 +75,7 @@ class _SuratJalanService implements SuratJalanService {
 
   @override
   Future<ScanSJResponse> postTrackingSupplier(TrackingSJBody body) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -103,7 +103,7 @@ class _SuratJalanService implements SuratJalanService {
 
   @override
   Future<ScanSJResponse> postTrackingDefault(TrackingSJBody body) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -131,10 +131,10 @@ class _SuratJalanService implements SuratJalanService {
 
   @override
   Future<TrackingSJResponse> trackSJ(String noSJ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<TrackingSJResponse>(Options(
       method: 'GET',

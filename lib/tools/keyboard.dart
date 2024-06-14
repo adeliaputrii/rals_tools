@@ -181,12 +181,12 @@ class NumberButton extends StatelessWidget {
       width: size,
       height: size,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(size / 2),
-          ),
-        ),
+        // style: ElevatedButton.styleFrom(
+        //   backgroundColor: color,
+        //   shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.circular(size / 2),
+        //   ),
+        // ),
         onPressed: () {
           controller.text += number.toString();
         },

@@ -20,10 +20,10 @@ class _MyActivityService implements MyActivityService {
 
   @override
   Future<GetProjectResponse> getProject() async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<GetProjectResponse>(Options(
       method: 'GET',
@@ -47,10 +47,10 @@ class _MyActivityService implements MyActivityService {
 
   @override
   Future<GetTaskResponse> getTaskUser() async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<GetTaskResponse>(Options(
       method: 'GET',
@@ -74,10 +74,10 @@ class _MyActivityService implements MyActivityService {
 
   @override
   Future<MyActivityTaskResponse> getTaskById(String projectId) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<MyActivityTaskResponse>(Options(
       method: 'GET',
@@ -102,7 +102,7 @@ class _MyActivityService implements MyActivityService {
   @override
   Future<MyActivityResponse> submitActivity(
       MyActivityBody myActivityBody) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -131,7 +131,7 @@ class _MyActivityService implements MyActivityService {
   @override
   Future<MyActivityEditResponse> editActivity(
       MyActivityEditBody myActivityEditBody) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -160,7 +160,7 @@ class _MyActivityService implements MyActivityService {
   @override
   Future<MyActivityUpdateResponse> updateActivity(
       MyActivityUpdateBody myActivityUpdateBody) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};

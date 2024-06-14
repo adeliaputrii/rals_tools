@@ -224,7 +224,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
       ),
       width: 350,
-      backgroundType: BackgroundType.lighter,
+      // backgroundType: BackgroundType.lighter,
       height: 100,
       description: const Text(
         '${baseParam.pleaseCheck}',
@@ -245,7 +245,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
       ),
       width: 350,
-      backgroundType: BackgroundType.lighter,
+      // backgroundType: BackgroundType.lighter,
       height: 100,
       description: const Text(
         '${baseParam.pleaseCheck}',
@@ -266,7 +266,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
       ),
       width: 350,
-      backgroundType: BackgroundType.lighter,
+      // backgroundType: BackgroundType.lighter,
       height: 100,
       description: const Text(
         '${baseParam.pleaseCheck}',
@@ -287,7 +287,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
       // ),
       width: 350,
-      backgroundType: BackgroundType.lighter,
+      // backgroundType: BackgroundType.lighter,
       height: 100,
       description: const Text(
         'Anda tidak memiliki akses',
@@ -308,7 +308,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
       ),
       width: 350,
-      backgroundType: BackgroundType.lighter,
+      // backgroundType: BackgroundType.lighter,
       height: 100,
       description: const Text(
         'You can login with a new password',

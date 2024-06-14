@@ -9,7 +9,7 @@ part of 'company_card_history_year_response.dart';
 CompanyCardHistoryYearResponse _$CompanyCardHistoryYearResponseFromJson(
         Map<String, dynamic> json) =>
     CompanyCardHistoryYearResponse(
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       message: json['message'] as String?,
       data: (json['data'] as List<dynamic>?)
           ?.map((e) => Data.fromJson(e as Map<String, dynamic>))

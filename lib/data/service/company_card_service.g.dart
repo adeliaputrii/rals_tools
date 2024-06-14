@@ -20,7 +20,7 @@ class _CompanyCardService implements CompanyCardService {
 
   @override
   Future<CompanyCardResponse> getDataMember(String noKartu) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = noKartu;
@@ -47,7 +47,7 @@ class _CompanyCardService implements CompanyCardService {
 
   @override
   Future<CompanyCardDetailResponse> getDetailCard(String noKartu) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = noKartu;
@@ -75,7 +75,7 @@ class _CompanyCardService implements CompanyCardService {
   @override
   Future<CompanyCardHistoryResponse> getHistoryMember(
       CompanyCardHistoryBody body) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -104,7 +104,7 @@ class _CompanyCardService implements CompanyCardService {
   @override
   Future<CompanyCardHistoryYearResponse> getHistoryMemberYear(
       CompanyCardHistoryBody body) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -133,7 +133,7 @@ class _CompanyCardService implements CompanyCardService {
   @override
   Future<CompanyCardHistoryMonthResponse> getHistoryMemberMonth(
       CompanyCardHistoryBody body) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -162,7 +162,7 @@ class _CompanyCardService implements CompanyCardService {
   @override
   Future<CompanyCardHistoryResponse> getHistoryMemberDay(
       CompanyCardHistoryBody body) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};

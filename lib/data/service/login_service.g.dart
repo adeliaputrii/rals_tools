@@ -20,7 +20,7 @@ class _LoginService implements LoginService {
 
   @override
   Future<LoginResponse> login(LoginBody loginBody) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -48,7 +48,7 @@ class _LoginService implements LoginService {
 
   @override
   Future<DataCustomerResponse> getDataCustomer(String userId) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {'id_user': userId};
@@ -75,7 +75,7 @@ class _LoginService implements LoginService {
 
   @override
   Future<LoginResponse> createLog(CreateLogBody createLogBody) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -103,10 +103,10 @@ class _LoginService implements LoginService {
 
   @override
   Future<LogoutResponse> logout() async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<LogoutResponse>(Options(
       method: 'POST',

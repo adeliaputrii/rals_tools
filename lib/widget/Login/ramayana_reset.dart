@@ -75,7 +75,7 @@ class _RamayanaResetState extends State<RamayanaReset> {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
         ),
         width: 350,
-        backgroundType: BackgroundType.lighter,
+        // backgroundType: BackgroundType.lighter,
         height: 100,
         description: const Text(
           '',
@@ -104,7 +104,7 @@ class _RamayanaResetState extends State<RamayanaReset> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
           ),
           width: 350,
-          backgroundType: BackgroundType.lighter,
+          // backgroundType: BackgroundType.lighter,
           height: 100,
           description: const Text(
             '',
@@ -126,7 +126,7 @@ class _RamayanaResetState extends State<RamayanaReset> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
           ),
           width: 350,
-          backgroundType: BackgroundType.lighter,
+          // backgroundType: BackgroundType.lighter,
           height: 100,
           description: const Text(
             '',

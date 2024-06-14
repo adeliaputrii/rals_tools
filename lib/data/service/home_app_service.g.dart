@@ -20,10 +20,10 @@ class _HomeAppService implements HomeAppService {
 
   @override
   Future<GetTaskResponse> getTaskUser() async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<GetTaskResponse>(Options(
       method: 'GET',
@@ -47,10 +47,10 @@ class _HomeAppService implements HomeAppService {
 
   @override
   Future<NewsListResponse> getNewsList() async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<NewsListResponse>(Options(
       method: 'GET',

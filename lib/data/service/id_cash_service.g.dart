@@ -20,7 +20,7 @@ class _IDCashService implements IDCashService {
 
   @override
   Future<DataMemberCardResponse> getDataMember(DataMemberCardBody body) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};

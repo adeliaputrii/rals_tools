@@ -8,7 +8,7 @@ part of 'scan_sj_response.dart';
 
 ScanSJResponse _$ScanSJResponseFromJson(Map<String, dynamic> json) =>
     ScanSJResponse(
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       message: json['message'] as String?,
     );
 

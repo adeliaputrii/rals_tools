@@ -13,12 +13,15 @@ import 'package:dio/dio.dart';
 class LoginRepositories {
   Future<RepositoriesResponse> login(LoginBody body) async {
     final services = GetIt.I.get<LoginService>();
+    print("data rusak response: ${services}");
 
     late RepositoriesResponse response;
 
     try {
       await services.login(body).then((value) {
+        print("value "+value.data.toString());
         response = RepositoriesResponse(isSuccess: true, statusCode: value.status, dataResponse: value);
+
       });
     } catch (e) {
       if (e is IOException) {
@@ -34,6 +37,7 @@ class LoginRepositories {
 
         debugPrint(e.response?.data['message'] ?? 'Failed');
       }
+      print("value "+e.toString());
     }
     return response;
   }

@@ -8,7 +8,7 @@ part of 'surat_jalan_response.dart';
 
 SuratJalanResponse _$SuratJalanResponseFromJson(Map<String, dynamic> json) =>
     SuratJalanResponse(
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       message: json['message'] as String?,
       data: json['data'] == null
           ? null
@@ -44,7 +44,7 @@ DetailSj _$DetailSjFromJson(Map<String, dynamic> json) => DetailSj(
       driverName: json['driver_name'] as String?,
       origin: json['origin'] as String?,
       trackingStatus: json['tracking_status'] as String?,
-      actualKoli: json['actual_koli'] as int?,
+      actualKoli: (json['actual_koli'] as num?)?.toInt(),
       listKoli: (json['list_koli'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),

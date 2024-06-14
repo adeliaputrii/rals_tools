@@ -8,7 +8,7 @@ part of 'get_task_response.dart';
 
 GetTaskResponse _$GetTaskResponseFromJson(Map<String, dynamic> json) =>
     GetTaskResponse(
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       message: json['message'] as String?,
       data: (json['data'] as List<dynamic>?)
           ?.map((e) => Data.fromJson(e as Map<String, dynamic>))

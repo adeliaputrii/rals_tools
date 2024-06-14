@@ -9,7 +9,7 @@ part of 'data_customer_response.dart';
 DataCustomerResponse _$DataCustomerResponseFromJson(
         Map<String, dynamic> json) =>
     DataCustomerResponse(
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       message: json['message'] as String?,
       data: (json['data'] as List<dynamic>?)
           ?.map((e) => Data.fromJson(e as Map<String, dynamic>))
@@ -30,7 +30,7 @@ Data _$DataFromJson(Map<String, dynamic> json) => Data(
       nohp: json['nohp'] as String?,
       email: json['email'] as String?,
       saldo: json['saldo'] as String?,
-      saldoPemakaian: json['saldo_pemakaian'] as int?,
+      saldoPemakaian: (json['saldo_pemakaian'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{

@@ -30,6 +30,7 @@ class LoginCubit extends Cubit<LoginState> {
   void login({required LoginBody loginBody}) async {
     emit(LoginLoading());
     await repositories.login(loginBody).then((value) {
+      print("data rusak : ${value}");
       if (value.isSuccess && value.dataResponse is LoginResponse) {
         final res = value.dataResponse as LoginResponse;
         userData.setDataUser(res);

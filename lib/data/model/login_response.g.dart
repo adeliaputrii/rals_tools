@@ -9,7 +9,7 @@ part of 'login_response.dart';
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
     LoginResponse(
       userpass: json['userpass'] as String?,
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       message: json['message'] as String?,
       accessToken: json['access_token'] as String?,
       data: json['data'] == null
@@ -27,14 +27,14 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
     };
 
 Data _$DataFromJson(Map<String, dynamic> json) => Data(
-      userId: json['user_id'] as int?,
+      userId: (json['user_id'] as num?)?.toInt(),
       name: json['name'] as String?,
       username: json['username'] as String?,
       username7: json['username7'] as String?,
       email: json['email'] as String?,
       password: json['password'] as String?,
-      idSubDivisi: json['id_sub_divisi'] as int?,
-      isActive: json['is_active'] as int?,
+      idSubDivisi: (json['id_sub_divisi'] as num?)?.toInt(),
+      isActive: (json['is_active'] as num?)?.toInt(),
       toko: json['toko'] as String?,
       imei: json['imei'] as String?,
       md: json['md'] as String?,

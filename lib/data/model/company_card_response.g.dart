@@ -8,7 +8,7 @@ part of 'company_card_response.dart';
 
 CompanyCardResponse _$CompanyCardResponseFromJson(Map<String, dynamic> json) =>
     CompanyCardResponse(
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       message: json['message'] as String?,
       data: (json['data'] as List<dynamic>?)
           ?.map((e) => DataCompany.fromJson(e as Map<String, dynamic>))
