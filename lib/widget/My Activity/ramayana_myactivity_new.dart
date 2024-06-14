@@ -79,22 +79,32 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   DateTime dateTimeSelectedEnd = DateTime.now();
 
   void _openTimePickerSheet(BuildContext context) async {
-    final result = await DateTimeUtils.openTimePickerSheet(context);
+    TimeOfDay? pickedTime =  await showTimePicker(
+        initialTime: TimeOfDay.now(),
+        context: context, //context of current state
+    );
 
-    if (result != null) {
-      setState(() {
-        dateTimeSelected = result;
-      });
-    }
-  }
+    if(pickedTime != null ){
+        setState(() {
+        DateTime parsedTime = DateFormat.Hm().parse(pickedTime.format(context).toString());
+        dateTimeSelected = parsedTime;
+        });
+        }
+      }
 
   void _openTimePickerSheetEnd(BuildContext context) async {
-    final result = await DateTimeUtils.openTimePickerSheet(context);
-    if (result != null) {
-      setState(() {
-        dateTimeSelectedEnd = result;
-      });
-    }
+    TimeOfDay? pickedTime =  await showTimePicker(
+        initialTime: TimeOfDay.now(),
+        context: context,
+        
+    );
+
+    if(pickedTime != null ){
+        setState(() {
+        DateTime parsedTime = DateFormat.Hm().parse(pickedTime.format(context).toString());
+        dateTimeSelectedEnd = parsedTime;
+        });
+        }
   }
 
   @override
