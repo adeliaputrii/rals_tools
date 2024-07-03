@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myactivity_project/utils/app_check_user.dart';
 import 'package:myactivity_project/utils/popup_widget.dart';
+import 'package:myactivity_project/widget/CentralApproval/import.dart';
 import 'package:myactivity_project/widget/Membercard/import.dart';
 import 'package:myactivity_project/base/base_params.dart' as baseParam;
 import 'package:myactivity_project/widget/Stock%20Opname/import.dart';
@@ -92,7 +93,7 @@ class AppNavigator {
     }
   }
 
-    static void navigateToSo(BuildContext context) async {
+  static void navigateToSo(BuildContext context) async {
     final listAccess = await SharedPref.getUserAccess() ?? '';
     if (listAccess.contains(baseParam.menuKeySo)) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -151,6 +152,38 @@ class AppNavigator {
   static void navigateToReport(BuildContext context) async {
     PopUpWidget(context).showPopUpWarning('Update selanjutnya..', 'Kembali');
   }
+
+  // Central Approval Function
+    //fungsi untuk mengarahkan ke dalam view aplikasi listing Central Approval
+    static void navigateToCA(BuildContext context) async {
+      final listAccess = await SharedPref.getUserAccess() ?? '';
+      // if(listAccess.contains(baseParam.menuCA)){
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return const RamayanaCentralApprovalMenu();
+      }));
+      // }
+    }
+
+    // fungsi untuk mengarahkan ke list mmenu
+    static void navigateToCAMenu (BuildContext context, String id, String? url, String title) async {
+      // Navigator.push(context, MaterialPageRoute(builder: (context) {
+      //   return ReportSalesDetailPager(id: id, url: url, title: title);
+      // }));
+    }
+
+    // fungsi untuk list approval berdasarkan menu
+    static void navigateToCAList (BuildContext context, String id, String? url, String title) async {
+      // Navigator.push(context, MaterialPageRoute(builder: (context) {
+      //   return ReportSalesDetailPager(id: id, url: url, title: title);
+      // }));
+    }
+
+    // fungsi untuk mendapatkan approval
+    static void navigateToCADetail (BuildContext context, String? id, String? url, String? title) async {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return const RamayanaCentralApproval();
+      }));
+    }
 }
 
 void showRestrictMessenger(BuildContext context) {

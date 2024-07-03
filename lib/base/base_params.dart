@@ -159,6 +159,7 @@ const String menuSuratJalan = 'Surat\nJalan';
 const String menuMyActivity = 'My\nActivity';
 const String menuVoid = 'Void\n  ';
 const String menuSo = 'Stock\nOpname';
+const String menuCA = 'Central\nApproval';
 const String menuCekHarga = 'Cek\nHarga';
 const String menuComCheck = 'Competitor\nChecking';
 const String menuApprReturn = 'Approval\nReturn';

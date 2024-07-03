@@ -9,6 +9,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   firebase_core
   permission_handler_windows
   screen_brightness_windows
+  syncfusion_pdfviewer_windows
   url_launcher_windows
 )
 
