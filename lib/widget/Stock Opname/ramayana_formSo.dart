@@ -9,6 +9,7 @@ class RamayanaSo extends StatefulWidget {
 
 class _RamayanaSoState extends State<RamayanaSo> {
 
+  TextEditingController _controllerLocationApi = TextEditingController();
   TextEditingController _controllerLocation = TextEditingController();
   TextEditingController _controllerSku = TextEditingController();
   TextEditingController _controllerJumlah = TextEditingController();
@@ -101,7 +102,7 @@ class _RamayanaSoState extends State<RamayanaSo> {
                   margin: EdgeInsets.only(
                     top: screenHeight/3.8
                   ),
-                  height: screenHeight/3.8,
+                  height: 100,
                   decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                   ),
@@ -148,7 +149,7 @@ class _RamayanaSoState extends State<RamayanaSo> {
                           borderRadius: BorderRadius.circular(15)
                           ),
                           child: TextFormField(
-                            controller: _controllerLocation,
+                            controller: _controllerLocationApi,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.location_pin,
                               color: baseColor.primaryColor,
@@ -183,95 +184,101 @@ class _RamayanaSoState extends State<RamayanaSo> {
                             ),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        _controllerLocationApi == null
+                        ?
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                              padding: const EdgeInsets.only(top: 10,bottom: 10),
-                                child: Text('No. SKU',
-                                style: GoogleFonts.plusJakartaSans(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black
-                                ),),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20,bottom: 10),
+                              child: Text('No. Location',
+                              style: GoogleFonts.plusJakartaSans(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black
+                             ),
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 243, 241, 241),
-                                borderRadius: BorderRadius.circular(15)
-                                ),
-                                width: screenWidth/2,
-                                child: TextFormField(
-                                  controller: _controllerSku,
-                                  keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.local_offer,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 243, 241, 241),
+                              borderRadius: BorderRadius.circular(15)
+                              ),
+                              child: TextFormField(
+                                controller: _controllerLocation,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.location_pin,
+                                  color: baseColor.primaryColor,
+                                  ),
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      scanBarcodeScan(_controllerLocation);
+                                    },
+                                    icon: Icon(Icons.qr_code,
                                     color: baseColor.primaryColor,
                                     ),
-                                    suffixIcon: IconButton(
-                                      onPressed: () {
-                                        scanBarcodeScan(_controllerSku);
-                                      },
-                                      icon: Icon(Icons.qr_code,
-                                      color: baseColor.primaryColor,
-                                      ),
-                                      ),
-                                    hintText: 'Scan or Write here',
-                                    hintStyle: GoogleFonts.plusJakartaSans(
-                                      color: Colors.black,
-                                      fontSize: 15,
                                     ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: BorderSide(
-                                        color: Colors.black, // Set the border color
-                                        width: 1.5, // Set the border width
-                                      ),
+                                  hintText: 'Scan or Write here',
+                                  hintStyle: GoogleFonts.plusJakartaSans(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.black, // Set the border color
+                                      width: 1.5, // Set the border width
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: BorderSide(
-                                        color: Colors.black, // Set the border color
-                                        width: 1.5, // Set the border width
-                                      ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.black, // Set the border color
+                                      width: 1.5, // Set the border width
                                     ),
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                          Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                              padding: const EdgeInsets.only(top:17,bottom: 3),
-                                child: Text('Jumlah',
-                                style: GoogleFonts.plusJakartaSans(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black
-                                )),
-                              ),
-                              Row(
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  Padding(
+                                  padding: const EdgeInsets.only(top: 10,bottom: 10),
+                                    child: Text('No. SKU',
+                                    style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black
+                                    ),),
+                                  ),
                                   Container(
                                     decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
                                     color: const Color.fromARGB(255, 243, 241, 241),
+                                    borderRadius: BorderRadius.circular(15)
                                     ),
-                                    width: screenWidth/4,
+                                    width: screenWidth/2,
                                     child: TextFormField(
-                                      controller: _controllerJumlah,
+                                      controller: _controllerSku,
                                       keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
-                                        prefixIcon: Icon(Icons.shopping_cart,
+                                        prefixIcon: Icon(Icons.local_offer,
                                         color: baseColor.primaryColor,
                                         ),
-                                        hintText: '.....',
+                                        suffixIcon: IconButton(
+                                          onPressed: () {
+                                            scanBarcodeScan(_controllerSku);
+                                          },
+                                          icon: Icon(Icons.qr_code,
+                                          color: baseColor.primaryColor,
+                                          ),
+                                          ),
+                                        hintText: 'Scan or Write here',
                                         hintStyle: GoogleFonts.plusJakartaSans(
                                           color: Colors.black,
                                           fontSize: 15,
@@ -293,171 +300,226 @@ class _RamayanaSoState extends State<RamayanaSo> {
                                       ),
                                     ),
                                   ),
-                                  Column(
-                                  children: [
-                                    MaterialButton(
-                                      minWidth: 10,
-                                      onPressed: (){
-                                        if(_controllerSku.text.isEmpty || _controllerJumlah.text.isEmpty) {
-                                          popUpWidget.showPopUpError('Plese Enter', 'Enter SKU & Quantity');
-                                        } else {
-                                        setState(() {
-                                        _location = _controllerLocation.text;
-                                        items.add(Item(
-                                          sku: _controllerSku.text, 
-                                          location: _controllerLocation.text,
-                                          jumlah: _controllerJumlah.text
-                                          ));
-                                        _controllerSku.clear();
-                                        _controllerJumlah.clear();
-                                        });
-                                      }
-                                      },
-                                      child: CircleAvatar(
-                                        child: Icon(Icons.add,
-                                        color: Colors.white,),
-                                        backgroundColor: baseColor.primaryColor,
-                                      ),
-                                    ),
-                                    Text('Add SKU')
-                                  ],
-                                )
                                 ],
                               ),
-                            ],
-                            ),
-                          ],
-                        ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 10),
-                        child: Text('Summary',
-                           style: GoogleFonts.plusJakartaSans(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black
-                           ),
-                          ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 30),
-                        width: screenWidth,
-                        height: 
-                        items.length == 0 
-                        ?
-                        screenHeight/4
-                        :
-                        screenHeight/2,
-                        decoration: BoxDecoration(
-                        color: baseColor.grey,
-                        borderRadius: BorderRadius.circular(20)
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10, bottom: 20),
-                              child: Text('Location ${_location}',
-                              style: GoogleFonts.plusJakartaSans(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black
-                              ),
-                              ),
-                            ),
-                            Flexible(child: 
-                            ListView.builder(
-                              itemCount: items.length,
-                              itemBuilder: (context, index) {
-                              return Container(
-                              width: screenWidth,
-                              margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  Padding(
+                                  padding: const EdgeInsets.only(top:17,bottom: 3),
+                                    child: Text('Jumlah',
+                                    style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black
+                                    )),
+                                  ),
+                                  Row(
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                                        child: Text('${items[index].sku}',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black
+                                      Container(
+                                        decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: const Color.fromARGB(255, 243, 241, 241),
+                                        ),
+                                        width: screenWidth/4,
+                                        child: TextFormField(
+                                          controller: _controllerJumlah,
+                                          keyboardType: TextInputType.number,
+                                          decoration: InputDecoration(
+                                            prefixIcon: Icon(Icons.shopping_cart,
+                                            color: baseColor.primaryColor,
+                                            ),
+                                            hintText: '.....',
+                                            hintStyle: GoogleFonts.plusJakartaSans(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(15.0),
+                                              borderSide: BorderSide(
+                                                color: Colors.black, // Set the border color
+                                                width: 1.5, // Set the border width
+                                              ),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(15.0),
+                                              borderSide: BorderSide(
+                                                color: Colors.black, // Set the border color
+                                                width: 1.5, // Set the border width
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
-                                        child: Text('Jumlah ${items[index].jumlah}',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 15,
-                                          color: Colors.black
+                                      Column(
+                                      children: [
+                                        MaterialButton(
+                                          minWidth: 10,
+                                          onPressed: (){
+                                            if(_controllerSku.text.isEmpty || _controllerJumlah.text.isEmpty) {
+                                              popUpWidget.showPopUpError('Plese Enter', 'Enter SKU & Quantity');
+                                            } else {
+                                            setState(() {
+                                            _location = _controllerLocation.text;
+                                            items.add(Item(
+                                              sku: _controllerSku.text, 
+                                              location: _controllerLocation.text,
+                                              jumlah: _controllerJumlah.text
+                                              ));
+                                            _controllerSku.clear();
+                                            _controllerJumlah.clear();
+                                            });
+                                          }
+                                          },
+                                          child: CircleAvatar(
+                                            child: Icon(Icons.add,
+                                            color: Colors.white,),
+                                            backgroundColor: baseColor.primaryColor,
                                           ),
                                         ),
-                                      ),
+                                        Text('Add SKU')
+                                      ],
+                                    )
                                     ],
                                   ),
-                                  IconButton(
-                                    onPressed: (){
-                                      setState(() {
-                                       items.removeAt(index);
-                                      });
-                                    }, 
-                                    icon: Icon(Icons.close))
-                                  ],
+                                ],
                                 ),
-                              );
-                              },)
-                            )
+                              ],
+                            ),
+                            Padding(
+                            padding: const EdgeInsets.only(top: 20, bottom: 10),
+                            child: Text('Summary',
+                               style: GoogleFonts.plusJakartaSans(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black
+                               ),
+                              ),
+                                                  ),
+                                                  Container(
+                            margin: EdgeInsets.only(bottom: 30),
+                            width: screenWidth,
+                            height: 
+                            items.length == 0 
+                            ?
+                            screenHeight/4
+                            :
+                            screenHeight/2,
+                            decoration: BoxDecoration(
+                            color: baseColor.grey,
+                            borderRadius: BorderRadius.circular(20)
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10, bottom: 20),
+                                  child: Text('Location ${_location}',
+                                  style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black
+                                  ),
+                                  ),
+                                ),
+                                Flexible(child: 
+                                ListView.builder(
+                                  itemCount: items.length,
+                                  itemBuilder: (context, index) {
+                                  return Container(
+                                  width: screenWidth,
+                                  margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                            child: Text('${items[index].sku}',
+                                            style: GoogleFonts.plusJakartaSans(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
+                                            child: Text('Jumlah ${items[index].jumlah}',
+                                            style: GoogleFonts.plusJakartaSans(
+                                              fontSize: 15,
+                                              color: Colors.black
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      IconButton(
+                                        onPressed: (){
+                                          setState(() {
+                                           items.removeAt(index);
+                                          });
+                                        }, 
+                                        icon: Icon(Icons.close))
+                                      ],
+                                    ),
+                                  );
+                                  },)
+                                )
+                              ],
+                            ),
+                            ),
+                            MaterialButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)
+                            ),
+                            minWidth: screenWidth,
+                            color: baseColor.primaryColor,
+                            onPressed: () {
+                              setState(() {
+                                items.removeRange(0, items.length);
+                                _location = '';
+                                _controllerLocation.clear();
+                              });
+                            },
+                            child: Text('CLEAR',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                              ),
+                            ),
+                            ),
+                            MaterialButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)
+                            ),
+                            minWidth: screenWidth,
+                            color: baseColor.primaryColor,
+                            onPressed: () {
+                              items.removeRange(0, items.length);
+                              _location = '';
+                              _controllerLocation.clear();
+                            },
+                            child: Text('SUBMIT',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                              ),
+                            ),
+                                                  ),
                           ],
-                        ),
-                      ),
-                      MaterialButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)
-                        ),
-                        minWidth: screenWidth,
-                        color: baseColor.primaryColor,
-                        onPressed: () {
-                          setState(() {
-                            items.removeRange(0, items.length);
-                            _location = '';
-                            _controllerLocation.clear();
-                          });
-                        },
-                        child: Text('CLEAR',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white
-                          ),
-                        ),
-                      ),
-                       MaterialButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)
-                        ),
-                        minWidth: screenWidth,
-                        color: baseColor.primaryColor,
-                        onPressed: () {
-                          items.removeRange(0, items.length);
-                          _location = '';
-                          _controllerLocation.clear();
-                        },
-                        child: Text('SUBMIT',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white
-                          ),
-                        ),
-                      )
+                        )
+                        :
+                        Container()
                       ],
                     ),
                   ),
