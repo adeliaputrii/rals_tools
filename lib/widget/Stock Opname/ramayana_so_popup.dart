@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SoPopup extends StatelessWidget {
+class SoPopup extends StatefulWidget {
   const SoPopup({super.key});
 
   @override
+  State<SoPopup> createState() => _SoPopupState();
+}
+
+class _SoPopupState extends State<SoPopup> {
+  @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      titlePadding: EdgeInsets.only(top: 20),
+      titlePadding: EdgeInsets.all(5),
       title: Container(
         decoration: BoxDecoration(
+          // color: Colors.amber,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -20,46 +28,36 @@ class SoPopup extends StatelessWidget {
         ),
         width: 500,
         child: Image.asset(
-          'assets/statusTask.png',
-          height: 200,
+          'assets/location.png',
+          height: 180,
         )),
       content: Container(
         margin: EdgeInsets.only(bottom: 10),
-        height: 160,
+        height: 120,
         child: Column(
           children: [
+            Text(
+            'Pilih Lokasi',
+              style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
+            ),
             Padding(
-              padding: const EdgeInsets.all(15),
-              child: Text(
-              'PIlih Lokasi',
-                style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
+              padding: const EdgeInsets.only(top: 10),
+              child: MaterialButton(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                minWidth: screenWidth,
+                height: 40,
+                color: Colors.green,
+                onPressed: () {
+                  Navigator.pop(context, {
+                    'location' : 'Location Basement'
+                  });
+                },
+                child: Text(
+                'Location Basement',
+                  style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white),
+                )
               ),
-            ),
-            MaterialButton(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-              minWidth: 350,
-              height: 40,
-              color: Colors.green,
-              onPressed: () {
-                Navigator.pop(context, 'Progress');
-              },
-              child: Text(
-              'Progress',
-                style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white),
-              )
-            ),
-            MaterialButton(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-              minWidth: 350,
-              height: 40,
-              color: Colors.cyan,
-              onPressed: () {
-                Navigator.pop(context, 'Closed');
-              },
-              child: Text(
-              'Closed',
-                style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white),
-              ))
+            )
             ],
           )),
       actionsAlignment: MainAxisAlignment.start,

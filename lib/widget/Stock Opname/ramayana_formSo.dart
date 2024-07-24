@@ -1,7 +1,10 @@
 part of 'import.dart';
 
 class RamayanaSo extends StatefulWidget {
-  const RamayanaSo({super.key});
+  RamayanaSo({
+    required this.location
+  });
+  String? location;
 
   @override
   State<RamayanaSo> createState() => _RamayanaSoState();
@@ -9,7 +12,6 @@ class RamayanaSo extends StatefulWidget {
 
 class _RamayanaSoState extends State<RamayanaSo> {
 
-  TextEditingController _controllerLocationApi = TextEditingController();
   TextEditingController _controllerLocation = TextEditingController();
   TextEditingController _controllerSku = TextEditingController();
   TextEditingController _controllerJumlah = TextEditingController();
@@ -18,6 +20,26 @@ class _RamayanaSoState extends State<RamayanaSo> {
   String _location = '';
 
   late PopUpWidget popUpWidget;
+
+  popUpTaskStatus() async {
+    final result = await showCupertinoModalPopup(context: context, builder: (context) => SoPopup());
+      setState(() {
+      if (result != null) {
+      setState(() {
+        widget.location = result['location'];
+      });
+    }
+      });
+    }
+  
+  buttonConfirm() {
+    setState(() {
+      widget.location = '';
+      items.removeRange(0, items.length);
+      _location = '';
+      _controllerLocation.clear();
+    });
+  }
 
   Future<void> scanBarcodeScan(
     TextEditingController controller
@@ -143,48 +165,36 @@ class _RamayanaSoState extends State<RamayanaSo> {
                          ),
                           ),
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 243, 241, 241),
-                          borderRadius: BorderRadius.circular(15)
+                        MaterialButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)
                           ),
-                          child: TextFormField(
-                            controller: _controllerLocationApi,
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.location_pin,
-                              color: baseColor.primaryColor,
-                              ),
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  scanBarcodeScan(_controllerLocation);
-                                },
-                                icon: Icon(Icons.qr_code,
-                                color: baseColor.primaryColor,
-                                ),
-                                ),
-                              hintText: 'Scan or Write here',
-                              hintStyle: GoogleFonts.plusJakartaSans(
-                                color: Colors.black,
-                                fontSize: 15,
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                                borderSide: BorderSide(
-                                  color: Colors.black, // Set the border color
-                                  width: 1.5, // Set the border width
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                                borderSide: BorderSide(
-                                  color: Colors.black, // Set the border color
-                                  width: 1.5, // Set the border width
-                                ),
-                              ),
+                          minWidth: screenWidth,
+                          height: 50,
+                          color: Color.fromARGB(255, 223, 222, 222),
+                          onPressed: () {
+                            popUpTaskStatus();
+                          },
+                          child: 
+                          widget.location == ''
+                          ?
+                          Text('Search Location',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: baseColor.primaryColor
+                            ),
+                          )
+                          :
+                          Text('${widget.location}',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: baseColor.primaryColor
                             ),
                           ),
-                        ),
-                        _controllerLocationApi == null
+                          ),
+                        widget.location != ''
                         ?
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -360,6 +370,7 @@ class _RamayanaSoState extends State<RamayanaSo> {
                                               popUpWidget.showPopUpError('Plese Enter', 'Enter SKU & Quantity');
                                             } else {
                                             setState(() {
+                                              
                                             _location = _controllerLocation.text;
                                             items.add(Item(
                                               sku: _controllerSku.text, 
@@ -483,11 +494,11 @@ class _RamayanaSoState extends State<RamayanaSo> {
                             minWidth: screenWidth,
                             color: baseColor.primaryColor,
                             onPressed: () {
-                              setState(() {
-                                items.removeRange(0, items.length);
-                                _location = '';
-                                _controllerLocation.clear();
-                              });
+                              popUpWidget.showPopUpConfirm(
+                                'Data akan dihapus', 
+                                'YA',
+                                );
+                             
                             },
                             child: Text('CLEAR',
                             style: GoogleFonts.plusJakartaSans(
@@ -504,6 +515,7 @@ class _RamayanaSoState extends State<RamayanaSo> {
                             minWidth: screenWidth,
                             color: baseColor.primaryColor,
                             onPressed: () {
+                              widget.location = '';
                               items.removeRange(0, items.length);
                               _location = '';
                               _controllerLocation.clear();
