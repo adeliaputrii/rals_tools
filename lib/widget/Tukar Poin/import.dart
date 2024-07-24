@@ -23,6 +23,7 @@ import 'package:myactivity_project/cubit/login/login_cubit.dart';
 import 'package:myactivity_project/data/model/data_member_card_body.dart';
 import 'package:myactivity_project/database/db_log.dart';
 import 'package:myactivity_project/models/model_log.dart';
+import 'package:myactivity_project/utils/app_shared_pref.dart';
 import 'package:myactivity_project/utils/popup_widget.dart';
 import 'package:myactivity_project/widget/import.dart';
 import 'package:myactivity_project/service/SP_service/SP_service.dart';

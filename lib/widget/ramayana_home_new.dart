@@ -38,7 +38,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   List<DateTime> _events = [];
   List data3Menu = [];
   List task3 = [];
-  var token = '';
+  String? token;
   int? unread_task;
   int? total_task;
   var fcmToken;
@@ -50,9 +50,14 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   late HomeCubit homeCubit;
   bool namaUser = false;
   late LoginCubit loginCubit;
-  final urlApi = '${tipeurl}${basePath.api_login}';
+  late IDCashCubit cubit;
   late SharedPreferences pref;
   var member = '';
+  final urlApi = '${tipeurl}${basePath.api_login}';
+
+  String? urlPhoto;
+  String? header;
+  String? newsUrl;
 
   List<Map<String, dynamic>> loginOffline = [];
   List<Map<String, dynamic>> voidOffline = [];
@@ -63,29 +68,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     loginCubit = context.read<LoginCubit>();
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    UserData userData = UserData();
     homeCubit = context.read<HomeCubit>();
-    initPlatformState();
-    didPop();
-    _checkInternetConnection();
-    didPushNext();
-    ApprovalReturnMenu.approvalmenu.clear();
-    ApprovalReturnMenu.idcashmenu.clear();
-    ApprovalIdcash.approvalidcash.clear();
-    ModelToko.menutoko.clear();
-    deleteToko();
-    imei();
-    dapetinData();
-    homeCubit.getTaskUser();
-    Future.delayed(const Duration(seconds: 1), () async {
-      await fetchDataJumlahTask();
-      await fetchDataListUser();
-      print('delayed execution');
-    });
-    fetchDataJumlahTask();
-    _unsecureScreen();
-    fetchBerita();
-    _getAllActivity();
+    cubit = context.read<IDCashCubit>();
+    refreshPage();
+    fetchDataCustomer(id_user: '${userData.getUsername7()}');
   }
 
   @override
@@ -93,12 +79,28 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     isMounted = false;
     super.dispose();
   }
+  
 
   Future<void> refreshWidget() async {
-    fetchDataListUser();
-    fetchDataJumlahTask();
-    fetchBerita();
-    homeCubit.getTaskUser();
+    homeCubit.getTaskUser(token!);
+    _getAllActivity();
+    _unsecureScreen();
+     _checkInternetConnection();
+  }
+
+  refreshPage() async {
+    token = await SharedPref.getToken();
+    homeCubit.getNewsList(token!);
+    homeCubit.getTaskUser(token!);
+    _getAllActivity();
+    _unsecureScreen();
+     _checkInternetConnection();
+  }
+
+  fetchDataCustomer({required String id_user}) async {
+    final body = DataMemberCardBody(idUser: id_user);
+    cubit.getDataMember(token!, body);
+    print('OKE');
   }
 
   _unsecureScreen() async {
@@ -132,92 +134,9 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           ))
       .toList();
 
-  _loadToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    UserData userData = UserData();
-    var accToken = userData.getUserToken();
-    print('load token ${accToken}');
-    if (isMounted) {
-      setState(() {
-        token = (prefs.getString('user_token_str') ?? '');
-      });
-    }
-    return token;
-  }
-
-  fetchDataListUser() async {
-    _loadToken();
-    TaskHome.taskhome.clear();
-    final responseku = await http.get(Uri.parse('${tipeurl}v1/activity/task/get-task'), headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    });
-
-    var data = jsonDecode(responseku.body);
-
-    if (data["status"] == 200) {
-      print("API Success oooo");
-      print(data);
-      int count = data['data'].length;
-      if (count > 3) {
-        for (int i = 0; i < 3; i++) {
-          TaskHome.taskhome.add(TaskHome.fromjson(data['data'][i]));
-          print('true');
-        }
-      } else {
-        for (int i = 0; i < count; i++) {
-          TaskHome.taskhome.add(TaskHome.fromjson(data['data'][i]));
-          print('false');
-        }
-      }
-      final Map<String, TaskHome> profileMap = new Map();
-      TaskHome.taskhome.forEach((element) {
-        profileMap[element.task_id] = element;
-        TaskHome.taskhome = profileMap.values.toList();
-      });
-      print(data['data'].toString());
-    } else {
-      print(data['status']);
-      print('NO DATA');
-    }
-  }
-
-  fetchBerita() async {
-    News.news.clear();
-    final responseku = await http.get(Uri.parse('${tipeurl}v1/news/get'), headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    });
-
-    var data = jsonDecode(responseku.body);
-    if (data['status'] == 200) {
-      int count = data['data'].length;
-      for (int i = 0; i < count; i++) {
-        News.news.add(News.fromjson(data['data'][i]));
-      }
-      if (News.news.length > 2) {
-        News.news3 = News.news.sublist(0, 3);
-      } else {
-        News.news3 = News.news.sublist(0, News.news.length);
-      }
-      final Map<String, News> profileMap = new Map();
-      News.news.forEach((element) {
-        profileMap[element.berita_hdr] = element;
-        News.news = profileMap.values.toList();
-      });
-      print(data['data'].toString());
-    } else {
-      print(data['status']);
-      print('NO DATA');
-    }
-  }
-
   fetchDataJumlahTask() async {
-    _loadToken();
     HomeTaskTotal.hometasktotal.clear();
-    final responseku = await http.get(Uri.parse('${tipeurl}v1/activity/task/count-unread'), headers: {
+    final responseku = await http.get(Uri.parse('${base_url_dev}/api/v1/activity/task/count-unread'), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
@@ -242,7 +161,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   }
 
   read_task() async {
-    _loadToken();
     final responseku = await http.post(Uri.parse('${tipeurl}v1/activity/task/read-all-task'), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -776,7 +694,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                           }
                           if (_isConnected == true) {
                             print('is connect');
-                            loginCubit.createLog('${getName()}', 'Navigasi Menu ${getName()}', urlApi);
+                            // loginCubit.createLog('${getName()}', 'Navigasi Menu ${getName()}', urlApi);
 
                             print('berhasil $_udid');
                           } else if (_isConnected == false) {
@@ -883,9 +801,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       return BlocListener<IDCashCubit, IDCashState>(
         listener: (context, state) {
           if (state is IDCashSuccess) {
+            setState(() {
             member = state.response.data!.first.nokartu.toString();
             pref.setString('noMember', '${member}');
-            debugPrint('member : $member');
+            print('memberrr : $member');
+            });
           }
         },
         child: Scaffold(
@@ -1116,91 +1036,67 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                             ),
                                             Container(
                                                 margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                                child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
-                                                  if (state is HomeLoading) {
-                                                    return SpinKitThreeBounce(
-                                                      color: Color.fromARGB(255, 230, 0, 0),
-                                                      size: 50.0,
-                                                    );
-                                                  }
-                                                  if (state is HomeSuccess) {
-                                                    return Column(
-                                                      children: [
-                                                        SingleChildScrollView(
-                                                          scrollDirection: Axis.horizontal,
-                                                          child: Row(
-                                                            children: News.news3.map((e) {
-                                                              var stringHtml = '${e.berita_dtl}';
-                                                              return InkWell(
-                                                                onTap: () {
-                                                                  News.newsDetail.clear();
-                                                                  setState(() {
-                                                                    News.newsDetail.add(e);
-                                                                    print(News.newsDetail);
-                                                                  });
-                                                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-                                                                    return NewsDetail(newsUrl: e.berita_dtl, fromHome: true);
-                                                                  }), (route) => false);
-                                                                  print('navigator');
-                                                                },
-                                                                child: Container(
-                                                                  width: 400,
-                                                                  margin: EdgeInsets.only(bottom: 10, right: 20),
-                                                                  decoration: BoxDecoration(
-                                                                    borderRadius: BorderRadius.circular(10),
-                                                                    color: Colors.white,
-                                                                  ),
-
-                                                                  // height: 165,
-                                                                  child: Column(
-                                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                    children: [
-                                                                      Container(
-                                                                        // height: 150
-                                                                        child: ClipRRect(
-                                                                            borderRadius: BorderRadius.circular(10),
-                                                                            child: Image.network('${e.url_photo}', fit: BoxFit.cover)),
-                                                                      ),
-                                                                      Container(
-                                                                        margin: EdgeInsets.fromLTRB(10, 10, 0, 15),
-                                                                        child: Text('${e.berita_hdr}',
-                                                                            style: GoogleFonts.plusJakartaSans(
-                                                                                fontSize: 17, fontWeight: FontWeight.w600, color: Colors.black)),
-                                                                      ),
-                                                                    ],
-                                                                  ),
+                                                // height: 100,
+                                                child: 
+                                                // BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+                                                //   if (state is HomeLoading) {
+                                                //     return SpinKitThreeBounce(
+                                                //       color: Color.fromARGB(255, 230, 0, 0),
+                                                //       size: 50.0,
+                                                //     );
+                                                //   }
+                                                //   if (state is HomeNewsSuccess) {
+                                                //     print('State is HomeNewsSuccess');
+                                                //     print('Data: ${state.response.data?.first.beritaHdr}');
+                                                    InkWell(
+                                                          onTap: () {
+                                                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+                                                              return NewsDetail(newsUrl: newsUrl ?? '', fromHome: true);
+                                                            }), (route) => false);
+                                                            print('navigator');
+                                                          },
+                                                          child: Container(
+                                                            width: 400,
+                                                            margin: EdgeInsets.only(bottom: 10, right: 20),
+                                                            decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.circular(10),
+                                                              color: Colors.white,
+                                                            ),
+                                                                                                        
+                                                            // height: 165,
+                                                            child: Column(
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Container(
+                                                                  // height: 150
+                                                                  child: ClipRRect(
+                                                                      borderRadius: BorderRadius.circular(10),
+                                                                      child: 
+                                                                      urlPhoto == null 
+                                                                      ?
+                                                                      Container()
+                                                                      :
+                                                                      Image.network('${urlPhoto ?? ''}', fit: BoxFit.cover)),
                                                                 ),
-                                                              );
-                                                            }).toList(),
+                                                                Container(
+                                                                  margin: EdgeInsets.fromLTRB(10, 10, 0, 15),
+                                                                  child: Text('${header ?? ''}',
+                                                                      style: GoogleFonts.plusJakartaSans(
+                                                                          fontSize: 17, fontWeight: FontWeight.w600, color: Colors.black)),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
-                                                        ),
-                                                        Row(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                          children: News.news3.map((e) {
-                                                            return GestureDetector(
-                                                              onTap: () => _controller.animateToPage(1),
-                                                              child: Container(
-                                                                width: 12.0,
-                                                                height: 10.0,
-                                                                margin: EdgeInsets.symmetric(vertical: 15.0, horizontal: 4.0),
-                                                                decoration: BoxDecoration(
-                                                                    // color: Colors.green,
-                                                                    shape: BoxShape.circle,
-                                                                    color: (Theme.of(context).brightness == Brightness.dark
-                                                                            ? Colors.white
-                                                                            : Colors.black)
-                                                                        .withOpacity(_current == e ? 0.9 : 0.4)),
-                                                              ),
-                                                            );
-                                                          }).toList(),
-                                                        )
-                                                      ],
-                                                    );
-                                                  }
-                                                  return Container();
-                                                })),
+                                                    )
+                                                //   } else {
+                                                //     Container(
+                                                //     color: Colors.green,
+                                                //     height: 100,);
+                                                //   }
+                                                //   return Container();
+                                                // })
+                                                ),
                                           ],
                                         )),
                                     Padding(
@@ -1324,95 +1220,112 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                         left: 20,
                                                         right: 20,
                                                       ),
-                                                      child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+                                                      child: BlocListener<HomeCubit, HomeState>(
+                                                        listener: (context, state) {
+                                                          if(state is HomeNewsSuccess) {
+                                                            setState(() {
+                                                              urlPhoto = state.response.data?.first.urlPhoto;
+                                                              header = state.response.data?.first.beritaHdr;
+                                                              newsUrl = state.response.data?.first.newsUrl;
+                                                            });
+                                                          }
+                                                          if (state is IDCashSuccess) {
+                                                            print('OKEE');
+                                                          }
+                                                        },
+                                                        child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
                                                         if (state is HomeLoading) {
                                                           return SpinKitThreeBounce(
-                                                            color: Color.fromARGB(255, 230, 0, 0),
-                                                            size: 50.0,
-                                                          );
-                                                        }
-                                                        if (state is HomeSuccess) {
-                                                          return Container(
-                                                            child: ListView.builder(
-                                                              primary: false,
-                                                              shrinkWrap: true,
-                                                              itemCount: 3,
-                                                              itemBuilder: (BuildContext context, int index) {
-                                                                return GestureDetector(
-                                                                  onTap: () {
-                                                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                                      return RamayanaMyActivity(update: false, response: state.response.data?[index]);
-                                                                    }));
-                                                                  },
-                                                                  child: Container(
-                                                                    height: 90,
-                                                                    margin: EdgeInsets.only(bottom: 10),
-                                                                    decoration: BoxDecoration(boxShadow: <BoxShadow>[
-                                                                      BoxShadow(
-                                                                          color: Color.fromARGB(255, 197, 197, 197),
-                                                                          blurRadius: 1,
-                                                                          spreadRadius: 1,
-                                                                          offset: Offset(2, 2))
-                                                                    ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
-                                                                    child: ListTile(
-                                                                      leading: CircleAvatar(
-                                                                          backgroundColor: Color.fromARGB(255, 210, 14, 0),
-                                                                          radius: 30,
-                                                                          backgroundImage: AssetImage('assets/todolist.png')),
-                                                                      // title: Text('${e.task_desc}', style: GoogleFonts.plusJakartaSans(
-                                                                      //   fontSize: 18, color: Colors.black
-                                                                      // ),),
-                                                                      subtitle: Column(
-                                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Container(
-                                                                            margin: EdgeInsets.only(top: 3),
-                                                                            child: Text(
-                                                                              '${state.response.data?[index].taskDesc}',
-                                                                              style: GoogleFonts.plusJakartaSans(
-                                                                                  fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
-                                                                              overflow: TextOverflow.ellipsis,
-                                                                            ),
-                                                                          ),
-                                                                          Row(
-                                                                            children: [
-                                                                              Container(
-                                                                                width: 80,
-                                                                                child: Text('Status',
-                                                                                    style: GoogleFonts.plusJakartaSans(
-                                                                                        fontSize: 15, color: Colors.grey)),
-                                                                              ),
-                                                                              Text('${state.response.data?[index].taskStatus}',
-                                                                                  style:
-                                                                                      GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
-                                                                            ],
-                                                                          ),
-                                                                          Row(
-                                                                            children: [
-                                                                              Container(
-                                                                                width: 80,
-                                                                                child: Text('Project ID',
-                                                                                    style: GoogleFonts.plusJakartaSans(
-                                                                                        fontSize: 15, color: Colors.grey)),
-                                                                              ),
-                                                                              Text(': ${state.response.data?[index].projectId}',
-                                                                                  style:
-                                                                                      GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
-                                                                            ],
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                            ),
-                                                          );
-                                                        }
-
-                                                        return Container();
-                                                      })),
+                                                          color: Color.fromARGB(255, 230, 0, 0),
+                                                          size: 50.0,
+                                                         );
+                                                                                                              }
+                                                                                                              if (state is HomeSuccess) {
+                                                                                                                 print('State is HomeSuccess');
+                                                                                                                print('Data: ${state.response.data?.first.projectId}');
+                                                                                                                
+                                                                                                                return Container(
+                                                                                                                  child: ListView.builder(
+                                                                                                                    primary: false,
+                                                                                                                    shrinkWrap: true,
+                                                                                                                    itemCount: 3,
+                                                                                                                    itemBuilder: (BuildContext context, int index) {
+                                                                                                                      return GestureDetector(
+                                                                                                                        onTap: () {
+                                                                                                                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                                                                                                            return RamayanaMyActivity(update: false, response: state.response.data?[index]);
+                                                                                                                          }));
+                                                                                                                        },
+                                                                                                                        child: Container(
+                                                                                                                          height: 90,
+                                                                                                                          margin: EdgeInsets.only(bottom: 10),
+                                                                                                                          decoration: BoxDecoration(boxShadow: <BoxShadow>[
+                                                                                                                            BoxShadow(
+                                                                                                                                color: Color.fromARGB(255, 197, 197, 197),
+                                                                                                                                blurRadius: 1,
+                                                                                                                                spreadRadius: 1,
+                                                                                                                                offset: Offset(2, 2))
+                                                                                                                          ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                                                                                                                          child: ListTile(
+                                                                                                                            leading: CircleAvatar(
+                                                                                                                                backgroundColor: Color.fromARGB(255, 210, 14, 0),
+                                                                                                                                radius: 30,
+                                                                                                                                backgroundImage: AssetImage('assets/todolist.png')),
+                                                                                                                            // title: Text('${e.task_desc}', style: GoogleFonts.plusJakartaSans(
+                                                                                                                            //   fontSize: 18, color: Colors.black
+                                                                                                                            // ),),
+                                                                                                                            subtitle: Column(
+                                                                                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                                              children: [
+                                                                                                                                Container(
+                                                                                                                                  margin: EdgeInsets.only(top: 3),
+                                                                                                                                  child: Text(
+                                                                                                                                    '${state.response.data?[index].taskDesc}',
+                                                                                                                                    style: GoogleFonts.plusJakartaSans(
+                                                                                                                                        fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
+                                                                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                                                                  ),
+                                                                                                                                ),
+                                                                                                                                Row(
+                                                                                                                                  children: [
+                                                                                                                                    Container(
+                                                                                                                                      width: 80,
+                                                                                                                                      child: Text('Status',
+                                                                                                                                          style: GoogleFonts.plusJakartaSans(
+                                                                                                                                              fontSize: 15, color: Colors.grey)),
+                                                                                                                                    ),
+                                                                                                                                    Text('${state.response.data?[index].taskStatus}',
+                                                                                                                                        style:
+                                                                                                                                            GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                                                                                  ],
+                                                                                                                                ),
+                                                                                                                                Row(
+                                                                                                                                  children: [
+                                                                                                                                    Container(
+                                                                                                                                      width: 80,
+                                                                                                                                      child: Text('Project ID',
+                                                                                                                                          style: GoogleFonts.plusJakartaSans(
+                                                                                                                                              fontSize: 15, color: Colors.grey)),
+                                                                                                                                    ),
+                                                                                                                                    Text(': ${state.response.data?[index].projectId}',
+                                                                                                                                        style:
+                                                                                                                                            GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.grey)),
+                                                                                                                                  ],
+                                                                                                                                ),
+                                                                                                                              ],
+                                                                                                                            ),
+                                                                                                                          ),
+                                                                                                                        ),
+                                                                                                                      );
+                                                                                                                    },
+                                                                                                                  ),
+                                                                                                                );
+                                                                                                              }
+                                                      
+                                                                                                              return Container();
+                                                                                                            }),
+                                                      )),
                                                 ],
                                               )
                                             : Container()),

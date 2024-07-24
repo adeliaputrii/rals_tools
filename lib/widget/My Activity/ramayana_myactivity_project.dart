@@ -15,12 +15,20 @@ class RamayanaMyActivityProject extends StatefulWidget {
 
 class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
   late MyActivityCubit myactivityCubit;
+  String? token = '';
+
   @override
   void initState() {
     super.initState();
     myactivityCubit = context.read<MyActivityCubit>();
-    myactivityCubit.getProject();
+    refreshpage();
     print('widget update ${widget.update}');
+  }
+
+  refreshpage() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    token = await SharedPref.getToken();
+    myactivityCubit.getProject(token!);
   }
 
   void _navigateToListTask(String projectId, String projectDesc) {
@@ -33,7 +41,7 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
         projectDesc: projectDesc,
       );
     })).then((_) {
-      myactivityCubit.getProject();
+      myactivityCubit.getProject(token!);
     });
   }
 

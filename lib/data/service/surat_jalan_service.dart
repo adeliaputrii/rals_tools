@@ -17,17 +17,42 @@ abstract class SuratJalanService {
   factory SuratJalanService(Dio dio, {String baseUrl}) = _SuratJalanService;
 
   @GET('${basePath.api_tracking_scan}{no_sj}')
-  Future<SuratJalanResponse> getScanTracking(@Path("no_sj") String noSJ);
+  Future<SuratJalanResponse> getScanTracking(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Path("no_sj") String noSJ
+  );
 
   @POST(basePath.api_tracking_update_storeline)
-  Future<ScanSJResponse> postTrackingStoreline(@Body() TrackingSJBody body);
+  Future<ScanSJResponse> postTrackingStoreline(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Body() TrackingSJBody body
+  );
 
   @POST(basePath.api_tracking_update_supplier)
-  Future<ScanSJResponse> postTrackingSupplier(@Body() TrackingSJBody body);
+  Future<ScanSJResponse> postTrackingSupplier(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Body() TrackingSJBody body
+  );
 
   @POST(basePath.api_tracking_update_tracking)
-  Future<ScanSJResponse> postTrackingDefault(@Body() TrackingSJBody body);
+  Future<ScanSJResponse> postTrackingDefault(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Body() TrackingSJBody body
+  );
 
   @GET('${basePath.api_tracking_sj}{no_sj}')
-  Future<TrackingSJResponse> trackSJ(@Path("no_sj") String noSJ);
+  Future<TrackingSJResponse> trackSJ(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Path("no_sj") String noSJ
+  );
 }

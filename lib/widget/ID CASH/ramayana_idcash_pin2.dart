@@ -13,35 +13,17 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
 
   UserData userData = UserData();
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  String _udid = 'Unknown';
   bool _passwordControllerVisible = false;
   Dio dio = Dio();
   bool isLoading = false;
   late LoginCubit loginCubit;
   KeyboardUtils keyboardUtils = KeyboardUtils();
-  final apiUrl = '${tipeurl}${basePath.api_login}';
 
   @override
   void initState() {
     super.initState();
     loginCubit = context.read<LoginCubit>();
-    initPlatformState();
     _passwordControllerVisible = false;
-  }
-
-  Future<void> initPlatformState() async {
-    String udid;
-    try {
-      udid = await FlutterUdid.consistentUdid;
-    } on PlatformException {
-      udid = 'Failed to get UDID.';
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      _udid = udid;
-    });
   }
 
   snackBar(String? message) {
@@ -54,18 +36,14 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
   }
 
   loginPressed() async {
-    print(versi);
-    print('daaaaaaamn 23111');
-    print(tipeurl);
+    String? deviceId = await SharedPref.getDeviceId();
+    print('DEVICE ${deviceId}');
     keyboardUtils.dissmissKeyboard(context);
-    // // try {
     if (passwordController.text.isNotEmpty) {
       UserData userData = UserData();
       SharedPreferences pref = await SharedPreferences.getInstance();
       AndroidDeviceInfo info = await deviceInfo.androidInfo;
       var username = userData.getUsername7();
-      final deviceId = await SharedPref.getDeviceId();
-      final phoneSerialNum = pref.getString('serialImei');
       final body = LoginBody(
           username: "${username}",
           password: passwordController.text,
@@ -90,9 +68,9 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
               isLoading = false;
             });
             final response = state.response;
-            loginCubit.createLog(baseParam.logInfoIdcashPage,
-                baseParam.logInfoLoginSucc, apiUrl);
-            userData.setUser(data: response.toJson());
+            // loginCubit.createLog(baseParam.logInfoIdcashPage,
+            //     baseParam.logInfoLoginSucc, apiUrl);
+            // userData.setUser(data: response.toJson());
             snackBar("Success!!!");
             Navigator.pushAndRemoveUntil(
                 context,
@@ -103,8 +81,8 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                 (Route<dynamic> route) => false);
           }
           if (state is LoginFailure) {
-            loginCubit.createLog(baseParam.logInfoIdcashPage,
-                '${baseParam.logInfoLoginFail}${state.message}', apiUrl);
+            // loginCubit.createLog(baseParam.logInfoIdcashPage,
+            //     '${baseParam.logInfoLoginFail}${state.message}', apiUrl);
             setState(() {
               isLoading = false;
             });

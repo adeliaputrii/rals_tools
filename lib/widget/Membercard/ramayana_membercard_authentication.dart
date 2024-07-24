@@ -85,7 +85,7 @@ class _RamayanaMembercardAuthenticationState
         }
 
         if (state is LoginSuccess) {
-          loginCubit.createLog(baseParam.page, baseParam.cardSuccess, urlApi);
+          // loginCubit.createLog(baseParam.page, baseParam.cardSuccess, urlApi);
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (_) => RamayanaMembercardCard()));
         }
@@ -98,10 +98,10 @@ class _RamayanaMembercardAuthenticationState
             popUpWidget.showPopUpError(baseParam.pleaseCheck, state.message);
           } else {
             final username = '${userData.getUsername7()}';
-            loginCubit.createLog(
-                baseParam.page,
-                '${baseParam.cardFailed} ${state.message} user ${username}',
-                urlApi);
+            // loginCubit.createLog(
+            //     baseParam.page,
+            //     '${baseParam.cardFailed} ${state.message} user ${username}',
+            //     urlApi);
             popUpWidget.showPopUpError(baseParam.pleaseCheck, state.message);
           }
         }

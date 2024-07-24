@@ -31,8 +31,14 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
   void initState() {
     super.initState();
     myactivityCubit = context.read<MyActivityCubit>();
-    myactivityCubit.getTaskById(widget.projectId!);
+    refreshpage();
     print('widget update ${widget.update}');
+  }
+
+  refreshpage() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = await SharedPref.getToken();
+    myactivityCubit.getTaskById(token!, widget.projectId!);
   }
 
   @override

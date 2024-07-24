@@ -46,6 +46,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
 
   File? file;
 
+  String? token;
+
   bool _loadingPath = false;
   bool _loadingSpinkit = false;
   bool _loadingUpload = false;
@@ -78,6 +80,12 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   DateTime dateTimeSelected = DateTime.now();
   DateTime dateTimeSelectedEnd = DateTime.now();
 
+  refreshpage() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    token = await SharedPref.getToken();
+    cubit.getTaskById(token!, widget.projectId ?? 'P202300001');
+  }
+
   void _openTimePickerSheet(BuildContext context) async {
     final result = await DateTimeUtils.openTimePickerSheet(context);
 
@@ -102,7 +110,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     super.initState();
     cubit = context.read<MyActivityCubit>();
     loginCubit = context.read<LoginCubit>();
-    cubit.getTaskById(widget.projectId ?? 'P202300001');
+    refreshpage();
     setData(widget.response);
     popUpWidget = PopUpWidget(context);
     Permission.camera.request();
@@ -110,8 +118,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
 
   void setData(GetTaskResponse.Data? response) {
     if (response != null) {
-      cubit.getProject();
-      cubit.getTaskById(widget.response!.projectId!);
+      cubit.getProject(token!);
+      cubit.getTaskById(token!, widget.response!.projectId!);
       response.forEach((element) {
         setState(() {
           resultProject.add(element.projectDesc!);
@@ -267,7 +275,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     widget.status = 'Perbarui Status';
     descriptionController.clear();
     uploadEdit = true;
-    loginCubit.createLog(baseParam.logInfoActivityPage, info2, urlApi);
+    // loginCubit.createLog(baseParam.logInfoActivityPage, info2, urlApi);
   }
 
   Widget build(BuildContext context) {
@@ -343,7 +351,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                 setState(() {
                   _loadingButton = false;
                 });
-                loginCubit.createLog(baseParam.logInfoActivityPage, state.message, urlApi);
+                // loginCubit.createLog(baseParam.logInfoActivityPage, state.message, urlApi);
               }
               if (state is MyActivitySuccessGetTask) {
                 _loadingUpload = false;
@@ -892,7 +900,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
       );
       debugPrint('body myact ${body.toString()}');
       debugPrint('Dokumen yg dipilih : ada');
-      cubit.submitactivity(body);
+      cubit.submitactivity(token!, body);
     } else {
       final body = MyActivityBody(
         user_create: '${userData.getUsername7()}',
@@ -906,7 +914,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
         date_create: '${DateTime.now()}',
       );
       if (_checkStatusMandatory()) {
-        cubit.submitactivity(body);
+        cubit.submitactivity(token!, body);
       } else {
         PopUpWidget(context).showPopUpWarning('Harap pilih Status Projek', 'Ok');
       }
@@ -930,7 +938,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
         date_create: '${DateTime.now()}');
     debugPrint('body update' + body.toString());
     if (_checkStatusMandatory()) {
-      cubit.updateactivity(body);
+      cubit.updateactivity(token!, body);
     } else {
       PopUpWidget(context).showPopUpWarning('Harap pilih Status Projek', 'Ok');
     }
@@ -940,7 +948,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     final body = MyActivityEditBody(
       userCreate: '${userData.getUsername7()}',
     );
-    cubit.editactivity(body);
+    cubit.editactivity(token!,body);
     popupEdit();
   }
 

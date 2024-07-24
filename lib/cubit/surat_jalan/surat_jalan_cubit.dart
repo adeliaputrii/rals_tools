@@ -25,10 +25,10 @@ class SuratJalanCubit extends Cubit<SuratJalanState> {
 
   final _repo = SuratJalanRepositories();
 
-  void getScanTracking(String noSJ) async {
+  void getScanTracking(String token, String noSJ) async {
     emit(SuratJalanLoading());
     try {
-      await repositories.getScanTracking(noSJ).then((value) {
+      await repositories.getScanTracking(token, noSJ).then((value) {
         if (value!.isSuccess && value.dataResponse is SuratJalanResponse) {
           final res = value.dataResponse as SuratJalanResponse;
           emit(SuratJalanSuccess(res));
@@ -43,9 +43,9 @@ class SuratJalanCubit extends Cubit<SuratJalanState> {
     }
   }
 
-  void postTrackingSJ(TrackingSJBody body, int trackType) async {
+  void postTrackingSJ(String token, TrackingSJBody body, int trackType) async {
     emit(ScanSJLoading());
-    await repositories.postTracking(body, trackType).then((value) {
+    await repositories.postTracking(token, body, trackType).then((value) {
       if (value.isSuccess && value.dataResponse is ScanSJResponse) {
         final res = value.dataResponse as ScanSJResponse;
         emit(ScanSJSuccess(res));
@@ -57,9 +57,9 @@ class SuratJalanCubit extends Cubit<SuratJalanState> {
     });
   }
 
-  void trackSJ(String noSJ) async {
+  void trackSJ(String token, String noSJ) async {
     emit(ScanSJLoading());
-    await repositories.trackSJ(noSJ).then((value) {
+    await repositories.trackSJ(token, noSJ).then((value) {
       if (value.isSuccess && value.dataResponse is TrackingSJResponse) {
         final res = value.dataResponse as TrackingSJResponse;
         emit(TrackSJSuccess(res));

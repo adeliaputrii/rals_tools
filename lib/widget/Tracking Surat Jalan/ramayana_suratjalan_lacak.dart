@@ -59,9 +59,11 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
     }
   }
 
-  trackBySuratJalan(String noSJ) {
-    sjCubit.getScanTracking(noSJ);
-    sjCubit.trackSJ(noSJ);
+  trackBySuratJalan(String noSJ) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final token = await SharedPref.getToken();
+    sjCubit.getScanTracking(token!, noSJ);
+    sjCubit.trackSJ(token, noSJ);
   }
 
   @override
@@ -136,7 +138,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
             }
 
             if (state is SuratJalanSuccess) {
-              loginCubit.createLog(baseParam.logInfoTrackSJPage, '${baseParam.logInfoScanSJSucc} No SJ ${barcodeSj}', apiUrl + barcodeSj);
+              // loginCubit.createLog(baseParam.logInfoTrackSJPage, '${baseParam.logInfoScanSJSucc} No SJ ${barcodeSj}', apiUrl + barcodeSj);
               setState(() {
                 isLoading = false;
                 _visible = true;
@@ -159,11 +161,11 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
                 _visible = false;
                 isLoading = false;
               });
-              loginCubit.createLog(baseParam.logInfoTrackSJPage, '${baseParam.logInfoScanSJFail} No SJ ${noSjController..text}', apiUrl + barcodeSj);
+              // loginCubit.createLog(baseParam.logInfoTrackSJPage, '${baseParam.logInfoScanSJFail} No SJ ${noSjController..text}', apiUrl + barcodeSj);
               popUp.showPopUpError(notFound, state.message);
             }
             if (state is TrackSJSuccess) {
-              loginCubit.createLog(baseParam.logInfoTrackSJPage, '${baseParam.logInfoTrackSJSucc} No SJ ${barcodeSj}', apiUrl + barcodeSj);
+              // loginCubit.createLog(baseParam.logInfoTrackSJPage, '${baseParam.logInfoTrackSJSucc} No SJ ${barcodeSj}', apiUrl + barcodeSj);
 
               int index = 0;
               final response = state.response.data;
@@ -188,8 +190,8 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
             }
 
             if (state is TrackSJFailure) {
-              loginCubit.createLog(
-                  baseParam.logInfoTrackSJPage, '${baseParam.logInfoTrackSJFail} No SJ ${noSjController..text} ${state.message}', apiUrl + barcodeSj);
+              // loginCubit.createLog(
+              //     baseParam.logInfoTrackSJPage, '${baseParam.logInfoTrackSJFail} No SJ ${noSjController..text} ${state.message}', apiUrl + barcodeSj);
             }
           },
           child: DefaultTabController(

@@ -29,6 +29,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
 
   List<String> noColyMissing = [];
 
+  String? token;
   var noSj = "";
   var description = "";
   bool isLoading = false;
@@ -54,7 +55,9 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
     sjCubit = context.read<SuratJalanCubit>();
     logCubit = context.read<LoginCubit>();
     _visible = false;
+    refreshPage();
   }
+
 
   @override
   void dispose() {
@@ -78,11 +81,11 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#ff6666', 'Cancel', true, ScanMode.BARCODE);
       if (barcodeScanRes == '-1') {
         popUp.showPopUpError(notFound, 'Barcode tidak terdeteksi');
-        logCubit.createLog(baseParam.logInfoScanSJPage, 'Barcode tidak terdeteksi', basePath.api_tracking_scan);
+        // logCubit.createLog(baseParam.logInfoScanSJPage, 'Barcode tidak terdeteksi', basePath.api_tracking_scan);
       } else {
-        logCubit.createLog(baseParam.logInfoScanSJPage, '${baseParam.logInfoScanDesc}${barcodeScanRes}', basePath.api_tracking_scan);
-        noSjController.text = barcodeScanRes;
-        sjCubit.getScanTracking(noSjController.text);
+        // logCubit.createLog(baseParam.logInfoScanSJPage, '${baseParam.logInfoScanDesc}${barcodeScanRes}', basePath.api_tracking_scan);
+        // noSjController.text = barcodeScanRes;
+        // sjCubit.getScanTracking(token, noSjController.text);
       }
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
@@ -92,6 +95,10 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
         ScreenBrightness().resetScreenBrightness();
       });
     }
+  }
+
+  refreshPage() async {
+    token = await SharedPref.getToken();
   }
 
   void navigateTrackSJ() {
@@ -483,7 +490,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                         onPressed: () {
                           keyboardUtils.dissmissKeyboard(context);
-                          sjCubit.getScanTracking(noSjController.text.toString());
+                          sjCubit.getScanTracking(token!, noSjController.text.toString());
                         },
                         child: Text(
                           'Cari',
@@ -732,21 +739,21 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
       onConfirmBtnTap: () {
         switch (type) {
           case 1:
-            sjCubit.postTrackingSJ(body, 1);
-            logCubit.createLog(
-                baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Default No. SJ = ${noSj}', basePath.api_tracking_update_tracking + noSj);
+            sjCubit.postTrackingSJ(token!, body, 1);
+            // logCubit.createLog(
+            //     baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Default No. SJ = ${noSj}', basePath.api_tracking_update_tracking + noSj);
             debugPrint("submit");
             break;
           case 2:
-            sjCubit.postTrackingSJ(body, 2);
-            logCubit.createLog(
-                baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Storeline No. SJ = ${noSj}', basePath.api_tracking_update_storeline + noSj);
+            sjCubit.postTrackingSJ(token!, body, 2);
+            // logCubit.createLog(
+            //     baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Storeline No. SJ = ${noSj}', basePath.api_tracking_update_storeline + noSj);
             debugPrint("buttonStoreline");
             break;
           case 3:
-            sjCubit.postTrackingSJ(body, 3);
-            logCubit.createLog(
-                baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Supplier No. SJ = ${noSj}', basePath.api_tracking_update_supplier + noSj);
+            sjCubit.postTrackingSJ(token!, body, 3);
+            // logCubit.createLog(
+            //     baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Supplier No. SJ = ${noSj}', basePath.api_tracking_update_supplier + noSj);
             debugPrint('buttonSupplier');
             break;
         }

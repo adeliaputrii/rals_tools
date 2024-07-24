@@ -26,6 +26,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:myactivity_project/base/base_params.dart';
+import 'package:myactivity_project/base/base_paths.dart';
 import 'package:myactivity_project/database/db_log_login_offline.dart';
 import 'package:myactivity_project/database/db_log_void_offline.dart';
 import 'package:myactivity_project/models/Berita/model_news.dart';

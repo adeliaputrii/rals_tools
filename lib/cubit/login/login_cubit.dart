@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,17 +24,18 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(LoginInitial());
 
   final LoginRepositories repositories = LoginRepositories();
-
+  DeviceInfoPlugin devicePlugin = DeviceInfoPlugin();
   final _repo = LoginRepositories();
   UserData userData = UserData();
 
   void login({required LoginBody loginBody}) async {
+    AndroidDeviceInfo info = await devicePlugin.androidInfo;
     emit(LoginLoading());
     await repositories.login(loginBody).then((value) {
       if (value.isSuccess && value.dataResponse is LoginResponse) {
         final res = value.dataResponse as LoginResponse;
         userData.setDataUser(res);
-        SharedPref.setToken(res.accessToken ?? '');
+        SharedPref.setToken('Bearer ${res.accessToken}');
         SharedPref.setAccessMenu(res.data?.listMenu ?? '');
 
         emit(LoginSuccess(res));
@@ -45,9 +47,9 @@ class LoginCubit extends Cubit<LoginState> {
     debugPrint('MENU USER ${getListMenu}');
   }
 
-  void getDataCustomer(String userId) async {
+  void getDataCustomer(String token, String userId) async {
     emit(GetCustomerLoading());
-    await repositories.getDataCustomer(userId).then((value) {
+    await repositories.getDataCustomer(token, userId).then((value) {
       print('Cubit test Failure');
       if (value.isSuccess && value.dataResponse is DataCustomerResponse) {
         final res = value.dataResponse as DataCustomerResponse;
@@ -58,34 +60,34 @@ class LoginCubit extends Cubit<LoginState> {
     });
   }
 
-  void createLog(String logInfoScreen, String? logInfoDesc, String urlApi) async {
-    final userId = await SharedPref.getUserId();
-    final userToko = await SharedPref.getUserToko();
-    final deviceId = await SharedPref.getDeviceId();
-    final deviceName = await SharedPref.getDeviceName();
-    final currentDt = DateTime.now();
+  // void createLog(String logInfoScreen, String? logInfoDesc, String urlApi) async {
+  //   final userId = await SharedPref.getUserId();
+  //   final userToko = await SharedPref.getUserToko();
+  //   final deviceId = await SharedPref.getDeviceId();
+  //   final deviceName = await SharedPref.getDeviceName();
+  //   final currentDt = DateTime.now();
 
-    final bodyLog = CreateLogBody(
-        userid: userId,
-        devicename: deviceId,
-        dateRun: currentDt.toString(),
-        info1: logInfoScreen,
-        info2: logInfoDesc,
-        progname: urlApi,
-        token: logToken,
-        toko: userToko,
-        versi: versi);
+  //   final bodyLog = CreateLogBody(
+  //       userid: userId,
+  //       devicename: deviceId,
+  //       dateRun: currentDt.toString(),
+  //       info1: logInfoScreen,
+  //       info2: logInfoDesc,
+  //       progname: urlApi,
+  //       token: logToken,
+  //       toko: userToko,
+  //       versi: versi);
 
-    emit(CreateLogLoading());
-    await repositories.createLog(bodyLog).then((value) {
-      print('Cubit test Failure');
-      if (value.isSuccess) {
-        emit(CreateLogSuccess());
-      } else {
-        emit(CreateLogFailure(message: value.dataResponse.toString()));
-      }
-    });
-  }
+  //   emit(CreateLogLoading());
+  //   await repositories.createLog(bodyLog).then((value) {
+  //     print('Cubit test Failure');
+  //     if (value.isSuccess) {
+  //       emit(CreateLogSuccess());
+  //     } else {
+  //       emit(CreateLogFailure(message: value.dataResponse.toString()));
+  //     }
+  //   });
+  // }
 
   void createLogVoidOffline(String? logInfoScreen, String? logInfoDesc, String urlApi, String? currentDt) async {
     final userId = await SharedPref.getUserId();
@@ -104,14 +106,14 @@ class LoginCubit extends Cubit<LoginState> {
         toko: userToko,
         versi: versi);
 
-    emit(CreateLogLoading());
-    await repositories.createLog(bodyLog).then((value) {
-      if (value.isSuccess) {
-        emit(CreateLogSuccess());
-      } else {
-        emit(CreateLogFailure(message: value.dataResponse.toString()));
-      }
-    });
+  //   emit(CreateLogLoading());
+  //   await repositories.createLog(bodyLog).then((value) {
+  //     if (value.isSuccess) {
+  //       emit(CreateLogSuccess());
+  //     } else {
+  //       emit(CreateLogFailure(message: value.dataResponse.toString()));
+  //     }
+  //   });
   }
 
   void logout() async {

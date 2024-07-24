@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
@@ -72,7 +73,8 @@ void main() async {
 
   var waktuLoginOffline = prefs.getString("waktuLoginOffline");
   final lastLogin = await SharedPref.getLastLogin();
-  final deviceId = await SharedPref.getDeviceId();
+  final deviceId = await SharedPref.getToken();
+  debugPrint('TOKEN : ${deviceId}');
   DateTime dateTime = DateTime.parse(lastLogin ?? '${formattedDate}');
   final sevenDays = DateFormat('yyyy-MM-dd').format(dateTime.add(const Duration(days: 7)));
 
@@ -97,7 +99,7 @@ Future<void> registerAppServices(String packageName) async {
   appUtil.initNetwork();
   final appServices = AppServices(GetIt.I.get<Dio>());
 
-  final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_prod}' : '${basePath.base_url_dev}';
+  final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_dev}' : '${basePath.base_url_dev}';
 
   // final url = '${basePath.base_url_dev}';
   await appServices.registerAppServices(url);
@@ -116,9 +118,8 @@ Future<void> initPlatformState() async {
     nativeId = 'Failed to get native id.';
   }
 
-  SharedPref.setDeviceId('${nativeId}${info.device}');
   SharedPref.setDeviceName('${info.brand}');
-  debugPrint('device id ${nativeId}${info.device}');
+  debugPrint('device id ${info.device}');
 }
 
 class HomeMainApp extends StatelessWidget {

@@ -21,9 +21,9 @@ class MyActivityCubit extends Cubit<MyActivityState> {
 
   final MyActivityRepositories repositories = MyActivityRepositories();
 
-  void getProject() async {
+  void getProject(String token) async {
     emit(MyActivityLoading());
-    await repositories.getProject().then((value) {
+    await repositories.getProject(token).then((value) {
       if (value != null) {
         if (value.isSuccess && value.dataResponse is GetProjectResponse) {
           final res = value.dataResponse as GetProjectResponse;
@@ -39,9 +39,9 @@ class MyActivityCubit extends Cubit<MyActivityState> {
     });
   }
 
-  void getTaskById(String projectId) async {
+  void getTaskById(String token, String projectId) async {
     emit(MyActivityLoading());
-    await repositories.getTaskById(projectId).then((value) {
+    await repositories.getTaskById(token, projectId).then((value) {
       if (value != null) {
         if (value.isSuccess && value.dataResponse is MyActivityTaskResponse) {
           final res = value.dataResponse as MyActivityTaskResponse;
@@ -57,9 +57,9 @@ class MyActivityCubit extends Cubit<MyActivityState> {
     });
   }
 
-  Future<void> getTaskUser() async {
+  Future<void> getTaskUser(String token) async {
     emit(MyActivityLoading());
-    await repositories.getTaskUser().then((value) {
+    await repositories.getTaskUser(token).then((value) {
       if (value != null) {
         if (value.isSuccess && value.dataResponse is GetTaskResponse) {
           final res = value.dataResponse as GetTaskResponse;
@@ -75,10 +75,10 @@ class MyActivityCubit extends Cubit<MyActivityState> {
     });
   }
 
-void submitactivity(MyActivityBody body) async {
+void submitactivity(String token, MyActivityBody body) async {
   emit(MyActivityButtonLoading());
   try {
-    final value = await repositories.submitActivity(body);
+    final value = await repositories.submitActivity(token, body);
     if (value != null) {
       if (value.isSuccess && value.dataResponse is MyActivityResponse) {
         final res = value.dataResponse as MyActivityResponse;
@@ -98,9 +98,9 @@ void submitactivity(MyActivityBody body) async {
   }
 }
 
-  void updateactivity(MyActivityUpdateBody body) async {
+  void updateactivity(String token, MyActivityUpdateBody body) async {
     emit(MyActivityButtonLoading());
-    await repositories.updateActivity(body).then((value) {
+    await repositories.updateActivity(token,body).then((value) {
       if (value != null) {
         if (value.isSuccess && value.dataResponse is MyActivityUpdateResponse) {
           final res = value.dataResponse as MyActivityUpdateResponse;
@@ -116,9 +116,9 @@ void submitactivity(MyActivityBody body) async {
     });
   }
 
-  void editactivity(MyActivityEditBody body) async {
+  void editactivity(String token, MyActivityEditBody body) async {
     emit(MyActivityLoading());
-    await repositories.editActivity(body).then((value) {
+    await repositories.editActivity(token,body).then((value) {
       if (value != null) {
         if (value.isSuccess && value.dataResponse is MyActivityEditResponse) {
           final res = value.dataResponse as MyActivityEditResponse;

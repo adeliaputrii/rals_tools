@@ -20,10 +20,15 @@ abstract class LoginService {
   Future<LoginResponse> login(@Body() LoginBody loginBody);
 
   @POST(basePath.api_membercard_customer)
-  Future<DataCustomerResponse> getDataCustomer(@Field("id_user") String userId);
+  Future<DataCustomerResponse> getDataCustomer(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Field("id_user") String userId
+  );
 
-  @POST(basePath.api_my_log)
-  Future<LoginResponse> createLog(@Body() CreateLogBody createLogBody);
+  // @POST(basePath.api_my_log)
+  // Future<LoginResponse> createLog(@Body() CreateLogBody createLogBody);
 
   @POST(basePath.api_logout)
   Future<LogoutResponse> logout();

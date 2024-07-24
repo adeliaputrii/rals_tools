@@ -21,12 +21,19 @@ class _RamayanaMembercardHistoryMState
     extends State<RamayanaMembercardHistoryM> {
   late CompanyCardCubit cubit;
   AppWidget appWidget = AppWidget();
+  String? token;
 
   @override
   void initState() {
     super.initState();
     cubit = context.read<CompanyCardCubit>();
-    cubit.getHistoryMemberMonth(widget.nokartu, widget.year);
+    refreshpage();
+  }
+
+  refreshpage() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    token = await SharedPref.getToken();
+    cubit.getHistoryMemberMonth(token!, widget.nokartu, widget.year);
   }
 
   Future<void> navigateToHistoryDays(String month) async {
@@ -40,10 +47,8 @@ class _RamayanaMembercardHistoryMState
               month: month,
               typeCard: widget.typeCard)),
     );
-
     if (!mounted) return;
-
-    cubit.getHistoryMemberMonth(widget.nokartu, widget.year);
+    cubit.getHistoryMemberMonth(token!, widget.nokartu, widget.year);
   }
 
   @override

@@ -38,6 +38,8 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
   List genap = [];
   String data = '';
 
+  String? token = '';
+
   String hasilAkhir = '';
   bool? _isConnected;
   String poin = '-';
@@ -54,8 +56,7 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
     popUpWidget = PopUpWidget(context);
     loginCubit = context.read<LoginCubit>();
     cubit = context.read<IDCashCubit>();
-    final body = DataMemberCardBody(idUser: '${userData.getUsername7()}');
-    cubit.getDataMember(body);
+    tokenHeader();
   }
 
   @override
@@ -86,6 +87,13 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
       }
     }
     print(_isConnected);
+  }
+
+  tokenHeader() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    token = await SharedPref.getToken();
+    final body = DataMemberCardBody(idUser: '${userData.getUsername7()}');
+    cubit.getDataMember(token!, body);
   }
 
   Future<String> step1() async {
@@ -340,7 +348,7 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
                                     print('is connect');
                                     AndroidDeviceInfo info =
                                     await deviceInfo.androidInfo;
-                                    loginCubit.createLog(baseParam.logtukarPoinPage, baseParam.logtukarPoinP + '${myController.text}', urlApi);
+                                    // loginCubit.createLog(baseParam.logtukarPoinPage, baseParam.logtukarPoinP + '${myController.text}', urlApi);
                                     } else if (_isConnected == false) {
                                       String format =
                                           DateFormat.Hms().format(DateTime.now());

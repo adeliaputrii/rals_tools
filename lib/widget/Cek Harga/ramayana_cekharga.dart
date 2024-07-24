@@ -76,10 +76,10 @@ class _RamayanaCekHargaState extends State<RamayanaCekHarga> {
             data: ThemeData(
               primarySwatch: Colors.grey,
               splashColor: Colors.black,
-              textTheme: TextTheme(
-                subtitle1: TextStyle(color: Colors.black),
-                button: TextStyle(color: Colors.black),
-              ),
+              // textTheme: TextTheme(
+              //   subtitle1: TextStyle(color: Colors.black),
+              //   button: TextStyle(color: Colors.black),
+              // ),
               hintColor: Colors.black,
               colorScheme: ColorScheme.light(
                   primary: Color.fromARGB(255, 255, 17, 17),
@@ -117,10 +117,10 @@ class _RamayanaCekHargaState extends State<RamayanaCekHarga> {
             data: ThemeData(
               primarySwatch: Colors.grey,
               splashColor: Colors.black,
-              textTheme: TextTheme(
-                subtitle1: TextStyle(color: Colors.black),
-                button: TextStyle(color: Colors.black),
-              ),
+              // textTheme: TextTheme(
+              //   subtitle1: TextStyle(color: Colors.black),
+              //   button: TextStyle(color: Colors.black),
+              // ),
               hintColor: Colors.black,
               colorScheme: ColorScheme.light(
                   primary: Color.fromARGB(255, 255, 17, 17),
@@ -181,8 +181,8 @@ class _RamayanaCekHargaState extends State<RamayanaCekHarga> {
           ' devicename': '${info.device}',
           'TOKEN': 'R4M4Y4N4'
         });
-        loginCubit.createLog(
-            baseParam.logInfoCekHargaPage, baseParam.logInfoCekHargaSucc, url);
+        // loginCubit.createLog(
+        //     baseParam.logInfoCekHargaPage, baseParam.logInfoCekHargaSucc, url);
         // var response =
         //     await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
         print('berhasil $_udid');

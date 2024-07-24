@@ -26,9 +26,14 @@ class _RamayanaMembercardHistoryState extends State<RamayanaMembercardHistory> {
   @override
   void initState() {
     super.initState();
-
     cubit = context.read<CompanyCardCubit>();
-    cubit.getHistoryMemberDays(widget.nokartu, widget.year, widget.month);
+    refreshpage();
+  }
+
+  refreshpage() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final token = await SharedPref.getToken();
+    cubit.getHistoryMemberDays(token!, widget.nokartu, widget.year, widget.month);
   }
 
   @override

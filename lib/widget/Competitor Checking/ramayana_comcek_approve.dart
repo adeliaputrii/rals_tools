@@ -130,7 +130,7 @@ class _RamayanaHistoryApproveState extends State<RamayanaHistoryApprove> {
         ' devicename': '${info.device}',
         'TOKEN': 'R4M4Y4N4'
       });
-      loginCubit.createLog(baseParam.logInfoComCekApprPage, baseParam.logInfoComCekSucc, "");
+      // loginCubit.createLog(baseParam.logInfoComCekApprPage, baseParam.logInfoComCekSucc, "");
       // var response =
       //     await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
       print('berhasil $_udid');

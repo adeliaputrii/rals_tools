@@ -14,7 +14,12 @@ class _RamayanaInformasiState extends State<RamayanaInformasi> {
   void initState() {
     super.initState();
     cubit = context.read<HomeCubit>();
-    cubit.getNewsList();
+    refreshpage();
+  }
+
+  refreshpage() async {
+    final token = await SharedPref.getToken();
+    cubit.getNewsList(token!);
   }
 
   @override
@@ -106,29 +111,7 @@ class _RamayanaInformasiState extends State<RamayanaInformasi> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
                                             color: Colors.black)),
-                                    // SizedBox(
-                                    //   height: 5,
-                                    // ),
-                                    // Flexible(
-                                    //   child: Html(
-                                    //     data:
-                                    //         state.response.data?[index].newsUrl,
-                                    //     style: {
-                                    //       'h1': Style(
-                                    //           maxLines: 3,
-                                    //           fontFamily:
-                                    //               GoogleFonts.plusJakartaSans(
-                                    //                       fontSize: 16,
-                                    //                       fontWeight:
-                                    //                           FontWeight.w600,
-                                    //                       color: Colors.black)
-                                    //                   .fontFamily),
-                                    //     },
-                                    //   ),
-                                    // ),
-                                    // SizedBox(
-                                    //   height: 10,
-                                    // ),
+                                    
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,

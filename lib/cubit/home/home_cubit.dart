@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myactivity_project/data/model/data_member_card_response.dart';
 import 'package:myactivity_project/data/model/get_task_response.dart';
+import 'package:myactivity_project/data/model/myactivity_count_task.dart';
 import 'package:myactivity_project/data/repository/home_respository.dart';
 import 'package:myactivity_project/utils/app_shared_pref.dart';
 
@@ -19,9 +20,9 @@ class HomeCubit extends Cubit<HomeState> {
 
   final HomeRepositories repositories = HomeRepositories();
 
-  void getTaskUser() async {
+  void getTaskUser(String token) async {
     emit(HomeLoading());
-    await repositories.getTaskUser().then((value) {
+    await repositories.getTaskUser(token).then((value) {
       if (value != null) {
         if (value.isSuccess && value.dataResponse is GetTaskResponse) {
           final res = value.dataResponse as GetTaskResponse;
@@ -37,13 +38,31 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
-  void getNewsList() async {
+  void getNewsList(String token) async {
     emit(HomeLoading());
-    await repositories.getNewsList().then((value) {
+    await repositories.getNewsList(token).then((value) {
       if (value != null) {
         if (value.isSuccess && value.dataResponse is NewsListResponse) {
           final res = value.dataResponse as NewsListResponse;
           emit(HomeNewsSuccess(res));
+          debugPrint('Success cubit' + res.toString());
+        } else {
+          emit(HomeFailure(message: value.dataResponse!));
+          debugPrint('Failed' + value.dataResponse);
+        }
+      } else {
+        debugPrint('value null');
+      }
+    });
+  }
+
+  void getCountTask(String token) async {
+    emit(HomeLoading());
+    await repositories.getCountTask(token).then((value) {
+      if (value != null) {
+        if (value.isSuccess && value.dataResponse is CountTask) {
+          final res = value.dataResponse as CountTask;
+          emit(HomeCountTask(res));
           debugPrint('Success cubit' + res.toString());
         } else {
           emit(HomeFailure(message: value.dataResponse!));

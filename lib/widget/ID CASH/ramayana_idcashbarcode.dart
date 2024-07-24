@@ -76,8 +76,8 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
         leading: IconButton(
           onPressed: () async {
             _unsecureScreen();
-            loginCubit.createLog(baseParam.logInfoIdcashPage,
-                baseParam.logInfoIdcashBarcode, apiUrl);
+            // loginCubit.createLog(baseParam.logInfoIdcashPage,
+            //     baseParam.logInfoIdcashBarcode, apiUrl);
             Navigator.pushAndRemoveUntil(context,
                 MaterialPageRoute(builder: (context) {
               return RamayanaIDCash();
@@ -245,8 +245,8 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
                         color: baseColors.primaryColor,
                         onPressed: () async {
                           _unsecureScreen();
-                          loginCubit.createLog(baseParam.logInfoIdcashPage,
-                              baseParam.logInfoIdcashBarcode, apiUrl);
+                          // loginCubit.createLog(baseParam.logInfoIdcashPage,
+                          //     baseParam.logInfoIdcashBarcode, apiUrl);
                           Navigator.pushAndRemoveUntil(context,
                               MaterialPageRoute(builder: (context) {
                             return RamayanaIDCash();

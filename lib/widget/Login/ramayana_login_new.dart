@@ -422,6 +422,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
       final body =
           LoginBody(username: usernameController.text, password: passwordController.text, deviceId: "${_nativeId}${info.device}", versi: versi);
       loginCubit.logout();
+      SharedPref.setDeviceId('${_nativeId}${info.device}');
       loginCubit.login(loginBody: body);
     }
 
@@ -780,7 +781,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         ' devicename': '${info.device}',
         'TOKEN': 'R4M4Y4N4'
       });
-      loginCubit.createLog(baseParam.logInfoResetPage, 'Navigasi ke forgot password', urlApi);
+      // loginCubit.createLog(baseParam.logInfoResetPage, 'Navigasi ke forgot password', urlApi);
       // var response =
       //     await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
       print('berhasil $_udid');
@@ -810,10 +811,9 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           SharedPref.setLastLogin('${formattedDate}');
           SharedPref.setUserId(state.response.data?.username7.toString() ?? 'unknown');
           SharedPref.setUserToko(state.response.data?.toko.toString() ?? 'unknown');
-
           // await fetchDataNoKartu(
           //     id_user: state.response.data!.userId.toString());
-          loginCubit.createLog(logInfoLoginPage, baseParam.logInfoLoginSucc, urlApi);
+          // loginCubit.createLog(logInfoLoginPage, baseParam.logInfoLoginSucc, urlApi);
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Ramayana()));
         }
 
@@ -825,7 +825,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
             sweatAlert();
           } else {
             final username = usernameController.text;
-            loginCubit.createLog(logInfoLoginPage, '${baseParam.logInfoLoginFail} ${state.message} user ${username}', urlApi);
+            // loginCubit.createLog(logInfoLoginPage, '${basePa777ram.logInfoLoginFail} ${state.message} user ${username}', urlApi);
             popUpWidget.showPopUpError(pleaseCheck, state.message);
           }
         }

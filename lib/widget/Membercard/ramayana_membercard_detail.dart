@@ -16,6 +16,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
   bool isOn = false;
   DeviceMediaQuery mediaQuery = DeviceMediaQuery();
   String cardNumber = "";
+  String? token;
   late CompanyCardCubit cubit;
   late LoginCubit loginCubit;
   AppWidget appWidget = AppWidget();
@@ -25,11 +26,10 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
   @override
   void initState() {
     super.initState;
-
     cubit = context.read<CompanyCardCubit>();
     cardNumber = widget.data.nokartu ?? '';
     loginCubit = context.read<LoginCubit>();
-    cubit.getDetailCard(cardNumber);
+    refreshpage();
   }
 
   @override
@@ -37,14 +37,20 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
     super.dispose();
   }
 
+  refreshpage() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    token = await SharedPref.getToken();
+    cubit.getDetailCard(token!, cardNumber);
+  }
+  
   Future<void> navigateToHistoryYear() async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
     debugPrint('navigator push');
-    loginCubit.createLog(
-        typeTransaction(widget.typeCard),
-        baseParam.navigateHistory,
-        urlApi);
+    // loginCubit.createLog(
+    //     typeTransaction(widget.typeCard),
+    //     baseParam.navigateHistory,
+    //     urlApi);
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -56,8 +62,8 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
     debugPrint('navigator pop');
     if (!mounted) return;
 
-    cubit.getDetailCard('$result');
-    cubit.getHistoryMember('$result');
+    cubit.getDetailCard(token!,'$result');
+    cubit.getHistoryMember(token!, '$result');
     FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
     ScreenBrightness().resetScreenBrightness();
   }
@@ -69,14 +75,14 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
           builder: (context) => RamayanaMembercardQr(
               icon: widget.typeCard, nokartu: cardNumber)),
     );
-    loginCubit.createLog(
-        typeTransaction(widget.typeCard),
-        baseParam.navigatePayment,
-        urlApi);
+    // loginCubit.createLog(
+    //     typeTransaction(widget.typeCard),
+    //     baseParam.navigatePayment,
+    //     urlApi);
     if (!mounted) return;
 
-    cubit.getDetailCard('$result');
-    cubit.getHistoryMember('$result');
+    cubit.getDetailCard(token!, '$result');
+    cubit.getHistoryMember(token!,'$result');
     FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
     ScreenBrightness().resetScreenBrightness();
   }
@@ -120,7 +126,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
 
             balance = saldo - pemakaian;
 
-            cubit.getHistoryMember(cardNumber);
+            cubit.getHistoryMember(token!, cardNumber);
           }
           if (state is CompanyCardHistorySuccess) {
             state.response.data?.forEach((element) {

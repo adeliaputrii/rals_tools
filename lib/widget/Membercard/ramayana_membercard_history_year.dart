@@ -20,13 +20,18 @@ class _RamayanaMembercardHistoryYState
   late CompanyCardCubit cubit;
   AppWidget appWidget = AppWidget();
   String noKartu = "";
+  String? token;
 
   @override
   void initState() {
     super.initState();
-
     cubit = context.read<CompanyCardCubit>();
-    cubit.getHistoryMemberYear(widget.nokartu);
+    refreshpage();
+  }
+
+  refreshpage() async {
+    token = await SharedPref.getToken();
+    cubit.getHistoryMemberYear(token!, widget.nokartu);
   }
 
   Future<void> navigateToHistoryMonth(String year) async {
@@ -41,7 +46,7 @@ class _RamayanaMembercardHistoryYState
     );
     if (!mounted) return;
     noKartu = result;
-    cubit.getHistoryMemberYear(widget.nokartu);
+    cubit.getHistoryMemberYear(token!, widget.nokartu);
   }
 
   @override

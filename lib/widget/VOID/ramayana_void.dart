@@ -396,7 +396,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
                             print('is connect');
                             AndroidDeviceInfo info = await deviceInfo.androidInfo;
                             final productId = myController.text;
-                            loginCubit.createLog(baseParam.logInfoVoidPage, '${baseParam.logInfoVoidSucc}${productId}', baseParam.noUrl);
+                            // loginCubit.createLog(baseParam.logInfoVoidPage, '${baseParam.logInfoVoidSucc}${productId}', baseParam.noUrl);
                             print('berhasil $_udid');
                           } else if (_isConnected == false) {
                             String format = DateFormat.Hms().format(DateTime.now());

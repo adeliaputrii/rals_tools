@@ -134,10 +134,10 @@ class _RamayanaApprovalReturnState extends State<RamayanaApprovalReturn> {
             data: ThemeData(
               primarySwatch: Colors.grey,
               splashColor: Colors.black,
-              textTheme: TextTheme(
-                subtitle1: TextStyle(color: Colors.black),
-                button: TextStyle(color: Colors.black),
-              ),
+              // textTheme: TextTheme(
+              //   subtitle1: TextStyle(color: Colors.black),
+              //   button: TextStyle(color: Colors.black),
+              // ),
               hintColor: Colors.black,
               colorScheme: ColorScheme.light(
                   primary: Color.fromARGB(255, 255, 17, 17),

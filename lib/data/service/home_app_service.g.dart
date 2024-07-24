@@ -19,20 +19,30 @@ class _HomeAppService implements HomeAppService {
   String? baseUrl;
 
   @override
-  Future<GetTaskResponse> getTaskUser() async {
+  Future<GetTaskResponse> getTaskUser(
+    String contentType,
+    String accept,
+    String token,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<GetTaskResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/activity/task/get-task',
+              'api/v1/activity/task/get-task',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -46,20 +56,67 @@ class _HomeAppService implements HomeAppService {
   }
 
   @override
-  Future<NewsListResponse> getNewsList() async {
+  Future<NewsListResponse> getNewsList(
+    String contentType,
+    String accept,
+    String token,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<NewsListResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/news/get',
+              'api/v1/news/get-active-news',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = NewsListResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<NewsListResponse> getCount(
+    String contentType,
+    String accept,
+    String token,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<NewsListResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+      contentType: contentType,
+    )
+            .compose(
+              _dio.options,
+              'api/v1/activity/task/count-unread/',
               queryParameters: queryParameters,
               data: _data,
             )

@@ -19,20 +19,30 @@ class _ReportService implements ReportService {
   String? baseUrl;
 
   @override
-  Future<List<ReportListResponse>> getListReport() async {
+  Future<List<ReportListResponse>> getListReport(
+    String contentType,
+    String accept,
+    String token,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<List<dynamic>>(_setStreamType<List<ReportListResponse>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/report/get',
+              'api/v1/report/get',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -50,20 +60,30 @@ class _ReportService implements ReportService {
 
   @override
   Future<ReportListPaginationResponse> getListReportPagination(
-      String query) async {
+    String contentType,
+    String accept,
+    String token,
+    String query,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<ReportListPaginationResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              '/v1/report/get?cursor=${query}',
+              'api/v1/report/get?cursor=${query}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -78,6 +98,9 @@ class _ReportService implements ReportService {
 
   @override
   Future<ReportListPaginationResponse> searchListReport(
+    String contentType,
+    String accept,
+    String token,
     String? cursor,
     String? title,
     String? startDate,
@@ -87,17 +110,23 @@ class _ReportService implements ReportService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<ReportListPaginationResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              '/v1/report/get?cursor=${cursor}&header=${title}&start_date=${startDate}&end_date=${endDate}&version=${version}',
+              'api/v1/report/get?cursor=${cursor}&header=${title}&start_date=${startDate}&end_date=${endDate}&version=${version}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -112,10 +141,19 @@ class _ReportService implements ReportService {
 
   @override
   Future<ReportListPaginationResponse> insertViewer(
-      Map<String, dynamic> idReport) async {
+    String contentType,
+    String accept,
+    String token,
+    Map<String, dynamic> idReport,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(idReport);
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -123,10 +161,11 @@ class _ReportService implements ReportService {
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              '/v1/report/insert_viewer',
+              'api/v1/report/insert_viewer',
               queryParameters: queryParameters,
               data: _data,
             )

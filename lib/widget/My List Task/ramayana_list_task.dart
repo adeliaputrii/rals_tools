@@ -8,7 +8,7 @@ class RamayanaMyListTask extends StatefulWidget {
 }
 
 class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
-  var token = '';
+  String? token;
   bool isLoading = false;
   bool isMounted = true;
   late HomeCubit homeCubit;
@@ -18,7 +18,7 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
   void initState() {
     super.initState();
     homeCubit = context.read<HomeCubit>();
-    homeCubit.getTaskUser();
+    
     Future.delayed(const Duration(seconds: 1), () async {
       await fetchDataListUser();
       loadData();
@@ -33,6 +33,8 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
   }
 
   loadData() async {
+    token = await SharedPref.getToken();
+    homeCubit.getTaskUser(token!);
     if (mounted) {
       setState(() {
         isLoading = true;
@@ -51,23 +53,11 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
     }
   }
 
-  _loadToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    UserData userData = UserData();
-    print('token ${prefs.getString('token')}');
-    if (isMounted) {
-      setState(() {
-        token = userData.getUserToken();
-      });
-    }
-
-    return token;
-  }
+ 
 
   fetchDataListUser() async {
-    _loadToken();
     TaskHome2.taskhome2.clear();
-    final responseku = await http.get(Uri.parse('${tipeurl}v1/activity/task/get-task'), headers: {
+    final responseku = await http.get(Uri.parse('${base_url_dev}/api/v1/activity/task/get-task'), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
@@ -144,7 +134,7 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return RamayanaMyActivity(update: false, response: state.response.data?[index]);
+                        return RamayanaMyActivity(update: false, response: state.response.data![index]);
                       }));
                     },
                     child: Container(
@@ -156,10 +146,10 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
                       child: ListTile(
                         onTap: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return RamayanaMyActivity(update: false, response: state.response.data?[index]);
+                            return RamayanaMyActivity(update: false, response: state.response.data![index]);
                           }));
-                          loginCubit.createLog(logInfoActivityPage,
-                              '${state.response.data?[index].taskDesc}' + '-' + '${state.response.data?[index].projectId}', urlApi);
+                          // loginCubit.createLog(logInfoActivityPage,
+                          //     '${state.response.data?[index].taskDesc}' + '-' + '${state.response.data?[index].projectId}', urlApi);
                         },
                         leading: CircleAvatar(
                             backgroundColor: Color.fromARGB(255, 210, 14, 0), radius: 30, backgroundImage: AssetImage('assets/todolist.png')),

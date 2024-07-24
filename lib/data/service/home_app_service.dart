@@ -11,9 +11,24 @@ part 'home_app_service.g.dart';
 abstract class HomeAppService {
   factory HomeAppService(Dio dio, {String baseUrl}) = _HomeAppService;
 
-  @GET('v1/activity/task/get-task')
-  Future<GetTaskResponse> getTaskUser();
+  @GET(basePath.api_get_task_user)
+  Future<GetTaskResponse> getTaskUser(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+  );
 
   @GET(basePath.api_get_news_list)
-  Future<NewsListResponse> getNewsList();
+  Future<NewsListResponse> getNewsList(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+  );
+
+  @GET(basePath.api_count_task)
+  Future<NewsListResponse> getCount(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+  );
 }

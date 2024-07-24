@@ -25,6 +25,8 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
   late memberResponse.DataMemberCardResponse responseData;
   final apiUrl = '${tipeurl}${basePath.api_membercard_customer}';
 
+  String token = '';
+
   @override
   void didPushNext() {
     ScreenBrightness().resetScreenBrightness();
@@ -36,10 +38,12 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
   }
 
   fetchDataCustomer({required String id_user}) async {
+    token = (await SharedPref.getToken())!;
+    print('TOKEN ID ${token}');
     print('${userData.getUsername7()}');
     print(tipeurl);
     final body = DataMemberCardBody(idUser: '${userData.getUsername7()}');
-    cubit.getDataMember(body);
+    cubit.getDataMember(token, body);
   }
 
   @override
@@ -53,6 +57,8 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
     didPop();
     fetchDataCustomer(id_user: '0${userData.getUsername7()}');
   }
+
+ 
 
   Future<void> initPlatformState() async {
     String udid;
@@ -84,12 +90,12 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
               email = state.response.data?.first.email.toString() ?? '-';
               phone = state.response.data?.first.nohp.toString() ?? '-';
             });
-            loginCubit.createLog(baseParam.logInfoIdcashPage,
-                baseParam.logInfoIdcashSucc, apiUrl);
+            // loginCubit.createLog(baseParam.logInfoIdcashPage,
+            //     baseParam.logInfoIdcashSucc, apiUrl);
           }
           if (state is IDCashFailure) {
-            loginCubit.createLog(baseParam.logInfoIdcashPage,
-                '${baseParam.logInfoIdcashFail}${state.message}', apiUrl);
+            // loginCubit.createLog(baseParam.logInfoIdcashPage,
+            //     '${baseParam.logInfoIdcashFail}${state.message}', apiUrl);
           }
         },
         child: Scaffold(
@@ -199,10 +205,10 @@ class _RamayanaIDCashState extends State<RamayanaIDCash> {
                                   borderRadius: BorderRadius.circular(50)),
                               color: Colors.white,
                               onPressed: () async {
-                                loginCubit.createLog(
-                                    baseParam.logInfoIdcashPage,
-                                    baseParam.logInfoIdcashHistory,
-                                    apiUrl);
+                                // loginCubit.createLog(
+                                //     baseParam.logInfoIdcashPage,
+                                //     baseParam.logInfoIdcashHistory,
+                                //     apiUrl);
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
                                   return RamayanaRiwayatIDCash(

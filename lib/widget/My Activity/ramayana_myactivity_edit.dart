@@ -12,12 +12,19 @@ class MyActivityEdit extends StatefulWidget {
 
 class _MyActivityEditState extends State<MyActivityEdit> {
   late MyActivityCubit cubit;
+  String? token;
 
   @override
   void initState() {
     // TODO: implement initState
     cubit = context.read<MyActivityCubit>();
+    refreshpage();
     super.initState();
+  }
+
+  refreshpage() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    token = await SharedPref.getToken();
   }
 
   @override
@@ -97,8 +104,8 @@ class _MyActivityEditState extends State<MyActivityEdit> {
                                 
                                 MaterialButton(
                                   onPressed: () async {
-                                    cubit.getProject();
-                                    cubit.getTaskUser();
+                                    cubit.getProject(token!);
+                                    cubit.getTaskUser(token!);
                                     Navigator.pop(context, {
                                       'projectId': state.response.data?[index].projekId,
                                       'taskId': state.response.data?[index].taskId,

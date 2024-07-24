@@ -154,15 +154,15 @@ class _RamayanaResetState extends State<RamayanaReset> {
 
         // var response =
         //     await dio.post('${tipeurl}v1/activity/createmylog', data: formData);
-        loginCubit.createLog(
-            baseParam.logInfoResetPage, baseParam.logInfoResetSucc, url);
+        // loginCubit.createLog(
+        //     baseParam.logInfoResetPage, baseParam.logInfoResetSucc, url);
 
         _displayCenterMotionToastSuccess();
         // ResetPassword.hidden.add(username.text);
       } else if (data['status'] != 200) {
         print(message);
-        loginCubit.createLog(baseParam.logInfoResetPage,
-            '${baseParam.logInfoResetFail} ${message}', url);
+        // loginCubit.createLog(baseParam.logInfoResetPage,
+        //     '${baseParam.logInfoResetFail} ${message}', url);
         print("ini yang salah");
         _displayCenterMotionToastFailed();
       } else {

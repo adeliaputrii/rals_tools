@@ -12,6 +12,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
   late CompanyCardCubit companyCardCubit;
   late IDCashCubit idCashCubit;
   bool isLoading = true;
+  String? token;
   AppWidget appWidget = AppWidget();
 
   @override
@@ -25,7 +26,9 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
   Future<void> getUserCard() async {
     final userID = await SharedPref.getUserId();
     final body = DataMemberCardBody(idUser: userID);
-    idCashCubit.getDataMember(body);
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    token = await SharedPref.getToken();
+    idCashCubit.getDataMember(token!, body);
   }
 
   @override
@@ -60,7 +63,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                 setState(() {
                   isLoading = false;
                 });
-                companyCardCubit.getDataMember(state.response.data?.first.nokartu ?? '0');
+                companyCardCubit.getDataMember(token!, state.response.data?.first.nokartu ?? '0');
               }
             },
             child: isLoading

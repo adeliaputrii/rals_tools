@@ -48,8 +48,8 @@ class _ReportWebviewState extends State<ReportWebview> with AutomaticKeepAliveCl
     widget.reportModel.webController!.loadRequest(Uri.parse(widget.reportModel.url.toString()));
 
     loginCubit = context.read<LoginCubit>();
-    loginCubit.createLog(
-        baseParam.logInfoNavigateDetailReportPage, '${baseParam.logInfoDetiailReportUrl} ${widget.reportModel.url}', '${widget.reportModel.url}');
+    // loginCubit.createLog(
+    //     baseParam.logInfoNavigateDetailReportPage, '${baseParam.logInfoDetiailReportUrl} ${widget.reportModel.url}', '${widget.reportModel.url}');
     super.initState();
   }
 

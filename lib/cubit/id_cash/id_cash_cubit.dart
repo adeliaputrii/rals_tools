@@ -23,9 +23,9 @@ class IDCashCubit extends Cubit<IDCashState> {
 
   final IDCashRepositories repositories = IDCashRepositories();
 
-  void getDataMember(DataMemberCardBody idUser) async {
+  void getDataMember(String token, DataMemberCardBody idUser) async {
     emit(IDCashLoading());
-    await repositories.getDataMember(idUser).then((value) {
+    await repositories.getDataMember(token, idUser).then((value) {
       if (value != null) {
         if (value.isSuccess && value.dataResponse is DataMemberCardResponse) {
           final res = value.dataResponse as DataMemberCardResponse;

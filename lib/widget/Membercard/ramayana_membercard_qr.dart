@@ -250,7 +250,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
                                   setState(() {
                                     isLoading = false;
                                   });
-                                  loginCubit.createLog(typeTransaction(widget.icon), baseParam.posCode + '${myController.text}', urlApi);
+                                  // loginCubit.createLog(typeTransaction(widget.icon), baseParam.posCode + '${myController.text}', urlApi);
                                   Future.delayed(Duration(minutes: 1), () {
                                     if (mounted) {
                                       setState(() {

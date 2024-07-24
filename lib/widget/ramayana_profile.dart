@@ -58,10 +58,12 @@ class _ProfileeState extends State<Profilee> {
   }
 
   fetchDataCustomer({required String id_user}) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token =  await SharedPref.getToken();
     print('${userData.getUsername7()}');
     print(tipeurl);
     final body = DataMemberCardBody(idUser: id_user);
-    cubit.getDataMember(body);
+    cubit.getDataMember(token!, body);
   }
 
   Future<void> dapetinData() async {
@@ -127,6 +129,7 @@ class _ProfileeState extends State<Profilee> {
     SharedPref.clearLastLogin();
     await SharedPref.clearLastLogin();
     await SharedPref.clearUserId();
+    await SharedPref.clearToken();
     pref.remove('waktuLogin');
     loginCubit.logout();
     LoginOffline.listActivity.forEach((element) async {
@@ -193,7 +196,7 @@ class _ProfileeState extends State<Profilee> {
               ' devicename': '${info.device}',
               'TOKEN': 'R4M4Y4N4'
             });
-            loginCubit.createLog(baseParam.logInfoProfilePage, baseParam.logInfoProfile, baseParam.noUrl);
+            // loginCubit.createLog(baseParam.logInfoProfilePage, baseParam.logInfoProfile, baseParam.noUrl);
             print('berhasil $_udid');
             logoutPressed();
             Navigator.pop(context);
