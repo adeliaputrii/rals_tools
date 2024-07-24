@@ -144,7 +144,85 @@ class _RamayanaCekHargaState extends State<RamayanaCekHarga> {
         selectedDate = picked;
         dateController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
       });
-  }
+}
+  // _selectDate(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //       context: context,
+  //       builder: (BuildContext context, Widget? child) {
+  //         return Theme(
+  //           data: ThemeData(
+  //             primarySwatch: Colors.grey,
+  //             splashColor: Colors.black,
+  //             textTheme: TextTheme(
+  //               subtitle1: TextStyle(color: Colors.black),
+  //               button: TextStyle(color: Colors.black),
+  //             ),
+  //             hintColor: Colors.black,
+  //             colorScheme: ColorScheme.light(
+  //                 primary: Color.fromARGB(255, 255, 17, 17),
+  //                 onSecondary: Colors.black,
+  //                 onPrimary: Colors.white,
+  //                 surface: Colors.black,
+  //                 onSurface: Colors.black,
+  //                 secondary: Colors.black),
+  //             dialogBackgroundColor: Colors.white,
+  //           ),
+  //           child: child ??
+  //               Text(
+  //                 "",
+  //                 style: TextStyle(fontSize: 15, color: Colors.amber),
+  //               ),
+  //         );
+  //       },
+  //       initialDate: _selectedDate,
+  //       initialDatePickerMode: DatePickerMode.day,
+  //       firstDate: DateTime(2015),
+  //       lastDate: DateTime(2101));
+
+  //   if (picked != null)
+  //     setState(() {
+  //       _selectedDate = picked;
+  //       _dateControllerr.text = DateFormat('yyyy-MM-dd').format(_selectedDate);
+  //     });
+  // }
+
+  // selectDate(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //       context: context,
+  //       builder: (BuildContext context, Widget? child) {
+  //         return Theme(
+  //           data: ThemeData(
+  //             primarySwatch: Colors.grey,
+  //             splashColor: Colors.black,
+  //             textTheme: TextTheme(
+  //               subtitle1: TextStyle(color: Colors.black),
+  //               button: TextStyle(color: Colors.black),
+  //             ),
+  //             hintColor: Colors.black,
+  //             colorScheme: ColorScheme.light(
+  //                 primary: Color.fromARGB(255, 255, 17, 17),
+  //                 onSecondary: Colors.black,
+  //                 onPrimary: Colors.white,
+  //                 surface: Colors.black,
+  //                 onSurface: Colors.black,
+  //                 secondary: Colors.black),
+  //             dialogBackgroundColor: Colors.white,
+  //           ),
+  //           child: child ?? Text(""),
+  //         );
+  //       },
+  //       initialDate: selectedDate,
+  //       initialDatePickerMode: DatePickerMode.day,
+  //       firstDate: DateTime(2015),
+  //       lastDate: DateTime(2101));
+
+  //   if (picked != null)
+  //     setState(() {
+  //       selectedDate = picked;
+  //       dateController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
+  //     });
+  // }
+
 
   Future<String> namaToko() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

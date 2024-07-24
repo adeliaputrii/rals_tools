@@ -54,14 +54,14 @@ class ToolsMenuWidget extends StatelessWidget {
             ]),
           ),
           const SizedBox(height: 20),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-          //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          //     menuIcon(baseParam.menuComCheck, baseAsset.comCheckLogo, navigate: () => AppNavigator.navigateToComCheck(context)),
-          //     menuIcon(baseParam.menuCekHarga, baseAsset.checkPriceLogo, navigate: () => AppNavigator.navigateToCheckPrice(context)),
-          //     menuIcon(baseParam.menuApprReturn, baseAsset.appReturnLogo, navigate: () => AppNavigator.navigateToApprReturn(context))
-          //   ]),
-          // ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              menuIcon(baseParam.menuSo, baseAsset.soLogo, navigate: () => AppNavigator.navigateToSo(context))
+              // menuIcon(baseParam.menuCekHarga, baseAsset.checkPriceLogo, navigate: () => AppNavigator.navigateToCheckPrice(context)),
+              // menuIcon(baseParam.menuApprReturn, baseAsset.appReturnLogo, navigate: () => AppNavigator.navigateToApprReturn(context))
+            ]),
+          ),
         ],
       ),
     );
@@ -134,14 +134,14 @@ class AllMenuWidget extends StatelessWidget {
                     menuIcon(baseParam.menuVoid, baseAsset.voidLogo, navigate: () => AppNavigator.navigateToVoid(context))
                   ]),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20.0),
-                //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                //     menuIcon(baseParam.menuComCheck, baseAsset.comCheckLogo, navigate: () => AppNavigator.navigateToComCheck(context)),
-                //     menuIcon(baseParam.menuCekHarga, baseAsset.checkPriceLogo, navigate: () => AppNavigator.navigateToCheckPrice(context)),
-                //     menuIcon(baseParam.menuApprReturn, baseAsset.appReturnLogo, navigate: () => AppNavigator.navigateToApprReturn(context))
-                //   ]),
-                // ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20.0),
+                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                  menuIcon(baseParam.menuSo, baseAsset.soLogo, navigate: () => AppNavigator.navigateToSo(context))
+                    // menuIcon(baseParam.menuCekHarga, baseAsset.checkPriceLogo, navigate: () => AppNavigator.navigateToCheckPrice(context)),
+                    // menuIcon(baseParam.menuApprReturn, baseAsset.appReturnLogo, navigate: () => AppNavigator.navigateToApprReturn(context))
+                  ]),
+                ),
                 const SizedBox(height: 20),
                 Visibility(
                   visible: false,

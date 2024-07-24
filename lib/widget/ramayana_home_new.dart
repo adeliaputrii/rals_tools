@@ -458,7 +458,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       context: context,
       buttons: [
         DialogButton(
-          color: Color.fromARGB(255, 210, 14, 0),
+          color: baseColors.primaryColor,
           onPressed: () {
             Navigator.pop(context);
           },
@@ -812,12 +812,12 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
             backgroundColor: Theme.of(context).canvasColor,
             extendBody: true,
             appBar: AppBar(
-              backgroundColor: Color.fromARGB(255, 210, 14, 0),
+              backgroundColor: baseColors.primaryColor,
               elevation: 0,
               toolbarHeight: 1,
             ),
             body: LiquidPullToRefresh(
-              color: Color.fromARGB(255, 210, 14, 0),
+              color: baseColors.primaryColor,
               onRefresh: refreshWidget,
               showChildOpacityTransition: false,
               child: ListView(
