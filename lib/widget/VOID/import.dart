@@ -16,6 +16,7 @@ import 'package:flutter_udid/flutter_udid.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:myactivity_project/base/base_colors.dart' as baseColor;
 import 'package:intl/intl.dart';
 import 'package:myactivity_project/base/base_params.dart';
 import 'package:myactivity_project/cubit/login/login_cubit.dart';

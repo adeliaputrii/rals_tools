@@ -12,12 +12,18 @@ class MyActivityEdit extends StatefulWidget {
 
 class _MyActivityEditState extends State<MyActivityEdit> {
   late MyActivityCubit cubit;
+  String? token;
 
   @override
   void initState() {
-    // TODO: implement initState
     cubit = context.read<MyActivityCubit>();
+    refreshpage();
     super.initState();
+  }
+
+  refreshpage() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    token = await SharedPref.getToken();
   }
 
   @override
@@ -26,12 +32,9 @@ class _MyActivityEditState extends State<MyActivityEdit> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-
-      // shadowColor: Colors.black,
       titlePadding: EdgeInsets.all(0),
       title: Container(
         decoration: BoxDecoration(
-          // color: Colors.green,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -43,20 +46,22 @@ class _MyActivityEditState extends State<MyActivityEdit> {
           return Column(
             children: [
               Container(
-                  padding: const EdgeInsets.only(
-                    top: 20,
-                  ),
-                  height: 220,
-                  child: FadeInImageWidget(
-                    imageUrl: 'assets/edit.png',
-                  )),
+                padding: const EdgeInsets.only(
+                  top: 20,
+                ),
+                height: 220,
+                child: FadeInImageWidget(
+                  imageUrl: 'assets/edit.png',
+                )),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
-                child: Text('Pilih Tugas', style: GoogleFonts.plusJakartaSans(fontSize: 20, color: Color.fromARGB(255, 135, 11, 2))),
+                child: Text('Pilih Tugas', 
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 20, 
+                  color: Color.fromARGB(255, 135, 11, 2))),
               ),
               Container(
                 height: 300,
-                // color: Colors.amber,
                 child: BlocBuilder<MyActivityCubit, MyActivityState>(builder: (context, state) {
                   if (state is MyActivityLoading) {
                     return SpinKitThreeBounce(
@@ -65,12 +70,9 @@ class _MyActivityEditState extends State<MyActivityEdit> {
                     );
                   }
                   if (state is MyActivitySuccessGetTask) {
-                    print('task successss');
                     for (var projectData in state.response.data!) {}
                   }
-
                   if (state is MyActivitySuccess) {
-                    print('task successss');
                     for (var projectData in state.response.data!) {}
                   }
                   if (state is MyActivityEditSuccess) {
@@ -83,57 +85,54 @@ class _MyActivityEditState extends State<MyActivityEdit> {
                       );
                     } else {
                       return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: state.response.data!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                             final String? myactivityDesc = state.response.data?[index].myactivityDesc;                            return Container(
-                                margin: EdgeInsets.fromLTRB(20, 2, 20, 10),
-                                height: 70,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.white,
-                                ),
-                                child: 
-                                
-                                MaterialButton(
-                                  onPressed: () async {
-                                    cubit.getProject();
-                                    cubit.getTaskUser();
-                                    Navigator.pop(context, {
-                                      'projectId': state.response.data?[index].projekId,
-                                      'taskId': state.response.data?[index].taskId,
-                                      'update': true,
-                                      'status': state.response.data?[index].myactivityStatus,
-                                      'timeStart': state.response.data?[index].timeStart,
-                                      'timeEnd': state.response.data?[index].timeEnd,
-                                      'desc': state.response.data?[index].myactivityDesc,
-                                      'id': state.response.data?[index].myactivityId
-                                    });
-                                    debugPrint('ID PROJECT ${state.response.data?[index].myactivityId}');
-                                  },
-                                  child: 
-                                  ListTile(
-                                    leading: Container(
-                                      // color: Colors.amber,
-                                      child: FadeInImageWidget(
-                                        imageUrl: 'assets/tasklist.png',
-                                      ),
-                                      height: 50,
-                                      width: 50,
-                                    ),
-                                    title: 
-                                    Container(
-                                    height: 40,
-                                    child: Html(data: myactivityDesc)),
-                                    subtitle: Text(
-                                      '${state.response.data?[index].timeStart} s/d ${state.response.data?[index].timeEnd}',
-                                      style: GoogleFonts.plusJakartaSans(fontSize: 13, color: Colors.grey),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                    ),
-                                  ),
-                                ));
-                          });
+                        shrinkWrap: true,
+                        itemCount: state.response.data!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                        final String? myactivityDesc = state.response.data?[index].myactivityDesc;                            return Container(
+                        margin: EdgeInsets.fromLTRB(20, 2, 20, 10),
+                        height: 70,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                        ),
+                        child:MaterialButton(
+                          onPressed: () async {
+                            cubit.getProject(token!);
+                            cubit.getTaskUser(token!);
+                            Navigator.pop(context, {
+                              'projectId': state.response.data?[index].projekId,
+                              'taskId': state.response.data?[index].taskId,
+                              'update': true,
+                              'status': state.response.data?[index].myactivityStatus,
+                              'timeStart': state.response.data?[index].timeStart,
+                              'timeEnd': state.response.data?[index].timeEnd,
+                              'desc': state.response.data?[index].myactivityDesc,
+                              'id': state.response.data?[index].myactivityId
+                            });
+                          },
+                          child: ListTile(
+                            leading: Container(
+                            child: FadeInImageWidget(
+                              imageUrl: 'assets/tasklist.png',
+                            ),
+                            height: 50,
+                            width: 50,
+                            ),
+                            title: Container(
+                            height: 40,
+                            child: Html(
+                              data: myactivityDesc
+                            )),
+                            subtitle: Text('${state.response.data?[index].timeStart} s/d ${state.response.data?[index].timeEnd}',
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 13, 
+                                color: Colors.grey),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ));
+                     });
                     }
                   }
                   return Container();

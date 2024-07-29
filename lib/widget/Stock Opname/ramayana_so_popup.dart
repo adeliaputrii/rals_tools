@@ -20,7 +20,6 @@ class _SoPopupState extends State<SoPopup> {
       titlePadding: EdgeInsets.all(5),
       title: Container(
         decoration: BoxDecoration(
-          // color: Colors.amber,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -30,7 +29,8 @@ class _SoPopupState extends State<SoPopup> {
         child: Image.asset(
           'assets/location.png',
           height: 180,
-        )),
+        )
+      ),
       content: Container(
         margin: EdgeInsets.only(bottom: 10),
         height: 120,
@@ -38,12 +38,18 @@ class _SoPopupState extends State<SoPopup> {
           children: [
             Text(
             'Pilih Lokasi',
-              style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 18, 
+                color: Colors.black, 
+                fontWeight: FontWeight.w500
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: MaterialButton(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)
+                ),
                 minWidth: screenWidth,
                 height: 40,
                 color: Colors.green,

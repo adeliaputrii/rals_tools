@@ -36,25 +36,13 @@ class _RamayanaMembercardAuthenticationState
   }
 
   Future<void> initPlatformState() async {
-    String udid;
     String nativeId;
-    String uuid;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
     try {
       nativeId = await _nativeIdPlugin.getId() ?? 'Unknown NATIVE_ID';
     } on PlatformException {
       nativeId = 'Failed to get native id.';
     }
-
-    try {
-      uuid = await _nativeIdPlugin.getUUID() ?? 'Unknown UUID';
-    } on PlatformException {
-      uuid = 'Failed to get uuid.';
-    }
-
     if (!mounted) return;
-
     setState(() {
       _nativeId = nativeId;
     });
@@ -65,11 +53,11 @@ class _RamayanaMembercardAuthenticationState
     AndroidDeviceInfo info = await devicePlugin.androidInfo;
     if (passwordController.text.isNotEmpty) {
       final body = LoginBody(
-          username: '${userData.getUsername7()}',
-          password: passwordController.text,
-          deviceId: "${_nativeId}${info.device}",
-          versi: versi);
-
+        username: '${userData.getUsername7()}',
+        password: passwordController.text,
+        deviceId: "${_nativeId}${info.device}",
+        versi: versi
+      );
       loginCubit.login(loginBody: body);
     }
   }
@@ -83,13 +71,10 @@ class _RamayanaMembercardAuthenticationState
             isLoading = true;
           });
         }
-
         if (state is LoginSuccess) {
-          loginCubit.createLog(baseParam.page, baseParam.cardSuccess, urlApi);
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (_) => RamayanaMembercardCard()));
+          MaterialPageRoute(builder: (_) => RamayanaMembercardCard()));
         }
-
         if (state is LoginFailure) {
           setState(() {
             isLoading = false;
@@ -98,10 +83,6 @@ class _RamayanaMembercardAuthenticationState
             popUpWidget.showPopUpError(baseParam.pleaseCheck, state.message);
           } else {
             final username = '${userData.getUsername7()}';
-            loginCubit.createLog(
-                baseParam.page,
-                '${baseParam.cardFailed} ${state.message} user ${username}',
-                urlApi);
             popUpWidget.showPopUpError(baseParam.pleaseCheck, state.message);
           }
         }
@@ -114,8 +95,6 @@ class _RamayanaMembercardAuthenticationState
           setState(() {
             isLoading = false;
           });
-
-          // popUpWidget.showPopUpError(state.message, state.message);
         }
       },
       child: Scaffold(
@@ -125,12 +104,12 @@ class _RamayanaMembercardAuthenticationState
             onPressed: () {
               Navigator.pop(context);
               Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        DefaultBottomBarController(child: Ramayana()),
-                  ),
-                  (Route<dynamic> route) => false);
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                  DefaultBottomBarController(child: Ramayana()),
+                ),
+              (Route<dynamic> route) => false);
             },
             icon: Icon(
               Icons.arrow_back_ios,
@@ -139,14 +118,16 @@ class _RamayanaMembercardAuthenticationState
             ),
           ),
           title: Text(baseParam.companyCardTitle,
-              style: GoogleFonts.plusJakartaSans(
-                  fontSize: 23, color: Colors.white)),
-          backgroundColor: Color.fromARGB(255, 210, 14, 0),
+            style: GoogleFonts.plusJakartaSans(
+            fontSize: 23, 
+            color: Colors.white)
+          ),
+          backgroundColor: baseColor.primaryColor,
           elevation: 0,
           toolbarHeight: 80,
         ),
         body: Container(
-          color: Color.fromARGB(255, 210, 14, 0),
+          color: baseColor.primaryColor,
           child: ListView(
             children: [
               Stack(children: [
@@ -155,20 +136,22 @@ class _RamayanaMembercardAuthenticationState
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                        margin: EdgeInsets.only(),
-                        // color: Colors.blue,
-                        height: 350,
-                        width: 400,
-                        child: FadeInImageWidget(
-                            imageUrl: 'assets/idcashpin_password_enter.png')),
+                      margin: EdgeInsets.only(),
+                      height: 350,
+                      width: 400,
+                      child: FadeInImageWidget(
+                        imageUrl: 'assets/idcashpin_password_enter.png'
+                      )
+                    ),
                     Container(
                       margin: EdgeInsets.fromLTRB(60, 0, 50, 0),
-                      // color: Colors.amber,
-                      // height: 200,
                       width: 3500,
                       child: Text('Masukkan password Anda',
-                          style: GoogleFonts.plusJakartaSans(
-                              fontSize: 20, color: Colors.white)),
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 20, 
+                          color: Colors.white
+                        )
+                      ),
                     ),
                     Form(
                       key: _formKey,
@@ -176,29 +159,26 @@ class _RamayanaMembercardAuthenticationState
                         margin: EdgeInsets.fromLTRB(50, 30, 50, 0),
                         height: 55,
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(30)),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30)),
                         child: Padding(
                           padding: const EdgeInsets.only(
-                              left: 20, right: 20, bottom: 0),
+                            left: 20, right: 20, bottom: 0),
                           child: TextFormField(
                             obscureText: _passwordVisible ? false : true,
-                            // validator: RequiredValidator(errorText: 'Wajib diisi'),
                             controller: passwordController,
                             style: GoogleFonts.plusJakartaSans(
-                                fontSize: 18, color: Colors.black),
+                              fontSize: 18, color: Colors.black),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  // Based on passwordVisible state choose the icon
                                   _passwordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                                   color: Color.fromARGB(255, 255, 17, 17),
                                 ),
                                 onPressed: () {
-                                  // Update the state i.e. toogle the state of passwordVisible variable
                                   setState(() {
                                     _passwordVisible = !_passwordVisible;
                                   });
@@ -210,57 +190,55 @@ class _RamayanaMembercardAuthenticationState
                       ),
                     ),
                     Container(
-                        margin: EdgeInsets.only(
-                          top: 50,
-                        ),
-                        child: MaterialButton(
-                          minWidth: 150,
-                          color: Colors.white,
-                          height: 45,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
+                      margin: EdgeInsets.only( top: 50),
+                      child: MaterialButton(
+                        minWidth: 150,
+                        color: Colors.white,
+                        height: 45,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
                           onPressed: () {
                             if (passwordController.text.isEmpty) {
-                              print('null');
-                              popUpWidget.showPopUpError(baseParam.pleaseCheck,
-                                  baseParam.passwordEmpty);
+                              popUpWidget.showPopUpError(
+                                baseParam.pleaseCheck,
+                                baseParam.passwordEmpty
+                              );
                             } else {
                               loginPressed();
                             }
                           },
                           child: Text('Konfirmasi',
-                              style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 20, color: Colors.red)),
-                        )),
-                    Container(
-                        margin: EdgeInsets.only(top: 200),
-                        // height: 100,
-                        decoration: BoxDecoration(
-                            // color: Colors.white,
-                            ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text('Versi ${versi} Hak Cipta RALS',
-                                  // ini pak?
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 18,
-                                    color: Colors.white,
-                                  )),
-                              Icon(
-                                Icons.copyright,
-                                color: Colors.white,
-                                size: 18,
-                              ),
-                              Text('${copyright}',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 18,
-                                    color: Colors.white,
-                                  ))
-                            ],
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 20, 
+                              color: Colors.red
+                            )
                           ),
-                        ))
+                        )
+                      ),
+                    Container(
+                      margin: EdgeInsets.only(top: 200),
+                      child: Center(
+                        child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('Versi ${versi} Hak Cipta RALS',
+                            style: GoogleFonts.plusJakartaSans(
+                            fontSize: 18,
+                            color: Colors.white,
+                          )),
+                          Icon(
+                            Icons.copyright,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                          Text('${copyright}',
+                            style: GoogleFonts.plusJakartaSans(
+                            fontSize: 18,
+                            color: Colors.white,
+                          ))
+                        ],
+                      ),
+                    ))
                   ],
                 ),
               ]),

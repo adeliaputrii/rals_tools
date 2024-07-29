@@ -16,13 +16,10 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
   var memberCode = "";
   late LoginCubit loginCubit;
   final apiUrl = '${tipeurl}${basePath.api_membercard_customer}';
-
-  String _udid = 'Unknown';
   @override
   void initState() {
     super.initState();
     loginCubit = context.read<LoginCubit>();
-    initPlatformState();
     _secureScreen();
     didPush();
     didPopNext();
@@ -46,27 +43,12 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
 
   _secureScreen() async {
     await FlutterWindowManager.addFlags(
-        FlutterWindowManager.FLAG_SECURE); // Menonaktifkan tangkapan layar
+    FlutterWindowManager.FLAG_SECURE); // Menonaktifkan tangkapan layar
   }
 
   _unsecureScreen() async {
     await FlutterWindowManager.clearFlags(FlutterWindowManager
-        .FLAG_SECURE); // Mengaktifkan kembali tangkapan layar
-  }
-
-  Future<void> initPlatformState() async {
-    String udid;
-    try {
-      udid = await FlutterUdid.consistentUdid;
-    } on PlatformException {
-      udid = 'Failed to get UDID.';
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      _udid = udid;
-    });
+    .FLAG_SECURE); // Mengaktifkan kembali tangkapan layar
   }
 
   @override
@@ -76,10 +58,8 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
         leading: IconButton(
           onPressed: () async {
             _unsecureScreen();
-            loginCubit.createLog(baseParam.logInfoIdcashPage,
-                baseParam.logInfoIdcashBarcode, apiUrl);
             Navigator.pushAndRemoveUntil(context,
-                MaterialPageRoute(builder: (context) {
+              MaterialPageRoute(builder: (context) {
               return RamayanaIDCash();
             }), (route) => false);
           },
@@ -89,20 +69,23 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
           ),
         ),
         title: Container(
-            margin: EdgeInsets.only(left: 100, right: 115),
-            child: Text('KODE ID CASH',
-                style: GoogleFonts.plusJakartaSans(
-                    textStyle: TextStyle(
-                        fontSize: 23,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500)))),
+          margin: EdgeInsets.only(left: 100, right: 115),
+          child: Text('KODE ID CASH',
+            style: GoogleFonts.plusJakartaSans(
+              textStyle: TextStyle(
+                fontSize: 23,
+                color: Colors.white,
+                fontWeight: FontWeight.w500
+              )
+            )
+          )
+        ),
         backgroundColor: baseColors.primaryColor,
         elevation: 0,
         toolbarHeight: 80,
       ),
       body: Stack(fit: StackFit.loose, children: <Widget>[
         Container(
-          // height: MediaQuery.of(context).size.height/1.129,
           color: Color.fromARGB(255, 227, 222, 222),
         ),
         Container(
@@ -111,117 +94,121 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
         ),
         Container(
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ClipPath(
-                    clipper: CustomTicket(),
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(10, 20, 10, 0),
-                      height: MediaQuery.of(context).size.height / 1.555,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              margin: EdgeInsets.only(
-                                  left: 100, right: 100, top: 10),
-                              width: 10000,
-                              height: MediaQuery.of(context).size.height / 12,
-                              decoration: BoxDecoration(
-
-                                  // color: Colors.green,
-
-                                  ),
-                              child: Image.asset('assets/Logo-Ramayana.png')),
-                          Container(
-                            height: 2.5,
-                            color: Color.fromARGB(255, 223, 223, 223),
-                          ),
-                          Container(
-                            height: MediaQuery.of(context).size.height / 2.8,
-                            //  color: Colors.amber,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                        margin:
-                                            EdgeInsets.fromLTRB(20, 20, 0, 0),
-                                        child: Text('Max Pembayaran',
-                                            style: GoogleFonts.plusJakartaSans(
-                                                textStyle: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.w500)))),
-                                    Container(
-                                        margin:
-                                            EdgeInsets.fromLTRB(0, 20, 20, 0),
-                                        child: Text(
-                                            '${int.tryParse(balance)?.toIdr() ?? "-"}',
-                                            style: GoogleFonts.plusJakartaSans(
-                                                textStyle: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.w500)))),
-                                  ],
-                                ),
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(10, 30, 10, 0),
-                                  child: PrettyQr(
-                                    image: AssetImage('assets/ramayana(C).png'),
-                                    size: 230,
-                                    data: '${memberCode}',
-                                    errorCorrectLevel: QrErrorCorrectLevel.M,
-                                    typeNumber: 7,
-                                    roundEdges: false,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ClipPath(
+                clipper: CustomTicket(),
+                child: Container(
+                margin: EdgeInsets.fromLTRB(10, 20, 10, 0),
+                  height: MediaQuery.of(context).size.height / 1.555,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only( left: 100, right: 100, top: 10),
+                        width: 10000,
+                        height: MediaQuery.of(context).size.height / 12,
+                        child: 
+                        Image.asset('assets/Logo-Ramayana.png')
+                        ),
+                        Container(
+                          height: 2.5,
+                          color: Color.fromARGB(255, 223, 223, 223),
+                        ),
+                        Container(
+                          height: MediaQuery.of(context).size.height / 2.8,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Container(
-                                  height:
-                                      MediaQuery.of(context).size.height / 10,
-                                  color: Colors.deepOrange,
-                                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  child: SfBarcodeGenerator(
-                                      value: '${memberCode}',
-                                      backgroundColor: Colors.white,
-                                      barColor: Colors.black,
-                                      symbology: Code128B())),
-                              Container(
-                                height: MediaQuery.of(context).size.height / 15,
-                                // color: Colors.blue,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('Hak Cipta RALS',
+                              Row(
+                                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                      child: Text('Max Pembayaran',
                                         style: GoogleFonts.plusJakartaSans(
-                                            textStyle: TextStyle(
-                                                fontSize: 17,
-                                                color: Colors.black))),
-                                    Icon(
-                                      Icons.copyright,
-                                      color: Colors.black,
-                                      size: 21,
-                                    ),
-                                    Text('${copyright}',
+                                          textStyle: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                          fontWeight:  FontWeight.w500
+                                        )
+                                      )
+                                    )
+                                  ),
+                                  Container(
+                                    margin:EdgeInsets.fromLTRB(0, 20, 20, 0),
+                                    child: Text(
+                                      '${int.tryParse(balance)?.toIdr() ?? "-"}',
                                         style: GoogleFonts.plusJakartaSans(
-                                            textStyle: TextStyle(
-                                                fontSize: 17,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500)))
+                                          textStyle: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        fontWeight: FontWeight.w500
+                                      )
+                                    )
+                                  )
+                                ),
+                               ],
+                              ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(10, 30, 10, 0),
+                                child: PrettyQr(
+                                  image: AssetImage('assets/ramayana(C).png'),
+                                  size: 230,
+                                  data: '${memberCode}',
+                                  errorCorrectLevel: QrErrorCorrectLevel.M,
+                                  typeNumber: 7,
+                                  roundEdges: false,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              height:MediaQuery.of(context).size.height / 10,
+                              color: Colors.deepOrange,
+                              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              child: SfBarcodeGenerator(
+                                value: '${memberCode}',
+                                backgroundColor: Colors.white,
+                                barColor: Colors.black,
+                                symbology: Code128B()
+                              )
+                            ),
+                            Container(
+                              height: MediaQuery.of(context).size.height / 15,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('Hak Cipta RALS',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      textStyle: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.black
+                                      )
+                                    )
+                                  ),
+                                  Icon(
+                                    Icons.copyright,
+                                    color: Colors.black,
+                                    size: 21,
+                                  ),
+                                  Text('${copyright}',
+                                    style: GoogleFonts.plusJakartaSans(
+                                        textStyle: TextStyle(
+                                        fontSize: 17,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500
+                                        )
+                                      )
+                                    )
                                   ],
                                 ),
                               ),
@@ -229,29 +216,32 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
                           ),
                         ],
                       ),
-                    )),
-                Container(
-                    margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                    child: MaterialButton(
-                        padding: EdgeInsets.symmetric(horizontal: 200),
-                        height: MediaQuery.of(context).size.height / 20,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text('OK',
-                            style: GoogleFonts.plusJakartaSans(
-                                textStyle: TextStyle(
-                                    fontSize: 20, color: Colors.white))),
-                        color: baseColors.primaryColor,
-                        onPressed: () async {
-                          _unsecureScreen();
-                          loginCubit.createLog(baseParam.logInfoIdcashPage,
-                              baseParam.logInfoIdcashBarcode, apiUrl);
-                          Navigator.pushAndRemoveUntil(context,
-                              MaterialPageRoute(builder: (context) {
-                            return RamayanaIDCash();
-                          }), (route) => false);
-                        }))
+                    )
+                  ),
+              Container(
+                margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+                child: MaterialButton(
+                  padding: EdgeInsets.symmetric(horizontal: 200),
+                  height: MediaQuery.of(context).size.height / 20,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text('OK',
+                    style: GoogleFonts.plusJakartaSans(
+                      textStyle: TextStyle(
+                      fontSize: 20, 
+                      color: Colors.white
+                      )
+                    )
+                  ),
+                  color: baseColors.primaryColor,
+                  onPressed: () async {
+                    _unsecureScreen();
+                    Navigator.pushAndRemoveUntil(context,
+                      MaterialPageRoute(builder: (context) {
+                      return RamayanaIDCash();
+                    }), (route) => false);
+                  }))
               ]),
         )
       ]),
@@ -270,28 +260,12 @@ class CustomTicket extends CustomClipper<Path> {
         const Radius.circular(0),
       ),
     );
-
-    // Left Round In
-    // path.addOval(
-    //   Rect.fromCircle(
-    //     center: Offset(1, (size.height/ 11) * 1.8), // Position Roun In Left
-    //     radius: 16, // Size
-    //   ),
-    // );
     path.addOval(
       Rect.fromCircle(
         center: Offset(5, (size.height / 2.6) * 1.8), // Position Roun In Left
         radius: 16, // Size
       ),
     );
-
-    // Right Round In
-    // path.addOval(
-    //   Rect.fromCircle(
-    //     center: Offset(size.width - 1, (size.height / 11) * 1.8), // Position Roun In Right
-    //     radius: 16, // Size
-    //   ),
-    // );
     path.addOval(
       Rect.fromCircle(
         center: Offset(size.width - 5,
@@ -299,12 +273,9 @@ class CustomTicket extends CustomClipper<Path> {
         radius: 16, // Size
       ),
     );
-
-    // Horizontal Line Dash
     const dashWidth = 10;
     const dashSpace = 7;
     final dashCount = size.width ~/ (dashWidth + dashSpace);
-
     for (var i = 0; i < dashCount; i++) {
       path.addRect(
         Rect.fromLTWH(
@@ -315,11 +286,9 @@ class CustomTicket extends CustomClipper<Path> {
         ),
       );
     }
-
     path.fillType = PathFillType.evenOdd;
     return path;
   }
-
   @override
   bool shouldReclip(CustomClipper oldClipper) {
     return true;

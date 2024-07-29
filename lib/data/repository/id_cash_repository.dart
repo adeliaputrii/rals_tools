@@ -5,19 +5,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:myactivity_project/data/service/id_cash_service.dart';
 import 'package:myactivity_project/data/service/surat_jalan_service.dart';
-
+import 'package:myactivity_project/base/base_paths.dart' as basePath;
 import '../model/data_member_card_body.dart';
 import '../model/login_body.dart';
 import '../model/repositories_response.dart';
 
 class IDCashRepositories {
-  Future<RepositoriesResponse?> getDataMember(DataMemberCardBody idUser) async {
+  Future<RepositoriesResponse?> getDataMember(String token, DataMemberCardBody idUser) async {
     final services = GetIt.I.get<IDCashService>();
 
     late RepositoriesResponse response;
 
     try {
-      await services.getDataMember(idUser).then((value) {
+      await services.getDataMember(basePath.contentType, basePath.accept, token, idUser).then((value) {
         debugPrint('success repo');
         response = RepositoriesResponse(
             isSuccess: true, statusCode: value.status, dataResponse: value);

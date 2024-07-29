@@ -18,7 +18,7 @@ class _SplashScreenRamayanaState extends State<SplashScreenRamayana> {
     ApprovalReturnMenu.approvalmenu.clear();
     ApprovalReturnMenu.idcashmenu.clear();
     ApprovalIdcash.approvalidcash.clear();
-deleteUserData();
+    deleteUserData();
     loadUserData();
   }
 
@@ -26,8 +26,8 @@ deleteUserData();
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.remove('username');
     pref.remove('waktuLogin');
-    print('detele');
   }
+
   Future<void> loadUserData()async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? valid_until = pref.getString("session_valid_until");
@@ -46,10 +46,8 @@ deleteUserData();
     }
     isLoaded=true;
     setState(() {
-
     });
   }
-
 
   @override
   Widget build(BuildContext context) {

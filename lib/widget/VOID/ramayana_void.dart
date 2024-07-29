@@ -34,12 +34,10 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
     super.initState();
     loginCubit = context.read<LoginCubit>();
     WidgetsBinding.instance.addObserver(this);
-    initPlatformState();
     _checkInternetConnection();
     setState(() {
       _isConnected;
     });
-    print('123');
   }
 
   @override
@@ -70,21 +68,6 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
     return await CheckUser.checkSession();
   }
 
-  Future<void> initPlatformState() async {
-    String udid;
-    try {
-      udid = await FlutterUdid.consistentUdid;
-    } on PlatformException {
-      udid = 'Failed to get UDID.';
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      _udid = udid;
-    });
-  }
-
   @override
   void didPush() {
     super.didPush();
@@ -100,11 +83,11 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
   Future<bool> _willPopCallback() async {
     if (!widget.isOffline) {
       Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DefaultBottomBarController(child: Ramayana()),
-          ),
-          (Route<dynamic> route) => false);
+        context,
+        MaterialPageRoute(
+          builder: (context) => DefaultBottomBarController(child: Ramayana()),
+        ),
+      (Route<dynamic> route) => false);
     } else {
       exit(0);
     }
@@ -123,19 +106,15 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
       if (response.isNotEmpty) {
         setState(() {
           _isConnected = true;
-          print(_isConnected.toString());
         });
       }
     } on Exception catch (err) {
       setState(() {
         _isConnected = false;
-        print(_isConnected);
       });
       if (kDebugMode) {
-        print(err);
       }
     }
-    print(_isConnected);
   }
 
   sweatAlert() {
@@ -195,25 +174,18 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
   }
 
   Future<String> _getLogikaVoid() async {
-    // user id
     UserData userData = UserData();
     await userData.getPref();
     String userId = userData.getUsernameID();
-    // String userId = '460545';
     String? randomAngka = myController.text;
-    print('grgr 123');
-    print(userId);
-
     late int numberStepOne;
     late int numberStepTwo;
-
     late String result;
 
     if (randomAngka != null && userId != null) {
       numberStepOne = stepOne(input: randomAngka);
       numberStepTwo = stepTwo(input: numberStepOne);
       result = stepThree(angkaKedua: numberStepTwo.toString(), angkaPertama: userId);
-      print('Hasil : ${result}');
     }
     return result;
   }
@@ -221,29 +193,16 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
   int stepOne({required String input}) {
     int current = 1;
     for (int i = 0; i < input.length; i++) {
-      print('Check number :${input[i]} at index $i');
       if (input[i] == '0') {
-        print('catch 1');
-        print('current = $current * ${i + 1}');
         current = current * (i + 1);
-        print('coba current if');
-        print(current);
       } else {
-        print('catch 2');
-
-        print('current = $current * ${int.parse(input[i])}');
         current = current * int.parse(input[i]);
-        print('coba current else');
-        print(current);
       }
-      print('current val is $current');
     }
     return current;
   }
 
   int stepTwo({required int input}) {
-    print('coba hasil input');
-    print(input);
     return (input * 121) - 100;
   }
 
@@ -270,13 +229,12 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
             onPressed: () async {
               await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
               if (!widget.isOffline) {
-                debugPrint('to home');
                 Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DefaultBottomBarController(child: Ramayana()),
-                    ),
-                    (Route<dynamic> route) => false);
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DefaultBottomBarController(child: Ramayana()),
+                  ),
+                (Route<dynamic> route) => false);
               } else {
                 sweatAlert();
               }
@@ -288,8 +246,15 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
             ),
           ),
           title:
-              Text('Void', style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 23, color: Colors.white, fontWeight: FontWeight.w500))),
-          backgroundColor: Color.fromARGB(255, 210, 14, 0),
+            Text('Void', 
+            style: GoogleFonts.plusJakartaSans(
+              textStyle: TextStyle(
+                fontSize: 23, 
+                color: Colors.white, 
+                fontWeight: FontWeight.w500)
+              )
+            ),
+          backgroundColor: baseColor.primaryColor,
           toolbarHeight: 90,
         ),
         body: WillPopScope(
@@ -297,70 +262,112 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
           child: ListView(
             children: [
               Stack(children: <Widget>[
-                Container(margin: EdgeInsets.fromLTRB(10, 0, 10, 0), color: Color.fromARGB(255, 253, 249, 249)),
+                Container(
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0), 
+                  color: Color.fromARGB(255, 253, 249, 249)
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width / 1,
                   height: 170,
-                  color: Color.fromARGB(255, 210, 14, 0),
+                  color: baseColor.primaryColor,
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(30, 30, 30, 0),
-                  child: Text('Approval Void & Return', style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 21, color: Colors.white))),
+                  child: Text('Approval Void & Return', 
+                  style: GoogleFonts.plusJakartaSans(
+                    textStyle: TextStyle(
+                      fontSize: 21, 
+                      color: Colors.white)
+                    )
+                  ),
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 100, 10, 0),
                   height: 200,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20), color: Color.fromARGB(255, 255, 255, 255), boxShadow: [BoxShadow(blurRadius: 5)]),
+                    borderRadius: BorderRadius.circular(20), 
+                    color: Color.fromARGB(255, 255, 255, 255), 
+                    boxShadow: [
+                      BoxShadow(blurRadius: 5)
+                    ]
+                  ),
                 ),
                 SizedBox(
                   height: 30,
                   width: 30,
                 ),
                 Container(
-                    margin: EdgeInsets.fromLTRB(30, 130, 30, 0),
-                    child: Form(
-                        key: _formKey,
-                        child: TextFormField(
-                            controller: myController,
-                            style: TextStyle(fontSize: 20, color: Colors.black),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "Required";
-                              }
-                            },
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.black, width: 5.0), borderRadius: BorderRadius.circular(25)),
-                                errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 255, 17, 17),
-                                    ),
-                                    borderRadius: BorderRadius.circular(25)),
-                                errorStyle: TextStyle(color: Color.fromARGB(255, 255, 17, 17), fontSize: 14, fontWeight: FontWeight.w400),
-                                labelStyle: TextStyle(color: Colors.black87),
-                                prefixIcon: Icon(
-                                  Icons.keyboard,
-                                  color: Color.fromARGB(255, 255, 17, 17),
-                                  size: 30,
-                                ),
-                                hintStyle: TextStyle(color: Colors.black, fontSize: 20),
-                                enabledBorder:
-                                    OutlineInputBorder(borderSide: new BorderSide(color: Colors.black), borderRadius: BorderRadius.circular(25)),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                  borderSide: new BorderSide(color: Colors.black),
-                                ))))),
+                  margin: EdgeInsets.fromLTRB(30, 130, 30, 0),
+                  child: Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      controller: myController,
+                      style: TextStyle(
+                        fontSize: 20, 
+                        color: Colors.black
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Required";
+                        }
+                      },
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black, 
+                            width: 5.0
+                          ), 
+                          borderRadius: BorderRadius.circular(25)),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromARGB(255, 255, 17, 17),
+                              ),
+                            borderRadius: BorderRadius.circular(25)),
+                          errorStyle: TextStyle(
+                            color: Color.fromARGB(255, 255, 17, 17), 
+                            fontSize: 14, 
+                            fontWeight: FontWeight.w400
+                          ),
+                          labelStyle: TextStyle(
+                            color: Colors.black87
+                          ),
+                          prefixIcon: Icon(
+                            Icons.keyboard,
+                            color: Color.fromARGB(255, 255, 17, 17),
+                            size: 30,
+                          ),
+                          hintStyle: TextStyle(color: Colors.black, fontSize: 20),
+                          enabledBorder:
+                            OutlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.black), 
+                              borderRadius: BorderRadius.circular(25)
+                            ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25),
+                            borderSide: new BorderSide(color: Colors.black),
+                          )
+                        )
+                      )
+                    )
+                  ),
                 Container(
                   margin: EdgeInsets.fromLTRB(160, 230, 160, 0),
                   width: 150,
-                  decoration: BoxDecoration(color: Color.fromARGB(255, 255, 17, 17), borderRadius: BorderRadius.circular(30)),
+                  decoration: BoxDecoration(
+                    color: baseColor.primaryColor, 
+                    borderRadius: BorderRadius.circular(30)
+                  ),
                   height: 40,
                   child: TextButton(
                     child: Text('GENERATE',
-                        style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500))),
+                      style: GoogleFonts.plusJakartaSans(
+                        textStyle: TextStyle(
+                          fontSize: 18, 
+                          color: Colors.white, 
+                          fontWeight: FontWeight.w500
+                    ))),
                     onPressed: () async {
                       keyboardUtils.dissmissKeyboard(context);
                       if (_formKey.currentState!.validate()) {
@@ -370,7 +377,6 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
                         setState(() {
                           _visible = true;
                         });
-                        print(_visible);
                         if (_visible == true) {
                           await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
                         } else {
@@ -382,25 +388,12 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
                             idGenerate: '${logInfoVoidSucc}${myController.text}',
                             date: '${DateTime.now()}',
                           ));
-                          //  if(deleteResult != 0){
-                          //               debugPrint('sukses delete data');
-
-                          //             }else{
-                          //               debugPrint('fail delete data');
-                          //             }
-
-                          debugPrint('login via offline');
                         } else {
-                          debugPrint('login via online');
                           if (_isConnected == true) {
-                            print('is connect');
                             AndroidDeviceInfo info = await deviceInfo.androidInfo;
                             final productId = myController.text;
-                            loginCubit.createLog(baseParam.logInfoVoidPage, '${baseParam.logInfoVoidSucc}${productId}', baseParam.noUrl);
-                            print('berhasil $_udid');
                           } else if (_isConnected == false) {
                             String format = DateFormat.Hms().format(DateTime.now());
-                            print('not connect');
                             db.saveActivityy(LogOffline(
                               deskripsi: 'Generate - ${myController.text}',
                               datetime: '${DateTime.now()}',
@@ -408,64 +401,46 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
                           }
                         }
                       } else {
-                        print('required');
                       }
                     },
                   ),
                 ),
                 Container(
-                    margin: EdgeInsets.fromLTRB(10, 350, 10, 0),
-                    child: AnimatedOpacity(
-                        opacity: _visible ? 1.0 : 0.0,
-                        duration: const Duration(milliseconds: 500),
-                        child: Container(
-                          margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              // Container(
-                              //   margin: EdgeInsets.fromLTRB(10, 0,10, 0),
-                              //      child:
-                              //       Center(
-                              //         child:
-                              //         BarCodeImage(
-                              //           backgroundColor: Colors.white,
-                              //           params: Code128BarCodeParams(
-                              //           "${data}",
-                              //           lineWidth: 1.5,                // width for a single black/white bar (default: 2.0)
-                              //           barHeight: 100,               // height for the entire widget (default: 100.0)
-                              //           withText: false,                // Render with text label or not (default: false)
-                              //          ),
-                              //         padding: EdgeInsets.only(bottom: 7),
-                              //         onError: (error) {               // Error handler
-                              //           print('error = $error');
-                              //         },
-                              //     ),
-                              //    )
-                              // ),
-
-                              Container(
-                                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                height: 110,
-                                child:
-                                    SfBarcodeGenerator(value: '$data', backgroundColor: Colors.white, barColor: Colors.black, symbology: Code128()),
+                  margin: EdgeInsets.fromLTRB(10, 350, 10, 0),
+                  child: AnimatedOpacity(
+                    opacity: _visible ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 500),
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            height: 110,
+                            child:
+                              SfBarcodeGenerator(
+                                value: '$data', 
+                                backgroundColor: Colors.white, 
+                                barColor: Colors.black, 
+                                symbology: Code128()
                               ),
-
-                              Container(
-                                margin: EdgeInsets.fromLTRB(100, 30, 100, 0),
-                                child: PrettyQr(
-                                  image: AssetImage('assets/ramayana(C).png'),
-                                  size: 200,
-                                  data: '$data',
-                                  errorCorrectLevel: QrErrorCorrectLevel.M,
-                                  typeNumber: 7,
-                                  roundEdges: false,
-                                ),
-                              )
-                            ],
-                          ),
-                        ))),
+                            ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(100, 30, 100, 0),
+                            child: PrettyQr(
+                              image: AssetImage('assets/ramayana(C).png'),
+                              size: 200,
+                              data: '$data',
+                              errorCorrectLevel: QrErrorCorrectLevel.M,
+                              typeNumber: 7,
+                              roundEdges: false,
+                            ),
+                          )
+                        ],
+                      ),
+                  ))),
               ]),
             ],
           ),

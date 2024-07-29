@@ -13,15 +13,37 @@ abstract class ReportService {
   factory ReportService(Dio dio, {String baseUrl}) = _ReportService;
 
   @GET(basePath.api_report_list)
-  Future<List<ReportListResponse>> getListReport();
+  Future<List<ReportListResponse>> getListReport(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+  );
 
   @GET('${basePath.api_report_list_pagination}{cursor}')
-  Future<ReportListPaginationResponse> getListReportPagination(@Path("cursor") String query);
+  Future<ReportListPaginationResponse> getListReportPagination(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Path("cursor") String query
+  );
 
   @GET('${basePath.api_report_list_pagination}{cursor}&header={title}&start_date={startdate}&end_date={enddate}&version={version}')
-  Future<ReportListPaginationResponse> searchListReport(@Path("cursor") String? cursor, @Path("title") String? title,
-      @Path("startdate") String? startDate, @Path("enddate") String? endDate, @Path("version") String? version);
+  Future<ReportListPaginationResponse> searchListReport(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Path("cursor") String? cursor, 
+    @Path("title") String? title,
+    @Path("startdate") String? startDate,
+    @Path("enddate") String? endDate, 
+    @Path("version") String? version
+  );
 
   @POST('${basePath.api_report_insert_viewer}')
-  Future<ReportListPaginationResponse> insertViewer(@Body() Map<String, dynamic> idReport);
+  Future<ReportListPaginationResponse> insertViewer(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Body() Map<String, dynamic> idReport
+  );
 }

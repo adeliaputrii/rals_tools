@@ -19,10 +19,20 @@ class _IDCashService implements IDCashService {
   String? baseUrl;
 
   @override
-  Future<DataMemberCardResponse> getDataMember(DataMemberCardBody body) async {
+  Future<DataMemberCardResponse> getDataMember(
+    String contentType,
+    String accept,
+    String token,
+    DataMemberCardBody body,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -30,10 +40,11 @@ class _IDCashService implements IDCashService {
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/membercards/tbl_customer',
+              'api/v1/membercards/tbl_customer',
               queryParameters: queryParameters,
               data: _data,
             )

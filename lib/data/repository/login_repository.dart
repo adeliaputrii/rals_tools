@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:myactivity_project/base/base_paths.dart' as basePath;
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import '../../service/SP_service/SP_service.dart';
@@ -38,13 +38,13 @@ class LoginRepositories {
     return response;
   }
 
-  Future<RepositoriesResponse> getDataCustomer(String userId) async {
+  Future<RepositoriesResponse> getDataCustomer(String token, String userId) async {
     final services = GetIt.I.get<LoginService>();
 
     late RepositoriesResponse response;
 
     try {
-      await services.getDataCustomer(userId).then((value) {
+      await services.getDataCustomer(basePath.contentType, basePath.accept, token, userId).then((value) {
         response = RepositoriesResponse(isSuccess: true, statusCode: value.status, dataResponse: value);
       });
     } catch (e) {
@@ -57,30 +57,30 @@ class LoginRepositories {
     return response;
   }
 
-  Future<RepositoriesResponse> createLog(CreateLogBody body) async {
-    final services = GetIt.I.get<LoginService>();
+  // Future<RepositoriesResponse> createLog(CreateLogBody body) async {
+  //   final services = GetIt.I.get<LoginService>();
 
-    late RepositoriesResponse response;
+  //   late RepositoriesResponse response;
 
-    try {
-      await services.createLog(body).then((value) {
-        response = RepositoriesResponse(isSuccess: true, statusCode: value.status, dataResponse: value);
-      });
-    } catch (e) {
-      if (e is DioError) {
-        if (e.response?.statusCode == 400) {
-          response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
-        } else if (e.response?.statusCode == 404) {
-          response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
-        } else if (e.response?.statusCode == 401) {
-          response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
-        }
-      } else {
-        response = RepositoriesResponse(isSuccess: false, statusCode: 500, dataResponse: e.toString());
-      }
-    }
-    return response;
-  }
+  //   try {
+  //     await services.createLog(body).then((value) {
+  //       response = RepositoriesResponse(isSuccess: true, statusCode: value.status, dataResponse: value);
+  //     });
+  //   } catch (e) {
+  //     if (e is DioError) {
+  //       if (e.response?.statusCode == 400) {
+  //         response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
+  //       } else if (e.response?.statusCode == 404) {
+  //         response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
+  //       } else if (e.response?.statusCode == 401) {
+  //         response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
+  //       }
+  //     } else {
+  //       response = RepositoriesResponse(isSuccess: false, statusCode: 500, dataResponse: e.toString());
+  //     }
+  //   }
+  //   return response;
+  // }
 
   Future<RepositoriesResponse> logout() async {
     final services = GetIt.I.get<LoginService>();

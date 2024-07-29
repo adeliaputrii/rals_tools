@@ -22,22 +22,19 @@ class _SJMissingColyState extends State<SJMissingColy> {
   void initState() {
     super.initState();
     noColyMissing = getCheckedValue(widget.listColy);
-
     maxColy = widget.receivedColyResponse - widget.receivedColy;
   }
 
   void searchColy(String text) {
-    setState(
-      () {
-        searchQuery = text;
-        searchNoColy = widget.listColy
-            .where(
-              (item) => item.nomor.toLowerCase().contains(
-                    text.toLowerCase(),
-                  ),
-            )
-            .toList();
-      },
+    setState(() {
+      searchQuery = text;
+      searchNoColy = widget.listColy
+      .where(
+      (item) => item.nomor.toLowerCase().contains(
+      text.toLowerCase(),
+    ),
+     ).toList();
+    },
     );
   }
 
@@ -57,29 +54,36 @@ class _SJMissingColyState extends State<SJMissingColy> {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              onPressed: () {
-                _onBackPressed();
-              },
-              icon: Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.white,
-              )),
+            onPressed: () {
+              _onBackPressed();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.white,
+            )
+          ),
           backgroundColor: baseColor.primaryColor,
-          title: isSearch ? TextFieldInputSearch(_searchController) : Text('Pilih Nomor Koli Hilang'),
+          title: isSearch 
+          ? TextFieldInputSearch(_searchController) 
+          : Text('Pilih Nomor Koli Hilang'),
           centerTitle: true,
           actions: [
             IconButton(
-                icon: !isSearch ? Icon(Icons.search) : Icon(Icons.close),
-                onPressed: () {
-                  setState(() {
-                    isSearch = !isSearch;
-                    _searchController.text = '';
-                    searchNoColy.clear();
-                  });
-                })
+              icon: !isSearch 
+              ? Icon(Icons.search) 
+              : Icon(Icons.close),
+              onPressed: () {
+                setState(() {
+                  isSearch = !isSearch;
+                  _searchController.text = '';
+                  searchNoColy.clear();
+                });
+              })
           ],
         ),
-        body: searchNoColy.isEmpty ? searchEmpty() : searchResult(),
+        body: searchNoColy.isEmpty 
+        ? searchEmpty() 
+        : searchResult(),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
           child: Container(
@@ -95,8 +99,8 @@ class _SJMissingColyState extends State<SJMissingColy> {
               style: ButtonStyle(
                 side: MaterialStateProperty.all(
                   BorderSide(
-                    color: baseColor.primaryColor, // Set the border color to red
-                    width: 2.0, // Set the border width
+                    color: baseColor.primaryColor, 
+                    width: 2.0, 
                   ),
                 ),
                 shape: MaterialStateProperty.all(
@@ -106,7 +110,10 @@ class _SJMissingColyState extends State<SJMissingColy> {
                 ),
               ),
               child: Text('Pilih (${getCheckedValue(widget.listColy).length})',
-                  style: GoogleFonts.plusJakartaSans(fontSize: 18, color: baseColor.primaryColor)),
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 18, 
+                  color: baseColor.primaryColor)
+                ),
             ),
           ),
         ),
@@ -129,19 +136,18 @@ class _SJMissingColyState extends State<SJMissingColy> {
             borderSide: const BorderSide(
               width: 2,
               color: Color.fromARGB(255, 236, 236, 236),
-            ), //<-- SEE HERE
+            ), 
             borderRadius: BorderRadius.circular(20.0),
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(
               width: 2,
               color: Color.fromARGB(255, 236, 236, 236),
-            ), //<-- SEE HERE
+            ), 
             borderRadius: BorderRadius.circular(20.0),
           ),
         ),
         onChanged: (text) {
-          debugPrint('text' + text);
           searchColy(text);
         },
       ),
@@ -154,15 +160,17 @@ class _SJMissingColyState extends State<SJMissingColy> {
 
   Widget searchResult() {
     return ListView.builder(
-        shrinkWrap: true,
-        itemCount: searchNoColy.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(8),
-            child: Container(
-              child: Column(
-                children: [
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      shrinkWrap: true,
+      itemCount: searchNoColy.length,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.all(8),
+          child: Container(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     Text(
                       searchNoColy[index].nomor,
                       style: GoogleFonts.plusJakartaSans(fontSize: 17),
@@ -175,13 +183,14 @@ class _SJMissingColyState extends State<SJMissingColy> {
                         setState(() {
                           searchNoColy[index].isChecked = value;
                           noColyMissing.contains(widget.listColy[index].nomor)
-                              ? noColyMissing.remove(widget.listColy[index].nomor)
-                              : noColyMissing.add(widget.listColy[index].nomor);
+                          ? noColyMissing.remove(widget.listColy[index].nomor)
+                          : noColyMissing.add(widget.listColy[index].nomor);
                         });
                       },
                     ),
-                  ]),
-                  Divider()
+                  ]
+                ),
+                Divider()
                 ],
               ),
             ),
@@ -191,15 +200,17 @@ class _SJMissingColyState extends State<SJMissingColy> {
 
   Widget searchEmpty() {
     return ListView.builder(
-        shrinkWrap: true,
-        itemCount: widget.listColy.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(8),
-            child: Container(
-              child: Column(
-                children: [
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      shrinkWrap: true,
+      itemCount: widget.listColy.length,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.all(8),
+          child: Container(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+                  children: [
                     Text(
                       widget.listColy[index].nomor,
                       style: GoogleFonts.plusJakartaSans(fontSize: 17),
@@ -212,13 +223,13 @@ class _SJMissingColyState extends State<SJMissingColy> {
                         setState(() {
                           widget.listColy[index].isChecked = value;
                           noColyMissing.contains(widget.listColy[index].nomor)
-                              ? noColyMissing.remove(widget.listColy[index].nomor)
-                              : noColyMissing.add(widget.listColy[index].nomor);
+                          ? noColyMissing.remove(widget.listColy[index].nomor)
+                          : noColyMissing.add(widget.listColy[index].nomor);
                         });
                       },
                     ),
                   ]),
-                  Divider()
+                Divider()
                 ],
               ),
             ),
@@ -229,13 +240,12 @@ class _SJMissingColyState extends State<SJMissingColy> {
   void showSnackBar() {
     final snackBar = SnackBar(
       content: Text('Nomor Koli yang dipilih melebihi batas'),
-      duration: Duration(seconds: 2), // Adjust the duration as needed
+      duration: Duration(seconds: 2), 
       action: SnackBarAction(
         label: 'Tutup',
         onPressed: () {},
       ),
     );
-
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

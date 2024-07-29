@@ -2,11 +2,13 @@ part of 'import.dart';
 
 class RamayanaMembercardHistoryM extends StatefulWidget {
   const RamayanaMembercardHistoryM(
-      {super.key,
-      required this.color,
-      required this.nokartu,
-      required this.year,
-      required this.typeCard});
+  {super.key,
+  required this.color,
+  required this.nokartu,
+  required this.year,
+  required this.typeCard
+  });
+
   final String color;
   final String nokartu;
   final String year;
@@ -19,31 +21,38 @@ class RamayanaMembercardHistoryM extends StatefulWidget {
 
 class _RamayanaMembercardHistoryMState
     extends State<RamayanaMembercardHistoryM> {
+
   late CompanyCardCubit cubit;
   AppWidget appWidget = AppWidget();
+  String? token;
 
   @override
   void initState() {
     super.initState();
     cubit = context.read<CompanyCardCubit>();
-    cubit.getHistoryMemberMonth(widget.nokartu, widget.year);
+    refreshpage();
+  }
+
+  refreshpage() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    token = await SharedPref.getToken();
+    cubit.getHistoryMemberMonth(token!, widget.nokartu, widget.year);
   }
 
   Future<void> navigateToHistoryDays(String month) async {
-    final result = await Navigator.push(
-      context,
+    final result = await Navigator.push(context,
       MaterialPageRoute(
-          builder: (context) => RamayanaMembercardHistory(
-              color: widget.color,
-              nokartu: widget.nokartu,
-              year: widget.year,
-              month: month,
-              typeCard: widget.typeCard)),
+        builder: (context) => RamayanaMembercardHistory(
+          color: widget.color,
+          nokartu: widget.nokartu,
+          year: widget.year,
+          month: month,
+          typeCard: widget.typeCard
+        )
+      ),
     );
-
     if (!mounted) return;
-
-    cubit.getHistoryMemberMonth(widget.nokartu, widget.year);
+    cubit.getHistoryMemberMonth(token!, widget.nokartu, widget.year);
   }
 
   @override
@@ -60,10 +69,11 @@ class _RamayanaMembercardHistoryMState
           ),
         ),
         title: Text('Kembali',
-            style: GoogleFonts.rubik(
-              fontSize: 23,
-              color: Color.fromARGB(255, 230, 0, 0),
-            )),
+          style: GoogleFonts.rubik(
+            fontSize: 23,
+            color: Color.fromARGB(255, 230, 0, 0),
+          )
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
@@ -80,82 +90,81 @@ class _RamayanaMembercardHistoryMState
                 Container(
                   margin: EdgeInsets.fromLTRB(20, 40, 20, 30),
                   child: Text('Riwayat Transaksi',
-                      style: GoogleFonts.rubik(
-                          fontSize: 31,
-                          color: getColorForTypePayment(widget.typeCard),
-                          fontWeight: FontWeight.w500)),
+                    style: GoogleFonts.rubik(
+                      fontSize: 31,
+                      color: getColorForTypePayment(widget.typeCard),
+                      fontWeight: FontWeight.w500
+                    ),
+                  )
                 ),
                 BlocBuilder<CompanyCardCubit, CompanyCardState>(
-                    builder: (context, state) {
+                  builder: (context, state) {
                   if (state is CompanyCardLoading) {
                     return Center(child: appWidget.LoadingWidget());
                   }
                   if (state is CompanyCardHistoryMonthSuccess) {
                     int lengthData = state.response.data?.length ?? 0;
                     return lengthData != 0
-                        ? ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: lengthData,
-                            itemBuilder: (BuildContext context, int index) {
-                              String? totalHarga =
-                                  state.response.data?[index].totalHarga;
-                              debugPrint(totalHarga);
-                              String formattedTotalHarga = totalHarga != null
-                                  ? (int.tryParse(totalHarga)?.toIdr() ?? "-")
-                                  : "-";
-                              debugPrint(formattedTotalHarga);
-                              return Container(
-                                  margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                  decoration: BoxDecoration(
-                                      color: getColorForType2(widget.typeCard),
-                                      borderRadius: BorderRadius.circular(20)
-                                      ),
-                                  height: 70,
-                                  child: Center(
-                                    child: ListTile(
-                                      onTap: () {
-                                        navigateToHistoryDays(
-                                            state.response.data?[index].month ??
-                                                '');
-                                      },
-                                      leading: Icon(
-                                        IconlyBold.bag,
-                                        color: widget.typeCard == '6'
-                                              ? baseColor.trrColor
-                                              : baseColor.primaryColor,
-                                        size: 28,
-                                      ),
-                                      title: Text(
-                                        '${getMonthName(state.response.data?[index].month ?? '0') ?? '-'}',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 16,
-                                          // fontWeight: FontWeight.bold,
-                                          color: widget.typeCard == '6'
-                                              ? baseColor.trrColor
-                                              : Colors.black,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      trailing: Text(
-                                        '${int.tryParse(state.response.data?[index].totalHarga ?? '0')?.toIdr()}',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          color: widget.typeCard == '6'
-                                              ? baseColor.trrColor
-                                              : baseColor.primaryColor,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ));
-                            })
-                        : Center(
-                          child: Text(baseParam.notFoundTransaction,
-                              style: GoogleFonts.rubik(
-                                  fontSize: 22,
-                                  color: getColorForTypePayment(widget.typeCard))),
-                        );
+                    ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: lengthData,
+                      itemBuilder: (BuildContext context, int index) {
+                        String? totalHarga =state.response.data?[index].totalHarga;
+                        String formattedTotalHarga = totalHarga != null
+                        ? (int.tryParse(totalHarga)?.toIdr() ?? "-")
+                        : "-";
+                        return Container(
+                          margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                          decoration: BoxDecoration(
+                            color: getColorForType2(widget.typeCard),
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                          height: 70,
+                          child: Center(
+                            child: ListTile(
+                              onTap: () {
+                                navigateToHistoryDays(
+                                  state.response.data?[index].month ??'');
+                              },
+                              leading: Icon(
+                                IconlyBold.bag,
+                                color: widget.typeCard == '6'
+                                ? baseColor.trrColor
+                                : baseColor.primaryColor,
+                                size: 28,
+                              ),
+                              title: Text('${getMonthName(state.response.data?[index].month ?? '0') ?? '-'}',
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 16,
+                                  color: widget.typeCard == '6'
+                                  ? baseColor.trrColor
+                                  : Colors.black,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              trailing: Text('${int.tryParse(state.response.data?[index].totalHarga ?? '0')?.toIdr()}',
+                                style: GoogleFonts.plusJakartaSans(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: widget.typeCard == '6'
+                                ? baseColor.trrColor
+                                : baseColor.primaryColor,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                           )
+                          );
+                        }
+                      )
+                    : Center(
+                      child: Text(baseParam.notFoundTransaction,
+                        style: GoogleFonts.rubik(
+                          fontSize: 22,
+                          color: getColorForTypePayment(widget.typeCard)
+                        )
+                      ),
+                    );
                   }
                   return Center(child: appWidget.LoadingWidget());
                 }),

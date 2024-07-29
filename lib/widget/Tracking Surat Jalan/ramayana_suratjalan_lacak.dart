@@ -40,7 +40,6 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
 
   Future<void> scanBarcodeScan() async {
     String barcodeScanRes;
-    // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#ff6666', 'Cancel', true, ScanMode.BARCODE);
       print(barcodeScanRes);
@@ -59,9 +58,11 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
     }
   }
 
-  trackBySuratJalan(String noSJ) {
-    sjCubit.getScanTracking(noSJ);
-    sjCubit.trackSJ(noSJ);
+  trackBySuratJalan(String noSJ) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final token = await SharedPref.getToken();
+    sjCubit.getScanTracking(token!, noSJ);
+    sjCubit.trackSJ(token, noSJ);
   }
 
   @override
@@ -83,7 +84,6 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
             _containerColorSj = Color.fromARGB(255, 210, 14, 0);
             _containerColorLacak = Color.fromARGB(255, 201, 201, 201);
           });
-          // Do your specific action here
         } else {
           setState(() {
             turns += 1 / 2;
@@ -127,69 +127,61 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
         }
       },
       child: BlocListener<SuratJalanCubit, SuratJalanState>(
-          listener: (context, state) {
-            if (state is ScanSJLoading) {
-              stepperSJ.clear();
-              setState(() {
-                isLoading = true;
-              });
+        listener: (context, state) {
+          if (state is ScanSJLoading) {
+            stepperSJ.clear();
+            setState(() {
+              isLoading = true;
+            });
+          }
+          if (state is SuratJalanSuccess) {
+            setState(() {
+              isLoading = false;
+              _visible = true;
+            });
+            if (state.response.data.toString().isNotEmpty) {
+              documentTypeController.text = state.response.data!.detailSj?.documentType ?? baseParam.dash;
+              originController.text = state.response.data?.detailSj?.origin ?? baseParam.dash;
+              destinationController.text = state.response.data?.detailSj?.destination ?? baseParam.dash;
+              driverNameController.text = state.response.data?.detailSj?.driverName ?? baseParam.dash;
+              noVehicleController.text = state.response.data?.detailSj?.noVehicle ?? baseParam.dash;
+              noSjController.text = state.response.data?.detailSj?.noSj ?? baseParam.dash;
+              noDocumentController.text = state.response.data?.detailSj?.noSj ?? baseParam.dash;
+              statusController.text = state.response.data?.detailSj?.trackingStatus ?? baseParam.dash;
+              colyAvailableController.text = state.response.data?.detailSj?.actualKoli?.toString() ?? '0';
             }
-
-            if (state is SuratJalanSuccess) {
-              loginCubit.createLog(baseParam.logInfoTrackSJPage, '${baseParam.logInfoScanSJSucc} No SJ ${barcodeSj}', apiUrl + barcodeSj);
-              setState(() {
-                isLoading = false;
-                _visible = true;
-              });
-              if (state.response.data.toString().isNotEmpty) {
-                documentTypeController.text = state.response.data!.detailSj?.documentType ?? baseParam.dash;
-                originController.text = state.response.data?.detailSj?.origin ?? baseParam.dash;
-                destinationController.text = state.response.data?.detailSj?.destination ?? baseParam.dash;
-                driverNameController.text = state.response.data?.detailSj?.driverName ?? baseParam.dash;
-                noVehicleController.text = state.response.data?.detailSj?.noVehicle ?? baseParam.dash;
-                noSjController.text = state.response.data?.detailSj?.noSj ?? baseParam.dash;
-                noDocumentController.text = state.response.data?.detailSj?.noSj ?? baseParam.dash;
-                statusController.text = state.response.data?.detailSj?.trackingStatus ?? baseParam.dash;
-                colyAvailableController.text = state.response.data?.detailSj?.actualKoli?.toString() ?? '0';
-              }
             }
-
             if (state is SuratJalanFailure) {
               setState(() {
                 _visible = false;
                 isLoading = false;
               });
-              loginCubit.createLog(baseParam.logInfoTrackSJPage, '${baseParam.logInfoScanSJFail} No SJ ${noSjController..text}', apiUrl + barcodeSj);
               popUp.showPopUpError(notFound, state.message);
             }
             if (state is TrackSJSuccess) {
-              loginCubit.createLog(baseParam.logInfoTrackSJPage, '${baseParam.logInfoTrackSJSucc} No SJ ${barcodeSj}', apiUrl + barcodeSj);
-
               int index = 0;
               final response = state.response.data;
               if (response != null) {
                 response.forEach((element) {
                   stepperSJ.add(StepperItemData(
-                      id: "${index++}",
-                      content: ({
-                        'status': element.status ?? '-',
-                        'site': element.site ?? '-',
-                        'description': element.description != "null" ? element.description : "-",
-                        'remark': element.remark ?? '-',
-                        'pic': element.pic ?? '-',
-                        'actual_koli': element.actualKoli ?? 0,
-                        'rcv_koli': element.rcvKoli ?? 0,
-                        'missing_koli': element.missingKoli ?? '-',
-                        'lspb': element.lspb ?? 0,
-                        'date': element.date ?? '-',
-                      })));
+                    id: "${index++}",
+                    content: ({
+                      'status': element.status ?? '-',
+                      'site': element.site ?? '-',
+                      'description': element.description != "null" ? element.description : "-",
+                      'remark': element.remark ?? '-',
+                      'pic': element.pic ?? '-',
+                      'actual_koli': element.actualKoli ?? 0,
+                      'rcv_koli': element.rcvKoli ?? 0,
+                      'missing_koli': element.missingKoli ?? '-',
+                      'lspb': element.lspb ?? 0,
+                      'date': element.date ?? '-',
+                    })));
                 });
               }
             }
 
             if (state is TrackSJFailure) {
-              loginCubit.createLog(
-                  baseParam.logInfoTrackSJPage, '${baseParam.logInfoTrackSJFail} No SJ ${noSjController..text} ${state.message}', apiUrl + barcodeSj);
             }
           },
           child: DefaultTabController(
@@ -203,7 +195,8 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
                     icon: Icon(
                       Icons.arrow_back_ios_new,
                       color: Colors.white,
-                    )),
+                    )
+                  ),
                 backgroundColor: baseColor.primaryColor,
                 title: Text(
                   baseParam.sjTrackTitle,
@@ -216,13 +209,15 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
               body: Stack(
                 children: [
                   Container(
-                    color: Color.fromARGB(255, 210, 14, 0),
+                    color: baseColor.primaryColor,
                     height: 220,
                   ),
-
                   Container(
                     margin: EdgeInsets.only(left: 15, right: 15, top: 10),
-                    decoration: BoxDecoration(color: Color.fromARGB(255, 254, 252, 252), borderRadius: BorderRadius.circular(25)),
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 254, 252, 252), 
+                      borderRadius: BorderRadius.circular(25)
+                    ),
                     height: 185,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -233,22 +228,18 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
                             child: Text(
                               baseParam.sjNoSuratJalan,
                               style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.black),
-                            )),
+                            )
+                          ),
                         Container(
                           margin: EdgeInsets.only(
                             bottom: 5,
                             left: 20,
                           ),
-                          // height: 60,
-                          decoration: BoxDecoration(
-                              // color: Color.fromARGB(255, 236, 236, 236),
-                              ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
                                 width: 50,
-                                // color: Colors.green,
                                 child: IconButton(
                                   onPressed: () {
                                     scanBarcodeScan();
@@ -265,7 +256,6 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
                                 child: Container(
                                   margin: EdgeInsets.only(left: 20, bottom: 10),
                                   width: 300,
-                                  // color: Colors.blue,
                                   child: TextFormField(
                                     validator: RequiredValidator(errorText: ' Please Enter'),
                                     controller: noSjController,
@@ -298,7 +288,11 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
                             },
                             child: Text(
                               'Cari',
-                              style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w500),
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 15, 
+                                color: Colors.white, 
+                                fontWeight: FontWeight.w500
+                              ),
                             ),
                           ),
                         )
@@ -309,105 +303,109 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
                   Container(
                     margin: EdgeInsets.only(top: screenSize.height / 3.2),
                     child: isLoading
-                        ? SpinKitThreeBounce(
-                            color: Color.fromARGB(255, 210, 14, 0),
-                            size: 50.0,
-                          )
-                        : AnimatedOpacity(
-                            opacity: _visible ? 1.0 : 0.0,
-                            duration: const Duration(milliseconds: 500),
-                            child: TabBarView(controller: _controller, children: [
-                              Container(
-                                margin: EdgeInsets.fromLTRB(30, 10, 30, 0),
-                                child: ListView(children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      TextLabel(baseParam.sjStatus),
-                                      TextFieldStatusSJ(statusController, statusController.text),
-                                    ],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [TextLabel(baseParam.sjNoDokumen), TextFieldSJ(noDocumentController)],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [TextLabel(baseParam.sjTipeDokumen), TextFieldSJ(documentTypeController)],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [TextLabel(baseParam.sjAsal), TextFieldSJ(originController)],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [TextLabel(baseParam.sjTujuan), TextFieldSJ(destinationController)],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [TextLabel(baseParam.sjPetugas), TextFieldSJ(driverNameController)],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [TextLabel(baseParam.sjNoMobil), TextFieldSJ(noVehicleController)],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [TextLabel(baseParam.sjKoliDiterima), TextFieldSJ(colyAvailableController)],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      TextLabel(baseParam.sjCatatan),
-                                      Form(
-                                        key: sjKey,
-                                        child: Container(
-                                          margin: EdgeInsets.only(bottom: 30),
-                                          height: 120,
-                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                                          child: TextFormField(
-                                            readOnly: true,
-                                            validator: RequiredValidator(errorText: ' Please Enter'),
-                                            controller: remarkController,
-                                            cursorColor: Colors.black,
-                                            maxLines: 7,
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              filled: true,
-                                            ),
+                    ? SpinKitThreeBounce(
+                      color: Color.fromARGB(255, 210, 14, 0),
+                      size: 50.0,
+                      )
+                    : AnimatedOpacity(
+                      opacity: _visible ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 500),
+                      child: TabBarView(
+                        controller: _controller, 
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(30, 10, 30, 0),
+                            child: ListView(
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TextLabel(baseParam.sjStatus),
+                                    TextFieldStatusSJ(statusController, statusController.text),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [TextLabel(baseParam.sjNoDokumen), TextFieldSJ(noDocumentController)],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [TextLabel(baseParam.sjTipeDokumen), TextFieldSJ(documentTypeController)],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [TextLabel(baseParam.sjAsal), TextFieldSJ(originController)],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [TextLabel(baseParam.sjTujuan), TextFieldSJ(destinationController)],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [TextLabel(baseParam.sjPetugas), TextFieldSJ(driverNameController)],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [TextLabel(baseParam.sjNoMobil), TextFieldSJ(noVehicleController)],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [TextLabel(baseParam.sjKoliDiterima), TextFieldSJ(colyAvailableController)],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TextLabel(baseParam.sjCatatan),
+                                    Form(
+                                      key: sjKey,
+                                      child: Container(
+                                        margin: EdgeInsets.only(bottom: 30),
+                                        height: 120,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(20)
+                                        ),
+                                        child: TextFormField(
+                                          readOnly: true,
+                                          validator: RequiredValidator(errorText: ' Please Enter'),
+                                          controller: remarkController,
+                                          cursorColor: Colors.black,
+                                          maxLines: 7,
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            filled: true,
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ]),
-                              ),
-                              //-----------------------------------------------------------------------------------------------------------------------------------------------
-                              Container(
-                                margin: EdgeInsets.only(top: 0),
-                                child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: stepperSJ.isEmpty
-                                        ? Center(child: Text('Data Kosong', style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black)))
-                                        : stepperListView(stepperSJ)),
-                              ),
-                            ]),
+                                    ),
+                                  ],
+                                ),
+                              ]
+                            ),
                           ),
+                          Container(
+                            margin: EdgeInsets.only(top: 0),
+                            child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: stepperSJ.isEmpty
+                                  ? Center(child: Text('Data Kosong', style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.black)))
+                                  : stepperListView(stepperSJ)),
+                          ),
+                        ]
+                      ),
+                    ),
                   ),
-                  // -------------------------------------------------------------------------------------------------------------------------------
+                 
                   Container(
                     margin: EdgeInsets.only(top: screenSize.height / 4, left: 20, right: 20, bottom: 30),
-                    // color: Colors.blue,
-                    // height: 50,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -416,17 +414,15 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
                           width: 180,
                           decoration: BoxDecoration(color: _containerColorSj, borderRadius: BorderRadius.circular(30)),
                           child: Center(
-                              child: Text(
+                            child: Text(
                             'Surat Jalan',
                             style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white),
                           )),
                         ),
                         MaterialButton(
-                          // color: Colors.green,
                           minWidth: 5,
                           onPressed: () {
                             if (_controller.index == 0) {
-                              print(_controller.index);
                               setState(() {
                                 turns += 1 / 2;
                                 _controller.animateTo(_controller.index + 1);
@@ -453,9 +449,11 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
                           width: 180,
                           decoration: BoxDecoration(color: _containerColorLacak, borderRadius: BorderRadius.circular(30)),
                           child: Center(
-                              child: Text(
+                            child: Text(
                             'Lacak Lokasi',
-                            style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white),
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 18, 
+                              color: Colors.white),
                           )),
                         )
                       ],

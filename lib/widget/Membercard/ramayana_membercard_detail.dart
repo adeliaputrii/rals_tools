@@ -1,14 +1,18 @@
 part of 'import.dart';
 
 class RamayanaMemberCardDetail extends StatefulWidget {
-  RamayanaMemberCardDetail(
-      {super.key, required this.typeCard, required this.data});
+  RamayanaMemberCardDetail({
+  super.key, 
+  required this.typeCard, 
+  required this.data
+  });
+
   final String typeCard;
   final ResponseCompany.DataCompany data;
 
   @override
   State<RamayanaMemberCardDetail> createState() =>
-      _RamayanaMemberCardDetailState();
+   _RamayanaMemberCardDetailState();
 }
 
 class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
@@ -16,20 +20,21 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
   bool isOn = false;
   DeviceMediaQuery mediaQuery = DeviceMediaQuery();
   String cardNumber = "";
+  String? token;
   late CompanyCardCubit cubit;
   late LoginCubit loginCubit;
   AppWidget appWidget = AppWidget();
   var balance = 0;
   List<DataHistory> historyResponse = [];
   final urlApi = '${tipeurl}${basePath.api_login}';
+
   @override
   void initState() {
     super.initState;
-
     cubit = context.read<CompanyCardCubit>();
     cardNumber = widget.data.nokartu ?? '';
     loginCubit = context.read<LoginCubit>();
-    cubit.getDetailCard(cardNumber);
+    refreshpage();
   }
 
   @override
@@ -37,27 +42,25 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
     super.dispose();
   }
 
+  refreshpage() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    token = await SharedPref.getToken();
+    cubit.getDetailCard(token!, cardNumber);
+  }
+  
   Future<void> navigateToHistoryYear() async {
-    // Navigator.push returns a Future that completes after calling
-    // Navigator.pop on the Selection Screen.
-    debugPrint('navigator push');
-    loginCubit.createLog(
-        typeTransaction(widget.typeCard),
-        baseParam.navigateHistory,
-        urlApi);
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => RamayanaMembercardHistoryY(
-              color: widget.typeCard,
-              nokartu: cardNumber,
-              typeCard: widget.typeCard)),
+        builder: (context) => RamayanaMembercardHistoryY(
+        color: widget.typeCard,
+        nokartu: cardNumber,
+        typeCard: widget.typeCard)
+      ),
     );
-    debugPrint('navigator pop');
     if (!mounted) return;
-
-    cubit.getDetailCard('$result');
-    cubit.getHistoryMember('$result');
+    cubit.getDetailCard(token!,'$result');
+    cubit.getHistoryMember(token!, '$result');
     FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
     ScreenBrightness().resetScreenBrightness();
   }
@@ -66,17 +69,14 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => RamayanaMembercardQr(
-              icon: widget.typeCard, nokartu: cardNumber)),
+        builder: (context) => RamayanaMembercardQr(
+        icon: widget.typeCard, 
+        nokartu: cardNumber)
+      ),
     );
-    loginCubit.createLog(
-        typeTransaction(widget.typeCard),
-        baseParam.navigatePayment,
-        urlApi);
     if (!mounted) return;
-
-    cubit.getDetailCard('$result');
-    cubit.getHistoryMember('$result');
+    cubit.getDetailCard(token!, '$result');
+    cubit.getHistoryMember(token!,'$result');
     FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
     ScreenBrightness().resetScreenBrightness();
   }
@@ -85,42 +85,43 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => RamayanaMembercardCard()),
-                  (Route<dynamic> route) => false);
-            },
-            icon: Icon(
-              Icons.arrow_back_ios,
-              size: 23,
-              color: Colors.white,
-            ),
+      appBar: AppBar(
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+              builder: (context) => RamayanaMembercardCard()),
+            (Route<dynamic> route) => false);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 23,
+            color: Colors.white,
           ),
-          title: Text(baseParam.companyCardTitle,
-              style: GoogleFonts.plusJakartaSans(
-                  fontSize: 23, color: Colors.white)),
-          backgroundColor: Color.fromARGB(255, 210, 14, 0),
-          elevation: 0,
-          toolbarHeight: 80,
         ),
+        title: Text(baseParam.companyCardTitle,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 23, 
+            color: Colors.white
+            )
+          ),
+        backgroundColor: baseColor.primaryColor,
+        elevation: 0,
+        toolbarHeight: 80,
+        ),
+
         body: BlocListener<CompanyCardCubit, CompanyCardState>(
-            listener: (context, state) {
+          listener: (context, state) {
           if (state is CompanyCardDetailSuccess) {
             final saldo =
                 (int.tryParse(state.response.data?.first.saldo ?? '0') ?? 0);
             final pemakaian =
                 (int.tryParse(state.response.data?.first.pemakaian ?? '0') ??
                     0);
-
-            balance = saldo - pemakaian;
-
-            cubit.getHistoryMember(cardNumber);
+            balance = saldo - pemakaian;            cubit.getHistoryMember(token!, cardNumber);
           }
           if (state is CompanyCardHistorySuccess) {
             state.response.data?.forEach((element) {
@@ -129,513 +130,478 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
               }
             });
           }
-        }, child: BlocBuilder<CompanyCardCubit, CompanyCardState>(
-                builder: (context, state) {
-          debugPrint('state is' + state.toString());
+        }, 
+        child: BlocBuilder<CompanyCardCubit, CompanyCardState>(
+          builder: (context, state) {
           if (state is CompanyCardLoading) {
             return appWidget.LoadingWidget();
-          }
-
+          }  
           if (state is CompanyCardHistorySuccess) {
             return ListView(
               children: [
                 Container(
-                    margin: EdgeInsets.only(top: 15, left: 10, right: 10),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          FlipCard(
-                              fill: Fill
-                                  .fillBack, // Fill the back side of the card to make in the same size as the front.
-                              direction: FlipDirection.HORIZONTAL, // default
-                              side: CardSide
-                                  .FRONT, // The side to initially display.
-                              front: Center(
-                                child: Container(
-                                  key: ValueKey(2),
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  child: Container(
-                                    width: 700,
-                                    height: 280,
-                                    decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 235, 227, 227),
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20),
-                                        bottomLeft: Radius.circular(20),
-                                        bottomRight: Radius.circular(20),
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Color.fromARGB(
-                                                255, 136, 131, 131),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                            offset: Offset(2, 4))
-                                      ],
-                                      image: DecorationImage(
-                                          image: getImageForType(widget.typeCard),
-                                          // typeCard(widget.typeCard)
-                                          //     ? AssetImage('assets/rms2.png')
-                                          //     : AssetImage(
-                                          //         'assets/tropikana.png'),
-                                          fit: BoxFit.fill),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          typeCard(widget.typeCard)
-                                              ? CrossAxisAlignment.end
-                                              : CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              top: typeCard(widget.typeCard)
-                                                  ? 160
-                                                  : 130),
-                                          child: 
-                                          typeCardImageCenter(widget.typeCard)
-                                          ?
-                                          
-                                          Row(
-                                            children: [
-                                              SizedBox(
-                                                width: 20,
-                                              ),
-                                              Text('${balance.toIdr()}',
-                                                    style:
-                                                        GoogleFonts.plusJakartaSans(
-                                                            fontSize: 28,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: Colors.white)),
-                                            ],
-                                          )
-                                          :
-                                          Center(
-                                            child: Text('${balance.toIdr()}',
-                                                style:
-                                                    GoogleFonts.plusJakartaSans(
-                                                        fontSize: 28,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white)),
-                                          )
-                                          ,
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              bottom: 20, left: 20),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text('${widget.data.nama}',
-                                                  style: GoogleFonts
-                                                      .plusJakartaSans(
-                                                          fontSize: 16,
-                                                          color: Colors.white)),
-                                              Text('${widget.data.nokartu}',
-                                                  style: GoogleFonts
-                                                      .plusJakartaSans(
-                                                          fontSize: 16,
-                                                          color: Colors.white)),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                  margin: EdgeInsets.only(top: 15, left: 10, right: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FlipCard(
+                        fill: Fill.fillBack, 
+                        direction: FlipDirection.HORIZONTAL,
+                        side: CardSide.FRONT, // The side to initially display.
+                        front: Center(
+                        child: Container(
+                          key: ValueKey(2),
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: Container(
+                            width: 700,
+                            height: 280,
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 235, 227, 227),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
                               ),
-                              back: Center(
-                                child: Container(
-                                  key: ValueKey(1),
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  child: Container(
-                                      width: 700,
-                                      height: 280,
-                                      decoration: BoxDecoration(
-                                        color:
-                                            Color.fromARGB(255, 235, 227, 227),
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
-                                          bottomLeft: Radius.circular(20),
-                                          bottomRight: Radius.circular(20),
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Color.fromARGB(
-                                                  255, 136, 131, 131),
-                                              spreadRadius: 2,
-                                              blurRadius: 5,
-                                              offset: Offset(2, 4))
-                                        ],
-                                        image: DecorationImage(
-                                            image:getImageForType(widget.typeCard), 
-                                            // typeCard(widget.typeCard)
-                                            //     ? AssetImage('assets/rms2.png')
-                                            //     : AssetImage(
-                                            //         'assets/tropikana.png'),
-                                            fit: BoxFit.fill),
-                                      ),
-                                      child: Container(
-                                          margin: EdgeInsets.only(
-                                              top: 190,
-                                              bottom: 20,
-                                              left: 40,
-                                              right: 40),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              debugPrint('${12345}');
-                                            },
-                                            child: Container(
-                                                width: 280,
-                                                height: 35,
-                                                child: SfBarcodeGenerator(
-                                                    value:
-                                                        '${widget.data.nokartu}',
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    barColor: Colors.black,
-                                                    symbology: Code128())),
-                                          ))),
-                                ),
-                              )),
-                          Container(
-                            margin: EdgeInsets.only(top: 20, left: 0, right: 0),
-                            child: Row(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color.fromARGB( 255, 136, 131, 131),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: Offset(2, 4)
+                                )
+                              ],
+                              image: DecorationImage(
+                                image: getImageForType(widget.typeCard),
+                                fit: BoxFit.fill
+                              ),
+                            ),
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment:typeCard(widget.typeCard)
+                              ? CrossAxisAlignment.end
+                              : CrossAxisAlignment.start,
                               children: [
-                                MaterialButton(
-                                  onPressed: () {
-                                    navigateToPayment();
-                                  },
-                                  child: Container(
-                                    height: 50,
-                                    width: 190,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: getColorForTypePayment(widget.typeCard),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    top: typeCard(widget.typeCard)
+                                    ? 160
+                                    : 130),
+                                  child: 
+                                  typeCardImageCenter(widget.typeCard)
+                                  ?
+                                  Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 20,
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset('assets/qr.png'),
-                                        Text(
-                                          'Pembayaran',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 18,
-                                              color: Colors.white),
-                                        ),
-                                      ],
+                                    Text('${balance.toIdr()}',
+                                      style:GoogleFonts.plusJakartaSans(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)
+                                      ),
+                                     ],
+                                    )
+                                  :
+                                  Center(
+                                    child: Text('${balance.toIdr()}',
+                                      style:GoogleFonts.plusJakartaSans(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white
+                                      )
                                     ),
-                                  ),
+                                  )
                                 ),
-                                MaterialButton(
-                                  onPressed: () {
-                                    navigateToHistoryYear();
-                                  },
-                                  child: Container(
-                                    height: 50,
-                                    width: 190,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: getColorForTypeHistory(widget.typeCard)
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    bottom: 20, left: 20),
+                                  child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment:CrossAxisAlignment.start,
+                                  children: [
+                                    Text('${widget.data.nama}',
+                                      style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 16,
+                                      color: Colors.white
+                                      )
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          'assets/history.png',
-                                        ),
-                                        Text(
-                                          'Riwayat',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 18,
-                                              color: Colors.white),
-                                        ),
-                                      ],
+                                    Text('${widget.data.nokartu}',
+                                      style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 16,
+                                        color: Colors.white
+                                      )
                                     ),
-                                  ),
+                                  ],
+                                ),
                                 ),
                               ],
                             ),
-                            height: 50,
-                            // color: Colors.black,
+                            ),
                           ),
-                          Padding(
-                              padding: EdgeInsets.only(top: 35, bottom: 30),
-                              child: Text('Transaksi Terakhir',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w500,
-                                    color: getColorForTypePayment(widget.typeCard)
-                                  ))),
-                          state.response.data?.length != 0
-                              ? listHistory(state.response)
-                              : Text(baseParam.notFoundTransaction,
-                                  style: GoogleFonts.rubik(
-                                      fontSize: 16,
-                                      color: getColorForTypePayment(widget.typeCard)))
-                        ])),
+                        ),
+                        back: Center(
+                          child: Container(
+                          key: ValueKey(1),
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: Container(
+                            width: 700,
+                            height: 280,
+                            decoration: BoxDecoration(
+                              color:Color.fromARGB(255, 235, 227, 227),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color.fromARGB(255, 136, 131, 131),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: Offset(2, 4)
+                                )
+                              ],
+                            image: DecorationImage(
+                              image:getImageForType(widget.typeCard),
+                              fit: BoxFit.fill),
+                            ),
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                top: 190,
+                                bottom: 20,
+                                left: 40,
+                                right: 40),
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                width: 280,
+                                height: 35,
+                                child: SfBarcodeGenerator(
+                                  value:'${widget.data.nokartu}',
+                                  backgroundColor: Colors.white,
+                                  barColor: Colors.black,
+                                  symbology: Code128()
+                                )
+                              ),
+                          ))),
+                        ),
+                      )
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 20, left: 0, right: 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            MaterialButton(
+                              onPressed: () {
+                                navigateToPayment();
+                              },
+                            child: Container(
+                              height: 50,
+                              width: 190,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: getColorForTypePayment(widget.typeCard),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:MainAxisAlignment.center,
+                                children: [
+                                  Image.asset('assets/qr.png'),
+                                  Text('Pembayaran',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 18,
+                                      color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
+                              ),
+                            MaterialButton(
+                              onPressed: () {
+                                navigateToHistoryYear();
+                              },
+                              child: Container(
+                              height: 50,
+                              width: 190,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: getColorForTypeHistory(widget.typeCard)
+                              ),
+                              child: Row(
+                                mainAxisAlignment:MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/history.png',
+                                  ),
+                                  Text(
+                                    'Riwayat',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 18,
+                                      color: Colors.white),
+                                  ),
+                                ],
+                               ),
+                              ),
+                            )
+                          ],
+                        ),
+                        height: 50,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 35, bottom: 30),
+                        child: Text('Transaksi Terakhir',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                            color: getColorForTypePayment(widget.typeCard)
+                          )
+                        )
+                      ),
+                      state.response.data?.length != 0
+                      ? listHistory(state.response)
+                      : Text(baseParam.notFoundTransaction,
+                        style: GoogleFonts.rubik(
+                          fontSize: 16,
+                          color: getColorForTypePayment(widget.typeCard))
+                        )
+                      ]
+                    )
+                  ),
               ],
             );
           }
           if (state is CompanyCardFailure) {
             return ListView(
               children: [
-                Container(
-                    margin: EdgeInsets.only(top: 15, left: 10, right: 10),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          FlipCard(
-                              fill: Fill
-                                  .fillBack, // Fill the back side of the card to make in the same size as the front.
-                              direction: FlipDirection.HORIZONTAL, // default
-                              side: CardSide
-                                  .FRONT, // The side to initially display.
-                              front: Center(
-                                child: Container(
-                                  key: ValueKey(2),
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  child: Container(
-                                    width: 700,
-                                    height: 280,
-                                    decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 235, 227, 227),
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20),
-                                        bottomLeft: Radius.circular(20),
-                                        bottomRight: Radius.circular(20),
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Color.fromARGB(
-                                                255, 136, 131, 131),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                            offset: Offset(2, 4))
-                                      ],
-                                      image: DecorationImage(
-                                          image: getImageForType(widget.typeCard),
-                                          // typeCard(widget.typeCard)
-                                          //     ? AssetImage('assets/rms2.png')
-                                          //     : AssetImage(
-                                          //         'assets/tropikana.png'),
-                                          fit: BoxFit.fill),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          typeCard(widget.typeCard)
-                                              ? CrossAxisAlignment.end
-                                              : CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              top: typeCard(widget.typeCard)
-                                                  ? 160
-                                                  : 130),
-                                          child: typeCard(widget.typeCard)
-                                          ?
-                                          Center(
-                                          child: Text('${balance.toIdr()}',
-                                              style:
-                                                  GoogleFonts.plusJakartaSans(
-                                                      fontSize: 28,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
-                                                      )
-                                                      :
-                                                      Row(
-                                                        children: [
-                                                          SizedBox(
-                                                            width: 20,
-                                                          ),
-                                                          Text('${balance.toIdr()}',
-                                                          style:
-                                                          GoogleFonts.plusJakartaSans(
-                                                          fontSize: 28,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.white)),
-                                                        ],
-                                                      ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              bottom: 20, left: 20),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text('${widget.data.nama}',
-                                                  style: GoogleFonts
-                                                      .plusJakartaSans(
-                                                          fontSize: 16,
-                                                          color: Colors.white)),
-                                              Text('${widget.data.nokartu}',
-                                                  style: GoogleFonts
-                                                      .plusJakartaSans(
-                                                          fontSize: 16,
-                                                          color: Colors.white)),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+              Container(
+                margin: EdgeInsets.only(top: 15, left: 10, right: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    FlipCard(
+                      fill: Fill.fillBack, 
+                      direction: FlipDirection.HORIZONTAL, 
+                      side: CardSide.FRONT, 
+                      front: Center(
+                        child: Container(
+                          key: ValueKey(2),
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: Container(
+                            width: 700,
+                            height: 280,
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 235, 227, 227),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color.fromARGB(255, 136, 131, 131),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: Offset(2, 4)
+                                )
+                              ],
+                              image: DecorationImage(
+                                image: getImageForType(widget.typeCard),
+                                 fit: BoxFit.fill
+                                ),
+                            ),
+                            child: Column(
+                              mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment:typeCard(widget.typeCard)
+                              ? CrossAxisAlignment.end
+                              : CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                margin: EdgeInsets.only(
+                                  top: typeCard(widget.typeCard)
+                                  ? 160
+                                  : 130
+                                ),
+                                child: typeCard(widget.typeCard)
+                                ?
+                                Center(
+                                  child: Text('${balance.toIdr()}',
+                                    style:
+                                    GoogleFonts.plusJakartaSans(
+                                      fontSize: 28,
+                                      fontWeight:FontWeight.bold,
+                                      color: Colors.white
+                                    )
                                   ),
+                                )
+                                :
+                                Row(
+                                  children: [
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text('${balance.toIdr()}',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 28,
+                                       fontWeight:FontWeight.bold,
+                                       color: Colors.white
+                                    )
+                                  ),
+                                ],),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                  bottom: 20, left: 20),
+                                  child: Column(
+                                    mainAxisAlignment:MainAxisAlignment.start,
+                                    crossAxisAlignment:CrossAxisAlignment.start,
+                                    children: [
+                                      Text('${widget.data.nama}',
+                                        style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 16,
+                                          color: Colors.white
+                                        )
+                                      ),
+                                      Text('${widget.data.nokartu}',
+                                        style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 16,
+                                          color: Colors.white
+                                        )
+                                      ),
+                                    ],
+                                  ),
+                                  ),
+                                ],
                                 ),
                               ),
-                              back: Center(
-                                child: Container(
-                                  key: ValueKey(1),
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  child: Container(
-                                      width: 700,
-                                      height: 280,
-                                      decoration: BoxDecoration(
-                                        color:
-                                            Color.fromARGB(255, 235, 227, 227),
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
-                                          bottomLeft: Radius.circular(20),
-                                          bottomRight: Radius.circular(20),
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Color.fromARGB(
-                                                  255, 136, 131, 131),
-                                              spreadRadius: 2,
-                                              blurRadius: 5,
-                                              offset: Offset(2, 4))
-                                        ],
-                                        image: DecorationImage(
-                                            image: getImageForType(widget.typeCard),
-                                            // typeCard(widget.typeCard)
-                                            //     ? AssetImage('assets/rms2.png')
-                                            //     : AssetImage(
-                                            //         'assets/tropikana.png'),
-                                            fit: BoxFit.fill),
-                                      ),
-                                      child: Container(
-                                          margin: EdgeInsets.only(
-                                              top: 190,
-                                              bottom: 20,
-                                              left: 40,
-                                              right: 40),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              debugPrint('${12345}');
-                                            },
-                                            child: Container(
-                                                width: 280,
-                                                height: 35,
-                                                child: SfBarcodeGenerator(
-                                                    value:
-                                                        '${widget.data.nokartu}',
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    barColor: Colors.black,
-                                                    symbology: Code128())),
-                                          ))),
+                            ),
+                          ),
+                      back: Center(
+                        child: Container(
+                        key: ValueKey(1),
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: Container(
+                            width: 700,
+                            height: 280,
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 235, 227, 227),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                color: Color.fromARGB(255, 136, 131, 131),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: Offset(2, 4)
+                              )
+                            ],
+                            image: DecorationImage(
+                              image: getImageForType(widget.typeCard),
+                              fit: BoxFit.fill),
+                            ),
+                            child: Container(
+                            margin: EdgeInsets.only(
+                              top: 190,
+                              bottom: 20,
+                              left: 40,
+                              right: 40
+                              ),
+                             child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              width: 280,
+                              height: 35,
+                              child: SfBarcodeGenerator(
+                                value:'${widget.data.nokartu}',
+                                backgroundColor:Colors.white,
+                                barColor: Colors.black,
+                                 symbology: Code128()
+                                 )
                                 ),
-                              )),
-                          Container(
-                            margin: EdgeInsets.only(top: 20, left: 0, right: 0),
+                               ))),
+                            ),
+                          )
+                          ),
+                    Container(
+                      margin: EdgeInsets.only(top: 20, left: 0, right: 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          MaterialButton(
+                            onPressed: () {
+                              navigateToPayment();
+                            },
+                            child: Container(
+                            height: 50,
+                            width: 190,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: getColorForTypePayment(widget.typeCard)
+                            ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                MaterialButton(
-                                  onPressed: () {
-                                    navigateToPayment();
-                                  },
-                                  child: Container(
-                                    height: 50,
-                                    width: 190,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: getColorForTypePayment(widget.typeCard)
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset('assets/qr.png'),
-                                        Text(
-                                          'Pembayaran',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 18,
-                                              color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
+                            mainAxisAlignment:MainAxisAlignment.center,
+                            children: [
+                              Image.asset('assets/qr.png'),
+                              Text('Pembayaran',
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 18,
+                                  color: Colors.white),
                                   ),
+                                ],
                                 ),
-                                MaterialButton(
-                                  onPressed: () {
-                                    navigateToHistoryYear();
-                                  },
-                                  child: Container(
-                                    height: 50,
-                                    width: 190,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: getColorForTypeHistory(widget.typeCard)
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          'assets/history.png',
-                                        ),
-                                        Text(
-                                          'Riwayat',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 18,
-                                              color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                              ),
+                            ),
+                          MaterialButton(
+                            onPressed: () {
+                              navigateToHistoryYear();
+                            },
+                            child: Container(
+                              height: 50,
+                              width: 190,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: getColorForTypeHistory(widget.typeCard)
+                              ),
+                              child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/history.png',),
+                                Text('Riwayat',
+                                  style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 18,
+                                   color: Colors.white),
                                 ),
                               ],
+                              ),
                             ),
-                            height: 50,
-                            // color: Colors.black,
                           ),
-                          Padding(
-                              padding: EdgeInsets.only(top: 35, bottom: 30),
-                              child: Text('Transaksi Terakhir',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w500,
-                                    color: getColorForTypePayment(widget.typeCard)
-                                  ))),
-                          Container(
-                            // color: Colors.amber,
-                            margin: EdgeInsets.only(top: 150),
-                            child: Text(baseParam.notFoundTransaction,
-                                style: GoogleFonts.rubik(
-                                    fontSize: 18,
-                                    color: getColorForTypePayment(widget.typeCard))),
-                          )
-                        ])),
+                        ],
+                        ),
+                      height: 50,
+                    ),
+                    Padding(
+                    padding: EdgeInsets.only(top: 35, bottom: 30),
+                    child: Text('Transaksi Terakhir',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                         color: getColorForTypePayment(widget.typeCard)
+                      ))),
+                    Container(
+                    margin: EdgeInsets.only(top: 150),
+                    child: Text(baseParam.notFoundTransaction,
+                     style: GoogleFonts.rubik(
+                      fontSize: 18,
+                      color: getColorForTypePayment(widget.typeCard))),
+                    )
+                 ])),
               ],
             );
           }
@@ -730,28 +696,6 @@ String typeTransaction(String type) {
   } else {
     description = 'Kartu';
   }
-  // if (type == 'P') {
-  //   description = baseParam.typeP;
-  // }
-  // if (type == 'T') {
-  //   description = baseParam.typeA;
-  // }
-  // if (type == 'C') {
-  //   description = baseParam.typeP;
-  // }
-  // if (type == 'S') {
-  //   description = baseParam.typeA;
-  // }
-  // if (type == 'B') {
-  //   description = baseParam.typeP;
-  // }
-  // if (type == 'J') {
-  //   description = baseParam.typeA;
-  // }
-  // if (type == 'V') {
-  //   description = baseParam.typeP;
-  // }
-
   return description;
 }
 
@@ -802,8 +746,6 @@ Color getColorForTypeHistory(String type) {
       return Colors.grey; // Warna default jika type tidak sesuai
   }
 }
-
-
 
 Color getColorForType2(String type) { // untuk warna container
   switch (type) {

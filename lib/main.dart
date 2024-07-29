@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
@@ -52,6 +53,7 @@ void main() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   app_name = packageInfo.appName;
   String packageName = packageInfo.packageName;
+  registerAppServices(packageName);
   versi = packageInfo.version;
   String buildNumber = packageInfo.buildNumber;
   await NotificationPermissions.requestNotificationPermissions;
@@ -63,22 +65,19 @@ void main() async {
   });
   await Firebase.initializeApp();
   await FirebaseApiNew().initNotification();
-  registerAppServices(packageName);
+  
   initPlatformState();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  // String formattedDate = '2024-03-04';
   UserData userData = UserData();
   await userData.getPref();
 
   var waktuLoginOffline = prefs.getString("waktuLoginOffline");
   final lastLogin = await SharedPref.getLastLogin();
-  final deviceId = await SharedPref.getDeviceId();
+  final deviceId = await SharedPref.getToken();
   DateTime dateTime = DateTime.parse(lastLogin ?? '${formattedDate}');
   final sevenDays = DateFormat('yyyy-MM-dd').format(dateTime.add(const Duration(days: 7)));
 
-  debugPrint('last login : ${dateTime}');
-  debugPrint('seven days logout : ${sevenDays}');
   if (formattedDate == sevenDays || DateTime.now().isAfter(dateTime.add(const Duration(days: 7)))) {
     await SharedPref.clearLastLogin();
     await SharedPref.clearUserId();
@@ -89,42 +88,32 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((value) => runApp(
-      // lastLogin == formattedDate ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
-      lastLogin != null ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
+    // lastLogin == formattedDate ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
+    lastLogin != null ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
 }
 
 Future<void> registerAppServices(String packageName) async {
   final appUtil = AppUtils();
   appUtil.initNetwork();
   final appServices = AppServices(GetIt.I.get<Dio>());
-
-  // final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_prod}' : '${basePath.base_url_dev}';
-
-  final url = '${basePath.base_url_dev}';
+  final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_dev}' : '${basePath.base_url_dev}';
   await appServices.registerAppServices(url);
+  // final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_prod}' : '${basePath.base_url_dev}';
 }
-
-void firebaseInit() async {}
 
 Future<void> initPlatformState() async {
   DeviceInfoPlugin devicePlugin = DeviceInfoPlugin();
   AndroidDeviceInfo info = await devicePlugin.androidInfo;
   String nativeId;
-
   try {
     nativeId = await _nativeIdPlugin.getId() ?? 'Unknown NATIVE_ID';
   } on PlatformException {
     nativeId = 'Failed to get native id.';
   }
-
-  SharedPref.setDeviceId('${nativeId}${info.device}');
   SharedPref.setDeviceName('${info.brand}');
-  debugPrint('device id ${nativeId}${info.device}');
 }
-
 class HomeMainApp extends StatelessWidget {
   const HomeMainApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -155,23 +144,22 @@ class SplashHomeMainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-
     return MaterialApp(
-        builder: (context, child) => ResponsiveWrapper.builder(
-              child,
-              maxWidth: 1200,
-              minWidth: 480,
-              defaultScale: true,
-              breakpoints: [
-                ResponsiveBreakpoint.autoScale(600, name: PHONE),
-                ResponsiveBreakpoint.autoScale(800, name: TABLET),
-                ResponsiveBreakpoint.autoScale(1200, name: DESKTOP),
-              ],
-            ),
-        navigatorKey: navigatorKey,
-        title: '${app_name}',
-        debugShowCheckedModeBanner: false,
-        routes: {RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()), RamayanaLogin.route: ((context) => const RamayanaLogin())},
-        home: loginOffline == formattedDate ? RamayanaVoid(isOffline: true) : SplashScreenRamayana());
+      builder: (context, child) => ResponsiveWrapper.builder(
+        child,
+        maxWidth: 1200,
+        minWidth: 480,
+        defaultScale: true,
+        breakpoints: [
+          ResponsiveBreakpoint.autoScale(600, name: PHONE),
+          ResponsiveBreakpoint.autoScale(800, name: TABLET),
+          ResponsiveBreakpoint.autoScale(1200, name: DESKTOP),
+        ],
+      ),
+      navigatorKey: navigatorKey,
+      title: '${app_name}',
+      debugShowCheckedModeBanner: false,
+      routes: {RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()), RamayanaLogin.route: ((context) => const RamayanaLogin())},
+      home: loginOffline == formattedDate ? RamayanaVoid(isOffline: true) : SplashScreenRamayana());
   }
 }

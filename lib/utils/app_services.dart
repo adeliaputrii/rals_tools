@@ -23,7 +23,7 @@ class AppServices {
     dio.options.receiveTimeout = Duration(milliseconds: 35000);
     dio.options.connectTimeout = Duration(milliseconds: 30000);
     dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true, requestHeader: true, error: true));
-    dio.interceptors.add(DioInterceptor());
+    // dio.interceptors.add(DioInterceptor());
 
     if (!get.isRegistered<LoginService>()) {
       get.registerFactory(() => LoginService(dio, baseUrl: url));

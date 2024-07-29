@@ -8,7 +8,6 @@ class RamayanaRiwayatIDCashBulan extends StatefulWidget {
   @override
   State<RamayanaRiwayatIDCashBulan> createState() => _RamayanaRiwayatIDCashBulanState();
 }
-
 class _RamayanaRiwayatIDCashBulanState extends State<RamayanaRiwayatIDCashBulan> {
   fetchDataBulan({
     required String nokartu,
@@ -19,9 +18,7 @@ class _RamayanaRiwayatIDCashBulanState extends State<RamayanaRiwayatIDCashBulan>
     ApprovalIdcashCustomerTanggal.approvalidcashtanggal.clear();
     final responseku = await http.post(Uri.parse('${tipeurl}v1/membercards/tbl_trxsaldokaryawanDD'),
         body: {'nokartu': '${widget.noMember}', 'tahun': '${widget.year}', 'bulan': '${widget.month}'});
-
     var data = jsonDecode(responseku.body);
-
     if (data['status'] == 200) {
       print("API Success oooo");
       print(data);
@@ -29,10 +26,6 @@ class _RamayanaRiwayatIDCashBulanState extends State<RamayanaRiwayatIDCashBulan>
       for (int i = 0; i < count; i++) {
         ApprovalIdcashCustomerTanggal.approvalidcashtanggal.add(ApprovalIdcashCustomerTanggal.fromjson(data['data'][i]));
       }
-      // ApprovalIdcashCustomerTanggal.approvalidcashtanggal.forEach((element) {
-      //       profileMap[element.tanggal] = element;
-      //        ApprovalIdcashCustomerTanggal.approvalidcashtanggal = profileMap.values.toList();
-      //      });
       print('check length ${ApprovalIdcashCustomerTanggal.approvalidcashtanggal.length}');
       print(data['data'].toString());
       if (ApprovalIdcashCustomerTanggal.approvalidcashtanggal.length == 0) {
@@ -40,21 +33,19 @@ class _RamayanaRiwayatIDCashBulanState extends State<RamayanaRiwayatIDCashBulan>
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-
-          // shadowColor: Colors.black,
           titlePadding: EdgeInsets.all(0),
           title: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
               ),
-              height: 170,
-              width: 2000,
-              child: Image.asset(
-                'assets/omaigat.png',
-              )),
+            ),
+            height: 170,
+            width: 2000,
+            child: Image.asset(
+              'assets/omaigat.png',
+            )),
           content: Container(
             margin: EdgeInsets.only(bottom: 10),
             height: 30,
@@ -73,7 +64,6 @@ class _RamayanaRiwayatIDCashBulanState extends State<RamayanaRiwayatIDCashBulan>
     } else {
       print('NO DATA');
     }
-
     setState(() {});
   }
 
@@ -111,7 +101,10 @@ class _RamayanaRiwayatIDCashBulanState extends State<RamayanaRiwayatIDCashBulan>
   @override
   void initState() {
     super.initState();
-    fetchDataBulan(nokartu: '${widget.noMember}', bulan: '${widget.month}', tahun: '${widget.year}');
+    fetchDataBulan(
+      nokartu: '${widget.noMember}', 
+      bulan: '${widget.month}', 
+      tahun: '${widget.year}');
   }
 
   @override
@@ -130,14 +123,23 @@ class _RamayanaRiwayatIDCashBulanState extends State<RamayanaRiwayatIDCashBulan>
           ),
         ),
         title: Container(
-            margin: EdgeInsets.only(left: 70, right: 70),
-            child: Text('RIWAYAT TRANSAKSI',
-                style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 23, color: Colors.white, fontWeight: FontWeight.w500)))),
+          margin: EdgeInsets.only(left: 70, right: 70),
+          child: Text('RIWAYAT TRANSAKSI',
+            style: GoogleFonts.plusJakartaSans(
+              textStyle: TextStyle(
+                fontSize: 23, 
+                color: Colors.white, 
+                fontWeight: FontWeight.w500)
+              )
+            )
+          ),
         backgroundColor: baseColors.primaryColor,
         elevation: 0,
         toolbarHeight: 80,
       ),
-      body: Stack(fit: StackFit.loose, children: [
+      body: Stack(
+        fit: StackFit.loose, 
+        children: [
         Container(
           color: baseColors.primaryColor,
         ),
@@ -222,14 +224,23 @@ class _RamayanaRiwayatIDCashBulanState extends State<RamayanaRiwayatIDCashBulan>
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: ListTile(
-                      //                  leading: CircleAvatar(
-                      // backgroundColor: Color.fromARGB(255, 255, 17, 17),
-                      // child: Icon(Icons.attach_money_outlined, color: Colors.white, size: 25,),
-                      //                 ),
-                      title: Text('${e.tanggal}', style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 16, color: Colors.black))),
-                      subtitle: Text('${e.no_struk}', style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 16, color: Colors.black))),
+                      title: Text('${e.tanggal}', 
+                      style: GoogleFonts.plusJakartaSans(
+                        textStyle: TextStyle(
+                          fontSize: 16, 
+                          color: Colors.black)
+                        )),
+                      subtitle: Text('${e.no_struk}', 
+                      style: GoogleFonts.plusJakartaSans(
+                        textStyle: TextStyle(
+                          fontSize: 16, 
+                          color: Colors.black))),
                       trailing:
-                          Text('Rp.${kondisiSelisih()}', style: GoogleFonts.plusJakartaSans(textStyle: TextStyle(fontSize: 16, color: Colors.black))),
+                        Text('Rp.${kondisiSelisih()}', 
+                        style: GoogleFonts.plusJakartaSans(
+                          textStyle: TextStyle(
+                            fontSize: 16, 
+                            color: Colors.black))),
                     ),
                   ),
                 );

@@ -19,20 +19,30 @@ class _MyActivityService implements MyActivityService {
   String? baseUrl;
 
   @override
-  Future<GetProjectResponse> getProject() async {
+  Future<GetProjectResponse> getProject(
+    String contentType,
+    String accept,
+    String token,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<GetProjectResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/activity/list-project',
+              'api/v1/activity/list-project',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -46,20 +56,30 @@ class _MyActivityService implements MyActivityService {
   }
 
   @override
-  Future<GetTaskResponse> getTaskUser() async {
+  Future<GetTaskResponse> getTaskUser(
+    String contentType,
+    String accept,
+    String token,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<GetTaskResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/activity/task/get-task',
+              'api/v1/activity/task/get-task',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -73,20 +93,31 @@ class _MyActivityService implements MyActivityService {
   }
 
   @override
-  Future<MyActivityTaskResponse> getTaskById(String projectId) async {
+  Future<MyActivityTaskResponse> getTaskById(
+    String contentType,
+    String accept,
+    String token,
+    String projectId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<MyActivityTaskResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/activity/list-task?project_id=${projectId}',
+              'api/v1/activity/list-task?project_id=${projectId}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -101,10 +132,19 @@ class _MyActivityService implements MyActivityService {
 
   @override
   Future<MyActivityResponse> submitActivity(
-      MyActivityBody myActivityBody) async {
+    String contentType,
+    String accept,
+    String token,
+    MyActivityBody myActivityBody,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(myActivityBody.toJson());
     final _result = await _dio
@@ -112,10 +152,11 @@ class _MyActivityService implements MyActivityService {
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/activity/create_daily_activity',
+              'api/v1/activity/create_daily_activity',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -130,10 +171,19 @@ class _MyActivityService implements MyActivityService {
 
   @override
   Future<MyActivityEditResponse> editActivity(
-      MyActivityEditBody myActivityEditBody) async {
+    String contentType,
+    String accept,
+    String token,
+    MyActivityEditBody myActivityEditBody,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(myActivityEditBody.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -141,10 +191,11 @@ class _MyActivityService implements MyActivityService {
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/activity/clock_daily_activity',
+              'api/v1/activity/clock_daily_activity',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -159,10 +210,19 @@ class _MyActivityService implements MyActivityService {
 
   @override
   Future<MyActivityUpdateResponse> updateActivity(
-      MyActivityUpdateBody myActivityUpdateBody) async {
+    String contentType,
+    String accept,
+    String token,
+    MyActivityUpdateBody myActivityUpdateBody,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(myActivityUpdateBody.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -170,10 +230,11 @@ class _MyActivityService implements MyActivityService {
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/activity/updateDailyActivity',
+              'api/v1/activity/updateDailyActivity',
               queryParameters: queryParameters,
               data: _data,
             )

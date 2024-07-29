@@ -19,20 +19,31 @@ class _CompanyCardService implements CompanyCardService {
   String? baseUrl;
 
   @override
-  Future<CompanyCardResponse> getDataMember(String noKartu) async {
+  Future<CompanyCardResponse> getDataMember(
+    String contentType,
+    String accept,
+    String token,
+    String noKartu,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = noKartu;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<CompanyCardResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/companycard/tbl_companyCard',
+              'api/v1/companycard/tbl_companyCard',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -46,20 +57,31 @@ class _CompanyCardService implements CompanyCardService {
   }
 
   @override
-  Future<CompanyCardDetailResponse> getDetailCard(String noKartu) async {
+  Future<CompanyCardDetailResponse> getDetailCard(
+    String contentType,
+    String accept,
+    String token,
+    String noKartu,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = noKartu;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<CompanyCardDetailResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/companycard/detail_companyCard',
+              'api/v1/companycard/detail_companyCard',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -74,10 +96,19 @@ class _CompanyCardService implements CompanyCardService {
 
   @override
   Future<CompanyCardHistoryResponse> getHistoryMember(
-      CompanyCardHistoryBody body) async {
+    String contentType,
+    String accept,
+    String token,
+    CompanyCardHistoryBody body,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -85,10 +116,11 @@ class _CompanyCardService implements CompanyCardService {
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/companycard/history_companyCard',
+              'api/v1/companycard/history_companyCard',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -103,10 +135,19 @@ class _CompanyCardService implements CompanyCardService {
 
   @override
   Future<CompanyCardHistoryYearResponse> getHistoryMemberYear(
-      CompanyCardHistoryBody body) async {
+    String contentType,
+    String accept,
+    String token,
+    CompanyCardHistoryBody body,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -114,10 +155,11 @@ class _CompanyCardService implements CompanyCardService {
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/companycard/history_companyCardYY',
+              'api/v1/companycard/history_companyCardYY',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -132,10 +174,19 @@ class _CompanyCardService implements CompanyCardService {
 
   @override
   Future<CompanyCardHistoryMonthResponse> getHistoryMemberMonth(
-      CompanyCardHistoryBody body) async {
+    String contentType,
+    String accept,
+    String token,
+    CompanyCardHistoryBody body,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -143,10 +194,11 @@ class _CompanyCardService implements CompanyCardService {
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/companycard/history_companyCardMM',
+              'api/v1/companycard/history_companyCardMM',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -161,10 +213,19 @@ class _CompanyCardService implements CompanyCardService {
 
   @override
   Future<CompanyCardHistoryResponse> getHistoryMemberDay(
-      CompanyCardHistoryBody body) async {
+    String contentType,
+    String accept,
+    String token,
+    CompanyCardHistoryBody body,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -172,10 +233,11 @@ class _CompanyCardService implements CompanyCardService {
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/companycard/history_companyCardDD',
+              'api/v1/companycard/history_companyCardDD',
               queryParameters: queryParameters,
               data: _data,
             )

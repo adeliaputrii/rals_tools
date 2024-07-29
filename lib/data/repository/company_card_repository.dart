@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:myactivity_project/base/base_paths.dart' as basePath;
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
@@ -8,13 +8,13 @@ import '../model/repositories_response.dart';
 import '../service/company_card_service.dart';
 
 class CompanyCardRepositories {
-  Future<RepositoriesResponse?> getDataMember(String idUser) async {
+  Future<RepositoriesResponse?> getDataMember(String token, String idUser) async {
     final services = GetIt.I.get<CompanyCardService>();
 
     late RepositoriesResponse response;
 
     try {
-      await services.getDataMember(idUser).then((value) {
+      await services.getDataMember(basePath.contentType, basePath.accept, token, idUser).then((value) {
         debugPrint('success repo');
         response = RepositoriesResponse(
             isSuccess: true, statusCode: value.status, dataResponse: value);
@@ -41,13 +41,13 @@ class CompanyCardRepositories {
     return response;
   }
 
-  Future<RepositoriesResponse?> getDetailCard(String idUser) async {
+  Future<RepositoriesResponse?> getDetailCard(String token, String idUser) async {
     final services = GetIt.I.get<CompanyCardService>();
 
     late RepositoriesResponse response;
 
     try {
-      await services.getDetailCard(idUser).then((value) {
+      await services.getDetailCard(basePath.contentType, basePath.accept, token, idUser).then((value) {
         debugPrint('success repo');
         response = RepositoriesResponse(
             isSuccess: true, statusCode: value.status, dataResponse: value);
@@ -75,7 +75,7 @@ class CompanyCardRepositories {
   }
 
   Future<RepositoriesResponse?> getHistory(
-      CompanyCardHistoryBody body, int typeHistory) async {
+      String token, CompanyCardHistoryBody body, int typeHistory) async {
     final services = GetIt.I.get<CompanyCardService>();
 
     late RepositoriesResponse response;
@@ -83,7 +83,7 @@ class CompanyCardRepositories {
     try {
       if (typeHistory == 1) {
         //GET HISTORY LATEST
-        await services.getHistoryMember(body).then((value) {
+        await services.getHistoryMember(basePath.contentType, basePath.accept, token, body).then((value) {
           debugPrint('success repo');
           response = RepositoriesResponse(
               isSuccess: true, statusCode: value.status, dataResponse: value);
@@ -91,7 +91,7 @@ class CompanyCardRepositories {
       }
       if (typeHistory == 2) {
         //GET HISTORY YEAR
-        await services.getHistoryMemberYear(body).then((value) {
+        await services.getHistoryMemberYear(basePath.contentType, basePath.accept, token, body).then((value) {
           debugPrint('success repo');
           response = RepositoriesResponse(
               isSuccess: true, statusCode: value.status, dataResponse: value);
@@ -99,7 +99,7 @@ class CompanyCardRepositories {
       }
       if (typeHistory == 3) {
         //GET HISTORY MONTH
-        await services.getHistoryMemberMonth(body).then((value) {
+        await services.getHistoryMemberMonth(basePath.contentType, basePath.accept, token, body).then((value) {
           debugPrint('success repo');
           response = RepositoriesResponse(
               isSuccess: true, statusCode: value.status, dataResponse: value);
@@ -107,7 +107,7 @@ class CompanyCardRepositories {
       }
       if (typeHistory == 4) {
         //GET HISTORY DAYS
-        await services.getHistoryMemberDay(body).then((value) {
+        await services.getHistoryMemberDay(basePath.contentType, basePath.accept, token,body).then((value) {
           debugPrint('success repo');
           response = RepositoriesResponse(
               isSuccess: true, statusCode: value.status, dataResponse: value);

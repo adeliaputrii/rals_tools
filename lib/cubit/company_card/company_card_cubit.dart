@@ -21,7 +21,7 @@ class CompanyCardCubit extends Cubit<CompanyCardState> {
   final CompanyCardRepositories repositories = CompanyCardRepositories();
   final IDCashRepositories idCashRepositories = IDCashRepositories();
 
-  void getDataMember(String noKartu) async {
+  void getDataMember(String token, String noKartu) async {
     emit(CompanyCardLoading());
 
     Map<String, dynamic> requestData = {
@@ -29,7 +29,7 @@ class CompanyCardCubit extends Cubit<CompanyCardState> {
     };
     String requestBody = json.encode(requestData);
 
-    await repositories.getDataMember(requestBody).then((value) {
+    await repositories.getDataMember(token, requestBody).then((value) {
       if (value != null) {
         if (value.isSuccess && value.dataResponse is CompanyCardResponse) {
           final res = value.dataResponse as CompanyCardResponse;
@@ -45,7 +45,7 @@ class CompanyCardCubit extends Cubit<CompanyCardState> {
     });
   }
 
-  void getDetailCard(String noKartu) async {
+  void getDetailCard(String token, String noKartu) async {
     emit(CompanyCardLoading());
 
     Map<String, dynamic> requestData = {
@@ -53,7 +53,7 @@ class CompanyCardCubit extends Cubit<CompanyCardState> {
     };
     String requestBody = json.encode(requestData);
 
-    await repositories.getDetailCard(requestBody).then((value) {
+    await repositories.getDetailCard(token, requestBody).then((value) {
       if (value != null) {
         if (value.isSuccess &&
             value.dataResponse is CompanyCardDetailResponse) {
@@ -70,10 +70,10 @@ class CompanyCardCubit extends Cubit<CompanyCardState> {
     });
   }
 
-  void getHistoryMember(String noKartu) async {
+  void getHistoryMember(String token, String noKartu) async {
     emit(CompanyCardLoading());
     final body = CompanyCardHistoryBody(nokartu: noKartu);
-    await repositories.getHistory(body, 1).then((value) {
+    await repositories.getHistory(token, body, 1).then((value) {
       if (value != null) {
         if (value.isSuccess &&
             value.dataResponse is CompanyCardHistoryResponse) {
@@ -90,10 +90,10 @@ class CompanyCardCubit extends Cubit<CompanyCardState> {
     });
   }
 
-  void getHistoryMemberYear(String noKartu) async {
+  void getHistoryMemberYear(String token, String noKartu) async {
     emit(CompanyCardLoading());
     final body = CompanyCardHistoryBody(nokartu: noKartu);
-    await repositories.getHistory(body, 2).then((value) {
+    await repositories.getHistory(token, body, 2).then((value) {
       if (value != null) {
         if (value.isSuccess &&
             value.dataResponse is CompanyCardHistoryYearResponse) {
@@ -110,11 +110,11 @@ class CompanyCardCubit extends Cubit<CompanyCardState> {
     });
   }
 
-  void getHistoryMemberMonth(String noKartu, String year) async {
+  void getHistoryMemberMonth(String token, String noKartu, String year) async {
     emit(CompanyCardLoading());
     final body = CompanyCardHistoryBody(nokartu: noKartu, year: year);
 
-    await repositories.getHistory(body, 3).then((value) {
+    await repositories.getHistory(token, body, 3).then((value) {
       if (value != null) {
         if (value.isSuccess &&
             value.dataResponse is CompanyCardHistoryMonthResponse) {
@@ -131,12 +131,12 @@ class CompanyCardCubit extends Cubit<CompanyCardState> {
     });
   }
 
-  void getHistoryMemberDays(String noKartu, String year, String month) async {
+  void getHistoryMemberDays(String token, String noKartu, String year, String month) async {
     emit(CompanyCardLoading());
     final body =
         CompanyCardHistoryBody(nokartu: noKartu, year: year, month: month);
 
-    await repositories.getHistory(body, 4).then((value) {
+    await repositories.getHistory(token, body, 4).then((value) {
       if (value != null) {
         if (value.isSuccess &&
             value.dataResponse is CompanyCardHistoryResponse) {

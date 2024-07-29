@@ -18,24 +18,50 @@ abstract class CompanyCardService {
   factory CompanyCardService(Dio dio, {String baseUrl}) = _CompanyCardService;
 
   @POST(basePath.api_get_company_card)
-  Future<CompanyCardResponse> getDataMember(@Body() String noKartu);
+  Future<CompanyCardResponse> getDataMember(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Body() String noKartu
+  );
 
   @POST(basePath.api_get_company_card_detail)
-  Future<CompanyCardDetailResponse> getDetailCard(@Body() String noKartu);
+  Future<CompanyCardDetailResponse> getDetailCard(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Body() String noKartu
+  );
 
   @POST(basePath.api_get_company_card_history)
   Future<CompanyCardHistoryResponse> getHistoryMember(
-      @Body() CompanyCardHistoryBody body);
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Body() CompanyCardHistoryBody body
+  );
 
   @POST(basePath.api_get_company_card_history_year)
   Future<CompanyCardHistoryYearResponse> getHistoryMemberYear(
-      @Body() CompanyCardHistoryBody body);
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Body() CompanyCardHistoryBody body
+  );
 
   @POST(basePath.api_get_company_card_history_month)
   Future<CompanyCardHistoryMonthResponse> getHistoryMemberMonth(
-      @Body() CompanyCardHistoryBody body);
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Body() CompanyCardHistoryBody body)
+  ;
 
   @POST(basePath.api_get_company_card_history_day)
   Future<CompanyCardHistoryResponse> getHistoryMemberDay(
-      @Body() CompanyCardHistoryBody body);
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Body() CompanyCardHistoryBody body
+  );
 }

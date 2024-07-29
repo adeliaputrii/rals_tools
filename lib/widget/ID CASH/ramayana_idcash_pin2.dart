@@ -13,35 +13,17 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
 
   UserData userData = UserData();
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  String _udid = 'Unknown';
   bool _passwordControllerVisible = false;
   Dio dio = Dio();
   bool isLoading = false;
   late LoginCubit loginCubit;
   KeyboardUtils keyboardUtils = KeyboardUtils();
-  final apiUrl = '${tipeurl}${basePath.api_login}';
 
   @override
   void initState() {
     super.initState();
     loginCubit = context.read<LoginCubit>();
-    initPlatformState();
     _passwordControllerVisible = false;
-  }
-
-  Future<void> initPlatformState() async {
-    String udid;
-    try {
-      udid = await FlutterUdid.consistentUdid;
-    } on PlatformException {
-      udid = 'Failed to get UDID.';
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      _udid = udid;
-    });
   }
 
   snackBar(String? message) {
@@ -54,24 +36,18 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
   }
 
   loginPressed() async {
-    print(versi);
-    print('daaaaaaamn 23111');
-    print(tipeurl);
+    String? deviceId = await SharedPref.getDeviceId();
     keyboardUtils.dissmissKeyboard(context);
-    // // try {
     if (passwordController.text.isNotEmpty) {
       UserData userData = UserData();
       SharedPreferences pref = await SharedPreferences.getInstance();
       AndroidDeviceInfo info = await deviceInfo.androidInfo;
       var username = userData.getUsername7();
-      final deviceId = await SharedPref.getDeviceId();
-      final phoneSerialNum = pref.getString('serialImei');
       final body = LoginBody(
-          username: "${username}",
-          password: passwordController.text,
-          deviceId: "${deviceId}",
-          versi: versi);
-      print(username);
+        username: "${username}",
+        password: passwordController.text,
+        deviceId: "${deviceId}",
+        versi: versi);
       loginCubit.login(loginBody: body);
     }
   }
@@ -90,21 +66,16 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
               isLoading = false;
             });
             final response = state.response;
-            loginCubit.createLog(baseParam.logInfoIdcashPage,
-                baseParam.logInfoLoginSucc, apiUrl);
-            userData.setUser(data: response.toJson());
             snackBar("Success!!!");
             Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      RamayanaBarcode(dataMember: widget.dataMember),
-                ),
-                (Route<dynamic> route) => false);
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                RamayanaBarcode(dataMember: widget.dataMember),
+              ),
+              (Route<dynamic> route) => false);
           }
           if (state is LoginFailure) {
-            loginCubit.createLog(baseParam.logInfoIdcashPage,
-                '${baseParam.logInfoLoginFail}${state.message}', apiUrl);
             setState(() {
               isLoading = false;
             });
@@ -125,30 +96,31 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 20, top: 50, right: 20),
-                  // color: Colors.green,
                   height: 50,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pushAndRemoveUntil(context,
-                              MaterialPageRoute(builder: (context) {
-                            return RamayanaIDCash();
-                          }), (route) => false);
-                        },
-                        icon: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
-                          size: 25,
-                        ),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(context,
+                          MaterialPageRoute(builder: (context) {
+                          return RamayanaIDCash();
+                        }), (route) => false);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                        size: 25,
+                      ),
                       ),
                       Text('ID CASH',
-                          style: GoogleFonts.plusJakartaSans(
-                              textStyle: TextStyle(
-                                  fontSize: 23,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500))),
+                        style: GoogleFonts.plusJakartaSans(
+                          textStyle: TextStyle(
+                          fontSize: 23,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500)
+                        )
+                      ),
                       IconButton(
                         onPressed: () {},
                         icon: Icon(
@@ -164,17 +136,14 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                   clipper: BottomClipperIdCash(),
                   child: Container(
                     margin: EdgeInsets.only(left: 20, top: 50, right: 20),
-                    // color: Colors.green,
                     height: 320,
                     child: Center(
-                        child: Image.asset(
+                      child: Image.asset(
                       'assets/idcashpin_password_enter.png',
                     )),
                   ),
                 ),
                 Container(
-                  // color: Colors.amber,
-                  // height: 600,
                   margin: EdgeInsets.only(
                       left: 20, top: 350, right: 20, bottom: 50),
                   child: Column(
@@ -183,133 +152,115 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color.fromARGB(255, 192, 192, 192),
-                                blurRadius: 10,
-                                offset: Offset(4, 8),
-                              )
-                            ]),
-
-                        // margin: EdgeInsets.only(left: 20, top: 350, right: 20),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromARGB(255, 192, 192, 192),
+                              blurRadius: 10,
+                              offset: Offset(4, 8),
+                            )
+                          ]),
                         height: 400,
                         child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text("Masukkan Password",
-                                  style: GoogleFonts.plusJakartaSans(
-                                      textStyle: TextStyle(
-                                          fontSize: 23,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500))),
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text("Masukkan Password",
+                              style: GoogleFonts.plusJakartaSans(
+                              textStyle: TextStyle(
+                              fontSize: 23,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500))),
                               Form(
                                 key: _formKey,
                                 child: Container(
-                                  margin: EdgeInsets.only(left: 30, right: 30),
-                                  child: TextFormField(
-                                    style: GoogleFonts.plusJakartaSans(
-                                        textStyle: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.black,
-                                    )),
-                                    controller: passwordController,
-                                    obscureText: _passwordControllerVisible
-                                        ? false
-                                        : true,
-                                    validator: RequiredValidator(
-                                        errorText: 'Enter Password'),
-                                    decoration: InputDecoration(
-                                        labelText: 'Enter Password',
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.black,
-                                                width: 5.0),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        errorBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: baseColors.primaryColor,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        errorStyle: TextStyle(
-                                            color: baseColors.primaryColor,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400),
-                                        labelStyle:
-                                            TextStyle(color: Colors.black87),
-                                        suffixIcon: IconButton(
-                                          icon: Icon(
-                                            // Based on passwordControllerVisible state choose the icon
-                                            _passwordControllerVisible
-                                                ? Icons.visibility
-                                                : Icons.visibility_off,
-                                            color: baseColors.primaryColor,
-                                          ),
-                                          onPressed: () {
-                                            // Update the state i.e. toogle the state of passwordControllerVisible variable
-                                            setState(() {
-                                              _passwordControllerVisible =
-                                                  !_passwordControllerVisible;
-                                            });
-                                          },
-                                        ),
-                                        prefixIcon: Icon(
-                                          Icons.lock,
-                                          color:
-                                              baseColors.primaryColor,
-                                        ),
-                                        hintStyle: TextStyle(
-                                            color: Colors.black, fontSize: 20),
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: new BorderSide(
-                                                color: Colors.black),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: new BorderSide(
-                                              color: Colors.black),
-                                        )),
+                                margin: EdgeInsets.only(left: 30, right: 30),
+                                child: TextFormField(
+                                  style: GoogleFonts.plusJakartaSans(
+                                    textStyle: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                  )),
+                                controller: passwordController,
+                                obscureText: _passwordControllerVisible
+                                ? false
+                                : true,
+                                validator: RequiredValidator(
+                                  errorText: 'Enter Password'),
+                                decoration: InputDecoration(
+                                  labelText: 'Enter Password',
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 5.0),
+                                    borderRadius:
+                                      BorderRadius.circular(10)),
+                                    errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: baseColors.primaryColor,
+                                    ),
+                                  borderRadius:BorderRadius.circular(10)),
+                                  errorStyle: TextStyle(
+                                    color: baseColors.primaryColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
+                                    labelStyle:  TextStyle(color: Colors.black87),
+                                    suffixIcon: IconButton(
+                                    icon: Icon(
+                                    _passwordControllerVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                    color: baseColors.primaryColor,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _passwordControllerVisible = !_passwordControllerVisible;
+                                      });
+                                    },
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.lock,
+                                    color:baseColors.primaryColor,
+                                  ),
+                                  hintStyle: TextStyle(
+                                    color: Colors.black, fontSize: 20),
+                                    enabledBorder: OutlineInputBorder(
+                                    borderSide: new BorderSide( color: Colors.black),
+                                    borderRadius:BorderRadius.circular(10)),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(10),
+                                      borderSide: new BorderSide(color: Colors.black),
+                                      )
+                                    ),
                                   ),
                                 ),
                               ),
                               isLoading
-                                  ? SpinKitCircle(
-                                      color: baseColors.primaryColor,
-                                      size: 60.0,
-                                    )
-                                  : MaterialButton(
-                                      onPressed: () async {
-                                        if (_formKey.currentState!.validate()) {
-                                          await loginPressed();
-                                          // setState(() {
-                                          //   isLoading = true;
-                                          // });
-                                          // await Future.delayed(
-                                          //     const Duration(seconds: 3));
-                                          // await loginPressed();
-                                          // setState(() {
-                                          //   isLoading = false;
-                                          // });
-                                        }
-                                      },
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      color: baseColors.primaryColor,
-                                      height: 50,
-                                      minWidth: 200,
-                                      child: Text('KIRIM',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              textStyle: TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.white,
-                                          ))),
-                                    )
+                              ? SpinKitCircle(
+                                color: baseColors.primaryColor,
+                                size: 60.0,
+                                )
+                              : MaterialButton(
+                                onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  await loginPressed();
+                                }},
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                color: baseColors.primaryColor,
+                                height: 50,
+                                minWidth: 200,
+                                child: Text('KIRIM',
+                                  style: GoogleFonts.plusJakartaSans(
+                                    textStyle: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                  )
+                                  )
+                                )
+                              )
                             ]),
                       ),
                       SizedBox(
@@ -322,20 +273,24 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text('Hak Cipta RALS',
-                                style: GoogleFonts.plusJakartaSans(
-                                    textStyle: TextStyle(
-                                        fontSize: 18, color: Colors.black))),
+                              style: GoogleFonts.plusJakartaSans(
+                                textStyle: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black))),
                             Icon(
                               Icons.copyright,
                               color: Colors.black,
                               size: 21,
                             ),
                             Text('${copyright}',
-                                style: GoogleFonts.plusJakartaSans(
-                                    textStyle: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500)))
+                              style: GoogleFonts.plusJakartaSans(
+                                textStyle: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500
+                                  )
+                                )
+                              )
                           ],
                         ),
                       ),

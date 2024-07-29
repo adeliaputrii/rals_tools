@@ -17,5 +17,10 @@ abstract class IDCashService {
   factory IDCashService(Dio dio, {String baseUrl}) = _IDCashService;
 
   @POST(basePath.api_membercard_customer)
-  Future<DataMemberCardResponse> getDataMember(@Body() DataMemberCardBody body);
+  Future<DataMemberCardResponse> getDataMember(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Body() DataMemberCardBody body
+  );
 }

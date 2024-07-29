@@ -44,20 +44,6 @@ class PopUpWidget {
     );
   }
 
-  showPopUpConfirm(String message, String confirmBtnText) {
-    CoolAlert.show(
-      context: context,
-      type: CoolAlertType.confirm,
-      text: message,
-      confirmBtnText: confirmBtnText,
-      cancelBtnText: 'Kembali',
-      confirmBtnColor: Colors.green,
-      onConfirmBtnTap: () {
-        Navigator.pop(context);
-      },
-    );
-  }
-
   showPopUpSuccess(String message, String confirmBtnText, Function function) {
     CoolAlert.show(
       context: context,

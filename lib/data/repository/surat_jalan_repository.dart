@@ -4,19 +4,19 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:myactivity_project/data/service/surat_jalan_service.dart';
-
+import 'package:myactivity_project/base/base_paths.dart' as basePath;
 import '../model/login_body.dart';
 import '../model/repositories_response.dart';
 import '../model/scan_sj_body.dart';
 
 class SuratJalanRepositories {
-  Future<RepositoriesResponse> getScanTracking(String noSJ) async {
+  Future<RepositoriesResponse> getScanTracking(String token, String noSJ) async {
     final services = GetIt.I.get<SuratJalanService>();
 
     late RepositoriesResponse response;
 
     try {
-      await services.getScanTracking(noSJ).then((value) {
+      await services.getScanTracking(basePath.contentType, basePath.accept, token, noSJ).then((value) {
         response = RepositoriesResponse(
             isSuccess: true, statusCode: value.status, dataResponse: value);
       });
@@ -41,26 +41,26 @@ class SuratJalanRepositories {
   }
 
   Future<RepositoriesResponse> postTracking(
-      TrackingSJBody body, int trackType) async {
+      String token, TrackingSJBody body, int trackType) async {
     final services = GetIt.I.get<SuratJalanService>();
 
     late RepositoriesResponse response;
 
     try {
       if (trackType == 1) {
-        await services.postTrackingDefault(body).then((value) {
+        await services.postTrackingDefault(basePath.contentType, basePath.accept, token, body).then((value) {
           response = RepositoriesResponse(
               isSuccess: true, statusCode: value.status, dataResponse: value);
         });
       }
       if (trackType == 2) {
-        await services.postTrackingStoreline(body).then((value) {
+        await services.postTrackingStoreline(basePath.contentType, basePath.accept, token, body).then((value) {
           response = RepositoriesResponse(
               isSuccess: true, statusCode: value.status, dataResponse: value);
         });
       }
       if (trackType == 3) {
-        await services.postTrackingSupplier(body).then((value) {
+        await services.postTrackingSupplier(basePath.contentType, basePath.accept, token, body).then((value) {
           response = RepositoriesResponse(
               isSuccess: true, statusCode: value.status, dataResponse: value);
         });
@@ -84,13 +84,13 @@ class SuratJalanRepositories {
     return response;
   }
 
-  Future<RepositoriesResponse> trackSJ(String noSJ) async {
+  Future<RepositoriesResponse> trackSJ(String token, String noSJ) async {
     final services = GetIt.I.get<SuratJalanService>();
 
     late RepositoriesResponse response;
 
     try {
-      await services.trackSJ(noSJ).then((value) {
+      await services.trackSJ(basePath.contentType, basePath.accept, token, noSJ).then((value) {
         response = RepositoriesResponse(
             isSuccess: true, statusCode: value.status, dataResponse: value);
       });

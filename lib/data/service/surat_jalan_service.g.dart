@@ -19,20 +19,31 @@ class _SuratJalanService implements SuratJalanService {
   String? baseUrl;
 
   @override
-  Future<SuratJalanResponse> getScanTracking(String noSJ) async {
+  Future<SuratJalanResponse> getScanTracking(
+    String contentType,
+    String accept,
+    String token,
+    String noSJ,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<SuratJalanResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/tracking/scan-sj-tracking?no_sj=${noSJ}',
+              'api/v1/tracking/scan-sj-tracking?no_sj=${noSJ}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -46,10 +57,20 @@ class _SuratJalanService implements SuratJalanService {
   }
 
   @override
-  Future<ScanSJResponse> postTrackingStoreline(TrackingSJBody body) async {
+  Future<ScanSJResponse> postTrackingStoreline(
+    String contentType,
+    String accept,
+    String token,
+    TrackingSJBody body,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
     final _result = await _dio
@@ -57,10 +78,11 @@ class _SuratJalanService implements SuratJalanService {
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/tracking/update-tracking/storeline',
+              'api/v1/tracking/update-tracking/storeline',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -74,10 +96,20 @@ class _SuratJalanService implements SuratJalanService {
   }
 
   @override
-  Future<ScanSJResponse> postTrackingSupplier(TrackingSJBody body) async {
+  Future<ScanSJResponse> postTrackingSupplier(
+    String contentType,
+    String accept,
+    String token,
+    TrackingSJBody body,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
     final _result = await _dio
@@ -85,10 +117,11 @@ class _SuratJalanService implements SuratJalanService {
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/tracking/update-tracking/supplier',
+              'api/v1/tracking/update-tracking/supplier',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -102,10 +135,20 @@ class _SuratJalanService implements SuratJalanService {
   }
 
   @override
-  Future<ScanSJResponse> postTrackingDefault(TrackingSJBody body) async {
+  Future<ScanSJResponse> postTrackingDefault(
+    String contentType,
+    String accept,
+    String token,
+    TrackingSJBody body,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
     final _result = await _dio
@@ -113,10 +156,11 @@ class _SuratJalanService implements SuratJalanService {
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/tracking/update-tracking',
+              'api/v1/tracking/update-tracking',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -130,20 +174,31 @@ class _SuratJalanService implements SuratJalanService {
   }
 
   @override
-  Future<TrackingSJResponse> trackSJ(String noSJ) async {
+  Future<TrackingSJResponse> trackSJ(
+    String contentType,
+    String accept,
+    String token,
+    String noSJ,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': contentType,
+      r'Accept': accept,
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<TrackingSJResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
-              'v1/tracking/track-sj?no_sj=${noSJ}',
+              'api/v1/tracking/track-sj?no_sj=${noSJ}',
               queryParameters: queryParameters,
               data: _data,
             )

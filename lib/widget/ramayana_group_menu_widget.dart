@@ -121,7 +121,7 @@ class AllMenuWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20.0),
                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                     menuIcon(baseParam.menuMemberPerusahaan, baseAsset.companyCardLogo,
-                        navigate: () => AppNavigator.navigateToKartuPerusahaan(context)),
+                    navigate: () => AppNavigator.navigateToKartuPerusahaan(context)),
                     menuIcon(baseParam.menuTukarPoin, baseAsset.tukarPoinLogo, navigate: () => AppNavigator.navigateToTukarPoin(context)),
                     menuIcon(baseParam.menuIdCash, baseAsset.idCashLogo, navigate: () => AppNavigator.navigateToIdCash(context)),
                   ]),

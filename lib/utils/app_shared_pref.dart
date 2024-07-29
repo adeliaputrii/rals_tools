@@ -36,6 +36,12 @@ class SharedPref {
     await prefs.setString(key_device_name, deviceName);
   }
 
+    static Future<void> setMember(String member) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString(key_member, member);
+  }
+
   static Future<void> setLastLogin(String lastLogin) async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -52,6 +58,12 @@ class SharedPref {
     final prefs = await SharedPreferences.getInstance();
 
     return prefs.getString(key_token);
+  }
+
+    static Future<String?> getMember() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(key_member);
   }
 
   static Future<void> clearToken() async {

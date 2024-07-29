@@ -29,6 +29,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
 
   List<String> noColyMissing = [];
 
+  String? token;
   var noSj = "";
   var description = "";
   bool isLoading = false;
@@ -54,7 +55,9 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
     sjCubit = context.read<SuratJalanCubit>();
     logCubit = context.read<LoginCubit>();
     _visible = false;
+    refreshPage();
   }
+
 
   @override
   void dispose() {
@@ -78,11 +81,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#ff6666', 'Cancel', true, ScanMode.BARCODE);
       if (barcodeScanRes == '-1') {
         popUp.showPopUpError(notFound, 'Barcode tidak terdeteksi');
-        logCubit.createLog(baseParam.logInfoScanSJPage, 'Barcode tidak terdeteksi', basePath.api_tracking_scan);
       } else {
-        logCubit.createLog(baseParam.logInfoScanSJPage, '${baseParam.logInfoScanDesc}${barcodeScanRes}', basePath.api_tracking_scan);
-        noSjController.text = barcodeScanRes;
-        sjCubit.getScanTracking(noSjController.text);
       }
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
@@ -92,6 +91,10 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
         ScreenBrightness().resetScreenBrightness();
       });
     }
+  }
+
+  refreshPage() async {
+    token = await SharedPref.getToken();
   }
 
   void navigateTrackSJ() {
@@ -109,7 +112,6 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
     if (result != null) {
       noColyMissing.clear();
       noColyMissing.addAll(result);
-
       String resultSelected = noColyMissing.map((e) => e.toString()).join(',');
       colyMissingController.text = resultSelected;
     }
@@ -157,8 +159,8 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                 backgroundColor: MaterialStateProperty.all<Color>(baseColor.primaryColor),
                 side: MaterialStateProperty.all(
                   BorderSide(
-                    color: baseColor.primaryColor, // Set the border color to red
-                    width: 2.0, // Set the border width
+                    color: baseColor.primaryColor,
+                    width: 2.0, 
                   ),
                 ),
                 shape: MaterialStateProperty.all(
@@ -187,8 +189,8 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
         style: ButtonStyle(
           side: MaterialStateProperty.all(
             BorderSide(
-              color: baseColor.primaryColor, // Set the border color to red
-              width: 2.0, // Set the border width
+              color: baseColor.primaryColor, 
+              width: 2.0, 
             ),
           ),
           shape: MaterialStateProperty.all(
@@ -215,8 +217,8 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
         style: ButtonStyle(
           side: MaterialStateProperty.all(
             BorderSide(
-              color: baseColor.primaryColor, // Set the border color to red
-              width: 2.0, // Set the border width
+              color: baseColor.primaryColor, 
+              width: 2.0,
             ),
           ),
           shape: MaterialStateProperty.all(
@@ -258,7 +260,11 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                   ),
                 ),
               ),
-              child: Text('Submit', style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Colors.white)),
+              child: Text('Submit', 
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 18, 
+                color: Colors.white)
+              ),
             ),
           ),
           Container(
@@ -403,7 +409,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
           child: Stack(
             children: [
               Container(
-                color: Color.fromARGB(255, 210, 14, 0),
+                color: baseColor.primaryColor,
               ),
               Container(
                 margin: EdgeInsets.only(top: screenSize.height / 4),
@@ -431,16 +437,11 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                         )),
                     Container(
                       margin: EdgeInsets.only(bottom: 5, left: 10),
-                      // height: 60,
-                      decoration: BoxDecoration(
-                          // color: Color.fromARGB(255, 236, 236, 236),
-                          ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
                             width: 50,
-                            // color: Colors.green,
                             child: IconButton(
                               onPressed: () {
                                 scanBarcodeScan();
@@ -457,7 +458,6 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                             child: Container(
                               margin: EdgeInsets.only(left: 20, bottom: 10),
                               width: 300,
-                              // color: Colors.blue,
                               child: TextFormField(
                                 validator: RequiredValidator(errorText: ' Please Enter'),
                                 controller: noSjController,
@@ -483,7 +483,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                         onPressed: () {
                           keyboardUtils.dissmissKeyboard(context);
-                          sjCubit.getScanTracking(noSjController.text.toString());
+                          sjCubit.getScanTracking(token!, noSjController.text.toString());
                         },
                         child: Text(
                           'Cari',
@@ -496,90 +496,112 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
               ),
               Container(
                 margin: EdgeInsets.fromLTRB(30, screenSize.height / 3.5, 30, 0),
-                // color: Colors.amber,
                 child: isLoading
-                    ? SpinKitThreeBounce(
-                        color: Color.fromARGB(255, 210, 14, 0),
-                        size: 50.0,
-                      )
-                    : AnimatedOpacity(
-                        opacity: _visible ? 1.0 : 0.0,
-                        duration: const Duration(milliseconds: 500),
-                        child: ListView(shrinkWrap: true, children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextLabel(baseParam.sjStatus),
-                              TextFieldStatusSJ(statusController, statusController.text),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [TextLabel(baseParam.sjNoDokumen), TextFieldSJ(noDocumentController)],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [TextLabel(baseParam.sjTipeDokumen), TextFieldSJ(documentTypeController)],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [TextLabel(baseParam.sjAsal), TextFieldSJ(originController)],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [TextLabel(baseParam.sjTujuan), TextFieldSJ(destinationController)],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [TextLabel(baseParam.sjPetugas), TextFieldSJ(driverNameController)],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [TextLabel(baseParam.sjNoMobil), TextFieldSJ(noVehicleController)],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(children: [
-                                TextLabelMandatory(baseParam.sjKoliDiterima),
-                                Container(
-                                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                    child: Text(
-                                      'maks. ${receivedColyResponse}',
-                                      style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Color.fromARGB(255, 210, 14, 0)),
-                                    )),
-                              ]),
-                              Container(
-                                margin: EdgeInsets.only(bottom: 10),
-                                height: 50,
-                                child: TextField(
-                                  readOnly: false,
+                ? SpinKitThreeBounce(
+                  color: Color.fromARGB(255, 210, 14, 0),
+                  size: 50.0,
+                )
+                : AnimatedOpacity(
+                  opacity: _visible ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 500),
+                  child: ListView(
+                    shrinkWrap: true, 
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextLabel(baseParam.sjStatus),
+                          TextFieldStatusSJ(statusController, statusController.text),
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextLabel(baseParam.sjNoDokumen), 
+                          TextFieldSJ(noDocumentController)
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextLabel(baseParam.sjTipeDokumen), 
+                          TextFieldSJ(documentTypeController)
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextLabel(baseParam.sjAsal), 
+                          TextFieldSJ(originController)
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextLabel(baseParam.sjTujuan), 
+                          TextFieldSJ(destinationController)
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextLabel(baseParam.sjPetugas), 
+                          TextFieldSJ(driverNameController)
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextLabel(baseParam.sjNoMobil), 
+                          TextFieldSJ(noVehicleController)
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(children: [
+                            TextLabelMandatory(baseParam.sjKoliDiterima),
+                             Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              child: Text(
+                                'maks. ${receivedColyResponse}',
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 15, 
+                                  color: Color.fromARGB(255, 210, 14, 0)
+                                ),
+                              )),
+                            ]),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              height: 50,
+                              child: TextField(
+                                readOnly: false,
                                   keyboardType: TextInputType.number,
                                   controller: colyAvailableController,
                                   decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Color.fromARGB(255, 236, 236, 236),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        width: 2,
-                                        color: Color.fromARGB(255, 236, 236, 236),
-                                      ), //<-- SEE HERE
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        width: 2,
-                                        color: Color.fromARGB(255, 236, 236, 236),
-                                      ), //<-- SEE HERE
-                                      borderRadius: BorderRadius.circular(20.0),
+                                  filled: true,
+                                  fillColor: Color.fromARGB(255, 236, 236, 236),
+                                  focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    width: 2,
+                                    color: Color.fromARGB(255, 236, 236, 236),
+                                  ), //<-- SEE HERE
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      width: 2,
+                                      color: Color.fromARGB(255, 236, 236, 236),
+                                    ), //<-- SEE HERE
+                                    borderRadius: BorderRadius.circular(20.0),
                                     ),
                                   ),
                                   onChanged: (value) {
@@ -602,86 +624,95 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
                               )
                             ],
                           ),
-                          Visibility(
-                            visible: showMissingColy,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                      Visibility(
+                        visible: showMissingColy,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    TextLabelMandatory(baseParam.sjKoliHilang),
-                                    Container(
-                                        margin: EdgeInsets.only(left: 10, bottom: 10),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            chooseMissingColy();
-                                          },
-                                          child: Text(
-                                            'Pilih',
-                                            style: GoogleFonts.plusJakartaSans(fontSize: 17, color: Colors.blue),
-                                          ),
-                                        )),
-                                  ],
-                                ),
-                                TextField(
-                                  controller: colyMissingController,
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Color.fromARGB(255, 236, 236, 236),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        width: 2,
-                                        color: Color.fromARGB(255, 236, 236, 236),
-                                      ), //<-- SEE HERE
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        width: 2,
-                                        color: Color.fromARGB(255, 236, 236, 236),
-                                      ), //<-- SEE HERE
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                  ),
-                                  readOnly: true,
-                                  maxLines: 10,
-                                  minLines: 1,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Visibility(
-                            visible: receivedColy != receivedColyResponse,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [TextLabel(baseParam.sjLspb), TextFieldSJ(lspbController)],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TextLabel(baseParam.sjCatatan),
-                                Form(
-                                  key: _formKey,
-                                  child: Container(
-                                    margin: EdgeInsets.only(bottom: 30),
-                                    height: 120,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                                    child: TextFormField(
-                                      validator: RequiredValidator(errorText: ' Please Enter'),
-                                      controller: remarkController,
-                                      cursorColor: Colors.black,
-                                      maxLines: 7,
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        filled: true,
+                                TextLabelMandatory(baseParam.sjKoliHilang),
+                                Container(
+                                  margin: EdgeInsets.only(left: 10, bottom: 10),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      chooseMissingColy();
+                                    },
+                                    child: Text(
+                                    'Pilih',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 17, 
+                                      color: Colors.blue
                                       ),
+                                    ),
+                                  )),
+                                ],
+                              ),
+                            TextField(
+                              controller: colyMissingController,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Color.fromARGB(255, 236, 236, 236),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    width: 2,
+                                    color: Color.fromARGB(255, 236, 236, 236),
+                                  ), //<-- SEE HERE
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    width: 2,
+                                    color: Color.fromARGB(255, 236, 236, 236),
+                                  ), //<-- SEE HERE
+                                borderRadius: BorderRadius.circular(20.0),
+                                ),
+                              ),
+                              readOnly: true,
+                              maxLines: 10,
+                              minLines: 1,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Visibility(
+                        visible: receivedColy != receivedColyResponse,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextLabel(baseParam.sjLspb), 
+                            TextFieldSJ(lspbController)
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextLabel(baseParam.sjCatatan),
+                            Form(
+                              key: _formKey,
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 30),
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20)),
+                                  child: TextFormField(
+                                    validator: RequiredValidator(
+                                      errorText: ' Please Enter'
+                                    ),
+                                    controller: remarkController,
+                                    cursorColor: Colors.black,
+                                    maxLines: 7,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      filled: true,
+                                    ),
                                     ),
                                   ),
                                 ),
@@ -699,20 +730,20 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
           child: Visibility(
             visible: _visible && _visibleBottom,
             child: Container(
-                height: 56.0, // Adjust the height as needed
-                color: Colors.transparent, // Set the background color as needed
-                child: BlocBuilder<SuratJalanCubit, SuratJalanState>(builder: (context, state) {
-                  if (state is ScanSJLoading) {
-                    return SpinKitThreeBounce(
-                      color: Color.fromARGB(255, 210, 14, 0),
-                      size: 50.0,
-                    );
-                  }
-                  if (state is SuratJalanSuccess) {
-                    buttonLogic();
-                  }
-                  return buttonLogic();
-                })),
+              height: 56.0, // Adjust the height as needed
+              color: Colors.transparent, // Set the background color as needed
+              child: BlocBuilder<SuratJalanCubit, SuratJalanState>(builder: (context, state) {
+                if (state is ScanSJLoading) {
+                  return SpinKitThreeBounce(
+                    color: Color.fromARGB(255, 210, 14, 0),
+                    size: 50.0,
+                  );
+                }
+                if (state is SuratJalanSuccess) {
+                  buttonLogic();
+                }
+                return buttonLogic();
+            })),
           ),
         ),
       ),
@@ -732,21 +763,21 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
       onConfirmBtnTap: () {
         switch (type) {
           case 1:
-            sjCubit.postTrackingSJ(body, 1);
-            logCubit.createLog(
-                baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Default No. SJ = ${noSj}', basePath.api_tracking_update_tracking + noSj);
+            sjCubit.postTrackingSJ(token!, body, 1);
+            // logCubit.createLog(
+            //     baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Default No. SJ = ${noSj}', basePath.api_tracking_update_tracking + noSj);
             debugPrint("submit");
             break;
           case 2:
-            sjCubit.postTrackingSJ(body, 2);
-            logCubit.createLog(
-                baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Storeline No. SJ = ${noSj}', basePath.api_tracking_update_storeline + noSj);
+            sjCubit.postTrackingSJ(token!, body, 2);
+            // logCubit.createLog(
+            //     baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Storeline No. SJ = ${noSj}', basePath.api_tracking_update_storeline + noSj);
             debugPrint("buttonStoreline");
             break;
           case 3:
-            sjCubit.postTrackingSJ(body, 3);
-            logCubit.createLog(
-                baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Supplier No. SJ = ${noSj}', basePath.api_tracking_update_supplier + noSj);
+            sjCubit.postTrackingSJ(token!, body, 3);
+            // logCubit.createLog(
+            //     baseParam.logInfoScanSJPage, 'Tracking Surat Jalan Supplier No. SJ = ${noSj}', basePath.api_tracking_update_supplier + noSj);
             debugPrint('buttonSupplier');
             break;
         }

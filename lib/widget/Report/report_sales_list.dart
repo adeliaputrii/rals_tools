@@ -20,13 +20,13 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
   bool isSearch = false;
 
   late ReportCubit reportCubit;
-  late LoginCubit loginCubit;
   late PopUpWidget popUpWidget;
 
   String searchQuery = '';
   String title = "";
   String? nextUrlCursor;
   String urlDetail = 'https://www.youtube.com/';
+  String? token;
 
   int progressBar = 0;
   final scrollController = ScrollController();
@@ -35,19 +35,22 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
   @override
   void initState() {
     reportCubit = context.read<ReportCubit>();
-    loginCubit = context.read<LoginCubit>();
-
     popUpWidget = PopUpWidget(context);
     _debounceTimer?.cancel();
-    initDataReport();
-    scrollListener();
-
+    refreshPage();
     super.initState();
   }
 
+  refreshPage() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    token = await SharedPref.getToken();
+    initDataReport();
+    scrollListener();
+  }
+
   void initDataReport() {
-    reportCubit.getListReportPagination("", "", "", "");
-    loginCubit.createLog(baseParam.logInfoReportPage, baseParam.logInfoNavigateReportPage, basePath.api_report_list_pagination);
+    reportCubit.getListReportPagination(token ?? '',"", "", "", "");
+    // loginCubit.createLog(baseParam.logInfoReportPage, baseParam.logInfoNavigateReportPage, basePath.api_report_list_pagination);
   }
 
   void scrollListener() {
@@ -74,7 +77,7 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
       return;
     }
     if (nextUrlCursor != null) {
-      reportCubit.getListReportPagination(nextUrlCursor, title, "", "");
+      reportCubit.getListReportPagination(token ?? '', nextUrlCursor, title, "", "");
     } else {
       popUpWidget.showToastMessage('Tidak ada data lagi..');
       setState(() {
@@ -154,7 +157,7 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
                       });
                       if (!isSearch) {
                         isLoaded = false;
-                        reportCubit.getListReportPagination("", "", "", "");
+                        reportCubit.getListReportPagination(token ?? '', "", "", "", "");
                         setState(() {
                           title = "";
                           nextUrlCursor = null;

@@ -28,6 +28,16 @@ class HomeNewsSuccess extends HomeState {
   List<Object?> get props => [response];
 }
 
+class HomeCountTask extends HomeState {
+  final CountTask response;
+
+  const HomeCountTask(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
+
 class HomeLoading extends HomeState {}
 
 class HomeFailure extends HomeState {

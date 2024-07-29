@@ -19,7 +19,13 @@ class _ReportSalesDetailPagerState extends State<ReportSalesDetailPager> {
     reportCubit = context.read<ReportCubit>();
     super.initState();
     debugPrint('id report${widget.id}');
-    reportCubit.insertViewer(widget.id);
+    refreshPage();
+  }
+
+  refreshPage() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = await SharedPref.getToken();
+    reportCubit.insertViewer(token ?? '', widget.id);
   }
 
   void _onBackPressed() {

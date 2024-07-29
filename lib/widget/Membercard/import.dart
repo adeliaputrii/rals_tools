@@ -45,7 +45,6 @@ import 'package:myactivity_project/base/base_colors.dart' as baseColor;
 
 part 'ramayana_membercard_authentication.dart';
 part 'ramayana_membercard_card.dart';
-part 'ramayana_membercard_trr.dart';
 part 'ramayana_membercard_detail.dart';
 part 'ramayana_membercard_qr.dart';
 part 'ramayana_membercard_history.dart';

@@ -15,12 +15,19 @@ class RamayanaMyActivityProject extends StatefulWidget {
 
 class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
   late MyActivityCubit myactivityCubit;
+  String? token = '';
+
   @override
   void initState() {
     super.initState();
     myactivityCubit = context.read<MyActivityCubit>();
-    myactivityCubit.getProject();
-    print('widget update ${widget.update}');
+    refreshpage();
+  }
+
+  refreshpage() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    token = await SharedPref.getToken();
+    myactivityCubit.getProject(token!);
   }
 
   void _navigateToListTask(String projectId, String projectDesc) {
@@ -33,7 +40,7 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
         projectDesc: projectDesc,
       );
     })).then((_) {
-      myactivityCubit.getProject();
+      myactivityCubit.getProject(token!);
     });
   }
 
@@ -48,7 +55,6 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
               MaterialPageRoute(builder: (context) => RamayanaMyActivity(update: widget.update, desc: widget.desc, id: widget.id)),
               (Route<dynamic> route) => false,
             );
-            // Navigator.pop(context);
           },
           icon: Icon(
             Icons.arrow_back_ios,
@@ -57,7 +63,11 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
           ),
         ),
         centerTitle: true,
-        title: Text('List Project', style: GoogleFonts.plusJakartaSans(fontSize: 23, color: Colors.white)),
+        title: Text('List Project', 
+        style: GoogleFonts.plusJakartaSans(
+          fontSize: 23, 
+          color: Colors.white)
+        ),
         backgroundColor: baseColors.primaryColor,
         elevation: 5,
         toolbarHeight: 80,
@@ -74,16 +84,22 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
               }
               if (state is MyActivitySuccess) {
                 return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: state.response.data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                        height: 100,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [BoxShadow(offset: Offset(2, 4), color: Colors.grey, blurRadius: 5)]),
+                  shrinkWrap: true,
+                  itemCount: state.response.data!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(2, 4), 
+                            color: Colors.grey, 
+                            blurRadius: 5)
+                          ]
+                        ),
                         child: MaterialButton(
                           onPressed: () {
                             _navigateToListTask(state.response.data?[index].projectId ?? '', state.response.data?[index].projectDesc ?? '');
@@ -93,15 +109,21 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
                             children: [
                               Container(
                                 padding: const EdgeInsets.only(left: 10),
-                                // color: Colors.amber,
                                 width: MediaQuery.of(context).size.width / 2,
                                 child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
                                   Text('${state.response.data?[index].projectId}',
-                                      style: GoogleFonts.plusJakartaSans(fontSize: 18, color: baseColors.primaryColor)),
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 18, 
+                                      color: baseColors.primaryColor)
+                                  ),
                                   Text('${state.response.data?[index].projectDesc}',
-                                      maxLines: 5,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.plusJakartaSans(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500)),
+                                    maxLines: 5,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 20, 
+                                      color: Colors.black, 
+                                      fontWeight: FontWeight.w500)
+                                    ),
                                 ]),
                               ),
                             ],

@@ -2,16 +2,17 @@ part of 'import.dart';
 
 class RamayanaMyActivityTask extends StatefulWidget {
   RamayanaMyActivityTask(
-      {super.key,
-      this.update = false,
-      this.projectId,
-      this.projectDesc,
-      this.taskId,
-      this.taskDesc,
-      this.desc,
-      this.timeStart,
-      this.timeEnd,
-      this.id});
+    {super.key,
+    this.update = false,
+    this.projectId,
+    this.projectDesc,
+    this.taskId,
+    this.taskDesc,
+    this.desc,
+    this.timeStart,
+    this.timeEnd,
+    this.id});
+
   final bool update;
   final String? projectId;
   final String? projectDesc;
@@ -31,8 +32,13 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
   void initState() {
     super.initState();
     myactivityCubit = context.read<MyActivityCubit>();
-    myactivityCubit.getTaskById(widget.projectId!);
-    print('widget update ${widget.update}');
+    refreshpage();
+  }
+
+  refreshpage() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = await SharedPref.getToken();
+    myactivityCubit.getTaskById(token!, widget.projectId!);
   }
 
   @override
@@ -50,7 +56,11 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
           ),
         ),
         centerTitle: true,
-        title: Text('List Task', style: GoogleFonts.plusJakartaSans(fontSize: 23, color: Colors.white)),
+        title: Text('List Task', 
+        style: GoogleFonts.plusJakartaSans(
+          fontSize: 23, 
+          color: Colors.white)
+        ),
         backgroundColor: baseColors.primaryColor,
         elevation: 5,
         toolbarHeight: 80,
@@ -74,66 +84,81 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
                   );
                 } else {
                 return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: state.response.data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                        height: 100,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [BoxShadow(offset: Offset(2, 4), color: Colors.grey, blurRadius: 5)]),
-                        child: MaterialButton(
-                          onPressed: () {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DefaultBottomBarController(
-                                      child: RamayanaMyActivity(
-                                    id: widget.id,
-                                    desc: widget.desc,
-                                    update: widget.update,
-                                    projectId: '${widget.projectId}',
-                                    projectDesc: '${widget.projectDesc}',
-                                    taskId: '${state.response.data?[index].taskId}',
-                                    taskDesc: '${state.response.data?[index].taskDesc}',
-                                    status: '${state.response.data?[index].taskStatus}',
-                                  )),
-                                ),
-                                (Route<dynamic> route) => false);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 20),
-                            height: 100,
-                            width: MediaQuery.of(context).size.width / 1,
-                            child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  shrinkWrap: true,
+                  itemCount: state.response.data!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [BoxShadow(offset: Offset(2, 4), color: Colors.grey, blurRadius: 5)]),
+                      child: MaterialButton(
+                        onPressed: () {
+                          Navigator.pushAndRemoveUntil(context,
+                            MaterialPageRoute( builder: (context) => DefaultBottomBarController(
+                            child: RamayanaMyActivity(
+                              id: widget.id,
+                              desc: widget.desc,
+                              update: widget.update,
+                              projectId: '${widget.projectId}',
+                              projectDesc: '${widget.projectDesc}',
+                              taskId: '${state.response.data?[index].taskId}',
+                              taskDesc: '${state.response.data?[index].taskDesc}',
+                              status: '${state.response.data?[index].taskStatus}',
+                            )),
+                          ),
+                        (Route<dynamic> route) => false);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 20),
+                          height: 100,
+                          width: MediaQuery.of(context).size.width / 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center, 
+                            crossAxisAlignment: CrossAxisAlignment.start, 
+                            children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text('${state.response.data?[index].taskId}',
-                                      style: GoogleFonts.plusJakartaSans(fontSize: 18, color: baseColors.primaryColor)),
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 18,
+                                      color: baseColors.primaryColor
+                                    )
+                                  ),
                                   Container(
                                     height: 35,
                                     width: 100,
                                     decoration: BoxDecoration(
-                                        color: getColor('${state.response.data?[index].taskStatus}'), borderRadius: BorderRadius.circular(20)),
+                                      color: getColor('${state.response.data?[index].taskStatus}'), 
+                                      borderRadius: BorderRadius.circular(20)
+                                    ),
                                     child: Center(
                                       child: Text('${state.response.data?[index].taskStatus}',
-                                          style: GoogleFonts.plusJakartaSans(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white)),
+                                        style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 15, 
+                                          fontWeight: FontWeight.bold, 
+                                          color: Colors.white)
+                                        ),
                                     ),
                                   )
                                 ],
                               ),
                               Text('${state.response.data?[index].taskDesc}',
-                                  maxLines: 5,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.plusJakartaSans(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500)),
+                                maxLines: 5,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 20, 
+                                  color: Colors.black, 
+                                  fontWeight: FontWeight.w500)
+                                ),
                             ]),
                           ),
                         ),
                       );
-                    });
+                  });
               }
               }
               if (state is MyActivityFailure) {
@@ -154,7 +179,6 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
 }
 
 Color getColor(String type) {
-  // untuk warna container
   switch (type) {
     case 'Open':
       return Colors.blue;

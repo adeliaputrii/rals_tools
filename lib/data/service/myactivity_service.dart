@@ -16,6 +16,7 @@ import '../model/myactivity_task_response.dart';
 import '../model/myactvitity_project_response.dart';
 import '../model/login_body.dart';
 import '../model/login_response.dart';
+import 'package:myactivity_project/base/base_paths.dart' as basePath;
 
 part 'myactivity_service.g.dart';
 
@@ -23,21 +24,49 @@ part 'myactivity_service.g.dart';
 abstract class MyActivityService {
   factory MyActivityService(Dio dio, {String baseUrl}) = _MyActivityService;
 
-  @GET('v1/activity/list-project')
-  Future<GetProjectResponse> getProject();
+  @GET(basePath.api_activity_list_project)
+  Future<GetProjectResponse> getProject(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+  );
 
-  @GET('v1/activity/task/get-task')
-  Future<GetTaskResponse> getTaskUser();
+  @GET(basePath.api_get_task_user)
+  Future<GetTaskResponse> getTaskUser(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+  );
 
-  @GET('v1/activity/list-task?project_id={project_id}')
-  Future<MyActivityTaskResponse> getTaskById(@Path("project_id") String projectId);
+  @GET('${basePath.api_activity_task_by_id}{project_id}')
+  Future<MyActivityTaskResponse> getTaskById(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Path("project_id") String projectId
+  );
 
-  @POST('v1/activity/create_daily_activity')
-  Future<MyActivityResponse> submitActivity(@Body() MyActivityBody myActivityBody);
+  @POST(basePath.api_activity_create_daily)
+  Future<MyActivityResponse> submitActivity(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Body() MyActivityBody myActivityBody
+  );
 
-  @POST('v1/activity/clock_daily_activity')
-  Future<MyActivityEditResponse> editActivity(@Body() MyActivityEditBody myActivityEditBody);
+  @POST(basePath.api_activity_clock_daily)
+  Future<MyActivityEditResponse> editActivity(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Body() MyActivityEditBody myActivityEditBody
+  );
 
-  @POST('v1/activity/updateDailyActivity')
-  Future<MyActivityUpdateResponse> updateActivity(@Body() MyActivityUpdateBody myActivityUpdateBody);
+  @POST(basePath.api_activity_update)
+  Future<MyActivityUpdateResponse> updateActivity(
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+    @Header("Authorization") String token,
+    @Body() MyActivityUpdateBody myActivityUpdateBody
+  );
 }

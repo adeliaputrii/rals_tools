@@ -31,15 +31,6 @@ class _RamayanaSoState extends State<RamayanaSo> {
     }
       });
     }
-  
-  buttonConfirm() {
-    setState(() {
-      widget.location = '';
-      items.removeRange(0, items.length);
-      _location = '';
-      _controllerLocation.clear();
-    });
-  }
 
   Future<void> scanBarcodeScan(
     TextEditingController controller
@@ -85,11 +76,11 @@ class _RamayanaSoState extends State<RamayanaSo> {
               ),
               (Route<dynamic> route) => false);
               }, 
-            icon: Icon(Icons.arrow_back_ios,
-              color: Colors.white,
-              size: 20,
-            )
-          ),
+          icon: Icon(Icons.arrow_back_ios,
+            color: Colors.white,
+            size: 20,
+          )
+        ),
         centerTitle: true,
         title: Text('Stock Opname',
         style: GoogleFonts.plusJakartaSans(
@@ -237,15 +228,15 @@ class _RamayanaSoState extends State<RamayanaSo> {
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(15.0),
                                     borderSide: BorderSide(
-                                      color: Colors.black, // Set the border color
-                                      width: 1.5, // Set the border width
+                                      color: Colors.black,
+                                      width: 1.5,
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(15.0),
                                     borderSide: BorderSide(
-                                      color: Colors.black, // Set the border color
-                                      width: 1.5, // Set the border width
+                                      color: Colors.black, 
+                                      width: 1.5,
                                     ),
                                   ),
                                 ),
@@ -296,15 +287,15 @@ class _RamayanaSoState extends State<RamayanaSo> {
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(15.0),
                                           borderSide: BorderSide(
-                                            color: Colors.black, // Set the border color
-                                            width: 1.5, // Set the border width
+                                            color: Colors.black, 
+                                            width: 1.5, 
                                           ),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(15.0),
                                           borderSide: BorderSide(
-                                            color: Colors.black, // Set the border color
-                                            width: 1.5, // Set the border width
+                                            color: Colors.black,
+                                            width: 1.5, 
                                           ),
                                         ),
                                       ),
@@ -347,8 +338,8 @@ class _RamayanaSoState extends State<RamayanaSo> {
                                             enabledBorder: OutlineInputBorder(
                                               borderRadius: BorderRadius.circular(15.0),
                                               borderSide: BorderSide(
-                                                color: Colors.black, // Set the border color
-                                                width: 1.5, // Set the border width
+                                                color: Colors.black, 
+                                                width: 1.5, 
                                               ),
                                             ),
                                             focusedBorder: OutlineInputBorder(
@@ -406,8 +397,8 @@ class _RamayanaSoState extends State<RamayanaSo> {
                                 color: Colors.black
                                ),
                               ),
-                                                  ),
-                                                  Container(
+                              ),
+                            Container(
                             margin: EdgeInsets.only(bottom: 30),
                             width: screenWidth,
                             height: 
@@ -494,11 +485,12 @@ class _RamayanaSoState extends State<RamayanaSo> {
                             minWidth: screenWidth,
                             color: baseColor.primaryColor,
                             onPressed: () {
-                              popUpWidget.showPopUpConfirm(
-                                'Data akan dihapus', 
-                                'YA',
-                                );
-                             
+                              setState(() {
+                              widget.location = '';
+                              items.removeRange(0, items.length);
+                              _location = '';
+                              _controllerLocation.clear();
+                              });
                             },
                             child: Text('CLEAR',
                             style: GoogleFonts.plusJakartaSans(
@@ -515,10 +507,12 @@ class _RamayanaSoState extends State<RamayanaSo> {
                             minWidth: screenWidth,
                             color: baseColor.primaryColor,
                             onPressed: () {
+                              setState(() {
                               widget.location = '';
                               items.removeRange(0, items.length);
                               _location = '';
                               _controllerLocation.clear();
+                              });
                             },
                             child: Text('SUBMIT',
                             style: GoogleFonts.plusJakartaSans(
