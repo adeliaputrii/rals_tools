@@ -1,0 +1,451 @@
+part of 'import.dart';
+
+class RamayanaVoid extends StatefulWidget {
+  static const routeName = '/RamayanaVoid';
+  RamayanaVoid({super.key, required this.isOffline});
+  final bool isOffline;
+
+  @override
+  State<RamayanaVoid> createState() => _RamayanaVoidState();
+}
+
+class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBindingObserver {
+  DbHelper db = DbHelper();
+  DbHelperVoidOffline db2 = DbHelperVoidOffline();
+
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  String _udid = 'Unknown';
+  var dio = Dio();
+  UserData userData = UserData();
+  bool _isKeptOn = true;
+  double _brightness = 1.0;
+  late LoginCubit loginCubit;
+  KeyboardUtils keyboardUtils = KeyboardUtils();
+  TextEditingController myController = TextEditingController();
+
+  String _scanBarcode = '';
+  bool _visible = false;
+  bool? _isConnected;
+
+  @override
+  void initState() {
+    super.initState();
+    loginCubit = context.read<LoginCubit>();
+    WidgetsBinding.instance.addObserver(this);
+    _checkInternetConnection();
+    setState(() {
+      _isConnected;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    final session = await sessionEnd();
+    if (state == AppLifecycleState.resumed) {
+      if (session) {
+        Navigator.pushAndRemoveUntil<dynamic>(
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => RamayanaLogin(),
+          ),
+          (route) => false, //if you want to disable back feature set to false
+        );
+      }
+    }
+    if (state == AppLifecycleState.paused) {}
+    if (state == AppLifecycleState.inactive) {}
+  }
+
+  Future<bool> sessionEnd() async {
+    return await CheckUser.checkSession();
+  }
+
+  @override
+  void didPush() {
+    super.didPush();
+    ScreenBrightness().setScreenBrightness(1.0);
+  }
+
+  logoutPressed() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.remove('waktuLogin');
+    pref.remove('waktuLoginOffline');
+  }
+
+  Future<bool> _willPopCallback() async {
+    if (!widget.isOffline) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Ramayana(),
+        ),
+      (Route<dynamic> route) => false);
+    } else {
+      exit(0);
+    }
+    return Future.value(false);
+  }
+
+  @override
+  void didPopNext() {
+    super.didPopNext();
+    ScreenBrightness().setScreenBrightness(1.0);
+  }
+
+  _checkInternetConnection() async {
+    try {
+      final response = await InternetAddress.lookup('www.kindacode.com');
+      if (response.isNotEmpty) {
+        setState(() {
+          _isConnected = true;
+        });
+      }
+    } on Exception catch (err) {
+      setState(() {
+        _isConnected = false;
+      });
+      if (kDebugMode) {
+      }
+    }
+  }
+
+  sweatAlert() {
+    var alertStyle = AlertStyle(
+      titlePadding: EdgeInsets.only(top: 0),
+      animationType: AnimationType.fromRight,
+      isCloseButton: false,
+      isOverlayTapDismiss: false,
+      descStyle: GoogleFonts.plusJakartaSans(
+        fontSize: 19,
+        color: Colors.black,
+      ),
+      descTextAlign: TextAlign.center,
+      animationDuration: Duration(milliseconds: 400),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(
+          color: Colors.grey,
+        ),
+      ),
+      titleStyle: GoogleFonts.plusJakartaSans(fontSize: 23, color: Colors.red, fontWeight: FontWeight.w500),
+      alertAlignment: Alignment.center,
+    );
+    Alert(
+      style: alertStyle,
+      context: context,
+      image: FadeInImageWidget(imageUrl: "assets/logout.png"),
+      title: 'Log Out',
+      desc: "Are you sure you want to log out?",
+      buttons: [
+        DialogButton(
+          radius: BorderRadius.circular(20),
+          color: Colors.green,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text(
+            "Cancel",
+            style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+          ),
+        ),
+        DialogButton(
+          radius: BorderRadius.circular(20),
+          color: Color.fromARGB(255, 210, 14, 0),
+          onPressed: () async {
+            logoutPressed();
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => RamayanaLogin()), (route) => false);
+          },
+          child: Text(
+            "Log Out",
+            style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
+          ),
+        ),
+      ],
+    ).show();
+    return;
+  }
+
+  Future<String> _getLogikaVoid() async {
+    UserData userData = UserData();
+    await userData.getPref();
+    String userId = userData.getUsernameID();
+    String? randomAngka = myController.text;
+    late int numberStepOne;
+    late int numberStepTwo;
+    late String result;
+
+    if (randomAngka != null && userId != null) {
+      numberStepOne = stepOne(input: randomAngka);
+      numberStepTwo = stepTwo(input: numberStepOne);
+      result = stepThree(angkaKedua: numberStepTwo.toString(), angkaPertama: userId);
+    }
+    return result;
+  }
+
+  int stepOne({required String input}) {
+    int current = 1;
+    for (int i = 0; i < input.length; i++) {
+      if (input[i] == '0') {
+        current = current * (i + 1);
+      } else {
+        current = current * int.parse(input[i]);
+      }
+    }
+    return current;
+  }
+
+  int stepTwo({required int input}) {
+    return (input * 121) - 100;
+  }
+
+  String stepThree({required String angkaPertama, required String angkaKedua}) {
+    int prefixNumber = 0;
+    int postNumber = 0;
+    if (angkaPertama.length >= 3) {
+      prefixNumber = int.parse(angkaPertama.substring(0, 3)) + 13;
+      postNumber = int.parse(angkaPertama.substring(3, angkaPertama.length)) + 18;
+    } else if (angkaPertama.length > 0) {
+      prefixNumber = int.parse(angkaPertama.substring(0, angkaPertama.length)) + 13;
+    } else {}
+    return '${prefixNumber}X${angkaKedua}B${postNumber}';
+  }
+
+  String data = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return RelativeBuilder(builder: (context, height, width, sy, sx) {
+      return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () async {
+              await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+              if (!widget.isOffline) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Ramayana(),
+                  ),
+                (Route<dynamic> route) => false);
+              } else {
+                sweatAlert();
+              }
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 20,
+              color: Colors.white,
+            ),
+          ),
+          title:
+            Text('Void', 
+            style: GoogleFonts.plusJakartaSans(
+              textStyle: TextStyle(
+                fontSize: 23, 
+                color: Colors.white, 
+                fontWeight: FontWeight.w500)
+              )
+            ),
+          backgroundColor: baseColor.primaryColor,
+          toolbarHeight: 90,
+        ),
+        body: WillPopScope(
+          onWillPop: _willPopCallback,
+          child: ListView(
+            children: [
+              Stack(children: <Widget>[
+                Container(
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0), 
+                  color: Color.fromARGB(255, 253, 249, 249)
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width / 1,
+                  height: 170,
+                  color: baseColor.primaryColor,
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(30, 30, 30, 0),
+                  child: Text('Approval Void & Return', 
+                  style: GoogleFonts.plusJakartaSans(
+                    textStyle: TextStyle(
+                      fontSize: 21, 
+                      color: Colors.white)
+                    )
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(10, 100, 10, 0),
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20), 
+                    color: Color.fromARGB(255, 255, 255, 255), 
+                    boxShadow: [
+                      BoxShadow(blurRadius: 5)
+                    ]
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                  width: 30,
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(30, 130, 30, 0),
+                  child: Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      controller: myController,
+                      style: TextStyle(
+                        fontSize: 20, 
+                        color: Colors.black
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Required";
+                        }
+                      },
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black, 
+                            width: 5.0
+                          ), 
+                          borderRadius: BorderRadius.circular(25)),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromARGB(255, 255, 17, 17),
+                              ),
+                            borderRadius: BorderRadius.circular(25)),
+                          errorStyle: TextStyle(
+                            color: Color.fromARGB(255, 255, 17, 17), 
+                            fontSize: 14, 
+                            fontWeight: FontWeight.w400
+                          ),
+                          labelStyle: TextStyle(
+                            color: Colors.black87
+                          ),
+                          prefixIcon: Icon(
+                            Icons.keyboard,
+                            color: Color.fromARGB(255, 255, 17, 17),
+                            size: 30,
+                          ),
+                          hintStyle: TextStyle(color: Colors.black, fontSize: 20),
+                          enabledBorder:
+                            OutlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.black), 
+                              borderRadius: BorderRadius.circular(25)
+                            ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25),
+                            borderSide: new BorderSide(color: Colors.black),
+                          )
+                        )
+                      )
+                    )
+                  ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(160, 230, 160, 0),
+                  width: 150,
+                  decoration: BoxDecoration(
+                    color: baseColor.primaryColor, 
+                    borderRadius: BorderRadius.circular(30)
+                  ),
+                  height: 40,
+                  child: TextButton(
+                    child: Text('GENERATE',
+                      style: GoogleFonts.plusJakartaSans(
+                        textStyle: TextStyle(
+                          fontSize: 18, 
+                          color: Colors.white, 
+                          fontWeight: FontWeight.w500
+                    ))),
+                    onPressed: () async {
+                      keyboardUtils.dissmissKeyboard(context);
+                      if (_formKey.currentState!.validate()) {
+                        didPush();
+                        didPopNext();
+                        data = await _getLogikaVoid();
+                        setState(() {
+                          _visible = true;
+                        });
+                        if (_visible == true) {
+                          await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+                        } else {
+                          await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+                        }
+                        await _checkInternetConnection();
+                        if (widget.isOffline) {
+                          db2.saveActivityVoidOffline(VoidOffline(
+                            idGenerate: '${logInfoVoidSucc}${myController.text}',
+                            date: '${DateTime.now()}',
+                          ));
+                        } else {
+                          if (_isConnected == true) {
+                            AndroidDeviceInfo info = await deviceInfo.androidInfo;
+                            final productId = myController.text;
+                          } else if (_isConnected == false) {
+                            String format = DateFormat.Hms().format(DateTime.now());
+                            db.saveActivityy(LogOffline(
+                              deskripsi: 'Generate - ${myController.text}',
+                              datetime: '${DateTime.now()}',
+                            ));
+                          }
+                        }
+                      } else {
+                      }
+                    },
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(10, 350, 10, 0),
+                  child: AnimatedOpacity(
+                    opacity: _visible ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 500),
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            height: 110,
+                            child:
+                              SfBarcodeGenerator(
+                                value: '$data', 
+                                backgroundColor: Colors.white, 
+                                barColor: Colors.black, 
+                                symbology: Code128()
+                              ),
+                            ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(100, 30, 100, 0),
+                            child: PrettyQr(
+                              image: AssetImage('assets/ramayana(C).png'),
+                              size: 200,
+                              data: '$data',
+                              errorCorrectLevel: QrErrorCorrectLevel.M,
+                              typeNumber: 7,
+                              roundEdges: false,
+                            ),
+                          )
+                        ],
+                      ),
+                  ))),
+              ]),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+}

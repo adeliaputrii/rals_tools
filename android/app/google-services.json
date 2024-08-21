@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "957948400537",
+    "project_id": "realtime-db-project-909b8",
+    "storage_bucket": "realtime-db-project-909b8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:957948400537:android:338ba7614f48e8db9bb908",
+        "android_client_info": {
+          "package_name": "com.rals.myactivity_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsVWrhID3vx1ZehO4yX1Tg1sz5Uvfnaic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
