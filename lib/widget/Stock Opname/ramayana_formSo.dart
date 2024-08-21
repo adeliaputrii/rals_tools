@@ -17,7 +17,6 @@ class RamayanaSo extends StatefulWidget {
   int? id;
   bool? message;
   String? text;
-
   @override
   State<RamayanaSo> createState() => _RamayanaSoState();
 }
@@ -44,7 +43,9 @@ class _RamayanaSoState extends State<RamayanaSo> {
   List<Data> dataItems = [];
   List<ItemData> dataItemsLokal = [];
   List? listGet;
+  // bool loading = false;
 
+  String _location = '';
   bool canWrite = false;
 
   late PopUpWidget popUpWidget;
@@ -71,8 +72,6 @@ class _RamayanaSoState extends State<RamayanaSo> {
     }
       });
   }
-
-
   Future<void> scanBarcodeScan(
     TextEditingController controller,
     FocusNode focuss
