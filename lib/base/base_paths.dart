@@ -1,8 +1,9 @@
-const String base_url_dev = "http://172.16.126.221:8002/";
-const String base_url_dev_tms_localhost = "http://172.16.126.221:8000/";
-// const String base_url_dev = "https://dev-android-api.ramayana.co.id:8305/";
+// const String base_url_dev = "http://172.16.126.221:8002/";
+// const String base_url_dev = "http://172.16.126.54:8002/";
+// const String base_url_dev_tms_localhost = "http://172.16.126.221:8000/";
+// const String base_url_prod = "https://dev-android-api.ramayana.co.id:8305/";
 const String base_url_prod = "https://android-api.ramayana.co.id:8304/";
-const String base_url_dev_tms = "https://dev-ris.ramayana.co.id/";
+// const String base_url_prod_tms = "https://dev-ris.ramayana.co.id/";
 const String base_url_prod_tms = "https://ris.ramayana.co.id/";
 const String testing = "https://mocki.io/";
 
@@ -12,7 +13,7 @@ const String accept = 'application/json';
 const String api_login = "api/v1/auth/signin";
 const String api_logout = "api/v1/auth/logout";
 const String api_reset_pass = 'api/v1/auth/reset.password';
-// const String api_my_log = 'api/v1/activity/createmylog';
+const String api_my_log = 'v1/activity/createmylog';
 
 //Membercard
 const String api_membercard_customer = "api/v1/membercards/tbl_customer";
@@ -56,6 +57,11 @@ const String api_report_get_viewer = 'api/v1/report/get_viewer';
 
 const String api_get_pos_location = 'api/v1/stock-opname/get-location-scan/new';
 const String api_submit_so = 'api/v1/stock-opname/upload-scanner/new';
+
+//LSPB
+const String api_post_form = 'api/v1/lspb/posted-lspb_myareq';
+const String api_get_type_doc = 'api/v1/lspb/check_lspb-golddn?scan_dokumen=';
+const String api_get_view_lspb = 'api/v1/lspb/check_lspb-lspbreq?scan_dokumen=';
 
 //testing
 const String api_testing ='v1/440f1626-065f-4627-8a85-6b943fc41874';

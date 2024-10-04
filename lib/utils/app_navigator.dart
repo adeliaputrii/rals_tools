@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myactivity_project/utils/app_check_user.dart';
 import 'package:myactivity_project/utils/popup_widget.dart';
+import 'package:myactivity_project/widget/LSPB/import.dart';
 import 'package:myactivity_project/widget/Membercard/import.dart';
 import 'package:myactivity_project/base/base_params.dart' as baseParam;
 import 'package:myactivity_project/widget/Stock%20Opname/import.dart';
@@ -97,6 +98,17 @@ class AppNavigator {
     if (listAccess.contains(baseParam.menuKeySo)) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return RamayanaSo(location: '', pos: '',date: '',posLocation: '', message: false,);
+      }));
+    } else {
+      showRestrictMessenger(context);
+    }
+  }
+  
+  static void navigateToLspb(BuildContext context) async {
+    final listAccess = await SharedPref.getUserAccess() ?? '';
+    if (listAccess.contains(baseParam.menuKeyLspb)) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return RamayanaLspb();
       }));
     } else {
       showRestrictMessenger(context);

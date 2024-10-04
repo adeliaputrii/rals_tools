@@ -20,6 +20,7 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
   bool isSearch = false;
 
   late ReportCubit reportCubit;
+  late LoginCubit loginCubit;
   late PopUpWidget popUpWidget;
 
   String searchQuery = '';
@@ -50,7 +51,7 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
 
   void initDataReport() {
     reportCubit.getListReportPagination(token ?? '',"", "", "", "");
-    // loginCubit.createLog(baseParam.logInfoReportPage, baseParam.logInfoNavigateReportPage, basePath.api_report_list_pagination);
+    loginCubit.createLog(baseParam.logInfoReportPage, baseParam.logInfoNavigateReportPage, basePath.api_report_list_pagination);
   }
 
   void scrollListener() {

@@ -57,8 +57,8 @@ class ToolsMenuWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-              menuIcon(baseParam.menuSo, baseAsset.soLogo, navigate: () => AppNavigator.navigateToSo(context))
-              // menuIcon(baseParam.menuCekHarga, baseAsset.checkPriceLogo, navigate: () => AppNavigator.navigateToCheckPrice(context)),
+              menuIcon(baseParam.menuSo, baseAsset.soLogo, navigate: () => AppNavigator.navigateToSo(context)),
+              menuIcon(baseParam.menuLspb, baseAsset.lspbLogo, navigate: () => AppNavigator.navigateToLspb(context)),
               // menuIcon(baseParam.menuApprReturn, baseAsset.appReturnLogo, navigate: () => AppNavigator.navigateToApprReturn(context))
             ]),
           ),
@@ -137,8 +137,8 @@ class AllMenuWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20.0),
                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                  menuIcon(baseParam.menuSo, baseAsset.soLogo, navigate: () => AppNavigator.navigateToSo(context))
-                    // menuIcon(baseParam.menuCekHarga, baseAsset.checkPriceLogo, navigate: () => AppNavigator.navigateToCheckPrice(context)),
+                  menuIcon(baseParam.menuSo, baseAsset.soLogo, navigate: () => AppNavigator.navigateToSo(context)),
+                  menuIcon(baseParam.menuLspb, baseAsset.lspbLogo, navigate: () => AppNavigator.navigateToLspb(context)),
                     // menuIcon(baseParam.menuApprReturn, baseAsset.appReturnLogo, navigate: () => AppNavigator.navigateToApprReturn(context))
                   ]),
                 ),

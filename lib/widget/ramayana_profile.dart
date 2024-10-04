@@ -13,15 +13,16 @@ class _ProfileeState extends State<Profilee> {
   TextEditingController myControllerID = TextEditingController();
   TextEditingController myControllerEmail = TextEditingController();
   DbHelperLoginOffline db3 = DbHelperLoginOffline();
+  
 
   static UserData userData = UserData();
 
   String _fullname = '';
   String _scanBarcode = '';
-  String _email = '';
+  String _email = '-';
   var _member = '';
   var noMember = '';
-  var poin = '';
+  var poin = '-';
   String _divisi = '';
   String _udid = 'Unknown';
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -30,6 +31,7 @@ class _ProfileeState extends State<Profilee> {
   bool loading = true;
   late LoginCubit loginCubit;
   late IDCashCubit cubit;
+  final urlApi = '${tipeurl}${basePath.api_login}';
 
   @override
   void initState() {
@@ -102,19 +104,21 @@ class _ProfileeState extends State<Profilee> {
   );
 
   logoutPressed() async {
+    loginCubit.createLog(baseParam.logInfoProfilePage, baseParam.logInfoProfile, urlApi);
     SharedPreferences pref = await SharedPreferences.getInstance();
     SharedPref.clearLastLogin();
     await SharedPref.clearLastLogin();
-    await SharedPref.clearUserId();
+    // await SharedPref.clearUserId();
     await SharedPref.clearToken();
     pref.remove('waktuLogin');
-    loginCubit.logout();
+    // loginCubit.logout();
     LoginOffline.listActivity.forEach((element) async {
       await db3.deleteActivityy(element.id_act!);
     });
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
       return RamayanaLogin();
     }));
+    
   }
 
   sweatAlert() {
@@ -215,6 +219,7 @@ class _ProfileeState extends State<Profilee> {
           setState(() {
             noMember = state.response.data!.first.nokartu.toString();
             poin = state.response.data!.first.poin.toString();
+            _email = userData.getEmail();
             });
           }
         },
@@ -374,7 +379,8 @@ class _ProfileeState extends State<Profilee> {
                                 Container(
                                   margin: EdgeInsets.only(left: 20),
                                   child: Text(
-                                    userData.getEmail() == null ? '-' : '${userData.getEmail()}',
+                                   _email,
+                                    // '-',
                                     style:GoogleFonts.plusJakartaSans(
                                       textStyle: TextStyle(
                                         fontSize: 17, 
@@ -428,6 +434,59 @@ class _ProfileeState extends State<Profilee> {
                                   margin: EdgeInsets.only(left: 20),
                                   child: Text(
                                     userData.getUsernameID() == null ? '-' : '${userData.getUsernameID()}',
+                                    style:GoogleFonts.plusJakartaSans(
+                                      textStyle: TextStyle(
+                                        fontSize: 17, 
+                                        color: Color.fromARGB(255, 71, 70, 70)
+                                      )
+                                    ),
+                                  ),
+                                ),
+                               ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 80,
+                      margin: EdgeInsets.only(bottom: 20),
+                      decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 20),
+                            child: CircleAvatar(
+                              backgroundColor: Color.fromARGB(255, 210, 14, 0), 
+                              radius: 30, 
+                              backgroundImage: AssetImage('assets/store.png')
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 12),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 20),
+                                  child: Text(
+                                  'Toko',
+                                  style: GoogleFonts.plusJakartaSans(
+                                    textStyle:TextStyle(
+                                      fontSize: 19, 
+                                      color: Color.fromARGB(255, 71, 70, 70), 
+                                      fontWeight: FontWeight.w500)
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 20),
+                                  child: Text(
+                                    userData.getUserToko() == null ? '-' : '${userData.getUserToko()}',
                                     style:GoogleFonts.plusJakartaSans(
                                       textStyle: TextStyle(
                                         fontSize: 17, 

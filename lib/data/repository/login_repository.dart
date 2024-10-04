@@ -57,30 +57,30 @@ class LoginRepositories {
     return response;
   }
 
-  // Future<RepositoriesResponse> createLog(CreateLogBody body) async {
-  //   final services = GetIt.I.get<LoginService>();
+  Future<RepositoriesResponse> createLog(CreateLogBody body) async {
+    final services = GetIt.I.get<LoginService>();
 
-  //   late RepositoriesResponse response;
+    late RepositoriesResponse response;
 
-  //   try {
-  //     await services.createLog(body).then((value) {
-  //       response = RepositoriesResponse(isSuccess: true, statusCode: value.status, dataResponse: value);
-  //     });
-  //   } catch (e) {
-  //     if (e is DioError) {
-  //       if (e.response?.statusCode == 400) {
-  //         response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
-  //       } else if (e.response?.statusCode == 404) {
-  //         response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
-  //       } else if (e.response?.statusCode == 401) {
-  //         response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
-  //       }
-  //     } else {
-  //       response = RepositoriesResponse(isSuccess: false, statusCode: 500, dataResponse: e.toString());
-  //     }
-  //   }
-  //   return response;
-  // }
+    try {
+      await services.createLog(body).then((value) {
+        response = RepositoriesResponse(isSuccess: true, statusCode: value.status, dataResponse: value);
+      });
+    } catch (e) {
+      if (e is DioError) {
+        if (e.response?.statusCode == 400) {
+          response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
+        } else if (e.response?.statusCode == 404) {
+          response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
+        } else if (e.response?.statusCode == 401) {
+          response = RepositoriesResponse(isSuccess: false, statusCode: e.response?.statusCode, dataResponse: e.response!.data.toString());
+        }
+      } else {
+        response = RepositoriesResponse(isSuccess: false, statusCode: 500, dataResponse: e.toString());
+      }
+    }
+    return response;
+  }
 
   Future<RepositoriesResponse> logout() async {
     final services = GetIt.I.get<LoginService>();

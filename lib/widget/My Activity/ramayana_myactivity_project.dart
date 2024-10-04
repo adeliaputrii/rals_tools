@@ -1,13 +1,14 @@
 part of 'import.dart';
 
 class RamayanaMyActivityProject extends StatefulWidget {
-  RamayanaMyActivityProject({super.key, this.update = false, this.desc, this.timeStart, this.timeEnd, this.id});
+  RamayanaMyActivityProject({super.key, this.update = false, this.desc, this.timeStart, this.timeEnd, this.id, this.dokumen});
 
   bool update;
   String? desc;
   String? timeStart;
   String? timeEnd;
   String? id;
+  List<Dokumen>? dokumen;
 
   @override
   State<RamayanaMyActivityProject> createState() => _RamayanaMyActivityProjectState();
@@ -28,6 +29,7 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     token = await SharedPref.getToken();
     myactivityCubit.getProject(token!);
+    print(widget.desc);
   }
 
   void _navigateToListTask(String projectId, String projectDesc) {
@@ -38,6 +40,7 @@ class _RamayanaMyActivityProjectState extends State<RamayanaMyActivityProject> {
         id: widget.id,
         projectId: projectId,
         projectDesc: projectDesc,
+        filename: widget.dokumen,
       );
     })).then((_) {
       myactivityCubit.getProject(token!);

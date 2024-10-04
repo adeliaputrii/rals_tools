@@ -99,7 +99,24 @@ class _MyActivityEditState extends State<MyActivityEdit> {
                           onPressed: () async {
                             cubit.getProject(token!);
                             cubit.getTaskUser(token!);
+                            List<Dokumen>? attachment = [];
+                            if (state.response.data![index].attachments == null || state.response.data![index].attachments!.isEmpty) {
+                              attachment = [];
+                              print('No attachments found.');
+                            } else {
+                              // Safely iterate over the attachments and add them to the list
+                              for (var e in state.response.data![index].attachments!) {
+                                attachment.add(Dokumen(filename: e.attachment ?? ''));
+                              }
+                               
+                              if (attachment.isNotEmpty) {
+                                print('attachmentttt: ${attachment.first.filename}');
+                              } else {
+                                print('No attachments found.');
+                              }
+                            }
                             Navigator.pop(context, {
+                              'filename': attachment,
                               'projectId': state.response.data?[index].projekId,
                               'taskId': state.response.data?[index].taskId,
                               'update': true,
@@ -107,7 +124,7 @@ class _MyActivityEditState extends State<MyActivityEdit> {
                               'timeStart': state.response.data?[index].timeStart,
                               'timeEnd': state.response.data?[index].timeEnd,
                               'desc': state.response.data?[index].myactivityDesc,
-                              'id': state.response.data?[index].myactivityId
+                              'id': state.response.data?[index].myactivityId,
                             });
                           },
                           child: ListTile(

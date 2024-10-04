@@ -5,7 +5,17 @@ import 'package:intl/intl.dart';
 class DateTimeUtils {
   DateTimeUtils._();
   static DateTime convertStringToDateTime(String timeString) {
-    return DateFormat("HH:mm:ss").parse(timeString); 
+    DateTime parsedTime = DateFormat("HH:mm:ss").parse(timeString);
+    DateTime now = DateTime.now();
+    DateTime dateTime = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      parsedTime.hour,
+      parsedTime.minute,
+      parsedTime.second
+    );
+    return dateTime;
   }
 
   static String convertTohhmm(DateTime time) {

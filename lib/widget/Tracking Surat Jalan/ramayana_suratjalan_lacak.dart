@@ -150,6 +150,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
               statusController.text = state.response.data?.detailSj?.trackingStatus ?? baseParam.dash;
               colyAvailableController.text = state.response.data?.detailSj?.actualKoli?.toString() ?? '0';
             }
+            loginCubit.createLog(baseParam.logInfoTrackSJPage, baseParam.logInfoTrackSJPage, apiUrl);
             }
             if (state is SuratJalanFailure) {
               setState(() {
@@ -157,6 +158,7 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
                 isLoading = false;
               });
               popUp.showPopUpError(notFound, state.message);
+              loginCubit.createLog(baseParam.logInfoScanSJFail, state.message, apiUrl);
             }
             if (state is TrackSJSuccess) {
               int index = 0;
@@ -179,9 +181,11 @@ class _RamayanaSuratJalanLacakState extends State<RamayanaSuratJalanLacak> with 
                     })));
                 });
               }
+              loginCubit.createLog(baseParam.logInfoScanSJSucc, baseParam.logInfoTrackSJSucc, apiUrl);
             }
 
             if (state is TrackSJFailure) {
+              loginCubit.createLog(baseParam.logInfoScanSJFail, state.message, apiUrl);
             }
           },
           child: DefaultTabController(

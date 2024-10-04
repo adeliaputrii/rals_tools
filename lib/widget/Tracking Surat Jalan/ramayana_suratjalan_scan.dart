@@ -42,6 +42,7 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
   late SuratJalanCubit sjCubit;
   late LoginCubit logCubit;
   late PopUpWidget popUp;
+  final urlApi ='${tipeurl}${basePath.api_tracking_scan}';
   KeyboardUtils keyboardUtils = KeyboardUtils();
   int indexSj = 0;
   int receivedColyResponse = 0;
@@ -400,9 +401,11 @@ class _RamayanaSuratJalanScanState extends State<RamayanaSuratJalanScan> {
               setState(() {
                 _visible = false;
               });
+              logCubit.createLog(baseParam.logInfoScanSJPage, baseParam.logInfoScanSJSucc, urlApi);
               popUp.showPopUpSuccess(state.response.message ?? 'Submit Pelacakan Sukses!', trackSJNavigate, navigateTrackSJ);
             }
             if (state is ScanSJFailure) {
+              logCubit.createLog(baseParam.logInfoScanSJFail, state.message, urlApi);
               popUp.showPopUpError(failed, state.message);
             }
           },

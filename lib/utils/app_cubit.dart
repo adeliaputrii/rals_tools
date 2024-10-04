@@ -4,6 +4,7 @@ import 'package:myactivity_project/cubit/company_card/company_card_cubit.dart';
 import 'package:myactivity_project/cubit/home/home_cubit.dart';
 import 'package:myactivity_project/cubit/id_cash/id_cash_cubit.dart';
 import 'package:myactivity_project/cubit/login/login_cubit.dart';
+import 'package:myactivity_project/cubit/lspb/lspb_cubit.dart';
 import 'package:myactivity_project/cubit/myactivity/myactivity_cubit.dart';
 import 'package:myactivity_project/cubit/report/report_cubit.dart';
 import 'package:myactivity_project/cubit/stock_opname/so_cubit.dart';
@@ -35,6 +36,9 @@ class AppCubit {
       ),
       BlocProvider<StockOpnameCubit>(
         create: (BuildContext context) => StockOpnameCubit(),
+      ),
+      BlocProvider<LspbCubit>(
+        create: (BuildContext context) => LspbCubit(),
       ),
     ], child: widget);
   }

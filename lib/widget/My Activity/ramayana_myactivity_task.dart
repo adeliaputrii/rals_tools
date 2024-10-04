@@ -11,7 +11,9 @@ class RamayanaMyActivityTask extends StatefulWidget {
     this.desc,
     this.timeStart,
     this.timeEnd,
-    this.id});
+    this.id,
+    this.dokumen
+    });
 
   final bool update;
   final String? projectId;
@@ -22,6 +24,7 @@ class RamayanaMyActivityTask extends StatefulWidget {
   String? timeStart;
   String? timeEnd;
   String? id;
+  List<Dokumen>? dokumen;
   @override
   State<RamayanaMyActivityTask> createState() => _RamayanaMyActivityTaskState();
 }
@@ -101,6 +104,7 @@ class _RamayanaMyActivityTaskState extends State<RamayanaMyActivityTask> {
                               id: widget.id,
                               desc: widget.desc,
                               update: widget.update,
+                              filename: widget.dokumen,
                               projectId: '${widget.projectId}',
                               projectDesc: '${widget.projectDesc}',
                               taskId: '${state.response.data?[index].taskId}',

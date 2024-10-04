@@ -4,6 +4,7 @@ import 'package:myactivity_project/base/base_paths.dart';
 import 'package:myactivity_project/data/service/company_card_service.dart';
 import 'package:myactivity_project/data/service/id_cash_service.dart';
 import 'package:myactivity_project/data/service/login_service.dart';
+import 'package:myactivity_project/data/service/lspb_service.dart';
 import 'package:myactivity_project/data/service/myactivity_service.dart';
 import 'package:myactivity_project/data/service/report_service.dart';
 import 'package:myactivity_project/data/service/stock_opname_service.dart';
@@ -80,6 +81,13 @@ class AppServices {
     } else {
       get.unregister<StockOpnameService>();
       get.registerFactory(() => StockOpnameService(dio, baseUrl: base_url_prod_tms));
+    }
+    
+    if (!get.isRegistered<LspbService>()) {
+      get.registerFactory(() => LspbService(dio, baseUrl: url));
+    } else {
+      get.unregister<LspbService>();
+      get.registerFactory(() => LspbService(dio, baseUrl: url));
     }
   }
 }

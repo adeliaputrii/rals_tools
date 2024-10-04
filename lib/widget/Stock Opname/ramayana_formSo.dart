@@ -24,14 +24,16 @@ class RamayanaSo extends StatefulWidget {
 class _RamayanaSoState extends State<RamayanaSo> {
 
   TextEditingController _controllerLocation = TextEditingController();
+  TextEditingController _controllerLocationReScan = TextEditingController();
   TextEditingController _controllerSku = TextEditingController();
   TextEditingController _controllerJumlah = TextEditingController();
-
   final _formKey = GlobalKey<FormState>();
   final focus = FocusNode();
   final focus1 = FocusNode();
 
   late StockOpnameCubit soCubit;
+  late LoginCubit loginCubit;
+  var urlApi = '${tipeurl}${basePath.api_submit_so}';
   String? token;
   UserData userData = UserData();
   DbHelperStockOpname db = DbHelperStockOpname();
@@ -43,12 +45,30 @@ class _RamayanaSoState extends State<RamayanaSo> {
   List<Data> dataItems = [];
   List<ItemData> dataItemsLokal = [];
   List? listGet;
+  List? listSave;
+  
   // bool loading = false;
 
   String _location = '';
   bool canWrite = false;
+  bool canWriteReScan = false;
+  bool foundLocationSame = false;
 
   late PopUpWidget popUpWidget;
+
+  autoFillQuantity (String sku) {
+    canWrite = false;
+    if (sku.startsWith('20') && sku.length == 18) {
+      String end = sku.substring(sku.length - 6);
+      String endQty = end.substring(0, 2) + '.' + end.substring(2);
+      print(endQty);
+      setState(() {
+        _controllerJumlah.text = endQty;
+        canWrite = true;
+      });
+    } else 
+    _controllerJumlah.clear();
+  }
 
   popUpLocation() async {
     final result = await showCupertinoModalPopup(context: context, builder: (context) => SoPopup());
@@ -72,27 +92,88 @@ class _RamayanaSoState extends State<RamayanaSo> {
     }
       });
   }
+
+
+
   Future<void> scanBarcodeScan(
     TextEditingController controller,
     FocusNode focuss
   ) async {
-    String barcodeScanRes;
-    try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#ff6666', 'Cancel', true, ScanMode.BARCODE);
-      if (barcodeScanRes == '-1') {
+    var result = await BarcodeScanner.scan(); //barcode scanner			
+    print(result.type);  // The result type (barcode, cancelled, failed)	   
+    print(result.rawContent); // The barcode content
+    print(result.format); // The barcode format (as enum)
+    print(result.formatNote);
+     if (result.rawContent == null) {
         popUpWidget.showPopUpError(notFound, 'Barcode tidak terdeteksi');
-      } else {
-        controller.text = barcodeScanRes;
+      } else if (!RegExp(r'^[0-9]+$').hasMatch(result.rawContent)) {
+        popUpWidget.showPopUpError(notFound, 'Barcode tidak valid');
+      } 
+      else {
+        controller.text = result.rawContent;
+        autoFillQuantity(result.rawContent);
         FocusScope.of(context).requestFocus(focuss);
       }
-    } on PlatformException {
-      barcodeScanRes = 'Failed to get platform version.';
-      if (!mounted) return;
-      setState(() {
-        controller.text = barcodeScanRes;
-        FocusScope.of(context).requestFocus(focuss);
-      });
-    }
+
+    // String barcodeScanRes;
+    // try {
+    //   barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#ff6666', 'Cancel', true, ScanMode.BARCODE);
+    //   if (barcodeScanRes == '-1') {
+    //     popUpWidget.showPopUpError(notFound, 'Barcode tidak terdeteksi');
+    //   } else if (!RegExp(r'^[0-9]+$').hasMatch(barcodeScanRes)) {
+    //     popUpWidget.showPopUpError(notFound, 'Barcode tidak valid');
+    //   } 
+    //   else {
+    //     controller.text = barcodeScanRes;
+    //     autoFillQuantity(barcodeScanRes);
+    //     FocusScope.of(context).requestFocus(focuss);
+    //   }
+    // } on PlatformException {
+    //   barcodeScanRes = 'Failed to get platform version.';
+    //   if (!mounted) return;
+    //   setState(() {
+    //     controller.text = barcodeScanRes;
+    //     FocusScope.of(context).requestFocus(focuss);
+    //   });
+    // }
+  }
+
+  void deletePosLocation(int id){
+    dbSave.delete(id);
+  }
+
+  Future<void> scanBarcode(
+  ) async {
+    String barcodeScanRes;
+    var result = await BarcodeScanner.scan(); //barcode scanner			
+    print(result.type);  // The result type (barcode, cancelled, failed)	   
+    print(result.rawContent); // The barcode content
+    print(result.format); // The barcode format (as enum)
+    print(result.formatNote);
+     if (result.rawContent == null) {
+        popUpWidget.showPopUpError(notFound, 'Barcode tidak terdeteksi');
+      } 
+      else {
+        _controllerLocationReScan.text = result.rawContent;
+        autoFillQuantity(result.rawContent);
+      }
+    // try {
+    //   barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#ff6666', 'Cancel', true, ScanMode.BARCODE);
+    //   if (barcodeScanRes == '-1') {
+    //     popUpWidget.showPopUpError(notFound, 'Barcode tidak terdeteksi');
+    //   }
+    //   else {
+    //     setState(() {
+    //     _controllerLocationReScan.text = barcodeScanRes;
+    //     });
+    //   }
+    // } on PlatformException {
+    //   barcodeScanRes = 'Failed to get platform version.';
+    //   if (!mounted) return;
+    //   setState(() {
+    //     _controllerLocationReScan.text = barcodeScanRes;
+    //   });
+    // }
   }
 
   submitPressed() async {
@@ -133,27 +214,22 @@ class _RamayanaSoState extends State<RamayanaSo> {
     final body = StockOpnameGetBody(
       quenic: '${parameter()}'
     );
-    soCubit.getPosLocation(
-      token ?? '', body
-    );
+    // soCubit.getPosLocation(
+    //   token ?? '', body
+    // );
 
-     if(widget.text != null) {
-      popUpWidget.showPopupSucces('${widget.text}');
-     setState(() {
-       widget.text = null;
-     });
-     if (widget.message == true ){
-      setState(() {
-        dbSave.deleteAll();
-        widget.message = false;
-      });
-     }
-    } else {
-      print(widget.message);
-    }
+     if(widget.message == true) {
+        SharedPref.setSubmit('true');
+        setState(() {
+          widget.message = false;
+        });
+      } else {
+        print(widget.message);
+       }
     
     var list = await db.getAllFormat();
     listGet = await dbGet.getAllFormat();
+    listSave= await dbSave.getAllFormat();
     if (listGet != null ){
       for (var activity in listGet!) {
         if (activity['location'] == widget.location) {
@@ -200,7 +276,7 @@ class _RamayanaSoState extends State<RamayanaSo> {
       _controllerLocation.clear();
       widget.posLocation = '';
       db.deleteAll();
-      popUpWidget.showPopupSucces('Data Telah Disimpan secara Lokal', );
+      popUpWidget.showPopupSucces('Jumlah SKU : ${data?.length}','Data Telah Disimpan secara Lokal', );
       
       });
 
@@ -231,7 +307,7 @@ class _RamayanaSoState extends State<RamayanaSo> {
     super.initState();
     popUpWidget = PopUpWidget(context);
     soCubit = context.read<StockOpnameCubit>();
-    
+    loginCubit = context.read<LoginCubit>();
     _getAllActivity();
   }
 
@@ -340,7 +416,21 @@ class _RamayanaSoState extends State<RamayanaSo> {
                           minWidth: screenWidth,
                           height: 50,
                           color: Color.fromARGB(255, 223, 222, 222),
-                          onPressed: () async{
+                          onPressed: () async{ 
+                            String? submit = await SharedPref.getSubmit();
+                            print('SUBMIT = ${submit}');
+                            if (submit == 'true') {
+                              dbSave.deleteAll().then((_) => SharedPref.clearSubmit());
+                              loginCubit.createLog(baseParam.logSoPage, '${baseParam.logSoSubmit}${widget.text} Pos Location', urlApi);
+                              final body = StockOpnameGetBody(
+                            quenic: '${parameter()}'
+                          );
+                            soCubit.getPosLocation(
+                              token ?? '', body
+                              );
+                            popUpLocation();
+                            await _getAllActivity();
+                            } else {
                             final body = StockOpnameGetBody(
                             quenic: '${parameter()}'
                           );
@@ -349,6 +439,7 @@ class _RamayanaSoState extends State<RamayanaSo> {
                               );
                             popUpLocation();
                             await _getAllActivity();
+                          }
                           },
                           child: 
                           widget.posLocation == ''
@@ -368,7 +459,266 @@ class _RamayanaSoState extends State<RamayanaSo> {
                             color: baseColor.primaryColor
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        widget.posLocation == ''
+                        ?
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Color.fromARGB(255, 223, 222, 222)
                           ),
+                          child: TextFormField(
+                            controller: _controllerLocationReScan,
+                            onTap: () {
+                              if(listSave!.isEmpty) {
+                                  popUpWidget.showPopUpError('Failed', 'Anda tidak memiliki data untuk scan ulang');
+                              } else  {
+                                setState(() {
+                                  canWrite = true;
+                                });
+                              }
+                            },
+                            readOnly: !canWrite,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black
+                            ),
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                            prefixIcon: IconButton(
+                              onPressed: () async{
+                                print('klik ${listSave}');
+                                if(listSave!.isEmpty) {
+                                  popUpWidget.showPopUpError('Failed', 'Anda tidak memiliki data untuk scan ulang');
+                                } else  {
+                                  scanBarcode();
+                                }
+                              },
+                              icon: Icon(Icons.qr_code,
+                                color: baseColor.primaryColor,
+                              ),
+                            ),
+                            suffixIcon: 
+                            _controllerLocationReScan.text.isEmpty
+                            ?
+                            SizedBox()
+                            :
+                            IconButton(
+                              onPressed: () {
+                                print(listSave);
+                                if (listSave != null) {
+                                  setState(() {
+                                      foundLocationSame = false;
+                                    });
+                                for (var activityy in listSave!) {
+                                  String posLocation = '${activityy['pos']}${activityy['location']}';
+                                  print(posLocation);
+                                  if(_controllerLocationReScan.text == posLocation) {
+                                    
+                                    print(foundLocationSame);
+                                    CoolAlert.show(
+                                      context: context,
+                                      type: CoolAlertType.warning,
+                                      text: 'Apa Anda Yakin ingin menghapus data ${activityy['pos']}-${activityy['location']}',
+                                      confirmBtnText: 'Yes',
+                                      cancelBtnText: 'Kembali',
+                                      onCancelBtnTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      confirmBtnColor: Colors.red,
+                                      onConfirmBtnTap: () {
+                                        dbSave.delete(activityy['id']);
+                                        dbGet.save(SoGetDataModel(
+                                          pos: activityy['pos'],
+                                          location: activityy['location'],
+                                          tanggal: activityy['tanggal'],
+                                          ));
+                                        setState(() {
+                                          _controllerLocationReScan.clear();
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                    );
+                                    return;
+                                  } else {
+                                    setState(() {
+                                      foundLocationSame = true;
+                                    });
+                                  
+                                  }
+                                }
+                                if (foundLocationSame == true) {
+                                  print(foundLocationSame);
+                                  popUpWidget.showPopUpError('Scan/Input Kembali', 'Pos Location tidak tersedia di penyimpanan lokal');
+                                }
+                              }},
+                              icon: Icon(IconlyBold.delete,
+                                color: baseColor.primaryColor,
+                              ),
+                            ),
+                            hintText: 'Scan/Input Ulang Pos Location',
+                            hintStyle: GoogleFonts.plusJakartaSans(
+                              color: baseColor.primaryColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                              borderSide: BorderSide(
+                                color: Color.fromARGB(255, 223, 222, 222),
+                                width: 1.5,
+                               ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                              borderSide: BorderSide(
+                                color: Color.fromARGB(255, 223, 222, 222), 
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                                borderSide: BorderSide(
+                                  color: baseColor.primaryColor, 
+                                  width: 1.5,
+                                ),
+                              ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                                borderSide: BorderSide(
+                                  color: baseColor.primaryColor, 
+                                  width: 1.5,
+                                ),
+                              ),
+                            ),
+                          
+                            // suffixIcon: Row(
+                            //   children: [
+                            //     IconButton(
+                            //       onPressed: (){}, 
+                            //       icon: Icon(Icons.qr_code,
+                            //       color: baseColor.primaryColor,
+                            //       size: 25,
+                            //       )
+                            //     ),
+                                
+                            //     IconButton(
+                            //       onPressed: (){}, 
+                            //       icon: Icon(IconlyBold.delete,
+                            //       color: baseColor.primaryColor,
+                            //       size: 25,
+                            //       ),  
+                            //     ),
+                                
+                                
+                            //   ],
+                            // )
+                            
+                          ),
+                        )
+                        // MaterialButton(
+                        //   shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(15)
+                        //   ),
+                        //   minWidth: screenWidth,
+                        //   height: 50,
+                        //   color: Color.fromARGB(255, 223, 222, 222),
+                        //   onPressed: () async{
+                        //     print('klik ${listSave}');
+                        //     if(listSave!.isEmpty) {
+                        //       popUpWidget.showPopUpError('Failed', 'Anda tidak memiliki data untuk scan ulang');
+                        //     } else  {
+                        //       scanBarcode();
+                        //     }
+                        //   },
+                        //   child: 
+                        //   Row(
+                        //     mainAxisAlignment: 
+                        //     scanResult == null
+                        //     ?
+                        //     MainAxisAlignment.center
+                        //     :
+                        //     MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       // Text('${scanResult ?? 'Scan Ulang Pos Location'}',
+                        //       // style: GoogleFonts.plusJakartaSans(
+                        //       //   fontSize: 
+                        //       //   scanResult == null
+                        //       //   ?
+                        //       //   15
+                        //       //   :
+                        //       //   20,
+                        //       //   fontWeight: FontWeight.w500,
+                        //       //   color: baseColor.primaryColor
+                        //       //   ),
+                        //       // ),
+                        //       scanResult == null
+                        //       ?
+                        //       SizedBox()
+                        //       :
+                        //       MaterialButton(
+                        //       minWidth: 10,
+                        //       onPressed: (){
+                        //         print(listSave);
+                        //         if (listSave != null) {
+                        //           setState(() {
+                        //               foundLocationSame = false;
+                        //             });
+                        //         for (var activityy in listSave!) {
+                        //           String posLocation = '${activityy['pos']}${activityy['location']}';
+                        //           print(posLocation);
+                        //           if(scanResult == posLocation) {
+                                    
+                        //             print(foundLocationSame);
+                        //             CoolAlert.show(
+                        //               context: context,
+                        //               type: CoolAlertType.warning,
+                        //               text: 'Apa Anda Yakin ingin menghapus data ${activityy['pos']}-${activityy['location']}',
+                        //               confirmBtnText: 'Yes',
+                        //               cancelBtnText: 'Kembali',
+                        //               onCancelBtnTap: () {
+                        //                 Navigator.pop(context);
+                        //               },
+                        //               confirmBtnColor: Colors.red,
+                        //               onConfirmBtnTap: () {
+                        //                 dbSave.delete(activityy['id']);
+                        //                 dbGet.save(SoGetDataModel(
+                        //                   pos: activityy['pos'],
+                        //                   location: activityy['location'],
+                        //                   tanggal: activityy['tanggal'],
+                        //                   ));
+                        //                 setState(() {
+                        //                   scanResult = null;
+                        //                 });
+                        //                 Navigator.pop(context);
+                        //               },
+                        //             );
+                        //             return;
+                        //           } else {
+                        //             setState(() {
+                        //               foundLocationSame = true;
+                        //             });
+                                  
+                        //           }
+                        //         }
+                        //         if (foundLocationSame == true) {
+                        //           print(foundLocationSame);
+                        //           popUpWidget.showPopUpError('Scan Kembali', 'Pos Location tidak tersedia di penyimpanan lokal');
+                        //         }
+                        //       }},
+                        //       child: Icon(IconlyBold.delete,
+                        //       color: baseColor.primaryColor,
+                        //       size: 30,
+                        //       ),  
+                        //     )
+                        //     ],
+                        //   )
+                        // )
+                        :
+                        SizedBox(),
                         widget.posLocation != ''
                         ?
                         Form(
@@ -379,7 +729,7 @@ class _RamayanaSoState extends State<RamayanaSo> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 20,bottom: 10),
+                                padding: const EdgeInsets.only(top: 0,bottom: 10),
                                 child: Text('Input/Scan Pos Location',
                                 style: GoogleFonts.plusJakartaSans(
                                 fontSize: 18,
@@ -419,9 +769,11 @@ class _RamayanaSoState extends State<RamayanaSo> {
                                     prefixIcon: Icon(Icons.location_pin,
                                     color: baseColor.primaryColor,
                                     ),
-                                    suffixIcon: IconButton(
-                                      onPressed: () {
+                                    suffixIcon: 
+                                    IconButton(
+                                      onPressed: ()async {
                                         scanBarcodeScan(_controllerLocation, focus);
+                                        
                                       },
                                       icon: Icon(Icons.qr_code,
                                       color: baseColor.primaryColor,
@@ -493,13 +845,15 @@ class _RamayanaSoState extends State<RamayanaSo> {
                                             canWrite = true;
                                             });
                                           } else {
+                                            setState(() {
                                             canWrite = false;
+                                            });
                                           }
                                         },
                                         controller: _controllerSku,
                                         keyboardType: TextInputType.number,
                                         inputFormatters: <TextInputFormatter>[
-                                          FilteringTextInputFormatter.digitsOnly
+                                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                                         ],
                                         readOnly: canWrite,
                                         textInputAction: TextInputAction.next,
@@ -518,7 +872,15 @@ class _RamayanaSoState extends State<RamayanaSo> {
                                           ),
                                           suffixIcon: IconButton(
                                             onPressed: () {
-                                              scanBarcodeScan(_controllerSku, focus1);
+                                              if (_controllerLocation.text != '${widget.pos}${widget.location}') {
+                                                setState(() {
+                                                popUpWidget.showPopUpError('Please Enter', 'Location Number not match');
+                                                });
+                                              } else {
+                                                setState(() {
+                                                scanBarcodeScan(_controllerSku, focus1);
+                                                });
+                                              }
                                             },
                                             icon: Icon(Icons.qr_code,
                                             color: baseColor.primaryColor,
@@ -584,13 +946,15 @@ class _RamayanaSoState extends State<RamayanaSo> {
                                                 });
                                               } else {
                                                 canWrite = false;
+                                                 autoFillQuantity(_controllerSku.text);
                                               }
                                             },
                                             controller: _controllerJumlah,
                                             keyboardType: TextInputType.number,
                                             readOnly: canWrite,
                                             inputFormatters: <TextInputFormatter>[
-                                              FilteringTextInputFormatter.digitsOnly
+                                              // FilteringTextInputFormatter.digitsOnly,
+                                              FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                                             ],
                                             textInputAction: TextInputAction.done,
                                             focusNode: focus1,
@@ -633,18 +997,21 @@ class _RamayanaSoState extends State<RamayanaSo> {
                                               if(_controllerSku.text.isEmpty || _controllerJumlah.text.isEmpty) {
                                                 popUpWidget.showPopUpError('Please Enter', 'Enter SKU & Quantity');
                                               } else {
-                                              // _location = _controllerLocation.text;
+                                              if (data!.any((item) => item['sku'] == _controllerSku.text)){
+                                                popUpWidget.showPopUpError('Failed', 'SKU has been added');
+                                              } else {
                                               setState(() {
                                                 location: '${widget.pos}${widget.location}';
                                                 db.save(StockOpnameModel(
                                                 sku: _controllerSku.text,
                                                 qty: _controllerJumlah.text
                                               ));
-                                              
                                               _controllerSku.clear();
                                               _controllerJumlah.clear();
+                                              canWrite = false;
+                                              FocusScope.of(context).requestFocus(focus);
                                               });
-                                            }
+                                            }}
                                             },
                                             child: CircleAvatar(
                                               child: Icon(Icons.add,
@@ -685,6 +1052,7 @@ class _RamayanaSoState extends State<RamayanaSo> {
                               future: getDatabase(),
                               builder: (context, snapshot) {
                                 data = snapshot.data;
+                                print('DATA ${data}');
                                 if (data != null) {
                                   dataItems = data!.map((item) {
                                   return Data(
@@ -807,14 +1175,17 @@ class _RamayanaSoState extends State<RamayanaSo> {
                                       WidgetsBinding.instance.addPostFrameCallback((_) {
                                     print('message :${state.response.message}');
                                        popUpWidget.showPopupSucces(
-                                      '${state.response.message}', );
+                                      '${state.response.message}',
+                                      'Success'
+                                       );
                                         setState(() {
+                                          // dbGet.deleteAll();
                                           widget.posLocation = '';
                                           db.deleteAll();
                                           _controllerLocation.clear();
-                                          dbGet.deleteAll();
                                         });
                                     });
+                                    loginCubit.createLog(baseParam.logSoPage, '${baseParam.logSoSubmit}1 Pos Location', urlApi);
                                   }
                                   if (state is StockOpnameSubmitFailure) {
                                     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -822,6 +1193,7 @@ class _RamayanaSoState extends State<RamayanaSo> {
                                       'Failed', '${state.message}'
                                     );
                                     });
+                                    loginCubit.createLog(baseParam.logSoPage, state.message, urlApi);
                                   }
                                   return 
                                   MaterialButton(
@@ -831,13 +1203,14 @@ class _RamayanaSoState extends State<RamayanaSo> {
                                       minWidth: screenWidth,
                                       color: baseColor.primaryColor,
                                       onPressed: () async{
-                                        
+                                      if(data!.isEmpty || _controllerSku.text.isNotEmpty || _controllerJumlah.text.isNotEmpty) {
+                                        popUpWidget.showPopUpError('Please Check Again', 'Enter SKU & Quantity');
+                                      } else { 
                                         setState(() {
                                           internetCheck();
-                                          
                                         });
+                                      }
                                     },
-                                      
                                       child: Text('SUBMIT',
                                       style: GoogleFonts.plusJakartaSans(
                                         fontSize: 15,
@@ -863,5 +1236,6 @@ class _RamayanaSoState extends State<RamayanaSo> {
         ),
       ),
     );
+    
   }
 }

@@ -26,7 +26,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
   AppWidget appWidget = AppWidget();
   var balance = 0;
   List<DataHistory> historyResponse = [];
-  final urlApi = '${tipeurl}${basePath.api_login}';
+  final urlApi = '${tipeurl}${basePath.api_get_company_card_detail}';
 
   @override
   void initState() {

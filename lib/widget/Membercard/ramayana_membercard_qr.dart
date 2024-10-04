@@ -25,7 +25,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
   Color _containerColorLacak = Color.fromARGB(255, 201, 201, 201);
   late PopUpWidget popUpWidget;
   late LoginCubit loginCubit;
-  final urlApi = '${tipeurl}${basePath.api_login}';
+  final urlApi = '${tipeurl}${basePath.api_get_company_card_detail}';
 
   @override
   void didPush() {

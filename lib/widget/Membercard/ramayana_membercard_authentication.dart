@@ -74,14 +74,17 @@ class _RamayanaMembercardAuthenticationState
         if (state is LoginSuccess) {
           Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (_) => RamayanaMembercardCard()));
+          loginCubit.createLog(baseParam.logMembercardPage, baseParam.logAuthenticationSucc, urlApi);
         }
         if (state is LoginFailure) {
           setState(() {
             isLoading = false;
           });
           if (state.message == baseParam.pleaseCheckConnection) {
+             loginCubit.createLog(baseParam.logAuthenticationfail, baseParam.logInfoLoginConec, urlApi);
             popUpWidget.showPopUpError(baseParam.pleaseCheck, state.message);
           } else {
+             loginCubit.createLog(baseParam.logAuthenticationfail, state.message, urlApi);
             final username = '${userData.getUsername7()}';
             popUpWidget.showPopUpError(baseParam.pleaseCheck, state.message);
           }

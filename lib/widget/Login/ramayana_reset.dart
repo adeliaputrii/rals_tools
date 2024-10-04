@@ -13,6 +13,7 @@ class _RamayanaResetState extends State<RamayanaReset> {
   bool _isLoading = false;
   UserData userData = UserData();
   late LoginCubit loginCubit;
+  final urlApi = '${tipeurl}${basePath.api_reset_pass}';
 
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
@@ -188,6 +189,7 @@ class _RamayanaResetState extends State<RamayanaReset> {
                       '${tipeurl}api/v1/auth/reset.password',
                       data: formData
                       );
+                      loginCubit.createLog(baseParam.logInfoResetPage, '${baseParam.logInfoResetSucc}', urlApi);
                       setState(() {
                         _isLoading = false;
                       });

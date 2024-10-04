@@ -22,6 +22,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
   bool _isKeptOn = true;
   double _brightness = 1.0;
   late LoginCubit loginCubit;
+  final apiUrl = '${tipeurl}${basePath.api_my_log}';
   KeyboardUtils keyboardUtils = KeyboardUtils();
   TextEditingController myController = TextEditingController();
 
@@ -174,8 +175,9 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
   }
 
   Future<String> _getLogikaVoid() async {
+    
     UserData userData = UserData();
-    await userData.getPref();
+    // await userData.getPref();
     String userId = userData.getUsernameID();
     String? randomAngka = myController.text;
     late int numberStepOne;
@@ -186,6 +188,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
       numberStepOne = stepOne(input: randomAngka);
       numberStepTwo = stepTwo(input: numberStepOne);
       result = stepThree(angkaKedua: numberStepTwo.toString(), angkaPertama: userId);
+      
     }
     return result;
   }
@@ -374,9 +377,11 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
                         didPush();
                         didPopNext();
                         data = await _getLogikaVoid();
+                        print('void');
                         setState(() {
                           _visible = true;
                         });
+                        print(_visible);
                         if (_visible == true) {
                           await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
                         } else {
@@ -388,12 +393,25 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
                             idGenerate: '${logInfoVoidSucc}${myController.text}',
                             date: '${DateTime.now()}',
                           ));
+                          //  if(deleteResult != 0){
+                          //               debugPrint('sukses delete data');
+
+                          //             }else{
+                          //               debugPrint('fail delete data');
+                          //             }
+
+                          debugPrint('login via offline');
                         } else {
+                          debugPrint('login via online');
                           if (_isConnected == true) {
+                            print('is connect');
                             AndroidDeviceInfo info = await deviceInfo.androidInfo;
                             final productId = myController.text;
+                            loginCubit.createLog(baseParam.logInfoVoidPage, '${baseParam.logInfoVoidSucc}${productId}', prod);
+                            print('berhasil $_udid');
                           } else if (_isConnected == false) {
                             String format = DateFormat.Hms().format(DateTime.now());
+                            print('not connect');
                             db.saveActivityy(LogOffline(
                               deskripsi: 'Generate - ${myController.text}',
                               datetime: '${DateTime.now()}',
@@ -401,6 +419,7 @@ class _RamayanaVoidState extends State<RamayanaVoid> with RouteAware, WidgetsBin
                           }
                         }
                       } else {
+                        print('required');
                       }
                     },
                   ),

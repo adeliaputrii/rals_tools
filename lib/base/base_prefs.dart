@@ -3,6 +3,7 @@ const String key_user_toko = "user_toko";
 const String key_token = "user_token";
 const String key_device_id = "user_device_id";
 const String key_device_name = "user_device_name";
+const String key_submit = "submit";
 const String key_last_login = "user_last_login";
 const String key_list_access = "list_access_menu";
 const String key_member = "key_member";

@@ -5,6 +5,7 @@ class RamayanaMyActivity extends StatefulWidget {
     {super.key,
     this.response,
     this.responseEdit,
+    this.filename,
     this.projectId,
     this.projectDesc,
     this.taskId,
@@ -18,6 +19,7 @@ class RamayanaMyActivity extends StatefulWidget {
 
   final GetTaskResponse.Data? response;
   final MyActivityEditResponse.Data? responseEdit;
+  List<Dokumen>? filename;
   String? projectId;
   String? projectDesc;
   String? taskId;
@@ -42,7 +44,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   late MyActivityCubit cubit;
   late LoginCubit loginCubit;
   late PopUpWidget popUpWidget;
-  final urlApi = '${tipeurl}${basePath.api_login}';
+  final urlApi = '${tipeurl}${basePath.api_activity_create_daily}';
 
   File? file;
 
@@ -61,6 +63,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   bool _multiPick = false;
 
   List<PlatformFile>? _paths;
+  // List<Dokumen> dataDokumenList = [];
+  // List<Attachment> dataDokumenListUpdate = [];
 
   var selectedProject = 'Reguler';
   var selectedTask = 'My Task';
@@ -77,8 +81,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   List<String> result = [];
   List<String> resultProject = [];
 
-  DateTime dateTimeSelected = DateTime.now();
-  DateTime dateTimeSelectedEnd = DateTime.now();
+  DateTime dateTimeSelected = DateTime.now().subtract(Duration(minutes: DateTime.now().minute % 15));
+  DateTime dateTimeSelectedEnd = DateTime.now().add(Duration(minutes: (15 - (DateTime.now().minute % 15)) % 15));
 
   refreshpage() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
@@ -87,6 +91,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     setData(widget.response!);
   }
 
+  
+
   void _openTimePickerSheet(BuildContext context) async {
     TimeOfDay? pickedTime =  await showTimePicker(
         initialTime: TimeOfDay.now(),
@@ -94,8 +100,16 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     );
     if(pickedTime != null ){
       setState(() {
-        DateTime parsedTime = DateFormat.Hm().parse(pickedTime.format(context).toString());
+        DateTime now = DateTime.now();
+        DateTime parsedTime = DateTime(
+        now.year, 
+        now.month, 
+        now.day, 
+        pickedTime.hour, 
+        pickedTime.minute
+      );
         dateTimeSelected = parsedTime;
+        print(dateTimeSelected);
       });
     }
   }
@@ -109,8 +123,16 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
 
     if(pickedTime != null ){
         setState(() {
-        DateTime parsedTime = DateFormat.Hm().parse(pickedTime.format(context).toString());
+        DateTime now = DateTime.now();
+        DateTime parsedTime = DateTime(
+        now.year, 
+        now.month, 
+        now.day, 
+        pickedTime.hour, 
+        pickedTime.minute
+      );
         dateTimeSelectedEnd = parsedTime;
+        print(dateTimeSelectedEnd);
         });
         }
   }
@@ -123,6 +145,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     refreshpage();
     popUpWidget = PopUpWidget(context);
     Permission.camera.request();
+    print('paths :${_paths}');
   }
 
   void setData(GetTaskResponse.Data? response) {
@@ -164,6 +187,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   popupEdit() async {
     final result = await showCupertinoModalPopup(context: context, builder: (context) => MyActivityEdit());
     widget.id = result['id'].toString();
+    List<Dokumen>? filenameList = result['filename'];
+    widget.filename = filenameList;
+    debugPrint('desc controller ${widget.filename}');
     descriptionController.setText(result['desc']);
     debugPrint('desc controller ${descriptionController}');
     widget.desc = result['desc'];
@@ -177,6 +203,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
       widget.projectId = result['projectId'];
       widget.taskId = result['taskId'];
       widget.id = result['id'];
+      widget.filename = result['filename'];
+      
     });
   }
 
@@ -225,10 +253,11 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
 
       _paths = (await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowMultiple: _multiPick,
+        allowMultiple: true,
         allowedExtensions: ['jpg', 'jpeg', 'png', 'xlsx', 'pdf'],
       ))
           ?.files;
+     
     } on PlatformException catch (e) {
     } catch (ex) {
     }
@@ -236,6 +265,9 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
     setState(() {
       _loadingPath = false;
       _fileName = _paths != null ? _paths!.map((e) => e.name).toString() : '...';
+      if(_paths != null) {
+        widget.filename = null;
+      }
     });
   }
 
@@ -261,12 +293,13 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   }
 
   void resetState(String info2) {
+   
     widget.projectDesc = 'Reguler';
     widget.projectId = 'P202300001';
     widget.taskId = 'P202300001-001';
     widget.taskDesc = 'My Task';
-    dateTimeSelected = DateTime.now();
-    dateTimeSelectedEnd = DateTime.now();
+    dateTimeSelected = DateTime.now().subtract(Duration(minutes: DateTime.now().minute % 15));
+    dateTimeSelectedEnd = DateTime.now().add(Duration(minutes: (15 - (DateTime.now().minute % 15)) % 15));
     widget.status = 'Perbarui Status';
     descriptionController.clear();
     uploadEdit = true;
@@ -318,6 +351,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
               });
             }
             if (state is MyActivitySuccess) {
+              
               final response = state.response.data;
               response?.forEach((element) {
                 setState(() {
@@ -334,8 +368,10 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                   });
                 }
               });
+              
             }
             if (state is MyActivityFailure) {
+              loginCubit.createLog(baseParam.logInfoActivityInputSucc, state.message, urlApi);
               popUpWidget.showPopUpError('Gagal Submit', state.message);
               setState(() {
                 _loadingButton = false;
@@ -361,17 +397,22 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
               });
             }
             if (state is MyActivitySuccessSubmit) {
+               loginCubit.createLog(baseParam.logInfoActivityPage, '${baseParam.logInfoActivityInputSucc}${widget.response?.taskId ?? widget.taskId ?? 'P202300001-001'}', urlApi);
               resetState(baseParam.logInfoActivityInputSucc);
               popUpWidget.showPopupSuccess();
               setState(() {
+                _paths = null;
                 _loadingButton = false;
               });
             }
             if (state is MyActivitySuccessUpdate) {
+              loginCubit.createLog(baseParam.logInfoActivityPage, '${baseParam.logInfoActityEdit}${widget.response?.taskId ?? widget.taskId ?? 'P202300001-001'}', urlApi);
               resetState(baseParam.logInfoActityEdit);
               widget.update = false;
+              widget.filename = null;
               popUpWidget.showPopupSuccess();
               setState(() {
+                _paths = null;
                 _loadingButton = false;
               });
             }
@@ -439,7 +480,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                         onPressed: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return RamayanaMyActivityProject(update: widget.update, desc: '${descriptionController.getDelta}', id: widget.id);
+                          return RamayanaMyActivityProject(update: widget.update, desc: '${descriptionController.getDelta}', id: widget.id, dokumen: widget.filename);
                           }));
                         },
                         child: Row(
@@ -494,6 +535,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                           id: widget.id, 
                           projectId: widget.projectId ?? 'P202300001',
                           projectDesc: widget.projectDesc,
+                          dokumen: widget.filename,
                         );
                       }));
                       },
@@ -749,6 +791,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
 
                     // -------------------------------------------UPLOAD DOKUMEN ----------------------------------------------
                 SizedBox(height: 10),
+                widget.filename == null
+                ?
                 Builder(
                   builder: (BuildContext context) => uploadEdit
                     ? ListTile(
@@ -762,7 +806,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                         )
                         : _paths != null
                           ? Container(
-                            height: 80,
+                            height: 140,
                             child: Scrollbar(
                               child: ListView.separated(
                                 itemCount: _paths != null && _paths!.isNotEmpty ? _paths!.length : 1,
@@ -772,14 +816,35 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                                   paths = _paths!.map((e) => e.path).toList()[index].toString();
                                   file = File(paths);
                                   return ListTile(
-                                    title: Text(nameFile!,),
-                                    subtitle: Text(paths),
+                                  title: 
+                                  Text(nameFile ?? 'File : Tidak ada file yang dipilih'),
+                                    subtitle: Text(paths ?? ''),
                                   );
+                                  
                                 },
                                 separatorBuilder: (BuildContext context, int index) => const Divider(),
                                )),
                             )
                     : const SizedBox()
+                )
+                :
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, bottom: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: widget.filename!.map((e){
+                      return Text('File : ${e.filename}',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 15, 
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500
+                        ),
+                      );
+                    }).toList()
+                  )
+                 
+                  
                 ),
 
                 Container(
@@ -836,6 +901,8 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
                           height: 50,
                           color: baseColors.primaryColor,
                           onPressed: () async {
+                            print(dateTimeSelected);
+                            print(dateTimeSelectedEnd);
                             if (dateTimeSelected.isBefore(dateTimeSelectedEnd)) {
                               updateActivity();
                             } else {
@@ -874,62 +941,96 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
   }
 
   submitActivity() async {
-    final descBody = '';
-    if (_paths != null && _paths!.isNotEmpty) {
-      // Ubah PlatformFile menjadi File
-      File file = File(_paths!.first.path!);
-      // Baca konten file sebagai bytes
+    try {
+      final descBody = '';
+    var body;
+    if (_paths != null && _paths!.isNotEmpty ) {
+      List<Dokumen> dataDokumenList = [];
+      print('path : ${_paths}');
+      for (var dokumen in _paths!) {
+      File file = File(dokumen.path!);
       List<int> fileBytes = await file.readAsBytes();
-      // Encode bytes sebagai base64
       base64File = base64Encode(fileBytes);
-      // Buat dan kirim body permintaan setelah pemilihan file selesai
-      final body = MyActivityBody(
-        user_create: '${userData.getUsername7()}',
-        time_start: '${dateTimeSelected}',
-        time_end: '${dateTimeSelectedEnd}',
-        task_id: '${widget.taskId ?? 'P202300001-001'}',
-        projek_id: '${widget.projectId ?? 'P202300001'}',
-        myactivity_desc: await getHtmlText(),
-        task_tech_status: '${widget.status}',
-        dokumen: base64File,
-        date_create: '${DateTime.now()}',
+      dataDokumenList.add(Dokumen(filename: dokumen.name, base64: base64File));
+      
+      }
+      final bodyJson = jsonEncode(dataDokumenList.map((dokumen) => dokumen.toJson()).toList());
+      print('body json ${bodyJson}');
+      body = MyActivityBody(
+        userCreate: '${userData.getUsername7()}',
+        timeStart: '${dateTimeSelected}',
+        timeEnd: '${dateTimeSelectedEnd}',
+        taskId: '${widget.response?.taskId ?? widget.taskId ?? 'P202300001-001'}',
+        projekId: '${widget.response?.projectId ?? widget.projectId ?? 'P202300001'}',
+        myactivityDesc: await getHtmlText(),
+        taskTechStatus: '${widget.status}',
+        dokumen:dataDokumenList,
+        dateCreate: '${DateTime.now()}',
       );
-      cubit.submitactivity(token!, body);
     } else {
-      final body = MyActivityBody(
-        user_create: '${userData.getUsername7()}',
-        time_start: '${dateTimeSelected}',
-        time_end: '${dateTimeSelectedEnd}',
-        task_id: '${widget.taskId ?? 'P202300001-001'}',
-        projek_id: '${widget.projectId ?? 'P202300001'}',
-        myactivity_desc: await getHtmlText(),
-        task_tech_status: '${widget.status}',
-        dokumen: '',
-        date_create: '${DateTime.now()}',
+      body = MyActivityBody(
+        userCreate: '${userData.getUsername7()}',
+        timeStart: '${dateTimeSelected}',
+        timeEnd: '${dateTimeSelectedEnd}',
+        taskId: '${widget.response?.taskId ?? widget.taskId ?? 'P202300001-001'}',
+        projekId: '${widget.response?.projectId ?? widget.projectId ?? 'P202300001'}',
+        myactivityDesc: await getHtmlText(),
+        taskTechStatus: '${widget.status}',
+        dokumen: [],
+        dateCreate: '${DateTime.now()}',
       );
+    }
+      final bodyJson = jsonEncode(body.toJson());
+      print('dokumen = ${bodyJson}');
       if (_checkStatusMandatory()) {
         cubit.submitactivity(token!, body);
       } else {
         PopUpWidget(context).showPopUpWarning('Harap pilih Status Projek', 'Ok');
       }
+    } catch(e) {
+      print('eror $e');
     }
   }
 
   updateActivity() async {
-    widget.id;
-    final body = MyActivityUpdateBody(
-      user_create: '${userData.getUsername7()}',
-      time_start: '${dateTimeSelected}',
-      time_end: '${dateTimeSelectedEnd}',
-      task_id: '${widget.taskId ?? 'P202300001-001'}',
-      projek_id: '${widget.projectId ?? 'P202300001'}',
-      myactivity_desc: await getHtmlText(),
+    var body;
+    if (_paths != null && _paths!.isNotEmpty ) {
+    List<Attachment> dataDokumenListUpdate = [];
+    for (var dokumen in _paths!) {
+    File file = File(_paths!.first.path!);
+    List<int> fileBytes = await file.readAsBytes();
+    base64File = base64Encode(fileBytes);
+    dataDokumenListUpdate.add(
+      Attachment(filename: dokumen.name, base64: base64File),
+    );
+    }
+    body = MyActivityUpdateBody(
+      userCreate: '${userData.getUsername7()}',
+      timeStart: '${dateTimeSelected}',
+      timeEnd: '${dateTimeSelectedEnd}',
+      taskId: '${widget.response?.taskId ?? widget.taskId ?? 'P202300001-001'}',
+      projekId: '${widget.response?.projectId ?? widget.projectId ?? 'P202300001'}',
+      myactivityDesc: await getHtmlText(),
       myactivity_id: widget.id,
-      task_tech_status: '${widget.status}',
-      dokumen: '',
-      date_create: '${DateTime.now()}');
+      taskTechStatus: '${widget.status}',
+      dokumen: dataDokumenListUpdate,
+      dateCreate: '${DateTime.now()}');
+    } else {
+      body = MyActivityUpdateBody(
+      userCreate: '${userData.getUsername7()}',
+      timeStart: '${dateTimeSelected}',
+      timeEnd: '${dateTimeSelectedEnd}',
+      taskId: '${widget.response?.taskId ?? widget.taskId ?? 'P202300001-001'}',
+      projekId: '${widget.response?.projectId ?? widget.projectId ?? 'P202300001'}',
+      myactivityDesc: await getHtmlText(),
+      myactivity_id: widget.id,
+      taskTechStatus: '${widget.status}',
+      dateCreate: '${DateTime.now()}');
+    }
     if (_checkStatusMandatory()) {
       cubit.updateactivity(token!, body);
+      final bodyJson = jsonEncode(body.toJson());
+      print('dokumen = ${bodyJson}');
     } else {
       PopUpWidget(context).showPopUpWarning('Harap pilih Status Projek', 'Ok');
     }

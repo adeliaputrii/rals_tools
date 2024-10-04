@@ -56,6 +56,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   late SharedPreferences pref;
   var member = '';
   final urlApi = '${tipeurl}${basePath.api_login}';
+  bool sendLog = false;
 
   String? urlPhoto;
   String? header;
@@ -115,7 +116,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
   fetchDataJumlahTask() async {
     HomeTaskTotal.hometasktotal.clear();
-    final responseku = await http.get(Uri.parse('${base_url_dev}/api/v1/activity/task/count-unread'), headers: {
+    final responseku = await http.get(Uri.parse('${base_url_prod}/api/v1/activity/task/count-unread'), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
@@ -180,12 +181,69 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     }
   }
 
+  // Future<void> _getAllActivity() async {
+  //   //list menampung data dari database
+  //   var list = await db.getAllFormat();
+  //   var listVoidOffline = await db2.getAllFormatVoidOffline();
+  //   var listLoginOffline = await db3.getAllFormat(); //
+  //   var listSo = await dbSo.getAllFormat();
+  //   print('ACTIV ${list}');
+  //   if (isMounted) {
+  //     setState(() {
+  //       //hapus data pada listKontak
+  //       LogOffline.listActivity.clear();
+  //       VoidOffline.voidOffline.clear();
+  //       LoginOffline.listActivity.clear();
+  //     });
+  //     if (list != null) {
+  //       final String columnId = 'id_act';
+  //       final String columnIdGenerate = 'deskripsi';
+  //       final String columnDate = 'datetime';
+  //       // Iterate through the result and print attributes
+  //       for (var activityy in list) {
+  //         var id = activityy[columnId];
+  //         var deskripsi = activityy[columnIdGenerate];
+  //         var datetime = activityy[columnDate];
+  //         loginCubit.createLogVoidOffline(logInfoVoidOfflinePage, deskripsi, urlApi, datetime);
+  //       }
+  //       await db.deleteAll();
+  //     }
+      
+  //     if (listVoidOffline != null) {
+  //       final String columnId = 'id_act';
+  //       final String columnIdGenerate = 'idGenerate';
+  //       final String columnDate = 'date';
+  //       // Iterate through the result and print attributes
+  //       for (var activityy in listVoidOffline) {
+  //         var id = activityy[columnId];
+  //         var idGenerate = activityy[columnIdGenerate];
+  //         var date = activityy[columnDate];
+  //         print('ACTIVV ${idGenerate}');
+  //         loginCubit.createLogVoidOffline(logInfoVoidOfflinePage, idGenerate, urlApi, date);
+  //         await db2.deleteVoidOffline(id);
+  //       }
+  //     }
+  //     if (listLoginOffline != null) {
+  //       final String columnId = 'id_act';
+  //       final String columnDeskripsi = 'deskripsi';
+  //       final String columnDatetime = 'datetime';
+  //       // Iterate through the result and print attributes
+  //       for (var activity in listLoginOffline) {
+  //         var id = activity[columnId];
+  //         var deskripsi = activity[columnDeskripsi];
+  //         var datetime = activity[columnDatetime];
+  //         loginCubit.createLogVoidOffline(logLoginOfflinePage, deskripsi, urlApi, datetime);
+  //       }
+  //       db3.deleteAll();
+  //     }
+  //     }
+  //   }
+
   Future<void> _getAllActivity() async {
     //list menampung data dari database
     var list = await db.getAllFormat();
     var listVoidOffline = await db2.getAllFormatVoidOffline();
     var listLoginOffline = await db3.getAllFormat(); //
-    var listSo = await dbSo.getAllFormat();
 
     if (isMounted) {
       setState(() {
@@ -204,7 +262,16 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           var deskripsi = activityy[columnIdGenerate];
           var datetime = activityy[columnDate];
           loginCubit.createLogVoidOffline(logInfoVoidOfflinePage, deskripsi, urlApi, datetime);
-          await db.deleteActivityy(id);
+          print('ID: $id, ID Generate: $deskripsi, Date: $datetime');
+          // db.deleteActivityy(id);
+           loginCubit.stream.listen((state) {
+            if (state is CreateLogSuccess) {
+              db.deleteActivityy(id);
+              print('ID: $id, ID Generate: $deskripsi, Date: $datetime - Deleted');
+            } else if (state is CreateLogFailure) {
+              print('Failed to submit log for ID: $id. Error: ${state.message}');
+            }
+          });
         }
       }
       if (listVoidOffline != null) {
@@ -217,7 +284,15 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           var idGenerate = activityy[columnIdGenerate];
           var date = activityy[columnDate];
           loginCubit.createLogVoidOffline(logInfoVoidOfflinePage, idGenerate, urlApi, date);
-          await db2.deleteVoidOffline(id);
+          print('ID: $id, ID Generate: $idGenerate, Date: $date - Submit');
+          loginCubit.stream.listen((state) {
+            if (state is CreateLogSuccess) {
+              db2.deleteVoidOffline(id);
+              print('ID: $id, ID Generate: $deskripsi, Date: $datetime - Deleted');
+            } else if (state is CreateLogFailure) {
+              print('Failed to submit log for ID: $id. Error: ${state.message}');
+            }
+          });
         }
       }
       if (listLoginOffline != null) {
@@ -230,55 +305,21 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
           var deskripsi = activity[columnDeskripsi];
           var datetime = activity[columnDatetime];
           loginCubit.createLogVoidOffline(logLoginOfflinePage, deskripsi, urlApi, datetime);
-          await db3.deleteActivityy(id);
+          print('ID: $id, Deskripsi: $deskripsi, Datetime: $datetime');
+          loginCubit.stream.listen((state) {
+            if (state is CreateLogSuccess) {
+              db3.deleteActivityy(id);
+              print('ID: $id, ID Generate: $deskripsi, Date: $datetime - Deleted');
+            } else if (state is CreateLogFailure) {
+              print('Failed to submit log for ID: $id. Error: ${state.message}');
+            }
+          });
         }
+
         db3.deleteAll();
       }
-      // print('DATAA ${listSo}');
-      // if(listSo != null) {
-      //    print('DATAA not null');
-      //   final String columnPos = 'pos';
-      //   final String columnLocation = 'location';
-      //   final String columnDate = 'tanggal';
-      //   final String columnData = 'data';
-      //   for (var soDataLokal in listSo) {
-      //     var parsedData = soDataLokal[columnData];
-      //     if (parsedData is String) {
-      //       parsedData = jsonDecode(parsedData);  // Mengonversi JSON string menjadi List<dynamic>
-      //     }
-      //     final requestBody = StockOpnameWrapper(
-      //    data: [
-      //     StockOpnameBody(
-      //       pos: soDataLokal[columnPos],
-      //       lokasi: soDataLokal[columnLocation],
-      //       tanggal: soDataLokal[columnDate],
-      //       data: (parsedData as List).map((item) {
-      //     return Data(
-      //       sku: item['sku'],
-      //       qty: item['qty'],
-      //     );
-      //   }).toList(),
-      //     ),
-      //     // Anda dapat menambahkan lebih banyak StockOpnameBody di sini jika diperlukan
-      //   ],
-      //     );
-      //     print('DATAA body: ${requestBody.toJson()}'); 
-      //     soCubit.postResult(token ?? '', requestBody);
-      //     try {
-      //     await dbSo.delete(soDataLokal['id']);
-      //     print('Successfully deleted entry with id: ${soDataLokal['id']}');
-      //   } catch (e) {
-      //     print('Error deleting entry: $e');
-      //     // pos: soDataLokal[columnPos],
-      //       // lokasi: soDataLokal[columnLocation],
-      //       // tanggal: soDataLokal[columnDate],
-      //       // data: soDataLokal[columnData]
-      //   }
-      //     }
-      //   await dbSo.deleteAll();
-      //   }
-      }
     }
+  }
   
   
 
@@ -339,6 +380,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     });
   }
 
+  deleteData() async {
+    await db.deleteAll();
+  }
+
   logoutPressed() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     SharedPref.clearLastLogin();
@@ -383,7 +428,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       print('not connected');
     } else {
       print('connected');
-      //  _getAllActivity();
     }
 
     return RelativeBuilder(builder: (context, height, width, sy, sx) {
@@ -395,6 +439,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
               pref.setString('noMember', '${member}');
             });
           }
+          // if (state is CreateLogSuccess){
+          //   if (sendLog == true) {
+          //     deleteData();
+          //   }
+          // }
         },
         child: Scaffold(
           backgroundColor: Theme.of(context).canvasColor,

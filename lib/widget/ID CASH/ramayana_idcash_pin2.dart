@@ -17,6 +17,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
   Dio dio = Dio();
   bool isLoading = false;
   late LoginCubit loginCubit;
+  final urlApi = '${tipeurl}${basePath.api_membercard_customer}';
   KeyboardUtils keyboardUtils = KeyboardUtils();
 
   @override
@@ -67,6 +68,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
             });
             final response = state.response;
             snackBar("Success!!!");
+            loginCubit.createLog(baseParam.logInfoIdcashPage, '${baseParam.logInfoIdcashAuth}', urlApi);
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
@@ -80,6 +82,7 @@ class _RamayanaIdcashNewPinState extends State<RamayanaIdcashNewPin> {
               isLoading = false;
             });
             snackBar('PIN SALAH');
+            loginCubit.createLog(baseParam.logInfoIdcashPage, '${state.message}', urlApi);
           }
         },
         child: Scaffold(

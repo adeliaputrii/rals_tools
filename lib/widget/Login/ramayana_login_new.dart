@@ -226,6 +226,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         username: usernameController.text, 
         password: passwordController.text, 
         deviceId: "${_nativeId}${info.device}", 
+        // deviceId: 'e78d1cf56e1a4445a54x',
         versi: versi
       );
       loginCubit.logout();
@@ -280,6 +281,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           SharedPref.setUserId(state.response.data?.username7.toString() ?? 'unknown');
           SharedPref.setUserToko(state.response.data?.toko.toString() ?? 'unknown');
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Ramayana()));
+          loginCubit.createLog(baseParam.logInfoLoginPage, '${baseParam.logInfoLoginSucc}', urlApi);
         }
 
         if (state is LoginFailure) {
@@ -288,9 +290,11 @@ class _RamayanaLogin extends State<RamayanaLogin> {
           });
           if (state.message == pleaseCheckConnection) {
             sweatAlert();
+            loginCubit.createLog(baseParam.logInfoLoginFail, '${baseParam.logInfoLoginConec}', urlApi);
           } else {
             final username = usernameController.text;
             popUpWidget.showPopUpError(pleaseCheck, state.message);
+            loginCubit.createLog(baseParam.logInfoLoginFail, '${state.message}', urlApi);
           }
         }
         if (state is CreateLogSuccess) {

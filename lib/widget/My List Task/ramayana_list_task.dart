@@ -13,7 +13,7 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
   bool isMounted = true;
   late HomeCubit homeCubit;
   late LoginCubit loginCubit;
-  final urlApi = '${tipeurl}${basePath.api_login}';
+  final urlApi = '${tipeurl}${basePath.api_activity_task_by_id}';
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class _RamayanaMyListTaskState extends State<RamayanaMyListTask> {
 
   fetchDataListUser() async {
     TaskHome2.taskhome2.clear();
-    final responseku = await http.get(Uri.parse('${base_url_dev}/api/v1/activity/task/get-task'), headers: {
+    final responseku = await http.get(Uri.parse('${base_url_prod}/api/v1/activity/task/get-task'), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',

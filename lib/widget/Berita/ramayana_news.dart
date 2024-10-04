@@ -9,6 +9,7 @@ class RamayanaInformasi extends StatefulWidget {
 
 class _RamayanaInformasiState extends State<RamayanaInformasi> {
   late HomeCubit cubit;
+  late LoginCubit loginCubit;
   AppWidget appWidget = AppWidget();
   @override
   void initState() {

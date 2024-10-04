@@ -46,16 +46,18 @@ class  StockOpnameCubit extends Cubit< StockOpnameState> {
         // }
         emit( StockOpnameSuccess(res));
         List? list = await db.getAllFormat();
-        List<String> existingPos = list!.map((e) => e['location'] as String).toList();
+        // List<String> existingPos = list!.map((e) => e['location'] as String).toList();
         List? listSave = await dbSave.getAllFormat();
         List<String> existingData = list!.map((e) => e['location'] as String).toList();
         print('existingData1 ${existingData}');
         print('existingData2 ${listSave}');
         print('existingData3 ${list}');
+        // db.deleteAll();
+        // dbSave.deleteAll();
         if (listSave!.isEmpty) {
           if (list.isEmpty) {
           for (var item in res.data!) {
-          if (!existingPos.contains(item.lokasi)) {
+          if (!existingData.contains(item.lokasi)) {
            debugPrint('${item.lokasi}');
             db.save(SoGetDataModel(
               pos: item.pos,
@@ -66,7 +68,7 @@ class  StockOpnameCubit extends Cubit< StockOpnameState> {
           } else {
             for (var activity in list) {
               for (var item in res.data!) {
-                if (!existingPos.contains(item.lokasi)) {
+                if (!existingData.contains(item.lokasi)) {
                 debugPrint('${item.lokasi}');
                   db.save(SoGetDataModel(
                     pos: item.pos,
@@ -80,6 +82,9 @@ class  StockOpnameCubit extends Cubit< StockOpnameState> {
           } else {
             print('Online namun tidak menambahkan ke lokal karena db save ada data');
           }
+        print('existingData4 ${existingData}');
+        print('existingData5 ${listSave}');
+        print('existingData6 ${list}');
           debugPrint('Success' + res.toString());
         } else {
           emit( StockOpnameFailure(message: value.dataResponse!));

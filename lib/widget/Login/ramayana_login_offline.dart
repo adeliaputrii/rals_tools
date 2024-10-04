@@ -22,11 +22,14 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   late SharedPreferences pref;
   bool _isLoading = true;
+  var imei2 = '';
+  SimData? _simData;
   late CreateLogBody createLogBody;
   late LoginCubit loginCubit;
   final urlApi = '${tipeurl}${basePath.api_login}';
   String _nativeId = 'Unknown';
   final _nativeIdPlugin = NativeId();
+  String _udid = 'Unknown';
   DbHelperLoginOffline db3 = DbHelperLoginOffline();
 
   @override
@@ -35,6 +38,7 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
     super.initState();
     popUpWidget = PopUpWidget(context);
     generateNumber();
+
     generateNumberWidget = true;
     init();
     initPlatformState();
@@ -43,18 +47,32 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
   Future<void> init() async {
     pref = await SharedPreferences.getInstance();
     deviceInfo = await devicePlugin.androidInfo;
+    initSim();
   }
 
   Future<void> initPlatformState() async {
+    String udid;
     String nativeId;
+    String uuid;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    // We also handle the message potentially returning null.
     try {
       nativeId = await _nativeIdPlugin.getId() ?? 'Unknown NATIVE_ID';
     } on PlatformException {
       nativeId = 'Failed to get native id.';
     }
+
+    try {
+      uuid = await _nativeIdPlugin.getUUID() ?? 'Unknown UUID';
+    } on PlatformException {
+      uuid = 'Failed to get uuid.';
+    }
+
     if (!mounted) return;
+
     setState(() {
       _nativeId = nativeId;
+      _udid = uuid;
     });
   }
 
@@ -62,21 +80,80 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
     RandomNumber randomNumber = RandomNumber();
     randomNum = randomNumber.getRandomNumber(111111, 999999);
     numberCodeController.text = randomNum.toString();
+
     return randomNum;
   }
 
   Future<bool> compareGenerateCode(int numberFromAdmin) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String? imei = pref.getString('serialImei');
+    // String? imei = pref.getString('serialImei');
     int idUser = int.parse(userData.getUsername7());
+
     int uniqueId = idUser + (randomNum * 5) * 2;
+    debugPrint('${uniqueId}');
+
     return numberFromAdmin == uniqueId;
   }
 
   Future<String> getUserId(int numberFromAdmin) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     int idUser = int.parse(numberCodeController.text) - (randomNum * 5) * 2;
+
     return idUser.toString();
+  }
+
+  //test
+  // Future<int> compareGenerateCodeTest() async {
+  //   SharedPreferences pref = await SharedPreferences.getInstance();
+  //   String? imei = pref.getString('serialImei');
+  //   int idUser = int.parse(userData.getUsername7());
+
+  //   // int uniqueId =
+  //   //     idUser + (randomNum * 2) + (AsciiEncoder().convert(imei!+deviceInfo.device)[0] * 10);
+  //   //     debugPrint('${uniqueId}');
+
+  //   int uniqueId = 0460545 + (int.parse(numberCodeController.text) * 5) * 2;
+  //   debugPrint('${uniqueId}');
+  //   print('${uniqueId}');
+
+  //   return uniqueId;
+  // }
+
+  Future<void> initSim() async {
+    SimData simData;
+    try {
+      var status = await Permission.phone.status;
+      if (!status.isGranted) {
+        bool isGranted = await Permission.phone.request().isGranted;
+        if (!isGranted) return;
+      }
+      simData = await SimDataPlugin.getSimData();
+      setState(() {
+        _isLoading = false;
+        _simData = simData;
+      });
+      void printSimCardsData() async {
+        try {
+          SimData simData = await SimDataPlugin.getSimData();
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          for (var s in simData.cards) {
+            imei2 = '${s.serialNumber}';
+            print('Serial number: ${s.serialNumber}');
+            print('Data Roaming: ${s.isNetworkRoaming}');
+          }
+        } on PlatformException catch (e) {
+          debugPrint("error! code: ${e.code} - message: ${e.message}");
+        }
+      }
+
+      printSimCardsData();
+    } catch (e) {
+      debugPrint(e.toString());
+      setState(() {
+        _isLoading = false;
+        _simData = null;
+      });
+    }
   }
 
   @override
@@ -94,17 +171,17 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
               color: Color.fromARGB(255, 210, 14, 0),
             ),
             Container(
+              // margin: EdgeInsets.only(top: 30),
               child: IconButton(
-                onPressed: () {
-                  Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (_) => RamayanaLogin()));
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios_new_outlined,
-                  color: Colors.white,
-                  size: 20,
-                )
-              ),
+                  onPressed: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (_) => RamayanaLogin()));
+                  },
+                  icon: Icon(
+                    Icons.arrow_back_ios_new_outlined,
+                    color: Colors.white,
+                    size: 20,
+                  )),
             ),
             Container(
               margin: EdgeInsets.fromLTRB(20, 50, 0, 0),
@@ -115,10 +192,9 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                   Text(
                     'Login Offline',
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 40,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold
-                    ),
+                        fontSize: 40,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 10,
@@ -143,86 +219,83 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
               ),
               margin: EdgeInsets.only(top: 200),
               child: Container(
-                margin: EdgeInsets.only(top: 30, left: 30, right: 30),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: FadeInImageWidget(
-                          imageUrl: "assets/loginOff.png")
-                        ),
-                      Column(
+                  margin: EdgeInsets.only(top: 30, left: 30, right: 30),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                        padding: const EdgeInsets.only( bottom: 10, left: 10, top: 10),
-                          child: Text(
-                            'Unique ID',
-                            style: GoogleFonts.plusJakartaSans(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 19
-                            ),
-                          ),
-                        ),
-                        TextFormField(
-                          readOnly: true,
-                          controller: numberCodeController,
-                          onTap: () {
-                            setState(() {
-                              userIdController.text;
-                            });
-                          },
-                          style: GoogleFonts.plusJakartaSans(
-                            color: Colors.black, 
-                            fontSize: 17
-                          ),
-                          validator: RequiredValidator(
-                            errorText: 'Please Enter'),
-                          decoration: InputDecoration(
-                          prefixIcon: Icon(IconlyLight.password),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: const Color.fromARGB( 255, 255, 0, 0)),
-                            borderRadius: BorderRadius.circular(60)
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromARGB(255, 29, 37, 127
-                            )),
-                            borderRadius: BorderRadius.circular(60)),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
-                              borderRadius: BorderRadius.circular(60)),
-                              disabledBorder: OutlineInputBorder(
-                                borderSide:BorderSide(color: Colors.black),
-                                borderRadius: BorderRadius.circular(60)
+                        Center(
+                            child: FadeInImageWidget(
+                                imageUrl: "assets/loginOff.png")),
+                        Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: 10, left: 10, top: 10),
+                                child: Text(
+                                  'Unique ID',
+                                  style: GoogleFonts.plusJakartaSans(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 19),
+                                ),
                               ),
-                              border: OutlineInputBorder(
-                                borderSide:BorderSide(color: Colors.black),
-                                borderRadius: BorderRadius.circular(60)
+                              TextFormField(
+                                readOnly: true,
+                                controller: numberCodeController,
+                                onTap: () {
+                                  setState(() {
+                                    userIdController.text;
+                                  });
+                                },
+                                style: GoogleFonts.plusJakartaSans(
+                                    color: Colors.black, fontSize: 17),
+                                validator: RequiredValidator(
+                                    errorText: 'Please Enter'),
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(IconlyLight.password),
+                                  errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: const Color.fromARGB(
+                                              255, 255, 0, 0)),
+                                      borderRadius: BorderRadius.circular(60)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color:
+                                              Color.fromARGB(255, 29, 37, 127)),
+                                      borderRadius: BorderRadius.circular(60)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(60)),
+                                  disabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(60)),
+                                  border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(60)),
+                                ),
                               ),
-                            ),
-                          ),
-                        ]),
+                            ]),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
-                                bottom: 10, left: 10, top: 10),
+                                  bottom: 10, left: 10, top: 10),
                               child: Text(
                                 'Login Code',
                                 style: GoogleFonts.plusJakartaSans(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 19
-                                ),
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 19),
                               ),
                             ),
                             TextFormField(
@@ -236,152 +309,173 @@ class _RamayanaLoginOfflineState extends State<RamayanaLoginOffline> {
                               decoration: InputDecoration(
                                 prefixIcon: Icon(IconlyLight.password),
                                 errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide( 
-                                    color: const Color.fromARGB(255, 255, 0, 0)),
-                                    borderRadius: BorderRadius.circular(60)
-                                  ),
+                                    borderSide: BorderSide(
+                                        color: const Color.fromARGB(
+                                            255, 255, 0, 0)),
+                                    borderRadius: BorderRadius.circular(60)),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color:Color.fromARGB(255, 29, 37, 127)),
-                                    borderRadius: BorderRadius.circular(60)
-                                  ),
+                                    borderSide: BorderSide(
+                                        color:
+                                            Color.fromARGB(255, 29, 37, 127)),
+                                    borderRadius: BorderRadius.circular(60)),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(60)),
+                                    borderSide: BorderSide(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(60)),
                                 disabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(60)),
+                                    borderSide: BorderSide(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(60)),
                                 border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(60)
-                                ),
+                                    borderSide: BorderSide(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(60)),
                               ),
                             ),
                           ],
                         ),
                         generateNumberWidget
-                        ? Container()
-                        : Container(
-                          margin: EdgeInsets.fromLTRB(10, 50, 10, 0),
-                          child: MaterialButton(
-                            minWidth: 500,
-                            height: 50,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30)
-                            ),
-                            color: Color.fromARGB(255, 210, 14, 0),
-                            onPressed: () async {
-                              String? serialimei = pref.getString('serialImei');
-                              generateNumber();
-                              setState(() {
-                                numberCodeController.text;
-                                generateNumberWidget = true;
-                              });
-                            },
-                            child: Text(
-                              'Generate Number',
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 18, 
-                                color: Colors.white
+                            ? Container()
+                            : Container(
+                                margin: EdgeInsets.fromLTRB(10, 50, 10, 0),
+                                child: MaterialButton(
+                                  minWidth: 500,
+                                  height: 50,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30)),
+                                  color: Color.fromARGB(255, 210, 14, 0),
+                                  onPressed: () async {
+                                    debugPrint('tes generate');
+                                    String? serialimei =
+                                        pref.getString('serialImei');
+                                    debugPrint(userData.getUsername7());
+                                    debugPrint(imei2);
+                                    debugPrint(serialimei);
+                                    generateNumber();
+                                    setState(() {
+                                      numberCodeController.text;
+                                      generateNumberWidget = true;
+                                      debugPrint(
+                                          'genrate number button ${generateNumberWidget}');
+                                    });
+                                  },
+                                  child: Text(
+                                    'Generate Number',
+                                    style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 18, color: Colors.white),
+                                  ),
+                                ),
                               ),
-                              ),
-                            ),
-                          ),
                         generateNumberWidget
-                        ? Container(
-                          margin: EdgeInsets.fromLTRB(10, 20, 10, 0),
-                          child: MaterialButton(
-                            minWidth: 500,
-                            height: 50,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30)
-                            ),
-                            color: Color.fromARGB(255, 210, 14, 0),
-                            onPressed: () async {
-                              var description = "";
-                              String dateTime = DateTime.now().toString();
-                              try {
-                                if (formKey.currentState!.validate()) {
-                                  final isSuccess = await compareGenerateCode(int.parse(
-                                    adminNumberCodeController.text));
-                                  String? imei = pref.getString('serialImei');
-                                  AndroidDeviceInfo info = await devicePlugin.androidInfo;
-                                  if (isSuccess) {
-                                    var listmenu ='${userData.getListMenu()}';
-                                    if (listmenu.contains('mastervoid.void')) {
-                                      pref.setString("waktuLoginOffline", "${formattedDate}");
-                                      description = logSucces;
-                                      Navigator.push(context,
-                                      MaterialPageRoute(
-                                      builder: (context) => RamayanaVoid(
-                                      isOffline: true
-                                      )),
-                                    );
-                                    } else {
-                                      popUpWidget.showPopUpError(
-                                        pleaseCheck,
-                                        userCantAccessVoid
-                                      );
-                                        adminNumberCodeController.clear();
-                                        description ='${logCantAccessVoid}-${userCantAccessVoid}';
+                            ? Container(
+                                margin: EdgeInsets.fromLTRB(10, 20, 10, 0),
+                                child: MaterialButton(
+                                  minWidth: 500,
+                                  height: 50,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30)),
+                                  color: Color.fromARGB(255, 210, 14, 0),
+                                  onPressed: () async {
+                                    var description = "";
+                                    String dateTime = DateTime.now().toString();
+                                    // print(compareGenerateCodeTest());
+                                    try {
+                                      if (formKey.currentState!.validate()) {
+                                        final isSuccess =
+                                            await compareGenerateCode(int.parse(
+                                                adminNumberCodeController
+                                                    .text));
+                                        // String? imei =
+                                        //     pref.getString('serialImei');
+                                        AndroidDeviceInfo info =
+                                            await devicePlugin.androidInfo;
+                                        // db3.deleteAll();
+                                        if (isSuccess) {
+                                          debugPrint(userData.getListMenu());
+                                          var listmenu =
+                                              '${userData.getListMenu()}';
+                                          debugPrint('${listmenu}');
+
+                                          if (listmenu
+                                              .contains('mastervoid.void')) {
+                                            pref.setString("waktuLoginOffline",
+                                                "${formattedDate}");
+                                            debugPrint('user has access void');
+                                            description = logSucces;
+
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      RamayanaVoid(
+                                                          isOffline: true)),
+                                            );
+                                          } else {
+                                            popUpWidget.showPopUpError(
+                                                pleaseCheck,
+                                                userCantAccessVoid);
+                                            debugPrint(
+                                                'user cannot access void');
+                                            adminNumberCodeController.clear();
+
+                                            description =
+                                                '${logCantAccessVoid}-${userCantAccessVoid}';
+                                          }
+                                        } else {
+                                          //Action jika nomor yang dikasih admin gagal diberikan, popup harap coba lagi
+                                          popUpWidget.showPopUpError(
+                                              pleaseCheck, logLoginCode);
+                                          description =
+                                              '${logCantAccessVoid}-${logLoginCode}';
+
+                                          adminNumberCodeController.clear();
+                                        }
+
+                                        final deleteResult = db3.deleteAll();
+                                        if (deleteResult != 0) {
+                                          debugPrint('sukses delete data');
+                                          db3.saveActivityy(LoginOffline(
+                                              deskripsi: description,
+                                              datetime: dateTime));
+                                        } else {
+                                          debugPrint('fail delete data');
+                                        }
                                       }
-                                  } else {
-                                    popUpWidget.showPopUpError(
-                                      pleaseCheck, 
-                                      logLoginCode
-                                    );
-                                    description ='${logCantAccessVoid}-${logLoginCode}';
-                                    adminNumberCodeController.clear();
-                                  }
-                                  final deleteResult = db3.deleteAll();
-                                  if (deleteResult != 0) {
-                                    db3.saveActivityy(LoginOffline(
-                                    deskripsi: description,
-                                    datetime: dateTime));
-                                  }
-                                }
-                              } on Exception {
-                                popUpWidget.showPopUpError(
-                                pleaseCheck, logDevice);
-                              }
-                            },
-                            child: Text(
-                            isEmptyUserId
-                            ? 'Login'
-                            : 'Tampil Random Number',
-                              style: GoogleFonts.plusJakartaSans(
-                              fontSize: 18, 
-                              color: Colors.white
-                            ),
-                          ),
-                         ),
-                        )
-                      : Container(),
+                                    } on Exception {
+                                      popUpWidget.showPopUpError(
+                                          pleaseCheck, logDevice);
+                                    }
+                                  },
+                                  child: Text(
+                                    isEmptyUserId
+                                        ? 'Login'
+                                        : 'Tampil Random Number',
+                                    style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 18, color: Colors.white),
+                                  ),
+                                ),
+                              )
+                            : Container(),
                         Container(
-                          margin: EdgeInsets.fromLTRB(20, 50, 20, 50),
+                            margin: EdgeInsets.fromLTRB(20, 50, 20, 50),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text('Versi ${versi} Hak Cipta RALS',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                  )
-                                ),
+                                    // ini pak?
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                    )),
                                 Icon(
                                   Icons.copyright,
                                   color: Colors.black,
                                   size: 18,
                                 ),
                                 Text('${copyright}',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                  )
-                                )
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                    ))
                               ],
-                            )
-                          )
+                            ))
                       ],
                     ),
                   )),

@@ -1,16 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:myactivity_project/base/base_paths.dart' as basePath;
+import 'package:myactivity_project/base/base_params.dart' as baseParam;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myactivity_project/cubit/login/login_cubit.dart';
 import 'package:myactivity_project/cubit/stock_opname/so_cubit.dart';
 import 'package:myactivity_project/data/model/stock_opname_submit_body.dart';
 import 'package:myactivity_project/database/StockOpname/db_get_data.dart';
 import 'package:myactivity_project/database/StockOpname/db_save_data.dart';
 import 'package:myactivity_project/service/SP_service/SP_service.dart';
+import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:myactivity_project/utils/app_shared_pref.dart';
 import 'package:myactivity_project/utils/app_widgets.dart';
 import 'package:myactivity_project/utils/popup_widget.dart';
@@ -31,6 +34,8 @@ class _SoPopupState extends State<SoPopup> {
   List<Data> dataItems = [];
   final List<StockOpnameBody> dataList = [];
   late StockOpnameCubit soCubit;
+  late LoginCubit loginCubit;
+  final urlApi = '${tipeurl}${basePath.api_submit_so}';
   late PopUpWidget popUpWidget;
 
   bool connection = false;
@@ -45,6 +50,7 @@ class _SoPopupState extends State<SoPopup> {
     refreshpage();
     super.initState();
     soCubit = context.read<StockOpnameCubit>();
+    loginCubit = context.read<LoginCubit>();
     popUpWidget = PopUpWidget(context);
   }
 
@@ -221,7 +227,7 @@ class _SoPopupState extends State<SoPopup> {
                   builder: (context, state) {
                     print('state is ${state}');
                     if (state is StockOpnameLoading) {
-                    // return AppWidget().LoadingWidget();
+                    return AppWidget().LoadingWidget();
                     }
                     if (state is StockOpnameSubmitSuccess) {
                       setState(() {
@@ -309,13 +315,33 @@ class _SoPopupState extends State<SoPopup> {
                     if (state is StockOpnameSubmitFailure) {
                       Navigator.pop(context);
                       popUpWidget.showPopUpWarning('${state.message}', 'OK');
+                      loginCubit.createLog(baseParam.logSoPage,  state.message, urlApi);
                       return;
                     }
                     if (state is StockOpnameSubmitSuccess) {
-                      Navigator.pop(context);
-                      dbSave.deleteAll();
-                      popUpWidget.showPopupSucces('${state.response.message}');
-                      return;
+                      // WidgetsBinding.instance.addPostFrameCallback((_) {
+                  // Tampilkan pop-up sukses terlebih dahulu
+                
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RamayanaSo(
+                          pos: '',
+                          location: '',
+                          date: '',
+                          posLocation: '',
+                          message: true,
+                          text: '${listDbSave?.length ?? 0 + 1}',
+                        ),
+                      ),
+                      (Route<dynamic> route) => false,
+                    );
+                    popUpWidget.showPopupSucces(
+                    'Jumlah Pos Location : ${listDbSave?.length ?? 0 + 1}',
+                    '${state.response.message}',
+                  );
+                // });
+
                     }
                   },
                   child: Padding(
@@ -341,7 +367,7 @@ class _SoPopupState extends State<SoPopup> {
                               data: (parsedData as List).map((item) {
                                 return Data(
                                   sku: item['sku'],
-                                  qty: item['qty'],
+                                  qty: item['quantity'],
                                 );
                               }).toList(),
                             ),
@@ -350,10 +376,8 @@ class _SoPopupState extends State<SoPopup> {
                         final requestBody = StockOpnameSubmitBody(
                         quenic: '${parameter()}',
                         data: dataList);
-                        setState(() async {
-                          print('DATAA body: ${requestBody.toJson()}');
-                          soCubit.postResult(token ?? '', requestBody);
-                        });
+                        print('DATAA body: ${requestBody.toJson()}');
+                        soCubit.postResult(token ?? '', requestBody);
                       },
                       child: Text('SUBMIT',
                         style: GoogleFonts.plusJakartaSans(

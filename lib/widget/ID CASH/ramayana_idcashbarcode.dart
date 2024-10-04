@@ -29,6 +29,7 @@ class _RamayanaBarcodeState extends State<RamayanaBarcode> {
   void setData() {
     balance = widget.dataMember.saldo ?? "0";
     memberCode = widget.dataMember.nokartu ?? "";
+    loginCubit.createLog(baseParam.logInfoIdcashPage, '${baseParam.logInfoIdcashBarcode}', apiUrl);
   }
 
   @override

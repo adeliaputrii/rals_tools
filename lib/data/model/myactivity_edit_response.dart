@@ -4,7 +4,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'myactivity_edit_response.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake)
-
 class MyActivityEditResponse {
   int? status;
   String? message;
@@ -44,9 +43,9 @@ class Data {
   String? myactivityStatus;
   int? myactivityId;
   String? myactivityDesc;
-  String? dokumen;
   String? dateModify;
   String? dateCreate;
+  List<Attachments>? attachments;
 
   Data(
       {this.userModify,
@@ -58,9 +57,9 @@ class Data {
       this.myactivityStatus,
       this.myactivityId,
       this.myactivityDesc,
-      this.dokumen,
       this.dateModify,
-      this.dateCreate});
+      this.dateCreate,
+      this.attachments});
 
   Data.fromJson(Map<String, dynamic> json) {
     userModify = json['user_modify'];
@@ -72,9 +71,14 @@ class Data {
     myactivityStatus = json['myactivity_status'];
     myactivityId = json['myactivity_id'];
     myactivityDesc = json['myactivity_desc'];
-    dokumen = json['dokumen'];
     dateModify = json['date_modify'];
     dateCreate = json['date_create'];
+    if (json['attachments'] != null) {
+      attachments = <Attachments>[];
+      json['attachments'].forEach((v) {
+        attachments!.add(new Attachments.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -88,9 +92,33 @@ class Data {
     data['myactivity_status'] = this.myactivityStatus;
     data['myactivity_id'] = this.myactivityId;
     data['myactivity_desc'] = this.myactivityDesc;
-    data['dokumen'] = this.dokumen;
     data['date_modify'] = this.dateModify;
     data['date_create'] = this.dateCreate;
+    if (this.attachments != null) {
+      data['attachments'] = this.attachments!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Attachments {
+  int? id;
+  int? activityId;
+  String? attachment;
+
+  Attachments({this.id, this.activityId, this.attachment});
+
+  Attachments.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    activityId = json['activity_id'];
+    attachment = json['attachment'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['activity_id'] = this.activityId;
+    data['attachment'] = this.attachment;
     return data;
   }
 }

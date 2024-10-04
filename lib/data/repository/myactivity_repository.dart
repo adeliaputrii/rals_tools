@@ -116,7 +116,10 @@ class MyActivityRepositories {
       if (e is IOException) {
         response = RepositoriesResponse(
             isSuccess: false, statusCode: 500, dataResponse: e.toString());
-      } else {
+      } else if (e is IOException) {
+        response = RepositoriesResponse(
+            isSuccess: false, statusCode: 413, dataResponse: 'Ukuran file terlalu besar');
+      }  else {
         response = RepositoriesResponse(
             isSuccess: false, statusCode: 0, dataResponse: e.toString());
       }

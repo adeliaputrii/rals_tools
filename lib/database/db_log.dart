@@ -66,5 +66,11 @@ class DbHelper {
         .delete(tableName, where: '$columnId = ?', whereArgs: [id_act]);
   }
 
+  Future<int?> deleteAll() async {
+    var dbClient = await _db;
+    return await dbClient!
+        .rawDelete("DELETE FROM $tableName");
+  }
+
 
 }

@@ -1,11 +1,16 @@
+
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 import 'package:myactivity_project/base/base_colors.dart' as baseColor;
+import 'package:myactivity_project/database/StockOpname/db_get_data.dart';
+import 'package:myactivity_project/database/StockOpname/db_save_data.dart';
 
 class PopUpWidget {
+  DbSoSaveData dbSave = DbSoSaveData();
+  DbSoGetData db = DbSoGetData();
   final BuildContext context;
   PopUpWidget(this.context);
 
@@ -16,7 +21,7 @@ class PopUpWidget {
       primaryColor: Colors.red,
       title: Text(
         title,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+        style: TextStyle(fontWeight: FontWeight.w900, fontSize: 17),
       ),
       width: 350,
       backgroundType: BackgroundType.lighter,
@@ -55,6 +60,8 @@ class PopUpWidget {
     );
   }
 
+  
+
   showToastMessage(String message) {
     Fluttertoast.showToast(
         msg: message,
@@ -80,11 +87,12 @@ class PopUpWidget {
     );
   }
 
-  showPopupSucces(String text) {
+  showPopupSucces(String text, String message) {
     CoolAlert.show(
       context: context,
       type: CoolAlertType.success,
-      text: text,
+      title: text,
+      text: message,
       // confirmBtnText: 'Ya',
       cancelBtnText: 'Tidak',
       confirmBtnColor: Colors.green,

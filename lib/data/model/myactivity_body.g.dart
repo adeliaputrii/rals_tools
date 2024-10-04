@@ -8,26 +8,28 @@ part of 'myactivity_body.dart';
 
 MyActivityBody _$MyActivityBodyFromJson(Map<String, dynamic> json) =>
     MyActivityBody(
-      user_create: json['user_create'] as String?,
-      time_start: json['time_start'] as String?,
-      time_end: json['time_end'] as String?,
-      task_id: json['task_id'] as String?,
-      projek_id: json['projek_id'] as String?,
-      myactivity_desc: json['myactivity_desc'] as String?,
-      dokumen: json['dokumen'] as String?,
-      date_create: json['date_create'] as String?,
-      task_tech_status: json['task_tech_status'] as String?,
+      userCreate: json['user_create'] as String?,
+      timeStart: json['time_start'] as String?,
+      timeEnd: json['time_end'] as String?,
+      taskId: json['task_id'] as String?,
+      projekId: json['projek_id'] as String?,
+      taskTechStatus: json['task_tech_status'] as String?,
+      myactivityDesc: json['myactivity_desc'] as String?,
+      dokumen: (json['dokumen'] as List<dynamic>?)
+          ?.map((e) => Dokumen.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      dateCreate: json['date_create'] as String?,
     );
 
 Map<String, dynamic> _$MyActivityBodyToJson(MyActivityBody instance) =>
     <String, dynamic>{
-      'user_create': instance.user_create,
-      'time_start': instance.time_start,
-      'time_end': instance.time_end,
-      'task_id': instance.task_id,
-      'projek_id': instance.projek_id,
-      'task_tech_status': instance.task_tech_status,
-      'myactivity_desc': instance.myactivity_desc,
+      'user_create': instance.userCreate,
+      'time_start': instance.timeStart,
+      'time_end': instance.timeEnd,
+      'task_id': instance.taskId,
+      'projek_id': instance.projekId,
+      'task_tech_status': instance.taskTechStatus,
+      'myactivity_desc': instance.myactivityDesc,
       'dokumen': instance.dokumen,
-      'date_create': instance.date_create,
+      'date_create': instance.dateCreate,
     };

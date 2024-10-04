@@ -27,8 +27,8 @@ abstract class LoginService {
     @Field("id_user") String userId
   );
 
-  // @POST(basePath.api_my_log)
-  // Future<LoginResponse> createLog(@Body() CreateLogBody createLogBody);
+  @POST(basePath.api_my_log)
+  Future<LoginResponse> createLog(@Body() CreateLogBody createLogBody);
 
   @POST(basePath.api_logout)
   Future<LogoutResponse> logout();

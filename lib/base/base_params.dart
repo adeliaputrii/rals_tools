@@ -18,6 +18,7 @@ const String logToken = 'R4M4Y4N4';
 const String logInfoLoginPage = 'Login Aplikasi RALS';
 const String logInfoLoginSucc = 'Login Sukses';
 const String logInfoLoginFail = 'Login Gagal';
+const String logInfoLoginConec = 'No Internet';
 //*Log Membercard //
 const String logMembercardPage = 'Ramayana Membercard Page';
 const String logAuthenticationSucc = 'Enter Password Membercard Success';
@@ -28,19 +29,19 @@ const String logInfoResetSucc = 'Reset Password Sukses';
 const String logInfoResetFail = 'Reset Password Gagal';
 //*Log ID CASH Page*//
 const String logInfoIdcashPage = 'Ramayana ID CASH Page';
+const String logInfoIdcashAuth = 'Enter Password Success';
 const String logInfoIdcashSucc = 'Navigasi ke ID CASH';
 const String logInfoIdcashBarcode = 'Barcode ID CASH';
 const String logInfoIdcashHistory = 'Riwayat ID CASH';
 const String logInfoIdcashFail = 'Reset Password Gagal';
 //*Log Surat Jalan Page*//
 const String logInfoScanSJPage = 'Ramayana Scan Surat Jalan Page';
-const String logInfoScanSJSucc = 'Ramayana Scan Surat Berhasil';
+const String logInfoScanSJSucc = 'Ramayana Scan Surat Jalan Berhasil';
 const String logInfoScanDesc = 'Generate SJ No -';
-const String logInfoScanSJFail = 'Ramayana Scan Surat Gagal';
+const String logInfoScanSJFail = 'Ramayana Scan Surat Jalan Gagal';
 const String logInfoTrackSJPage = 'Ramayana Track Surat Jalan Page';
-const String logInfoTrackSJSucc = 'Ramayana Track Surat Berhasil';
-const String logInfoTrackSJFail = 'Ramayana Track Surat Gagal';
-
+const String logInfoTrackSJSucc = 'Ramayana Track Surat Jalan Berhasil';
+const String logInfoTrackSJFail = 'Ramayana Track Surat Jalan Gagal';
 //*Log Profile Page*//
 const String logInfoProfilePage = 'Profile Page';
 const String logInfoProfile = 'Logout Aplikasi RALS';
@@ -55,7 +56,7 @@ const String logInfoComCekFail = 'Com Cek Fail';
 //*Log Activity Page*//
 const String logInfoActivityPage = 'My Activity Page';
 const String logInfoActivityInputSucc = 'Input Activity Project - ';
-const String logInfoActityEdit = 'My Activity - Edit My Activity Page';
+const String logInfoActityEdit = 'Edit My Activity - ';
 const String logInfoActitySucc = 'My Activity - Edit My Activity';
 
 //*Log Void Page*//
@@ -66,7 +67,16 @@ const String logInfoVoidOfflinePage = 'Void Offline Page';
 //*Log Tukar Poin
 const String logCantEmpty = 'Masukkan 4 digit kode pada mesin kassa';
 const String logtukarPoinPage = 'Tukar Poin Page';
-const String logtukarPoinP = 'Aktivitas Tukar Poin';
+const String logtukarPoinP = 'Aktivitas Tukar Poin - ';
+
+//Log LSPB
+const String logGetTypeSucc = 'LSPB Get Type Document';
+const String logInputLspb = 'LSPB Input selisih LSPB - ';
+const String logLspPage = 'LSPB Page';
+
+//Log SO
+const String logSoSubmit = 'Submit - ';
+const String logSoPage = 'Stock Opname Page';
 
 //*Log Report Page*//
 const String logInfoReportPage = 'Report Page';
@@ -159,6 +169,7 @@ const String menuSuratJalan = 'Surat\nJalan';
 const String menuMyActivity = 'My\nActivity';
 const String menuVoid = 'Void\n  ';
 const String menuSo = 'Stock\nOpname';
+const String menuLspb = 'LSPB';
 const String menuCekHarga = 'Cek\nHarga';
 const String menuComCheck = 'Competitor\nChecking';
 const String menuApprReturn = 'Approval\nReturn';
@@ -170,6 +181,7 @@ const String menuLaporanPooling = 'Laporan\nPooling';
 const String menuKeyIdCash = 'masteridcash.idcash';
 const String menuKeyVoid = 'mastervoid.void';
 const String menuKeySo = 'stockopname.so';
+const String menuKeyLspb = 'lspb.reqlspb';
 const String menuKeyApprovalReturn = 'approvalreturn.approvalreturn';
 const String menuKeyCekPrice = 'cekprice.cekprice';
 const String menuKeyTukarPoin = 'tukarpoin.tukarpoin';

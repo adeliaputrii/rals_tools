@@ -16,7 +16,7 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
   late PopUpWidget popUpWidget;
   late LoginCubit loginCubit;
   late IDCashCubit cubit;
-  final urlApi = '${tipeurl}${basePath.api_login}';
+  final urlApi = '${tipeurl}${basePath.api_membercard_customer}';
 
   bool isLoading = false;
   bool _flip = false;
@@ -102,7 +102,7 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
     await userData.getPref();
     var member = await SharedPref.getMember();
     String userId = '${member}';
-    String? randomAngka = myController.text;
+    // String? randomAngka = myController.text;
     List noMember = userId.split('');
     int current = 1;
     for (int i = 0; i < noMember.length; i++) {
@@ -144,6 +144,7 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
         return BlocListener<IDCashCubit, IDCashState>(
         listener: (context, state) {
           if (state is IDCashSuccess) {
+            // loginCubit.createLog(baseParam.logtukarPoinPage, '${baseParam.logtukarPoinP}${myController.text}', urlApi);
             setState(() {
               poin = state.response.data?.first.poin.toString() ?? "0";
             });
@@ -310,6 +311,7 @@ class _RamayanaTukarPoinState extends State<RamayanaTukarPoin> {
                                         if (_isConnected == true) {
                                           AndroidDeviceInfo info =
                                             await deviceInfo.androidInfo;
+                                            loginCubit.createLog(baseParam.logtukarPoinPage, '${baseParam.logtukarPoinP}${myController.text.substring(0, 4)}', urlApi);
                                           } else if (_isConnected == false) {
                                             String format = DateFormat.Hms().format(DateTime.now());
                                             db.saveActivityy(LogOffline(

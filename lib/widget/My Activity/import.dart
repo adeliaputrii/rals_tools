@@ -2,6 +2,7 @@ library quill_html_converter;
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
 import 'package:cool_alert/cool_alert.dart';
