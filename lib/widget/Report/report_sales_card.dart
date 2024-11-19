@@ -16,14 +16,21 @@ class CardReport extends StatelessWidget {
       },
       child: Container(
           margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-          decoration: BoxDecoration(color: baseColor.cardReportColor, borderRadius: BorderRadius.circular(20)),
+          decoration: BoxDecoration(color: baseColor.cardReportColor, 
+          boxShadow: [BoxShadow(
+            offset: Offset(2,3),
+            color: Colors.grey,
+            blurRadius: 3
+          )],
+          borderRadius: BorderRadius.circular(20)),
           height: screenSize.height / 12,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
                 Container(
-                  decoration: BoxDecoration(color: baseColor.cardImageBackground, borderRadius: BorderRadius.circular(10)),
+                  decoration: BoxDecoration(color: baseColor.cardImageBackground,
+                  borderRadius: BorderRadius.circular(10)),
                   child: Image(
                     width: 40,
                     height: 40,
@@ -47,6 +54,10 @@ class CardReport extends StatelessWidget {
                                 children: [
                                   Text(
                                     '${response.status}',
+                                    style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w500, color: baseColor.graySecondary),
+                                  ),
+                                  Text(
+                                    '${response.category}',
                                     style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w500, color: baseColor.graySecondary),
                                   ),
                                   Text('${date.substring(0, 10)}',

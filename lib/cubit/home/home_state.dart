@@ -48,3 +48,12 @@ class HomeFailure extends HomeState {
   @override
   List<Object?> get props => [message];
 }
+
+class HomeNewsFailure extends HomeState {
+  final String message;
+
+  const HomeNewsFailure({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}

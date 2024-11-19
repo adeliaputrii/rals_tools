@@ -19,6 +19,7 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
 
   final HomeRepositories repositories = HomeRepositories();
+  List<NewsListResponse> listNews = [];
 
   void getTaskUser(String token) async {
     emit(HomeLoading());
@@ -56,6 +57,27 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
+  void searchNewsList(String token, {String? query}) async {
+  emit(HomeLoading());
+  await repositories.getNewsList(token).then((value) {
+    if (value != null) {
+      if (value.isSuccess && value.dataResponse is NewsListResponse) {
+        final res = value.dataResponse as NewsListResponse;
+        final lowerQuery = query?.toLowerCase() ?? '';
+        final result = res.data!.where((newsItem) {
+        return newsItem.beritaHdr!.toLowerCase().contains(lowerQuery) ?? false;
+        }).toList();
+        if (result.isNotEmpty) {
+          emit(HomeNewsSuccess(NewsListResponse(data: result))); // Emit the filtered results
+        } else {
+          emit(HomeNewsFailure(message: 'No results found for "$query"'));
+        }
+      } else {
+        debugPrint('value null');
+      }
+    }}); 
+  }
+  
   void getCountTask(String token) async {
     emit(HomeLoading());
     await repositories.getCountTask(token).then((value) {

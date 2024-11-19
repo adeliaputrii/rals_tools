@@ -1,11 +1,5 @@
 part of 'import.dart';
 
-final List<String> imgList = [
-  'https://ramayana.co.id/images/WhatsApp%20Image%202022-04-12%20at%2012.07.34%20(1).jpeg',
-  'https://ramayana.co.id/images/WhatsApp%20Image%202022-04-12%20at%2012.07.34.jpeg',
-  'https://ramayana.co.id/images/WhatsApp%20Image%202022-04-12%20at%2012.07.33.jpeg',
-];
-
 class Ramayana extends StatefulWidget {
   const Ramayana({super.key});
 
@@ -57,10 +51,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   var member = '';
   final urlApi = '${tipeurl}${basePath.api_login}';
   bool sendLog = false;
+  static UserData userData = UserData();
 
-  String? urlPhoto;
-  String? header;
-  String? newsUrl;
+  List<NewsListResponse.Data> urlPhoto= [];
+  List<GetTaskResponse.Data> getTask=[];
+  bool isDataReady = false;
 
   List<Map<String, dynamic>> loginOffline = [];
   List<Map<String, dynamic>> voidOffline = [];
@@ -89,6 +84,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     _getAllActivity();
     _unsecureScreen();
      _checkInternetConnection();
+     homeCubit.getNewsList(token!);
   }
 
   refreshPage() async {
@@ -100,9 +96,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     _unsecureScreen();
      _checkInternetConnection();
     menuAccess(context);
+    dapetinData();
   }
-
- 
 
   fetchDataCustomer() async {
     final body = DataMemberCardBody(idUser: userData.getUsername7());
@@ -121,7 +116,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     });
-
     var data = jsonDecode(responseku.body);
     if (data['status'] == 200) {
       Map<String, dynamic> count = data['data'];
@@ -181,70 +175,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     }
   }
 
-  // Future<void> _getAllActivity() async {
-  //   //list menampung data dari database
-  //   var list = await db.getAllFormat();
-  //   var listVoidOffline = await db2.getAllFormatVoidOffline();
-  //   var listLoginOffline = await db3.getAllFormat(); //
-  //   var listSo = await dbSo.getAllFormat();
-  //   print('ACTIV ${list}');
-  //   if (isMounted) {
-  //     setState(() {
-  //       //hapus data pada listKontak
-  //       LogOffline.listActivity.clear();
-  //       VoidOffline.voidOffline.clear();
-  //       LoginOffline.listActivity.clear();
-  //     });
-  //     if (list != null) {
-  //       final String columnId = 'id_act';
-  //       final String columnIdGenerate = 'deskripsi';
-  //       final String columnDate = 'datetime';
-  //       // Iterate through the result and print attributes
-  //       for (var activityy in list) {
-  //         var id = activityy[columnId];
-  //         var deskripsi = activityy[columnIdGenerate];
-  //         var datetime = activityy[columnDate];
-  //         loginCubit.createLogVoidOffline(logInfoVoidOfflinePage, deskripsi, urlApi, datetime);
-  //       }
-  //       await db.deleteAll();
-  //     }
-      
-  //     if (listVoidOffline != null) {
-  //       final String columnId = 'id_act';
-  //       final String columnIdGenerate = 'idGenerate';
-  //       final String columnDate = 'date';
-  //       // Iterate through the result and print attributes
-  //       for (var activityy in listVoidOffline) {
-  //         var id = activityy[columnId];
-  //         var idGenerate = activityy[columnIdGenerate];
-  //         var date = activityy[columnDate];
-  //         print('ACTIVV ${idGenerate}');
-  //         loginCubit.createLogVoidOffline(logInfoVoidOfflinePage, idGenerate, urlApi, date);
-  //         await db2.deleteVoidOffline(id);
-  //       }
-  //     }
-  //     if (listLoginOffline != null) {
-  //       final String columnId = 'id_act';
-  //       final String columnDeskripsi = 'deskripsi';
-  //       final String columnDatetime = 'datetime';
-  //       // Iterate through the result and print attributes
-  //       for (var activity in listLoginOffline) {
-  //         var id = activity[columnId];
-  //         var deskripsi = activity[columnDeskripsi];
-  //         var datetime = activity[columnDatetime];
-  //         loginCubit.createLogVoidOffline(logLoginOfflinePage, deskripsi, urlApi, datetime);
-  //       }
-  //       db3.deleteAll();
-  //     }
-  //     }
-  //   }
-
   Future<void> _getAllActivity() async {
     //list menampung data dari database
     var list = await db.getAllFormat();
     var listVoidOffline = await db2.getAllFormatVoidOffline();
     var listLoginOffline = await db3.getAllFormat(); //
-
     if (isMounted) {
       setState(() {
         //hapus data pada listKontak
@@ -315,13 +250,10 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
             }
           });
         }
-
         db3.deleteAll();
       }
     }
   }
-  
-  
 
   Future<void> dapetinData() async {
     pref = await SharedPreferences.getInstance();
@@ -339,9 +271,6 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   void didPop() {
     ScreenBrightness().resetScreenBrightness();
   }
-
-  static UserData userData = UserData();
-
   Future<void> deleteToko() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     AndroidDeviceInfo info = await deviceInfo.androidInfo;
@@ -372,9 +301,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     } on PlatformException {
       udid = 'Failed to get UDID.';
     }
-
     if (!mounted) return;
-
     setState(() {
       _udid = udid;
     });
@@ -431,19 +358,37 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     }
 
     return RelativeBuilder(builder: (context, height, width, sy, sx) {
-      return BlocListener<IDCashCubit, IDCashState>(
+      return BlocListener<HomeCubit, HomeState>(
         listener: (context, state) {
-          if (state is IDCashSuccess) {
-            setState(() {
-              member = state.response.data!.first.nokartu.toString();
-              pref.setString('noMember', '${member}');
-            });
-          }
-          // if (state is CreateLogSuccess){
-          //   if (sendLog == true) {
-          //     deleteData();
-          //   }
+          // if (state is IDCashSuccess) {
+          //   setState(() {
+          //     member = state.response.data!.first.nokartu.toString();
+          //     pref.setString('noMember', '${member}');
+          //   });
           // }
+          if (state is HomeNewsSuccess) {
+          final daysFilter = state.response.data;
+          final DateTime now = DateTime.now();
+          final DateTime cutoffDate = now.subtract(Duration(days: 15));
+
+          // Filter items created in the last 15 days
+          List<NewsListResponse.Data> filteredItems = daysFilter?.where((item) {
+            DateTime createdDate = DateTime.parse(item.createdDate ?? '');
+            return createdDate.isAfter(cutoffDate);
+          }).toList() ?? [];
+
+          // Limit the number of items to a maximum of 3
+          urlPhoto = filteredItems.take(3).toList();
+        }
+        if (state is HomeSuccess) {
+          final task = state.response.data;
+          if (task != null) {
+            getTask = task.take(3).toList();
+          } else {
+            print(getTask);
+          }
+          isDataReady = true;
+        }
         },
         child: Scaffold(
           backgroundColor: Theme.of(context).canvasColor,
@@ -504,6 +449,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
                                         return Profilee();
                                       }));
+                                      
                                     },
                                     child: Column(
                                       children: [
@@ -665,14 +611,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                   ),
                                                 ),
                                                 Container(
-                                                  height: 40,
+                                                  // height: 40,
                                                   decoration: BoxDecoration(
-                                                    gradient: LinearGradient(
-                                                      colors: [Colors.red, Color.fromARGB(255, 103, 94, 94)],
-                                                      begin: FractionalOffset(0.0, 0.0),
-                                                      end: FractionalOffset(1.5, 0.0),
-                                                      stops: [0.0, 1.0],
-                                                      tileMode: TileMode.clamp),
                                                     borderRadius: BorderRadius.circular(90)),
                                                       margin: EdgeInsets.only(right: 10),
                                                       child: ElevatedButton(
@@ -687,61 +627,107 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                           );
                                                         },
                                                         child: Text(
-                                                        'Lihat Semua',
+                                                        'Arsip Berita',
                                                         style: GoogleFonts.plusJakartaSans(fontSize: 15, color: Colors.white),
                                                     )))
                                                   ],
                                                 ),
                                               ),
                                             ),
-                                        Container(
-                                          margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                          child:
-                                            InkWell(
-                                              onTap: () {
-                                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-                                                  return NewsDetail(newsUrl: newsUrl ?? '', fromHome: true);
-                                                }), (route) => false);
-                                               },
-                                              child: Container(
-                                                width: 400,
-                                                margin: EdgeInsets.only(bottom: 10, right: 20),
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  color: Colors.white,
-                                                ),
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      child: ClipRRect(
-                                                        borderRadius: BorderRadius.circular(10),
-                                                        child: 
-                                                        urlPhoto == null 
-                                                        ?
-                                                        Container()
-                                                        :
-                                                        Image.network('${urlPhoto ?? ''}', fit: BoxFit.cover)
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      margin: EdgeInsets.fromLTRB(10, 10, 0, 15),
-                                                      child: Text('${header ?? ''}',
-                                                        style: GoogleFonts.plusJakartaSans(
-                                                        fontSize: 17, 
-                                                        fontWeight: FontWeight.w600, 
-                                                        color: Colors.black),
-                                                      ),
-                                                     ),
-                                                    ],
-                                                  ),
-                                                 ),
-                                              )
+                                        urlPhoto.isEmpty
+                                        ? SizedBox()
+                                        :
+                                        CarouselSlider(
+                                        carouselController: _controller,
+                                        items: urlPhoto?.map((fileImage) {
+                                          return Container(
+                                            constraints: BoxConstraints(
+                                              // minHeight: 420, // Set a minimum height if needed
                                             ),
+                                            child: Column(
+                                              // mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                ClipRRect(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  child: Image.network(
+                                                    fileImage.urlPhoto.toString(),
+                                                    fit: BoxFit.cover,
+                                                    width: double.infinity,
+                                                    height: 200, // Set a fixed height for the image
+                                                  ),
+                                                ),
+                                                Expanded( // Ensure the text does not overflow
+                                                  child: Container(
+                                                    margin: EdgeInsets.fromLTRB(10, 5, 0, 15),
+                                                    child: Text(
+                                                      fileImage.beritaHdr.toString(),
+                                                      style: GoogleFonts.plusJakartaSans(
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.black,
+                                                      ),
+                                                      overflow: TextOverflow.ellipsis, // Prevent text overflow
+                                                      maxLines: 2, // Limit the number of lines for text
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }).toList(),
+                                        options: CarouselOptions(
+                                          autoPlay: false,
+                                          enlargeCenterPage: true,
+                                          enableInfiniteScroll: urlPhoto.length == 1 ? false : true,
+                                          viewportFraction: 0.9,
+                                          aspectRatio: 2.0,
+                                          initialPage: 0,
+                                          onPageChanged: (index, reason) {
+                                            setState(() {
+                                              _current = index;
+                                            });
+                                          }),
+                                        )
                                           ],
                                         )
                                       ),
+                                      urlPhoto.isEmpty
+                                      ?
+                                      SizedBox()
+                                      :
+                                      Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: urlPhoto.asMap().entries.map((entry) {
+                                        return GestureDetector(
+                                          onTap: () => _controller.animateToPage(entry.key),
+                                          child: Container(
+                                            width: 12.0,
+                                            height: 12.0,
+                                            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: (Theme.of(context).brightness == Brightness.dark
+                                                        ? Colors.white
+                                                        : Colors.black)
+                                                    .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  isDataReady
+                                  ?
+                                  SizedBox()
+                                  :
+                                  AppWidget().LoadingWidget(),
+                                  BlocBuilder<IDCashCubit, IDCashState>(
+                                    builder: (context, state){
+                                      if (state is IDCashSuccess) {
+                                          member = state.response.data!.first.nokartu.toString();
+                                          pref.setString('noMember', '${member}');
+                                     
+                                      }
+                                      return SizedBox();
+                                  }),
                                   Padding(
                                     padding: const EdgeInsets.all(1.0),
                                     child: mylisttask
@@ -844,28 +830,12 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                               ],
                                               ),
                                             ),
-                                        Container(
-                                          margin: EdgeInsets.only(top: 10,left: 20,right: 20, ),
-                                          child: BlocListener<HomeCubit, HomeState>(
-                                            listener: (context, state) {
-                                              if(state is HomeNewsSuccess) {
-                                                setState(() {
-                                                  urlPhoto = state.response.data?.first.urlPhoto;
-                                                  header = state.response.data?.first.beritaHdr;
-                                                  newsUrl = state.response.data?.first.newsUrl;
-                                                  }
-                                                );
-                                              }
-                                            },
-                                            child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
-                                              if (state is HomeLoading) {
-                                                return SpinKitThreeBounce(
-                                                  color: Color.fromARGB(255, 230, 0, 0),
-                                                  size: 50.0,
-                                                );
-                                              }
-                                              if (state is HomeSuccess) {
-                                                return Container(
+                                            getTask.isEmpty
+                                            ?
+                                            SizedBox()
+                                            :
+                                            Container(
+                                              margin: EdgeInsets.all(20),
                                                   child: ListView.builder(
                                                     primary: false,
                                                     shrinkWrap: true,
@@ -874,7 +844,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                       return InkWell(
                                                       onTap: () {
                                                         Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                          return RamayanaMyActivity(update: false, response: state.response.data![index]);
+                                                          return RamayanaMyActivity(update: false, response: getTask[index]);
                                                         })
                                                         );
                                                       },
@@ -903,7 +873,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                               Container(
                                                                 margin: EdgeInsets.only(top: 3),
                                                                 child: Text(
-                                                                  '${state.response.data?[index].taskDesc}',
+                                                                  '${getTask[index].taskDesc}',
                                                                     style: GoogleFonts.plusJakartaSans(
                                                                       fontSize: 18, color: Colors.black, 
                                                                       fontWeight: FontWeight.w500
@@ -919,7 +889,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                     style: GoogleFonts.plusJakartaSans(
                                                                       fontSize: 15, color: Colors.grey)),
                                                                   ),
-                                                                  Text('${state.response.data?[index].taskStatus}',
+                                                                  Text('${getTask[index].taskStatus}',
                                                                     style:GoogleFonts.plusJakartaSans(
                                                                       fontSize: 15, 
                                                                       color: Colors.grey
@@ -936,7 +906,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                                     fontSize: 15, 
                                                                     color: Colors.grey)),
                                                                   ),
-                                                                  Text(': ${state.response.data?[index].projectId}',
+                                                                  Text(': ${getTask[index].projectId}',
                                                                     style:GoogleFonts.plusJakartaSans(
                                                                       fontSize: 15, 
                                                                       color: Colors.grey
@@ -951,13 +921,11 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                                     );
                                                   },
                                                  ),
-                                                );
-                                              }
-                                          return Container();
-                                         }),
-                                       )),
+                                                ),
+                                      
                                       ],
                                      )
+                                     
                                     : Container()),
                                   ],
                                 ),

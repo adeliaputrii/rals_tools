@@ -48,7 +48,6 @@ final _nativeIdPlugin = NativeId();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   app_name = packageInfo.appName;
   String packageName = packageInfo.packageName;

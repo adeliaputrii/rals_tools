@@ -37,6 +37,7 @@ class Data {
   String? beritaHdr;
   String? urlPhoto;
   String? newsUrl;
+  String? createdDate;
 
   Data({this.id, this.beritaHdr, this.urlPhoto, this.newsUrl});
 
@@ -45,6 +46,7 @@ class Data {
     beritaHdr = json['berita_hdr'];
     urlPhoto = json['url_photo'];
     newsUrl = json['news_url'];
+    createdDate = json['created_date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -53,6 +55,7 @@ class Data {
     data['berita_hdr'] = this.beritaHdr;
     data['url_photo'] = this.urlPhoto;
     data['news_url'] = this.newsUrl;
+    data['created_date'] = this.createdDate;
     return data;
   }
 }

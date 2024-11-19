@@ -9,8 +9,9 @@ class ReportListResponse {
   String? tipe;
   String? properties;
   String? createDate;
+  String? category;
 
-  ReportListResponse({this.header1, this.header2, this.tipe, this.properties, this.createDate});
+  ReportListResponse({this.header1, this.header2, this.tipe, this.properties, this.createDate, this.category});
 
   ReportListResponse.fromJson(Map<String, dynamic> json) {
     header1 = json['header1'];
@@ -18,6 +19,7 @@ class ReportListResponse {
     tipe = json['tipe'];
     properties = json['properties'];
     createDate = json['create_date'];
+    category = json['category'];
   }
 
   Map<String, dynamic> toJson() {
@@ -27,6 +29,7 @@ class ReportListResponse {
     data['tipe'] = this.tipe;
     data['properties'] = this.properties;
     data['create_date'] = this.createDate;
+    data['category'] = this.category;
     return data;
   }
 }

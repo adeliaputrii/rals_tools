@@ -13,6 +13,7 @@ ReportListResponse _$ReportListResponseFromJson(Map<String, dynamic> json) =>
       tipe: json['tipe'] as String?,
       properties: json['properties'] as String?,
       createDate: json['create_date'] as String?,
+      category: json['category'] as String?,
     );
 
 Map<String, dynamic> _$ReportListResponseToJson(ReportListResponse instance) =>
@@ -22,4 +23,5 @@ Map<String, dynamic> _$ReportListResponseToJson(ReportListResponse instance) =>
       'tipe': instance.tipe,
       'properties': instance.properties,
       'create_date': instance.createDate,
+      'category': instance.category,
     };

@@ -9,7 +9,9 @@ import 'package:badges/badges.dart' as badge;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
-
+import 'package:myactivity_project/utils/app_widgets.dart';
+import '../../data/model/news_list_response.dart' as NewsListResponse;
+import '../../data/model/get_task_response.dart' as GetTaskResponse;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,7 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:myactivity_project/base/base_params.dart';
 import 'package:myactivity_project/base/base_paths.dart';
 import 'package:myactivity_project/cubit/stock_opname/so_cubit.dart';
+import 'package:myactivity_project/data/model/news_list_response.dart';
 import 'package:myactivity_project/data/model/stock_opname_submit_body.dart';
 import 'package:myactivity_project/database/StockOpname/db_save_data.dart';
 import 'package:myactivity_project/database/db_log_login_offline.dart';

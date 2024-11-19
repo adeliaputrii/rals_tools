@@ -1,10 +1,10 @@
 // const String base_url_dev = "http://172.16.126.221:8002/";
 // const String base_url_dev = "http://172.16.126.54:8002/";
 // const String base_url_dev_tms_localhost = "http://172.16.126.221:8000/";
-// const String base_url_prod = "https://dev-android-api.ramayana.co.id:8305/";
-const String base_url_prod = "https://android-api.ramayana.co.id:8304/";
-// const String base_url_prod_tms = "https://dev-ris.ramayana.co.id/";
-const String base_url_prod_tms = "https://ris.ramayana.co.id/";
+const String base_url_prod = "https://dev-android-api.ramayana.co.id:8305/";
+// const String base_url_prod = "https://android-api.ramayana.co.id:8304/";
+const String base_url_prod_tms = "https://dev-ris.ramayana.co.id/";
+// const String base_url_prod_tms = "https://ris.ramayana.co.id/";
 const String testing = "https://mocki.io/";
 
 const String contentType = 'application/json';

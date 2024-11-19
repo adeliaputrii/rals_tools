@@ -9,35 +9,38 @@ class SearchInputReport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 0),
-      height: MediaQuery.of(context).size.height / 25,
-      child: TextField(
-        readOnly: false,
-        keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.search,
-        controller: controller,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Color.fromARGB(255, 236, 236, 236),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              width: 2,
-              color: Color.fromARGB(255, 236, 236, 236),
-            ), //<-- SEE HERE
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              width: 2,
-              color: Color.fromARGB(255, 236, 236, 236),
-            ), //<-- SEE HERE
-            borderRadius: BorderRadius.circular(20.0),
-          ),
+    return 
+    Container(
+      margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15)
+      ),
+      child: 
+      TextFormField(
+      controller: controller,
+      textInputAction: TextInputAction.search,
+      onChanged: (text) {
+        onSelectedCallback(text);
+      },
+      style: GoogleFonts.plusJakartaSans(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: Colors.black
+      ),
+      decoration: InputDecoration(
+        prefixIcon: Icon(IconlyLight.search,
+        color: baseColors.primaryColor,
+        size: 20,
         ),
-        onChanged: (text) {
-          onSelectedCallback(text);
-        },
+        border: InputBorder.none,
+        hintText: 'Search',
+        hintStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: Colors.black
+          )
+        ),
       ),
     );
   }

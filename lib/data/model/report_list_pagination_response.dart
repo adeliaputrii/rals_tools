@@ -42,19 +42,21 @@ class Data {
   String? header1;
   String? header2;
   String? tipe;
+  String? category;
   String? status;
   String? properties;
   String? createDate;
   int? idReport;
   int? viewer;
 
-  Data({this.header1, this.header2, this.tipe, this.status, this.properties, this.createDate});
+  Data({this.header1, this.header2, this.tipe, this.status, this.properties, this.createDate, this.category});
 
   Data.fromJson(Map<String, dynamic> json) {
     header1 = json['header1'];
     header2 = json['header2'];
     status = json['status'];
     tipe = json['tipe'];
+    category = json['category'];
     properties = json['properties'];
     createDate = json['create_date'];
     idReport = json['id_report'];
@@ -66,6 +68,7 @@ class Data {
     data['header1'] = this.header1;
     data['header2'] = this.header2;
     data['tipe'] = this.tipe;
+    data['category'] = this.category;
     data['status'] = this.status;
     data['properties'] = this.properties;
     data['create_date'] = this.createDate;

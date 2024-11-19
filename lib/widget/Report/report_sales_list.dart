@@ -28,6 +28,7 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
   String? nextUrlCursor;
   String urlDetail = 'https://www.youtube.com/';
   String? token;
+  String? _chosenValue = 'All';
 
   int progressBar = 0;
   final scrollController = ScrollController();
@@ -47,6 +48,7 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
     token = await SharedPref.getToken();
     initDataReport();
     scrollListener();
+    searchController.clear();
   }
 
   void initDataReport() {
@@ -113,180 +115,243 @@ class _ReportSalesListState extends State<ReportSalesList> with AutomaticKeepAli
           }
         },
         child: Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                onPressed: () async {
-                  _onBackPressed();
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  size: 20,
-                  color: Colors.white,
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(context,
+                  MaterialPageRoute(builder: (context) {
+                  return Ramayana();
+                }), (route) => false);
+              },
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+              ),
+              ),
+            toolbarHeight: 75,
+            centerTitle: true,
+            title: Text('Laporan',
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 23, color: Colors.white)),
+            backgroundColor: baseColors.primaryColor,
+          ),
+            body: Stack(
+              children: [
+                Container(
+                child: Image.asset(
+                  'assets/reportBackground.png',
+                  fit: BoxFit.cover,
+                  height: double.infinity,
+                  width: double.infinity,
+                  alignment: Alignment.center,
                 ),
               ),
-              backgroundColor: baseColor.primaryColor,
-              title: isSearch
-                  ? SearchInputReport(
-                      controller: searchController,
-                      onSelectedCallback: (value) {
-                        _debounceTimer?.cancel();
-
-                        _debounceTimer = Timer(Duration(seconds: 1), () {
-                          search(value);
-                        });
-                      },
-                    )
-                  : Text(
-                      'LAPORAN',
-                      style: TextStyle(color: Colors.white),
-                    ),
-              centerTitle: true,
-              actions: [
-                IconButton(
-                    icon: !isSearch
-                        ? Icon(
-                            Icons.search,
-                            color: Colors.white,
-                          )
-                        : Icon(
-                            Icons.close,
-                            color: Colors.white,
-                          ),
-                    onPressed: () {
-                      setState(() {
-                        isSearch = !isSearch;
+                BlocBuilder<ReportCubit, ReportState>(builder: (context, state) {
+                  if (state is ReportInitial) {
+                    return loading();
+                  }
+                
+                  if (state is ReportLoading) {
+                    if (listDataPaging.isEmpty) {
+                      return loading();
+                    } else {
+                      return searchEmpty();
+                    }
+                  }
+                
+                  if (state is ReportPaginationSuccess) {
+                    String? url = state.response.nextPageUrl;
+                
+                    if (url != null) {
+                      Uri uri = Uri.parse(url);
+                      Map<String, dynamic> queryParams = uri.queryParameters;
+                      String cursorValue = queryParams['cursor'];
+                      nextUrlCursor = cursorValue;
+                    } else {
+                      nextUrlCursor = null;
+                      isLoaded = true;
+                    }
+                
+                    if (state.response.data?.isNotEmpty ?? false) {
+                      state.response.data?.forEach((element) {
+                        bool headerExists = listDataPaging.any((existingElement) => existingElement.header1 == element.header1);
+                        if (!headerExists) {
+                          listDataPaging.add(element);
+                        }
+                        // listDataPaging.add(element);
                       });
-                      if (!isSearch) {
-                        isLoaded = false;
-                        reportCubit.getListReportPagination(token ?? '', "", "", "", "");
-                        setState(() {
-                          title = "";
-                          nextUrlCursor = null;
-                          listDataPaging.clear();
-                          searchController.clear();
-                          listReportSearch.clear();
-                        });
+                      if (listDataPaging.isNotEmpty) {
+                        debugPrint('data length ${listDataPaging.length}');
+                        return searchEmpty();
+                      } else {
+                        return Center(child: AppWidget().EmptyHandler(baseParam.emptyDataReportMessage));
                       }
-                    })
+                    }
+                  }
+                
+                  if (state is ReportInsertViewerSuccess) {
+                    listDataPaging.clear();
+                    String? url = state.response.nextPageUrl;
+                
+                    if (url != null) {
+                      isLoaded = false;
+                      Uri uri = Uri.parse(url);
+                      Map<String, dynamic> queryParams = uri.queryParameters;
+                      String cursorValue = queryParams['cursor'];
+                      nextUrlCursor = cursorValue;
+                    } else {
+                      nextUrlCursor = null;
+                      isLoaded = true;
+                    }
+                
+                    if (state.response.data?.isNotEmpty ?? false) {
+                      state.response.data?.forEach((element) {
+                        bool headerExists = listDataPaging.any((existingElement) => existingElement.header1 == element.header1);
+                        if (!headerExists) {
+                          listDataPaging.add(element);
+                        }
+                        // listDataPaging.add(element);
+                      });
+                      if (listDataPaging.isNotEmpty) {
+                        return searchEmpty();
+                      } else {
+                        return Center(child: AppWidget().EmptyHandler(baseParam.emptyDataReportMessage));
+                      }
+                    }
+                  }
+                
+                  if (state is ReportFailure) {
+                    return AppWidget().ErrorHandler(baseParam.errorReportMessage, getListReport);
+                  }
+                  return searchEmpty();
+                }),
               ],
-            ),
-            body: BlocBuilder<ReportCubit, ReportState>(builder: (context, state) {
-              if (state is ReportInitial) {
-                return Center(child: AppWidget().LoadingWidget());
-              }
-
-              if (state is ReportLoading) {
-                if (listDataPaging.isEmpty) {
-                  return Center(child: AppWidget().LoadingWidget());
-                } else {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: searchEmpty(),
-                  );
-                }
-              }
-
-              if (state is ReportPaginationSuccess) {
-                String? url = state.response.nextPageUrl;
-
-                if (url != null) {
-                  Uri uri = Uri.parse(url);
-                  Map<String, dynamic> queryParams = uri.queryParameters;
-                  String cursorValue = queryParams['cursor'];
-                  nextUrlCursor = cursorValue;
-                } else {
-                  nextUrlCursor = null;
-                  isLoaded = true;
-                }
-
-                if (state.response.data?.isNotEmpty ?? false) {
-                  state.response.data?.forEach((element) {
-                    bool headerExists = listDataPaging.any((existingElement) => existingElement.header1 == element.header1);
-                    if (!headerExists) {
-                      listDataPaging.add(element);
-                    }
-                    // listDataPaging.add(element);
-                  });
-                  if (listDataPaging.isNotEmpty) {
-                    debugPrint('data length ${listDataPaging.length}');
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: searchEmpty(),
-                    );
-                  } else {
-                    return Center(child: AppWidget().EmptyHandler(baseParam.emptyDataReportMessage));
-                  }
-                }
-              }
-
-              if (state is ReportInsertViewerSuccess) {
-                listDataPaging.clear();
-                String? url = state.response.nextPageUrl;
-
-                if (url != null) {
-                  isLoaded = false;
-                  Uri uri = Uri.parse(url);
-                  Map<String, dynamic> queryParams = uri.queryParameters;
-                  String cursorValue = queryParams['cursor'];
-                  nextUrlCursor = cursorValue;
-                } else {
-                  nextUrlCursor = null;
-                  isLoaded = true;
-                }
-
-                if (state.response.data?.isNotEmpty ?? false) {
-                  state.response.data?.forEach((element) {
-                    bool headerExists = listDataPaging.any((existingElement) => existingElement.header1 == element.header1);
-                    if (!headerExists) {
-                      listDataPaging.add(element);
-                    }
-                    // listDataPaging.add(element);
-                  });
-                  if (listDataPaging.isNotEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: searchEmpty(),
-                    );
-                  } else {
-                    return Center(child: AppWidget().EmptyHandler(baseParam.emptyDataReportMessage));
-                  }
-                }
-              }
-
-              if (state is ReportFailure) {
-                return AppWidget().ErrorHandler(baseParam.errorReportMessage, getListReport);
-              }
-              return searchEmpty();
-            })));
-  }
-
-  Widget searchResult() {
-    return ListView.builder(
-        shrinkWrap: true,
-        itemCount: listDataSearch.length,
-        itemBuilder: (context, index) {
-          return CardReport(response: listDataSearch[index]);
-        });
+            )));
   }
 
   Widget searchEmpty() {
-    return ListView.builder(
-        controller: scrollController,
-        itemCount: listDataPaging.length + 1,
-        itemBuilder: (builder, index) {
-          if (index < listDataPaging.length) {
-            final item = listDataPaging[index];
-            return CardReport(response: item);
-          } else {
-            return Center(
-              child: isLoaded
-                  ? Container()
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: AppWidget().LoadingWidget(),
-                    ),
-            );
-          }
-        });
+    final filteredList = _chosenValue != 'All'
+    ? listDataPaging.where((item) => item.category!.contains(_chosenValue!)).toList()
+    : listDataPaging;
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 10),
+          color: baseColors.primaryColor,
+          width: 500,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 350,
+                child: SearchInputReport(
+                  controller: searchController,
+                    onSelectedCallback: (value) {
+                      _debounceTimer?.cancel();
+                      _debounceTimer = Timer(Duration(seconds: 1), () {
+                      search(value);
+                    });
+                  },
+                ),
+              ),
+              Container(
+                width: 90,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                ),
+                margin: EdgeInsets.only(right: 20, bottom: 20),
+                child: Center(
+                  child: DropdownButton<String>(
+                    value: _chosenValue,
+                    style: GoogleFonts.plusJakartaSans(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600),
+                    iconEnabledColor:Colors.black,
+                    items: <String>[
+                      'All',
+                      'MAN',
+                      'INFO',
+                      'LAP',
+                      'SOP',
+                      'SRK'
+                     ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value,style: GoogleFonts.plusJakartaSans(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                        setState(() {
+                       _chosenValue = value!;
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
+          )
+        ),
+        Expanded(
+          child: 
+          listDataPaging.isEmpty || filteredList.isEmpty
+          ?
+          Center(child: Text('No Data Available',
+            style: GoogleFonts.plusJakartaSans(
+              color: baseColor.primaryColor,
+              fontSize: 18,
+              fontWeight: FontWeight.w600),
+            )
+          )
+          :
+          ListView.builder(
+              controller: scrollController,
+              itemCount: listDataPaging.length,
+              itemBuilder: (builder, index) {
+                if (index < filteredList.length) {
+                  final item = filteredList[index];
+                  return CardReport(response: item);
+                } else {
+                  return Center(
+                    child: isLoaded
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: loading()
+                          ),
+                  );
+                }
+              }),
+        ),
+      ],
+    );
+  }
+  Widget loading() {
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 10),
+          color: baseColors.primaryColor,
+          height: 65,
+          child: SearchInputReport(
+            controller: searchController,
+              onSelectedCallback: (value) {
+                _debounceTimer?.cancel();
+                _debounceTimer = Timer(Duration(seconds: 1), () {
+                search(value);
+              });
+            },
+          ),
+        ),
+       Center(child: AppWidget().LoadingWidget())
+      ],
+    );
   }
 }
+
+
