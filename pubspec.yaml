@@ -114,6 +114,10 @@ dev_dependencies:
   flutter_launcher_icons: ^0.9.0
   retrofit_generator: ^8.0.4
   flutter_lints: ^2.0.0
+  pdf: 
+
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

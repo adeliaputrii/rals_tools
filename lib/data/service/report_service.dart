@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:myactivity_project/base/base_paths.dart' as basePath;
 import 'package:myactivity_project/data/model/report_list_pagination_response.dart';
+import 'package:myactivity_project/data/model/report_sales_body.dart';
+import 'package:myactivity_project/data/model/report_sales_response.dart';
 import 'package:retrofit/http.dart';
 
 import '../model/report_list_response.dart';
-import '../model/report_viewer_response.dart';
 
 part 'report_service.g.dart';
 
@@ -46,4 +47,13 @@ abstract class ReportService {
     @Header("Authorization") String token,
     @Body() Map<String, dynamic> idReport
   );
+
+  
+@POST('${basePath.api_report_sales}')
+  Future<SalesReportResponse> getSalesReport(
+      @Header("Content-Type") String contentType,
+      @Header("Accept") String accept,
+      @Body() ReportSalesBody reportBody);
+
+
 }

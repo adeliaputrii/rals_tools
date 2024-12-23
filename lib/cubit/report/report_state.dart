@@ -37,6 +37,13 @@ class ReportSearchSuccess extends ReportState {
   List<Object?> get props => [response];
 }
 
+class ReportSalesSuccess extends ReportState {
+  final List<SalesData> data;
+
+  ReportSalesSuccess(this.data);
+}
+
+
 class ReportInsertViewerSuccess extends ReportState {
   final ReportListPaginationResponse response;
   const ReportInsertViewerSuccess(this.response);
