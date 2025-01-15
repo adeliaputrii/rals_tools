@@ -37,12 +37,21 @@ class ReportSearchSuccess extends ReportState {
   List<Object?> get props => [response];
 }
 
-class ReportSalesSuccess extends ReportState {
-  final List<SalesData> data;
+class getStoreSuccess extends ReportState {
+  final List<SalesDataStoreResponse> data;
 
-  ReportSalesSuccess(this.data);
+  const getStoreSuccess(this.data);
+
+  @override
+  List<Object?> get props => [data];
 }
 
+class ReportSalesSuccess extends ReportState {
+  final List<SalesData> response;
+  const ReportSalesSuccess(this.response);
+  @override
+  List<Object?> get props => [response];
+}
 
 class ReportInsertViewerSuccess extends ReportState {
   final ReportListPaginationResponse response;

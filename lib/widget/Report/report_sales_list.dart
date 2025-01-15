@@ -30,6 +30,7 @@ class _ReportSalesListState extends State<ReportSalesList>
   String urlDetail = 'https://www.youtube.com/';
   String? token;
   String? toko;
+  String? username;
 
   String? _chosenValue = 'All';
   UserData userData = UserData();
@@ -37,28 +38,44 @@ class _ReportSalesListState extends State<ReportSalesList>
   int progressBar = 0;
   final scrollController = ScrollController();
   Timer? _debounceTimer;
-  String selectedStore = 'S135';
+  String? apiResponse;
+
   DateTimeRange? selectedDateRange;
+  List<SalesDataStoreResponse> storeData = [];
+  String selectedStore = '';
   @override
   void initState() {
+    super.initState();
     reportCubit = context.read<ReportCubit>();
     popUpWidget = PopUpWidget(context);
-    loginCubit = context.read<LoginCubit>(); // Initialize loginCubit here
+    loginCubit = context.read<LoginCubit>();
     _debounceTimer?.cancel();
     refreshPage();
-    super.initState();
   }
 
   refreshPage() async {
     toko = await SharedPref.getUserToko();
     token = await SharedPref.getToken();
+    username = await SharedPref.getUserId();
+    log("message ${toko}");
     initDataReport();
     scrollListener();
     searchController.clear();
   }
 
+  // void initGetStore() async {
+  //  await reportCubit.getStore(
+  //       token ?? '', SalesDataStore(idKorem: "0288646", storeCode: 'S12'));
+  //         setState(() {
+  //       storeData = data; // Update list storeData
+  //     });
+
+  //     log("Store Data: $storeData");
+  // }
+
   void initDataReport() {
     reportCubit.getListReportPagination(token ?? '', "", "", "", "");
+
     loginCubit.createLog(
         baseParam.logInfoReportPage,
         baseParam.logInfoNavigateReportPage,
@@ -170,84 +187,92 @@ class _ReportSalesListState extends State<ReportSalesList>
                     ),
                   ),
                   BlocBuilder<ReportCubit, ReportState>(
-                      builder: (context, state) {
-                    if (state is ReportInitial) {
-                      return loading();
-                    }
-                    if (state is ReportLoading) {
-                      if (listDataPaging.isEmpty) {
+                    builder: (context, state) {
+                      if (state is ReportInitial) {
                         return loading();
-                      } else {
-                        return searchEmpty();
                       }
-                    }
-                    if (state is ReportPaginationSuccess) {
-                      String? url = state.response.nextPageUrl;
-                      if (url != null) {
-                        Uri uri = Uri.parse(url);
-                        Map<String, dynamic> queryParams = uri.queryParameters;
-                        String cursorValue = queryParams['cursor'];
-                        nextUrlCursor = cursorValue;
-                      } else {
-                        nextUrlCursor = null;
-                        isLoaded = true;
-                      }
-                      if (state.response.data?.isNotEmpty ?? false) {
-                        state.response.data?.forEach((element) {
-                          bool headerExists = listDataPaging.any(
-                              (existingElement) =>
-                                  existingElement.header1 == element.header1);
-                          if (!headerExists) {
-                            listDataPaging.add(element);
-                          }
-                        });
-                        if (listDataPaging.isNotEmpty) {
-                          debugPrint('data length ${listDataPaging.length}');
-                          return searchEmpty();
+                      if (state is ReportLoading) {
+                        if (listDataPaging.isEmpty) {
+                          return loading();
                         } else {
-                          return Center(
-                              child: AppWidget().EmptyHandler(
-                                  baseParam.emptyDataReportMessage));
+                          return searchEmpty();
                         }
                       }
-                    }
-                    if (state is ReportInsertViewerSuccess) {
-                      listDataPaging.clear();
-                      String? url = state.response.nextPageUrl;
-                      if (url != null) {
-                        isLoaded = false;
-                        Uri uri = Uri.parse(url);
-                        Map<String, dynamic> queryParams = uri.queryParameters;
-                        String cursorValue = queryParams['cursor'];
-                        nextUrlCursor = cursorValue;
-                      } else {
-                        nextUrlCursor = null;
-                        isLoaded = true;
-                      }
-                      if (state.response.data?.isNotEmpty ?? false) {
-                        state.response.data?.forEach((element) {
-                          bool headerExists = listDataPaging.any(
-                              (existingElement) =>
-                                  existingElement.header1 == element.header1);
-                          if (!headerExists) {
-                            listDataPaging.add(element);
-                          }
-                        });
-                        if (listDataPaging.isNotEmpty) {
-                          return searchEmpty();
+
+                      if (state is ReportPaginationSuccess) {
+                        String? url = state.response.nextPageUrl;
+
+                        if (url != null) {
+                          Uri uri = Uri.parse(url);
+                          Map<String, dynamic> queryParams =
+                              uri.queryParameters;
+                          String cursorValue = queryParams['cursor'];
+                          nextUrlCursor = cursorValue;
                         } else {
-                          return Center(
-                              child: AppWidget().EmptyHandler(
-                                  baseParam.emptyDataReportMessage));
+                          nextUrlCursor = null;
+                          isLoaded = true;
+                        }
+                        if (state.response.data?.isNotEmpty ?? false) {
+                          state.response.data?.forEach((element) {
+                            bool headerExists = listDataPaging.any(
+                                (existingElement) =>
+                                    existingElement.header1 == element.header1);
+                            if (!headerExists) {
+                              listDataPaging.add(element);
+                            }
+                          });
+                          if (listDataPaging.isNotEmpty) {
+                            debugPrint('data length ${listDataPaging.length}');
+                            return searchEmpty();
+                          } else {
+                            return Center(
+                                child: AppWidget().EmptyHandler(
+                                    baseParam.emptyDataReportMessage));
+                          }
                         }
                       }
-                    }
-                    if (state is ReportFailure) {
-                      return AppWidget().ErrorHandler(
-                          baseParam.errorReportMessage, getListReport);
-                    }
-                    return searchEmpty();
-                  }),
+
+                      if (state is ReportInsertViewerSuccess) {
+                        listDataPaging.clear();
+                        String? url = state.response.nextPageUrl;
+                        if (url != null) {
+                          isLoaded = false;
+                          Uri uri = Uri.parse(url);
+                          Map<String, dynamic> queryParams =
+                              uri.queryParameters;
+                          String cursorValue = queryParams['cursor'];
+                          nextUrlCursor = cursorValue;
+                        } else {
+                          nextUrlCursor = null;
+                          isLoaded = true;
+                        }
+                        if (state.response.data?.isNotEmpty ?? false) {
+                          state.response.data?.forEach((element) {
+                            bool headerExists = listDataPaging.any(
+                                (existingElement) =>
+                                    existingElement.header1 == element.header1);
+                            if (!headerExists) {
+                              listDataPaging.add(element);
+                            }
+                          });
+                          if (listDataPaging.isNotEmpty) {
+                            return searchEmpty();
+                          } else {
+                            return Center(
+                                child: AppWidget().EmptyHandler(
+                                    baseParam.emptyDataReportMessage));
+                          }
+                        }
+                      }
+
+                      if (state is ReportFailure) {
+                        return AppWidget().ErrorHandler(
+                            baseParam.errorReportMessage, getListReport);
+                      }
+
+                      return searchEmpty();
+                    },
+                  )
                 ],
               ),
               // Content for Tab 2
@@ -272,15 +297,12 @@ class _ReportSalesListState extends State<ReportSalesList>
                           child: Text(
                             "Sales Report",
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize:
-                                  28, 
+                              fontSize: 28,
                               fontWeight: FontWeight.bold,
-                              color: baseColors
-                                  .primaryColor, 
+                              color: baseColors.primaryColor,
                               shadows: [
                                 Shadow(
-                                  offset: Offset(
-                                      2.0, 2.0), 
+                                  offset: Offset(2.0, 2.0),
                                   blurRadius: 3.0,
                                   color: Colors.black26,
                                 ),
@@ -289,6 +311,91 @@ class _ReportSalesListState extends State<ReportSalesList>
                             textAlign: TextAlign.center,
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    reportCubit.getStore(
+                                      token ?? '',
+                                      SalesDataStore(
+                                        idKorem: username,
+                                        storeCode: toko,
+                                      ),
+                                    );
+                                  },
+                                  child: Text("Ambil Data Store"),
+                                ),
+                                BlocBuilder<ReportCubit, ReportState>(
+                                  builder: (context, state) {
+                                    if (state is ReportFailure) {
+                                      return Center(
+                                        child: Text(
+                                          "ID Anda hanya default store",
+                                          style: GoogleFonts.plusJakartaSans(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      );
+                                    }
+
+                                    if (state is getStoreSuccess) {
+                                      final storeData = state.data;
+
+                                      return DropdownSearch<String>(
+                                        popupProps: PopupProps.menu(
+                                          showSearchBox:
+                                              true, // Aktifkan fitur pencarian
+                                          searchFieldProps: TextFieldProps(
+                                            decoration: InputDecoration(
+                                              hintText: "Cari Store...",
+                                              border: OutlineInputBorder(),
+                                            ),
+                                          ),
+                                        ),
+                                        items: storeData
+                                            .map((store) =>
+                                                store.storeCode ?? "")
+                                            .toList(),
+                                        dropdownDecoratorProps:
+                                            DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            labelText: 'Select Store',
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              borderSide: BorderSide(
+                                                color: Colors.grey,
+                                                width: 0.5,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        selectedItem: selectedStore.isNotEmpty
+                                            ? selectedStore
+                                            : null,
+                                        onChanged: (String? newValue) {
+                                          setState(() {
+                                            selectedStore = newValue!;
+                                          });
+                                        },
+                                      );
+                                    }
+
+                                    return SizedBox.shrink();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
                         SizedBox(height: 16),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -322,7 +429,8 @@ class _ReportSalesListState extends State<ReportSalesList>
                             selectedDateRange != null
                                 ? '${DateFormat('yyyy-MM-dd').format(selectedDateRange!.start)} - ${DateFormat('yyyy-MM-dd').format(selectedDateRange!.end)}'
                                 : 'Select Date Range',
-                            style: GoogleFonts.plusJakartaSans( color: Colors.white),
+                            style: GoogleFonts.plusJakartaSans(
+                                color: Colors.white),
                           ),
                         ),
                         SizedBox(height: 24),
@@ -338,10 +446,10 @@ class _ReportSalesListState extends State<ReportSalesList>
                                     .format(selectedDateRange!.start),
                                 endDate: DateFormat('yyyy-MM-dd')
                                     .format(selectedDateRange!.end),
-                                storeCode: userData.getUserToko(),
+                                storeCode: selectedStore,
                               );
-                              reportCubit.getSalesReport(token ?? '', reportBody);
-                          
+                              reportCubit.getSalesReport(
+                                  token ?? '', reportBody);
                             } else {
                               popUpWidget.showToastMessage(
                                   'Please select date range first');
@@ -354,24 +462,22 @@ class _ReportSalesListState extends State<ReportSalesList>
                           ),
                         ),
                         SizedBox(height: 24),
-                       BlocBuilder<ReportCubit, ReportState>(
+                        BlocBuilder<ReportCubit, ReportState>(
                           builder: (context, state) {
                             if (state is ReportLoading) {
                               return Center(child: AppWidget().LoadingWidget());
                             }
 
                             if (state is ReportSalesSuccess) {
-                              if (state.data.isEmpty) {
+                              if (state.response.isEmpty) {
                                 return Stack(
                                   children: [
                                     Align(
                                       alignment: Alignment.bottomCenter,
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            bottom:
-                                                50.0), 
+                                        padding:
+                                            const EdgeInsets.only(bottom: 50.0),
                                         child: Container(
-                                          
                                           child: Text(
                                             'No data available',
                                             style: GoogleFonts.plusJakartaSans(
@@ -389,9 +495,9 @@ class _ReportSalesListState extends State<ReportSalesList>
 
                               return Expanded(
                                 child: ListView.builder(
-                                  itemCount: state.data.length,
+                                  itemCount: state.response.length,
                                   itemBuilder: (context, index) {
-                                    final item = state.data[index];
+                                    final item = state.response[index];
                                     return InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -557,9 +663,12 @@ class _ReportSalesListState extends State<ReportSalesList>
                             if (state is ReportFailure) {
                               return Center(
                                 child: Text(
-                                  state.message.toString(),
+                                  'No data available',
                                   style: GoogleFonts.plusJakartaSans(
-                                      color: Colors.red),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: baseColors.primaryColor,
+                                  ),
                                 ),
                               );
                             }
@@ -567,8 +676,6 @@ class _ReportSalesListState extends State<ReportSalesList>
                             return Container();
                           },
                         )
-
-
                       ],
                     ),
                   ),

@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:myactivity_project/base/base_paths.dart' as basePath;
+import 'package:myactivity_project/data/model/report_get_store_body.dart';
+import 'package:myactivity_project/data/model/report_get_store_response.dart';
 import 'package:myactivity_project/data/model/report_list_pagination_response.dart';
 import 'package:myactivity_project/data/model/report_sales_body.dart';
 import 'package:myactivity_project/data/model/report_sales_response.dart';
@@ -55,5 +57,11 @@ abstract class ReportService {
       @Header("Accept") String accept,
       @Body() ReportSalesBody reportBody);
 
+
+@POST('${basePath.api_get_store}')
+  Future<SalesReportStoreResponse> getStore(
+      @Header("Content-Type") String contentType,
+      @Header("Accept") String accept,
+      @Body() SalesDataStore reportBody);
 
 }

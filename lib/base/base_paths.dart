@@ -53,6 +53,8 @@ const String api_report_list_pagination = 'api/v1/report/get?cursor=';
 const String api_report_insert_viewer = 'api/v1/report/insert_viewer';
 const String api_report_get_viewer = 'api/v1/report/get_viewer';
 const String api_report_sales = 'v1/news/sales-data';
+const String api_get_store = 'v1/news/get-store';
+
 //StockOpname
 
 const String api_get_pos_location = 'api/v1/stock-opname/get-location-scan/new';

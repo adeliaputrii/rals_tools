@@ -54,7 +54,6 @@ class _RamayanaLogin extends State<RamayanaLogin> {
     _passwordVisible = false;
     deleteUserData();
     _unsecureScreen();
-    requestStoragePermission();
   }
 
   _unsecureScreen() async {
@@ -62,23 +61,15 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         .FLAG_SECURE); // Mengaktifkan kembali tangkapan layar
   }
 
-  Future<void> requestStoragePermission() async {
-    var status = await Permission.storage.request();
-    if (status.isGranted) {
-      print('Storage permission granted');
-    } else {
-      print('Storage permission denied');
-    }
-  }
 
   Future<void> init() async {
     deviceInfo = await devicePlugin.androidInfo;
     pref = await SharedPreferences.getInstance();
     initNotification();
-
     checkForUpdate();
     initPlatformState();
   }
+  
 
   Future<void> initNotification() async {
     await _firebaseMessaging.requestPermission();
@@ -267,8 +258,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         Uri.parse('${tipeurl}api/v1/auth/reset.username'),
         body: {'user_name': usernameController.text});
     var data = jsonDecode(responseku.body);
+
     if (data['status'] == 200) {
-      print(data);
       final SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString("Reset Username", "${usernameController.text}");
       var formData = FormData.fromMap({
