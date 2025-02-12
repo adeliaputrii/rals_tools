@@ -62,16 +62,15 @@ class _RamayanaMembercardHistoryYState
           },
           icon: Icon(
             Icons.arrow_back_ios,
-            color: Color.fromARGB(255, 230, 0, 0),
+            color: getColorForTypePayment(widget.typeCard),
           ),
         ),
         title: Text('Kembali',
           style: GoogleFonts.rubik(
             fontSize: 23,
-            color: Color.fromARGB(255, 230, 0, 0),
+            color:getColorForTypePayment(widget.typeCard),
           )
         ),
-        backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: ListView(
@@ -123,7 +122,7 @@ class _RamayanaMembercardHistoryYState
                               navigateToHistoryMonth(state.response.data?[index].datePart ?? '0');
                             },
                             leading: Icon(IconlyBold.bag,
-                              color: widget.typeCard == '6'
+                              color: widget.typeCard != '7'
                               ? baseColor.trrColor
                               : baseColor.primaryColor,
                               size: 28,
@@ -141,7 +140,7 @@ class _RamayanaMembercardHistoryYState
                               style: GoogleFonts.plusJakartaSans(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
-                                color: widget.typeCard == '6'
+                                color: widget.typeCard != '7'
                                 ? baseColor.trrColor
                                 : baseColor.primaryColor,
                               ),

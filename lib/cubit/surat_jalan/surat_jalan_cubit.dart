@@ -1,20 +1,12 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:myactivity_project/data/model/data_customer_response.dart';
 import 'package:myactivity_project/data/model/scan_sj_response.dart';
 import 'package:myactivity_project/data/model/track_sj_response.dart';
-import 'package:myactivity_project/utils/app_shared_pref.dart';
 
-import '../../data/model/create_my_log_body.dart';
-import '../../data/model/surat_jalan_response.dart';
 import '../../data/model/scan_sj_body.dart';
+import '../../data/model/surat_jalan_response.dart';
 import '../../data/repository/surat_jalan_repository.dart';
-import '../../service/SP_service/SP_service.dart';
-import '../../utils/logging.dart';
 
 part 'surat_jalan_state.dart';
 

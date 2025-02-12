@@ -381,7 +381,7 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
       case '7':
         return AssetImage('assets/payment_rms.png');
       case '8':
-        return AssetImage('assets/payment_ifs.png');
+        return AssetImage('assets/payment_milky.png');
       default:
         return AssetImage('assets/default.png'); // Gambar default jika type tidak sesuai
     }
@@ -404,9 +404,9 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
         }
       case '8':
         if (_barcode) {
-          return baseColor.ifsGreen;
+          return baseColor.milkyDark;
         } else {
-          return baseColor.ifsYellow;
+          return baseColor.milkyLight;
         }
       default:
         return Colors.grey; // Warna default jika type tidak sesuai
@@ -430,9 +430,9 @@ class _RamayanaMembercardQrState extends State<RamayanaMembercardQr> {
         }
       case '8':
         if (_barcode) {
-          return baseColor.ifsYellow;
+          return baseColor.milkyLight;
         } else {
-          return baseColor.ifsGreen;
+          return baseColor.milkyDark;
         }
       default:
         return Colors.grey; // Warna default jika type tidak sesuai

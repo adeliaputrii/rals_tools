@@ -59,7 +59,7 @@ class ToolsMenuWidget extends StatelessWidget {
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               menuIcon(baseParam.menuSo, baseAsset.soLogo, navigate: () => AppNavigator.navigateToSo(context)),
               menuIcon(baseParam.menuLspb, baseAsset.lspbLogo, navigate: () => AppNavigator.navigateToLspb(context)),
-              // menuIcon(baseParam.menuApprReturn, baseAsset.appReturnLogo, navigate: () => AppNavigator.navigateToApprReturn(context))
+              // menuIcon(baseParam.menuCekHarga, baseAsset.checkPriceLogo, navigate: () => AppNavigator.navigateToCheckPrice(context))
             ]),
           ),
         ],

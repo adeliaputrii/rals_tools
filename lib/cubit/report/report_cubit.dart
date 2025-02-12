@@ -1,11 +1,16 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myactivity_project/data/model/data_customer_response.dart';
+import 'package:myactivity_project/data/model/report_get_store_body.dart';
+import 'package:myactivity_project/data/model/report_get_store_response.dart';
 import 'package:myactivity_project/data/model/report_list_response.dart';
+import 'package:myactivity_project/data/model/report_sales_body.dart';
+import 'package:myactivity_project/data/model/report_sales_response.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
+
 import '../../data/model/report_list_pagination_response.dart';
-import '../../data/model/report_viewer_response.dart';
 import '../../data/repository/report_repository.dart';
 import '../../service/SP_service/SP_service.dart';
 
@@ -28,10 +33,15 @@ class ReportCubit extends Cubit<ReportState> {
     });
   }
 
-  void getListReportPagination(String token, String? cursor, String? title, String? startDate, String? endDate) async {
+  void getListReportPagination(String token, String? cursor, String? title,
+      String? startDate, String? endDate) async {
     emit(ReportLoading());
-    await repositories.getListReportPagination(token, cursor, title, startDate, endDate, versi).then((value) {
-      if (value.isSuccess && value.dataResponse is ReportListPaginationResponse) {
+    await repositories
+        .getListReportPagination(
+            token, cursor, title, startDate, endDate, versi)
+        .then((value) {
+      if (value.isSuccess &&
+          value.dataResponse is ReportListPaginationResponse) {
         final res = value.dataResponse as ReportListPaginationResponse;
         emit(ReportPaginationSuccess(res));
       } else {
@@ -40,10 +50,14 @@ class ReportCubit extends Cubit<ReportState> {
     });
   }
 
-  void searchListReport(String token, String? cursor, String? title, String? startDate, String? endDate) async {
+  void searchListReport(String token, String? cursor, String? title,
+      String? startDate, String? endDate) async {
     emit(ReportLoading());
-    await repositories.searchListReport(token, cursor, title, startDate, endDate, versi).then((value) {
-      if (value.isSuccess && value.dataResponse is ReportListPaginationResponse) {
+    await repositories
+        .searchListReport(token, cursor, title, startDate, endDate, versi)
+        .then((value) {
+      if (value.isSuccess &&
+          value.dataResponse is ReportListPaginationResponse) {
         final res = value.dataResponse as ReportListPaginationResponse;
         emit(ReportSearchSuccess(res));
       } else {
@@ -55,7 +69,8 @@ class ReportCubit extends Cubit<ReportState> {
   void insertViewer(String token, String idReport) async {
     emit(ReportLoading());
     await repositories.insertViewer(token, idReport).then((value) {
-      if (value.isSuccess && value.dataResponse is ReportListPaginationResponse) {
+      if (value.isSuccess &&
+          value.dataResponse is ReportListPaginationResponse) {
         final res = value.dataResponse as ReportListPaginationResponse;
         emit(ReportInsertViewerSuccess(res));
       } else {
@@ -63,4 +78,55 @@ class ReportCubit extends Cubit<ReportState> {
       }
     });
   }
+
+  void getSalesReport(String token, ReportSalesBody reportBody) async {
+    emit(ReportLoading());
+    log("Report body: ${reportBody.toJson()}");
+    await repositories.getSalesReport(token, reportBody).then((value) {
+      log("API Response Type: ${value.dataResponse.runtimeType}");
+      final responseData = value.dataResponse as SalesReportResponse;
+      log("API Response Data: ${responseData}");
+      if (value.isSuccess) {
+        emit(ReportSalesSuccess(responseData.data));
+        log("Emitted data successfully");
+      } else {
+        log("Error path: ${value.dataResponse}");
+        emit(ReportFailure(message: value.dataResponse));
+      }
+    });
+  }
+
+void getStore(String token, SalesDataStore reportBody) async {
+    emit(ReportLoading());
+    log("get Store Cubit: ${reportBody.toJson()}");
+
+    await repositories.getStore(token, reportBody).then((value) {
+      log("API Response Type: ${value.dataResponse.runtimeType}");
+
+      final responseData = value.dataResponse as SalesReportStoreResponse;
+      log("API Response Data: ${responseData}");
+
+      if (value.isSuccess) {
+        var storeData = responseData.data;
+        log("Store data received: $storeData");
+
+        if ( storeData.isNotEmpty) {
+          emit(getStoreSuccess(storeData)); 
+          log("Emitted data successfully");
+        } else {
+          emit(ReportFailure(
+              message: "No stores available")); 
+          log("No stores available");
+        }
+      } else {
+        log("API error: ${value.dataResponse}");
+        emit(ReportFailure(message: value.dataResponse ?? "Unknown error"));
+      }
+    }).catchError((e) {
+      log("Error during API call: $e");
+      emit(ReportFailure(message: "An error occurred during the request"));
+    });
+  }
+
+
 }

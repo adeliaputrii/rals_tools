@@ -5,7 +5,7 @@ const String base_url_prod = "https://dev-android-api.ramayana.co.id:8305/";
 // const String base_url_prod = "https://android-api.ramayana.co.id:8304/";
 const String base_url_prod_tms = "https://dev-ris.ramayana.co.id/";
 // const String base_url_prod_tms = "https://ris.ramayana.co.id/";
-const String testing = "https://mocki.io/";
+// const String testing = "https://mocki.io/";
 
 const String contentType = 'application/json';
 const String accept = 'application/json';
@@ -52,6 +52,8 @@ const String api_report_list = 'api/v1/report/get';
 const String api_report_list_pagination = 'api/v1/report/get?cursor=';
 const String api_report_insert_viewer = 'api/v1/report/insert_viewer';
 const String api_report_get_viewer = 'api/v1/report/get_viewer';
+const String api_report_sales = 'v1/news/sales-data';
+const String api_get_store = 'v1/news/get-store';
 
 //StockOpname
 
