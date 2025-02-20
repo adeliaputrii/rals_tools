@@ -11,7 +11,7 @@ class SearchInputReport extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
     Container(
-      margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+      margin: EdgeInsets.fromLTRB(20, 0, 10, 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15)

@@ -37,6 +37,16 @@ class ReportSearchSuccess extends ReportState {
   List<Object?> get props => [response];
 }
 
+class ReportSalesSuccessSearch extends ReportState {
+  final List<dynamic> filteredData;
+  final List<dynamic> allData;
+
+  ReportSalesSuccessSearch({required this.filteredData, required this.allData});
+
+  @override
+  List<Object?> get props => [filteredData, allData];
+}
+
 class getStoreSuccess extends ReportState {
   final List<SalesDataStoreResponse> data;
 
@@ -47,10 +57,21 @@ class getStoreSuccess extends ReportState {
 }
 
 class ReportSalesSuccess extends ReportState {
+  
   final List<SalesData> response;
+  
   const ReportSalesSuccess(this.response);
   @override
   List<Object?> get props => [response];
+}
+
+class SearchReportSales extends ReportState {
+  final String query;
+
+  SearchReportSales(this.query);
+
+  @override
+  List<Object?> get props => [query];
 }
 
 class ReportInsertViewerSuccess extends ReportState {

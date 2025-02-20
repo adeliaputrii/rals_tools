@@ -1,23 +1,22 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
+
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:get_it/get_it.dart';
-import 'package:myactivity_project/firebase/firebase_api.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:myactivity_project/base/base_params.dart' as baseParam;
+import 'package:myactivity_project/base/base_paths.dart' as basePath;
 import 'package:myactivity_project/service/SP_service/SP_service.dart';
 import 'package:myactivity_project/service/notification/notification_service.dart';
+import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:myactivity_project/utils/app_shared_pref.dart';
 import 'package:myactivity_project/widget/Login/import.dart';
 import 'package:myactivity_project/widget/My%20List%20Task/import.dart';
 import 'package:myactivity_project/widget/Splashscreen/import.dart';
-import 'package:myactivity_project/widget/Stock%20Opname/import.dart';
 import 'package:myactivity_project/widget/VOID/import.dart';
 import 'package:myactivity_project/widget/import.dart';
 import 'package:native_id/native_id.dart';
@@ -25,19 +24,9 @@ import 'package:notification_permissions/notification_permissions.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
-import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:background_fetch/background_fetch.dart';
-import 'package:myactivity_project/base/base_paths.dart' as basePath;
-import 'package:myactivity_project/base/base_params.dart' as baseParam;
+
 import 'firebase/firebase_api_new.dart';
-import 'firebase_options.dart';
 import 'utils/app_cubit.dart';
 import 'utils/app_services.dart';
 import 'utils/app_utils.dart';
@@ -48,6 +37,8 @@ final _nativeIdPlugin = NativeId();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting("id_ID", null);
+
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   app_name = packageInfo.appName;
   String packageName = packageInfo.packageName;

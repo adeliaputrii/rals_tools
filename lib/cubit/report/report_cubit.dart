@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
@@ -18,9 +19,17 @@ part 'report_state.dart';
 
 class ReportCubit extends Cubit<ReportState> {
   ReportCubit() : super(ReportInitial());
-
+  Timer? _debounceTimer;
   final ReportRepositories repositories = ReportRepositories();
   UserData userData = UserData();
+
+
+
+  @override
+  Future<void> close() {
+    _debounceTimer?.cancel();
+    return super.close();
+  }
 
   void getListReport(String token) async {
     await repositories.getListReport(token).then((value) {
@@ -83,14 +92,11 @@ class ReportCubit extends Cubit<ReportState> {
     emit(ReportLoading());
     log("Report body: ${reportBody.toJson()}");
     await repositories.getSalesReport(token, reportBody).then((value) {
-      log("API Response Type: ${value.dataResponse.runtimeType}");
       final responseData = value.dataResponse as SalesReportResponse;
-      log("API Response Data: ${responseData}");
+
       if (value.isSuccess) {
         emit(ReportSalesSuccess(responseData.data));
-        log("Emitted data successfully");
       } else {
-        log("Error path: ${value.dataResponse}");
         emit(ReportFailure(message: value.dataResponse));
       }
     });
@@ -98,32 +104,24 @@ class ReportCubit extends Cubit<ReportState> {
 
 void getStore(String token, SalesDataStore reportBody) async {
     emit(ReportLoading());
-    log("get Store Cubit: ${reportBody.toJson()}");
 
     await repositories.getStore(token, reportBody).then((value) {
-      log("API Response Type: ${value.dataResponse.runtimeType}");
 
       final responseData = value.dataResponse as SalesReportStoreResponse;
-      log("API Response Data: ${responseData}");
 
       if (value.isSuccess) {
         var storeData = responseData.data;
-        log("Store data received: $storeData");
 
         if ( storeData.isNotEmpty) {
           emit(getStoreSuccess(storeData)); 
-          log("Emitted data successfully");
         } else {
           emit(ReportFailure(
               message: "No stores available")); 
-          log("No stores available");
         }
       } else {
-        log("API error: ${value.dataResponse}");
         emit(ReportFailure(message: value.dataResponse ?? "Unknown error"));
       }
     }).catchError((e) {
-      log("Error during API call: $e");
       emit(ReportFailure(message: "An error occurred during the request"));
     });
   }

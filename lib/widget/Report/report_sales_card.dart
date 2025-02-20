@@ -15,7 +15,7 @@ class CardReport extends StatelessWidget {
         AppNavigator.navigateToReportSalesDetail(context, response.idReport.toString(), response.properties, response.header1!);
       },
       child: Container(
-          margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
+          margin: EdgeInsets.fromLTRB(10, 0, 5, 17),
           decoration: BoxDecoration(color: baseColor.cardReportColor, 
           boxShadow: [BoxShadow(
             offset: Offset(2,3),
@@ -38,7 +38,7 @@ class CardReport extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  width: screenSize.width / 1.3,
+                  width: screenSize.width / 1.2,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: Row(

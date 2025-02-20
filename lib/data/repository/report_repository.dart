@@ -202,8 +202,7 @@ class ReportRepositories {
       await services
           .getStore(basePath.contentType, basePath.accept, store)
           .then((value) {
-        response = RepositoriesResponse(
-            isSuccess: true, statusCode: 200, dataResponse: value);
+        response = RepositoriesResponse(isSuccess: true, statusCode: 200, dataResponse: value);
       });
     } catch (e) {
       log('error store data: ${e.toString()}');
