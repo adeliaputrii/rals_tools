@@ -1,3 +1,4 @@
+
 part of 'import.dart';
 
 class RamayanaInformasi extends StatefulWidget {
@@ -81,7 +82,7 @@ class _RamayanaInformasiState extends State<RamayanaInformasi> {
                   fontSize: 23, color: Colors.white)),
           backgroundColor: baseColors.primaryColor,
         ),
-        body: Stack(children: <Widget>[
+        body: Stack(children: [
           Container(
             child: Image.asset(
               'assets/newsBackground.png',

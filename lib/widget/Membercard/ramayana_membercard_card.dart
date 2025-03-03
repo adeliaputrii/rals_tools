@@ -111,15 +111,12 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                  padding: const EdgeInsets.only(top: 30, bottom: 30),
-                  child: Center(
-                    child: Text('Pilih Kartu',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 26, 
-                        fontWeight: FontWeight.w500, 
-                        color: Colors.black
-                      )
-                    ),
+                  padding: const EdgeInsets.only(top: 20, left: 30),
+                  child: Text('Silahkan Pilih Kartu',
+                    style: GoogleFonts.courgette(
+                      fontSize: 24, 
+                      color: const Color.fromARGB(255, 130, 3, 3)
+                    )
                   ),
                   ),
                   ListView.builder(
@@ -128,17 +125,20 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                     itemCount: cardActive.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Center(
-                          child: Text(cardActive[index].nama ?? '-',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 20, 
-                              color: const Color.fromARGB(255, 210, 14, 0)
-                            )
-                          ),
-                        ),
+                        // Container(
+                        //   margin: EdgeInsets.only(top: 10, left: 30),
+                        //   child: Text(cardActive[index].nama ?? '-',
+                        //     style: GoogleFonts.plusJakartaSans(
+                        //       fontSize: 20, 
+                        //       fontWeight: FontWeight.w500,
+                        //       color: const Color.fromARGB(255, 210, 14, 0)
+                        //     )
+                        //   ),
+                        // ),
                         Padding(
-                        padding: const EdgeInsets.only(bottom: 30),
+                        padding: const EdgeInsets.only(top: 10, bottom: 10),
                         child: MaterialButton(
                           onPressed: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -150,9 +150,9 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                           }));
                           },
                           child: Container(
-                          margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                          margin: EdgeInsets.fromLTRB(5, 10, 5, 0),
                             child: Container(
-                            width: 700,
+                            // width: 700,
                             height: 280,
                             decoration: BoxDecoration(
                               color: Color.fromARGB(255, 235, 227, 227),
@@ -181,24 +181,42 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
                               ? CrossAxisAlignment.end
                               : CrossAxisAlignment.start,
                                children: [
-                                  typeCardImageCenter(cardActive[index].typeMc ?? 0)
+                                  // typeCardImageCenter(cardActive[index].typeMc ?? 0)
+                                  cardActive[index].typeMc != 6 
                                   ? 
-                                  Row(
+                                  Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                     SizedBox(
-                                        width: 20,
-                                      ),
-                                      Text(
-                                        totalBalance(
-                                        int.tryParse(cardActive[index].saldo ?? '0') ?? 0,
-                                        int.tryParse(cardActive[index].pemakaian ?? '0') ?? 0,
-                                      ),
-                                        style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 25, 
-                                        fontWeight: FontWeight.bold, 
-                                        color: Colors.white)
-                                      ),
-                                    ],
+                                    cardActive[index].typeMc == 8
+                                        ? Container(
+                                          height: 120,
+                                          child: Text(
+                                              cardActive[index].nama ?? 'Undefined',
+                                              style: GoogleFonts.orbitron(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                        )
+                                        : SizedBox(),
+                                    Row(
+                                      children: [
+                                        SizedBox(width: 20),
+                                        Text(
+                                          totalBalance(
+                                            int.tryParse(cardActive[index].saldo ?? '0') ?? 0,
+                                            int.tryParse(cardActive[index].pemakaian ?? '0') ?? 0,
+                                          ),
+                                          style: GoogleFonts.plusJakartaSans(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                   )
                                   : 
                                   Center(
@@ -281,7 +299,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
   }
 
   bool typeCardImageCenter(int type) {
-    return type == 8;
+    return type == 7;
   }
 
   ImageProvider<Object> getImageForType(int type) {
@@ -292,7 +310,7 @@ class _RamayanaMembercardCardState extends State<RamayanaMembercardCard> {
       case 7:
         return AssetImage('assets/rms2.png');
       case 8:
-        return AssetImage('assets/ifs.png');
+        return AssetImage('assets/milky.png');
       default:
         return AssetImage('assets/default.png'); // Gambar default jika type tidak sesuai
     }

@@ -84,6 +84,7 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
  
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -178,31 +179,46 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment:typeCard(widget.typeCard)
+                              crossAxisAlignment:widget.typeCard == '6'
                               ? CrossAxisAlignment.end
                               : CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   margin: EdgeInsets.only(
-                                    top: typeCard(widget.typeCard)
+                                    top: widget.typeCard == '6'
                                     ? 160
-                                    : 130),
+                                    : 20),
                                   child: 
                                   typeCardImageCenter(widget.typeCard)
                                   ?
-                                  Row(
+                                  Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Text('${balance.toIdr()}',
-                                      style:GoogleFonts.plusJakartaSans(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white)
+                                    Container(
+                                      height: 120,
+                                      child: Text(
+                                        widget.data.nama ?? 'Undefined',
+                                          style: GoogleFonts.orbitron(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       ),
-                                     ],
-                                    )
+                                    Row(
+                                      children: [
+                                        SizedBox(width: 20),
+                                        Text('${balance.toIdr()}',
+                                          style: GoogleFonts.plusJakartaSans(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                  )
                                   :
                                   Center(
                                     child: Text('${balance.toIdr()}',
@@ -270,31 +286,50 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                             ),
                             child: Container(
                               margin: EdgeInsets.only(
-                                top: 190,
+                                top: 20,
                                 bottom: 20,
                                 left: 40,
                                 right: 40),
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                width: 280,
-                                height: 35,
-                                child: SfBarcodeGenerator(
-                                  value:'${widget.data.nokartu}',
-                                  backgroundColor: Colors.white,
-                                  barColor: Colors.black,
-                                  symbology: Code128()
-                                )
-                              ),
-                          ))),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    widget.data.nama ?? 'Undefined',
+                                    style: GoogleFonts.orbitron(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    width: 350,
+                                    height: 70,
+                                    child: SfBarcodeGenerator(
+                                      value:'${widget.data.nokartu}',
+                                      backgroundColor: Colors.white,
+                                      barColor: Colors.black,
+                                      symbology: Code128()
+                                    )
+                                  ),
+                                ),
+                              ],
+                            ))),
                         ),
                       )
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 20, left: 0, right: 0),
+                        margin: EdgeInsets.only(top: 20, left: 10, right: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            widget.typeCard == '8'
+                            ?
+                            SizedBox()
+                            :
                             MaterialButton(
                               onPressed: () {
                                 navigateToPayment();
@@ -306,10 +341,20 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                 borderRadius: BorderRadius.circular(20),
                                 color: getColorForTypePayment(widget.typeCard),
                               ),
-                              child: Row(
+                              child: 
+                              Row(
                                 mainAxisAlignment:MainAxisAlignment.center,
                                 children: [
-                                  Image.asset('assets/qr.png'),
+                                  Icon(IconlyLight.scan,
+                                  color: widget.typeCard == '8'
+                                   ?
+                                   baseColor.milkyLight
+                                   :
+                                   Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                   Text('Pembayaran',
                                     style: GoogleFonts.plusJakartaSans(
                                       fontSize: 18,
@@ -325,7 +370,12 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                               },
                               child: Container(
                               height: 50,
-                              width: 190,
+                              width: 
+                              widget.typeCard == '8'
+                              ?
+                              screenWidth/1.18
+                              :
+                              180,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 color: getColorForTypeHistory(widget.typeCard)
@@ -333,14 +383,25 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                               child: Row(
                                 mainAxisAlignment:MainAxisAlignment.center,
                                 children: [
-                                  Image.asset(
-                                    'assets/history.png',
+                                  Icon(IconlyLight.chart,
+                                  color: widget.typeCard == '8'
+                                   ?
+                                   baseColor.milkyDark
+                                   :
+                                   Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
                                   ),
                                   Text(
                                     'Riwayat',
                                     style: GoogleFonts.plusJakartaSans(
                                       fontSize: 18,
-                                      color: Colors.white),
+                                      color: widget.typeCard == '8'
+                                      ?
+                                      baseColor.milkyDark
+                                      :
+                                      Colors.white),
                                   ),
                                 ],
                                ),
@@ -415,19 +476,49 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                             ),
                             child: Column(
                               mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment:typeCard(widget.typeCard)
+                              crossAxisAlignment:widget.typeCard == '6'
                               ? CrossAxisAlignment.end
                               : CrossAxisAlignment.start,
                               children: [
                                 Container(
                                 margin: EdgeInsets.only(
-                                  top: typeCard(widget.typeCard)
+                                  top: widget.typeCard == '6'
                                   ? 160
-                                  : 130
+                                  : 20
                                 ),
-                                child: typeCard(widget.typeCard)
+                                child: typeCardImageCenter(widget.typeCard)
                                 ?
-                                Center(
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      height: 120,
+                                      // color: Colors.yellow,
+                                      child: Text(
+                                        widget.data.nama ?? 'Undefined',
+                                          style: GoogleFonts.orbitron(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    Row(
+                                      children: [
+                                        SizedBox(width: 20),
+                                        Text('${balance.toIdr()}',
+                                          style: GoogleFonts.plusJakartaSans(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                  )
+                                  :
+                                  Center(
                                   child: Text('${balance.toIdr()}',
                                     style:
                                     GoogleFonts.plusJakartaSans(
@@ -437,20 +528,6 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                                     )
                                   ),
                                 )
-                                :
-                                Row(
-                                  children: [
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text('${balance.toIdr()}',
-                                    style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 28,
-                                       fontWeight:FontWeight.bold,
-                                       color: Colors.white
-                                    )
-                                  ),
-                                ],),
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(
@@ -480,14 +557,14 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                             ),
                           ),
                       back: Center(
-                        child: Container(
-                        key: ValueKey(1),
+                          child: Container(
+                          key: ValueKey(1),
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           child: Container(
                             width: 700,
                             height: 280,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 235, 227, 227),
+                              color:Color.fromARGB(255, 235, 227, 227),
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(20),
                                 topRight: Radius.circular(20),
@@ -496,44 +573,64 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                color: Color.fromARGB(255, 136, 131, 131),
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                                offset: Offset(2, 4)
-                              )
-                            ],
+                                  color: Color.fromARGB(255, 136, 131, 131),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: Offset(2, 4)
+                                )
+                              ],
                             image: DecorationImage(
-                              image: getImageForType(widget.typeCard),
+                              image:getImageForType(widget.typeCard),
                               fit: BoxFit.fill),
                             ),
                             child: Container(
-                            margin: EdgeInsets.only(
-                              top: 190,
-                              bottom: 20,
-                              left: 40,
-                              right: 40
-                              ),
-                             child: GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              width: 280,
-                              height: 35,
-                              child: SfBarcodeGenerator(
-                                value:'${widget.data.nokartu}',
-                                backgroundColor:Colors.white,
-                                barColor: Colors.black,
-                                 symbology: Code128()
-                                 )
+                              margin: EdgeInsets.only(
+                                top: 20,
+                                bottom: 20,
+                                left: 40,
+                                right: 40),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    widget.data.nama ?? 'Undefined',
+                                    style: GoogleFonts.orbitron(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
-                               ))),
-                            ),
-                          )
-                          ),
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    width: 350,
+                                    height: 70,
+                                    child: SfBarcodeGenerator(
+                                      value:'${widget.data.nokartu}',
+                                      backgroundColor: Colors.white,
+                                      barColor: Colors.black,
+                                      symbology: Code128()
+                                    )
+                                  ),
+                                ),
+                              ],
+                            ))),
+                        ),
+                      )
+                    ),
                     Container(
                       margin: EdgeInsets.only(top: 20, left: 0, right: 0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          widget.typeCard == '8'
+                          ?
+                          Container(
+                            color: Colors.amber,
+                          )
+                          :
                           MaterialButton(
                             onPressed: () {
                               navigateToPayment();
@@ -545,10 +642,17 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                               borderRadius: BorderRadius.circular(20),
                               color: getColorForTypePayment(widget.typeCard)
                             ),
-                            child: Row(
+                            child: 
+                            Row(
                             mainAxisAlignment:MainAxisAlignment.center,
                             children: [
-                              Image.asset('assets/qr.png'),
+                              Icon(IconlyLight.scan,
+                              color: widget.typeCard == '8'
+                                ?
+                                baseColor.milkyLight
+                                :
+                                 Colors.white,
+                              ),
                               Text('Pembayaran',
                                 style: GoogleFonts.plusJakartaSans(
                                   fontSize: 18,
@@ -564,7 +668,12 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                             },
                             child: Container(
                               height: 50,
-                              width: 190,
+                              width: 
+                              widget.typeCard == '8'
+                              ?
+                              screenWidth/1.18
+                              :
+                              180,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 color: getColorForTypeHistory(widget.typeCard)
@@ -572,11 +681,25 @@ class _RamayanaMemberCardDetailState extends State<RamayanaMemberCardDetail> {
                               child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset('assets/history.png',),
+                                Icon(IconlyLight.chart,
+                                  color: widget.typeCard == '8'
+                                   ?
+                                   baseColor.milkyDark
+                                   :
+                                   Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                 Text('Riwayat',
                                   style: GoogleFonts.plusJakartaSans(
                                   fontSize: 18,
-                                   color: Colors.white),
+                                   color: 
+                                   widget.typeCard == '8'
+                                   ?
+                                   baseColor.milkyDark
+                                   :
+                                   Colors.white),
                                 ),
                               ],
                               ),
@@ -700,11 +823,11 @@ String typeTransaction(String type) {
 }
 
 bool typeCard(typeCard) {
-  return typeCard == '6';
+  return typeCard == '6' || typeCard == '8';
 }
 
   bool typeCardImageCenter(String type) {
-    return type == '8';
+    return type != '6' ;
   }
 
   ImageProvider<Object> getImageForType(String type)  {
@@ -715,7 +838,7 @@ bool typeCard(typeCard) {
     case '7':
       return AssetImage('assets/rms2.png');
     case '8':
-      return AssetImage('assets/ifs.png');
+      return AssetImage('assets/milky.png');
     default:
       return AssetImage('assets/default.png'); // Gambar default jika type tidak sesuai
   }
@@ -728,7 +851,7 @@ Color getColorForTypePayment(String type) {
     case '7':
       return baseColor.primaryColor;
     case '8':
-      return baseColor.ifsGreen;
+      return baseColor.milkyDark;
     default:
       return Colors.grey; // Warna default jika type tidak sesuai
   }
@@ -741,7 +864,7 @@ Color getColorForTypeHistory(String type) {
     case '7':
       return baseColor.rmsColor;
     case '8':
-      return baseColor.ifsYellow;
+      return baseColor.milkyLight;
     default:
       return Colors.grey; // Warna default jika type tidak sesuai
   }
@@ -754,7 +877,7 @@ Color getColorForType2(String type) { // untuk warna container
     case '7':
       return Color.fromARGB(255, 190, 215, 44);
     case '8':
-      return baseColor.ifsYellow.withOpacity(0.7);
+      return baseColor.milkyLight.withOpacity(0.7);
     default:
       return Colors.grey; // Warna default jika type tidak sesuai
   }

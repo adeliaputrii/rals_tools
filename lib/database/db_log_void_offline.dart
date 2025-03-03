@@ -1,4 +1,4 @@
-import 'package:myactivity_project/models/Login%20Offline/model_log_void_offline.dart';
+ import 'package:myactivity_project/models/Login%20Offline/model_log_void_offline.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqlite_api.dart';

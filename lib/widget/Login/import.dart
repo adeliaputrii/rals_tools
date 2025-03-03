@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 import 'package:in_app_update/in_app_update.dart';
 import 'package:intl/intl.dart';
 import 'package:motion_toast/motion_toast.dart';
+import 'package:motion_toast/resources/arrays.dart';
 import 'package:myactivity_project/base/base_params.dart' as baseParam;
 import 'package:myactivity_project/base/base_paths.dart' as basePath;
 import 'package:myactivity_project/database/db_log_login_offline.dart';

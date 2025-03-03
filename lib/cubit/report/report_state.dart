@@ -37,15 +37,6 @@ class ReportSearchSuccess extends ReportState {
   List<Object?> get props => [response];
 }
 
-class ReportSalesSuccessSearch extends ReportState {
-  final List<dynamic> filteredData;
-  final List<dynamic> allData;
-
-  ReportSalesSuccessSearch({required this.filteredData, required this.allData});
-
-  @override
-  List<Object?> get props => [filteredData, allData];
-}
 
 class getStoreSuccess extends ReportState {
   final List<SalesDataStoreResponse> data;

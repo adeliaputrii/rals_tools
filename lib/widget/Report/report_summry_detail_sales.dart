@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -14,10 +15,18 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 
 class DetailPage extends StatefulWidget {
+=======
+import 'package:myactivity_project/data/model/report_sales_response.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:permission_handler/permission_handler.dart';
+
+class DetailPage extends StatelessWidget {
+>>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
   final SalesData item;
 
   DetailPage({required this.item});
 
+<<<<<<< HEAD
   @override
   State<DetailPage> createState() => _DetailPageState();
 }
@@ -39,24 +48,40 @@ class _DetailPageState extends State<DetailPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Izin penyimpanan ditolak!')),
       );
+=======
+  Future<void> _downloadPDF(BuildContext context) async {
+    log('Downloading PDF...');
+    var status = await Permission.storage.request();
+    if (!status.isGranted) {
+      print('Storage permission denied');
+>>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
       return;
     }
 
     if (await Permission.manageExternalStorage.isDenied) {
       var manageStatus = await Permission.manageExternalStorage.request();
       if (!manageStatus.isGranted) {
+<<<<<<< HEAD
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Izin pengelolaan penyimpanan ditolak!')),
         );
+=======
+        print('Manage storage permission denied');
+>>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
         return;
       }
     }
 
+<<<<<<< HEAD
     log('Storage permission granted');
+=======
+    print('Storage permission granted');
+>>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
 
     final pdf = pw.Document();
     pdf.addPage(
       pw.Page(
+<<<<<<< HEAD
         build: (context) => pw.Container(
           padding: pw.EdgeInsets.all(16),
           child: pw.Column(
@@ -73,6 +98,20 @@ class _DetailPageState extends State<DetailPage> {
               _buildPdfText('Target', widget.item.target),
             ],
           ),
+=======
+        build: (context) => pw.Column(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            pw.Text('Toko: ${item.toko}',
+                style:
+                    pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold)),
+            pw.SizedBox(height: 8),
+            pw.Text('MD: ${item.md}'),
+            pw.Text('Net: ${item.net}'),
+            pw.Text('Target: ${item.target}'),
+            pw.Text('Tanggal: ${item.tanggal}'),
+          ],
+>>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
         ),
       ),
     );
@@ -82,6 +121,7 @@ class _DetailPageState extends State<DetailPage> {
       directory.create(recursive: true);
     }
 
+<<<<<<< HEAD
     final file = File(
         '${directory.path}/sales_report_${widget.item.toko}_${widget.item.tanggal}.pdf');
     await file.writeAsBytes(await pdf.save());
@@ -147,10 +187,24 @@ class _DetailPageState extends State<DetailPage> {
   //     }
   //   });
   // }
+=======
+    final file =
+        File('${directory.path}/sales_report_${item.toko}_${item.tanggal}.pdf');
+    await file.writeAsBytes(await pdf.save());
+
+    // Show notification to the user
+    print('PDF saved to: ${file.path}');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('PDF saved to: ${file.path}')),
+    );
+  }
+
+>>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+<<<<<<< HEAD
         title: Text(
           'Detail report',
           style: GoogleFonts.plusJakartaSans(
@@ -166,10 +220,14 @@ class _DetailPageState extends State<DetailPage> {
           ),
         ),
         backgroundColor: baseColor.primaryColor,
+=======
+        title: Text('Detail Report'),
+>>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+<<<<<<< HEAD
           children: [
             Card(
               shape: RoundedRectangleBorder(
@@ -334,12 +392,35 @@ class _DetailPageState extends State<DetailPage> {
                   },
                 ),
               ),
+=======
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Table(
+              border: TableBorder.all(),
+              columnWidths: {
+                0: FlexColumnWidth(1),
+                1: FlexColumnWidth(2),
+              },
+              children: [
+                _buildTableRow('Toko', item.toko ?? ''),
+                _buildTableRow('MD', item.md ?? ''),
+                _buildTableRow('Tanggal', item.tanggal ?? ''),
+                _buildTableRow('Net', item.net ?? ''),
+                _buildTableRow('Target', item.target ?? ''),
+              ],
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => _downloadPDF(context), // Corrected line
+              child: Text('Download PDF'),
+>>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
             ),
           ],
         ),
       ),
     );
   }
+<<<<<<< HEAD
 }
 
 String formatTanggal(String? tanggal) {
@@ -397,4 +478,21 @@ Widget _buildDetailItem(IconData icon, String label, String? value) {
       ],
     ),
   );
+=======
+
+  TableRow _buildTableRow(String label, String value) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(value),
+        ),
+      ],
+    );
+  }
+>>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
 }
