@@ -18,6 +18,7 @@ import 'package:myactivity_project/base/base_paths.dart' as basePath;
 import 'package:myactivity_project/data/model/report_get_store_body.dart';
 import 'package:myactivity_project/data/model/report_get_store_response.dart';
 import 'package:myactivity_project/data/model/report_sales_body.dart';
+import 'package:myactivity_project/data/model/report_sales_response.dart';
 import 'package:myactivity_project/service/SP_service/SP_service.dart';
 import 'package:myactivity_project/utils/app_navigator.dart';
 import 'package:myactivity_project/utils/app_shared_pref.dart';
@@ -34,6 +35,7 @@ import '../../data/model/report_list_pagination_response.dart' as PagingResponse
 import '../../data/model/report_list_response.dart';
 import '../../data/model/report_webview_model.dart';
 import '../../utils/popup_widget.dart';
+import 'report_member.dart';
 
 part 'report_sales_card.dart';
 part 'report_sales_detail.dart';

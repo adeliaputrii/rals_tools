@@ -55,6 +55,7 @@ class _ReportSalesListState extends State<ReportSalesList>
     loginCubit = context.read<LoginCubit>();
     _debounceTimer?.cancel();
     refreshPage();
+    log(" cek Toko ${toko}");
   }
 
   List<SalesData> filterByMd(List<SalesData> list, String md) {
@@ -344,9 +345,6 @@ class _ReportSalesListState extends State<ReportSalesList>
 
   Widget _buildTab2Content() {
     String selectedValue = 'Sales Report';
-    final screenSize = MediaQuery.of(context).size;
-    final response =
-        ModalRoute.of(context)!.settings.arguments as List<dynamic>? ?? [];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -581,9 +579,9 @@ class _ReportSalesListState extends State<ReportSalesList>
             }
 
             if (state is ReportSalesSuccess) {
-              final filteredList = filterByMd(state.response, searchMd.text);
+              final filteredList = state.response;
 
-              if (state.response.isEmpty) {
+              if (filteredList.isEmpty) {
                 return Center(
                   child: Text(
                     "Data tidak ditemukan.",
@@ -595,177 +593,206 @@ class _ReportSalesListState extends State<ReportSalesList>
                   ),
                 );
               }
-// Mengelompokkan data berdasarkan tanggal
-              Map<String, double> groupedData = {};
+              Map<String, Map<String, double>> groupedData = {};
 
-// Loop untuk menjumlahkan Net per tanggal
               for (var item in filteredList) {
-                String dateKey = item.tanggal.toString(); // Ubah sesuai format tanggal
-                double netValue = double.tryParse(item.net.toString()) ?? 0;
+                String dateKey = item.tanggal.toString();
 
-                if (groupedData.containsKey(dateKey)) {
-                  groupedData[dateKey] = groupedData[dateKey]! + netValue;
-                } else {
-                  groupedData[dateKey] = netValue;
-                }
+                double netValue =
+                    double.tryParse(item.net?.toString() ?? "0.0") ?? 0.0;
+                double grossValue =
+                    double.tryParse(item.gross?.toString() ?? "0.0") ?? 0.0;
+                double qtyValue =
+                    double.tryParse(item.qty?.toString() ?? "0.0") ?? 0.0;
+                double targetValue =
+                    double.tryParse(item.target?.toString() ?? "0.0") ?? 0.0;
+                double discountValue =
+                    double.tryParse(item.discount?.toString() ?? "0.0") ?? 0.0;
+
+                groupedData.putIfAbsent(
+                    dateKey,
+                    () => {
+                          "net": 0.0,
+                          "gross": 0.0,
+                          "qty": 0.0,
+                          "target": 0.0,
+                          "discount": 0.0,
+                        });
+
+                groupedData[dateKey]!["net"] =
+                    groupedData[dateKey]!["net"]! + netValue;
+                groupedData[dateKey]!["gross"] =
+                    groupedData[dateKey]!["gross"]! + grossValue;
+                groupedData[dateKey]!["qty"] =
+                    groupedData[dateKey]!["qty"]! + qtyValue;
+                groupedData[dateKey]!["target"] =
+                    groupedData[dateKey]!["target"]! + targetValue;
+                groupedData[dateKey]!["discount"] =
+                    groupedData[dateKey]!["discount"]! + discountValue;
               }
 
-// Konversi ke List agar bisa digunakan di ListView.builder
-              List<MapEntry<String, double>> groupedList =
-                  groupedData.entries.toList();
+              double calculateTotal(List<SalesData> list, String key) {
+                return list.fold(0.0, (sum, item) {
+                  switch (key) {
+                    case "net":
+                      return sum +
+                          (double.tryParse(item.net?.toString() ?? "0.0") ??
+                              0.0);
+                    case "gross":
+                      return sum +
+                          (double.tryParse(item.gross?.toString() ?? "0.0") ??
+                              0.0);
+                    case "qty":
+                      return sum +
+                          (double.tryParse(item.qty?.toString() ?? "0.0") ??
+                              0.0);
+                    case "target":
+                      return sum +
+                          (double.tryParse(item.target?.toString() ?? "0.0") ??
+                              0.0);
+                    case "discount":
+                      return sum +
+                          (double.tryParse(
+                                  item.discount?.toString() ?? "0.0") ??
+                              0.0);
+                    default:
+                      return sum;
+                  }
+                });
+              }
+
+              double totalNet = calculateTotal(filteredList, "net");
+              double totalGross = calculateTotal(filteredList, "gross");
+              double totalQty = calculateTotal(filteredList, "qty");
+              double totalTarget = calculateTotal(filteredList, "target");
+              double totalDiscount = calculateTotal(filteredList, "discount");
+
+              final item = filteredList.isNotEmpty ? filteredList[0] : null;
 
               return Expanded(
                 child: Column(
                   children: [
-                    // SingleChildScrollView(
-                    //   keyboardDismissBehavior:
-                    //       ScrollViewKeyboardDismissBehavior.onDrag,
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                    //     child: TextField(
-                    //       controller: searchMd,
-                    //       onChanged: (value) {
-                    //         setState(() {});
-                    //       },
-                    //       decoration: InputDecoration(
-                    //         labelText: 'Search by MD',
-                    //         prefixIcon: Icon(Icons.search),
-                    //         border: OutlineInputBorder(
-                    //           borderRadius: BorderRadius.circular(10),
-                    //           borderSide: BorderSide(color: Colors.grey),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    SizedBox(
-                      height: 10,
-                    ),
                     Expanded(
-                      child: ListView.builder(
-                        itemCount: filteredList.length,
-                        itemBuilder: (context, index) {
-                          final item = filteredList[index];
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetailPage(item: item),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                              decoration: BoxDecoration(
-                                color: baseColor.cardReportColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                    offset: Offset(2, 3),
-                                    color: Colors.grey,
-                                    blurRadius: 3,
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              height: screenSize.height / 10,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: baseColor.cardImageBackground,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Image(
-                                        width: 40,
-                                        height: 40,
-                                        image:
-                                            AssetImage(baseAsset.icReportList),
-                                      ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailPage(
+                                      item: item!,
+                                      totalGross: totalGross,
+                                      totalNet: totalNet,
+                                      totalDiscount: totalDiscount,
+                                      totalQty: totalQty,
+                                      totalTarget: totalTarget,
+                                      selectedDateRange: selectedDateRange!,
                                     ),
-                                    Container(
-                                      width: screenSize.width / 1.3,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10.0),
-                                        child: Row(
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                                decoration: BoxDecoration(
+                                  color: baseColor.cardReportColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      offset: Offset(2, 3),
+                                      color: Colors.grey,
+                                      blurRadius: 3,
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                height: MediaQuery.of(context).size.height / 10,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: baseColor.cardImageBackground,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Image(
+                                          width: 40,
+                                          height: 40,
+                                          image: AssetImage(
+                                              baseAsset.icReportList),
+                                        ),
+                                      ),
+                                      SizedBox(width: 10),
+                                      Expanded(
+                                        child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Expanded(
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        formatTanggal(
-                                                            item.tanggal),
-                                                        style: GoogleFonts
-                                                            .plusJakartaSans(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w200,
-                                                          color: baseColor
-                                                              .graySecondary,
-                                                        ),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Text(
-                                                    'Net: ${item.net}',
-                                                    style: GoogleFonts
-                                                        .plusJakartaSans(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w900,
-                                                      color:
-                                                          baseColor.grayPrimary,
-                                                      wordSpacing: 2,
-                                                    ),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                            Row(
                                               children: [
-                                                Container(
-                                                  child: Image(
-                                                    width: 40,
-                                                    height: 40,
-                                                    image: AssetImage(baseAsset
-                                                        .icReportArrow),
+                                                Text(
+                                                  'Gross : ${formatAmount(totalGross)}',
+                                                  style: GoogleFonts
+                                                      .plusJakartaSans(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w900,
+                                                    color:
+                                                        baseColor.grayPrimary,
+                                                    wordSpacing: 2,
                                                   ),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
+                                            
+                                                // Padding(
+                                                //   padding: const EdgeInsets.only(left: 50),
+                                                //   child: Text(
+                                                //     selectedDateRange != null
+                                                //         ? '${DateFormat('dd-MM-yyyy').format(selectedDateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(selectedDateRange!.end)}'
+                                                //         : 'Pilih Tanggal',
+                                                //     style: GoogleFonts
+                                                //         .plusJakartaSans(
+                                                //       fontSize: 7,
+                                                //       fontWeight: FontWeight.w600,
+                                                  
+                                                //     ),
+                                                //     maxLines: 1,
+                                                //     overflow:
+                                                //         TextOverflow.ellipsis,
+                                                //   ),
+                                                // ),
                                               ],
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 5),
+                                              child: Text(
+                                                'Net     :  ${formatAmount(totalNet)}',
+                                                style:
+                                                    GoogleFonts.plusJakartaSans(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w900,
+                                                  color: baseColor.grayPrimary,
+                                                  wordSpacing: 2,
+                                                ),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -900,6 +927,12 @@ class _ReportSalesListState extends State<ReportSalesList>
       print("object $e");
       return "-";
     }
+  }
+
+  String formatAmount(double amount) {
+    final format =
+        NumberFormat.currency(locale: "id_ID", symbol: "Rp", decimalDigits: 2);
+    return format.format(amount);
   }
 
   Widget loading() {

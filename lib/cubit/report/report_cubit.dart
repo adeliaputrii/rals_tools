@@ -89,19 +89,26 @@ class ReportCubit extends Cubit<ReportState> {
     });
   }
 
-  void getSalesReport(String token, ReportSalesBody reportBody) async {
+void getSalesReport(String token, ReportSalesBody reportBody) async {
+  try {
     emit(ReportLoading());
     log("Report body: ${reportBody.toJson()}");
-    await repositories.getSalesReport(token, reportBody).then((value) {
-      final responseData = value.dataResponse as SalesReportResponse;
 
-      if (value.isSuccess) {
-        emit(ReportSalesSuccess(responseData.data));
-      } else {
-        emit(ReportFailure(message: value.dataResponse));
-      }
-    });
+    final value = await repositories.getSalesReport(token, reportBody);
+
+    if (value.isSuccess) {
+      final responseData = value.dataResponse as SalesReportResponse;
+      emit(ReportSalesSuccess(responseData.data));
+    } else {
+      emit(ReportFailure(message: value.dataResponse.toString()));
+    }
+  } catch (e, stackTrace) {
+    log("Error in getSalesReport: $e");
+    log("StackTrace: $stackTrace");
+    emit(ReportFailure(message: "Terjadi kesalahan, silakan coba lagi."));
   }
+}
+
 
 void getStore(String token, SalesDataStore reportBody) async {
     emit(ReportLoading());

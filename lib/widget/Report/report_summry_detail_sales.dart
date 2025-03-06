@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -15,18 +14,25 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 
 class DetailPage extends StatefulWidget {
-=======
-import 'package:myactivity_project/data/model/report_sales_response.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:permission_handler/permission_handler.dart';
-
-class DetailPage extends StatelessWidget {
->>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
   final SalesData item;
+  final double totalGross;
+  final double totalNet;
+  final double totalQty;
+  final double totalTarget;
+  final double totalDiscount;
+  final DateTimeRange selectedDateRange; // Tambahkan parameter tanggal
 
-  DetailPage({required this.item});
+  const DetailPage({
+    Key? key,
+    required this.item,
+    required this.totalGross,
+    required this.totalNet,
+    required this.totalQty,
+    required this.totalTarget,
+    required this.totalDiscount,
+    required this.selectedDateRange, // Tambahkan di konstruktor
+  }) : super(key: key);
 
-<<<<<<< HEAD
   @override
   State<DetailPage> createState() => _DetailPageState();
 }
@@ -34,10 +40,6 @@ class DetailPage extends StatelessWidget {
 late ReportCubit reportCubit;
 late LoginCubit loginCubit;
 late PopUpWidget popUpWidget;
-double totalNet = 0.0;
-double totalTarget = 0.0;
-double totalGross = 0.0;
-double totalDiscount = 0.0;
 
 class _DetailPageState extends State<DetailPage> {
   Future<void> _downloadPDF(BuildContext context) async {
@@ -48,40 +50,24 @@ class _DetailPageState extends State<DetailPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Izin penyimpanan ditolak!')),
       );
-=======
-  Future<void> _downloadPDF(BuildContext context) async {
-    log('Downloading PDF...');
-    var status = await Permission.storage.request();
-    if (!status.isGranted) {
-      print('Storage permission denied');
->>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
       return;
     }
 
     if (await Permission.manageExternalStorage.isDenied) {
       var manageStatus = await Permission.manageExternalStorage.request();
       if (!manageStatus.isGranted) {
-<<<<<<< HEAD
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Izin pengelolaan penyimpanan ditolak!')),
         );
-=======
-        print('Manage storage permission denied');
->>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
         return;
       }
     }
 
-<<<<<<< HEAD
     log('Storage permission granted');
-=======
-    print('Storage permission granted');
->>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
 
     final pdf = pw.Document();
     pdf.addPage(
       pw.Page(
-<<<<<<< HEAD
         build: (context) => pw.Container(
           padding: pw.EdgeInsets.all(16),
           child: pw.Column(
@@ -98,20 +84,6 @@ class _DetailPageState extends State<DetailPage> {
               _buildPdfText('Target', widget.item.target),
             ],
           ),
-=======
-        build: (context) => pw.Column(
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
-          children: [
-            pw.Text('Toko: ${item.toko}',
-                style:
-                    pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold)),
-            pw.SizedBox(height: 8),
-            pw.Text('MD: ${item.md}'),
-            pw.Text('Net: ${item.net}'),
-            pw.Text('Target: ${item.target}'),
-            pw.Text('Tanggal: ${item.tanggal}'),
-          ],
->>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
         ),
       ),
     );
@@ -121,7 +93,6 @@ class _DetailPageState extends State<DetailPage> {
       directory.create(recursive: true);
     }
 
-<<<<<<< HEAD
     final file = File(
         '${directory.path}/sales_report_${widget.item.toko}_${widget.item.tanggal}.pdf');
     await file.writeAsBytes(await pdf.save());
@@ -157,54 +128,18 @@ class _DetailPageState extends State<DetailPage> {
     reportCubit = context.read<ReportCubit>();
     popUpWidget = PopUpWidget(context);
     loginCubit = context.read<LoginCubit>();
+    log("message apa ${widget.selectedDateRange}");
+
     // _debounceTimer?.cancel();
     // refreshPage();
   }
 
-  // refreshPage() async {
-  //   toko = await SharedPref.getUserToko();
-  //   token = await SharedPref.getToken();
-  //   username = await SharedPref.getUserId();
-  //   initDataReport();
-  //   scrollListener();
-  //   searchController.clear();
-  // }
-
-  // void initDataReport() {
-  //   reportCubit.getListReportPagination(token ?? '', "", "", "", "");
-
-  //   loginCubit.createLog(
-  //       baseParam.logInfoReportPage,
-  //       baseParam.logInfoNavigateReportPage,
-  //       basePath.api_report_list_pagination);
-  // }
-
-  // void scrollListener() {
-  //   scrollController.addListener(() {
-  //     if (scrollController.position.maxScrollExtent ==
-  //         scrollController.offset) {
-  //       getListReport();
-  //     }
-  //   });
-  // }
-=======
-    final file =
-        File('${directory.path}/sales_report_${item.toko}_${item.tanggal}.pdf');
-    await file.writeAsBytes(await pdf.save());
-
-    // Show notification to the user
-    print('PDF saved to: ${file.path}');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('PDF saved to: ${file.path}')),
-    );
-  }
-
->>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
   @override
   Widget build(BuildContext context) {
+    final NumberFormat amountFormat = NumberFormat('#,###');
+
     return Scaffold(
       appBar: AppBar(
-<<<<<<< HEAD
         title: Text(
           'Detail report',
           style: GoogleFonts.plusJakartaSans(
@@ -220,14 +155,10 @@ class _DetailPageState extends State<DetailPage> {
           ),
         ),
         backgroundColor: baseColor.primaryColor,
-=======
-        title: Text('Detail Report'),
->>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-<<<<<<< HEAD
           children: [
             Card(
               shape: RoundedRectangleBorder(
@@ -238,13 +169,54 @@ class _DetailPageState extends State<DetailPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    _buildDetailItem(Icons.store, 'Toko', widget.item.toko),
-                    _buildDetailItem(Icons.person, 'MD', widget.item.md),
-                    _buildDetailItem(
-                        Icons.date_range, 'Tanggal', widget.item.tanggal),
-                    _buildDetailItem(
-                        Icons.network_check, 'Net', widget.item.net),
-                    _buildDetailItem(Icons.flag, 'Target', widget.item.target),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: _buildDetailItem(
+                                Icons.store, 'Toko', widget.item.toko)),
+                        Expanded(
+                          child: _buildDetailItem(
+                            Icons.date_range,
+                            'Tanggal',
+                            widget.selectedDateRange != null
+                                ? '${DateFormat('dd-MM-yyyy').format(widget.selectedDateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(widget.selectedDateRange!.end)}'
+                                : 'Pilih Tanggal',
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: _buildDetailItem(Icons.flag, 'Gross',
+                              formatAmount(widget.totalGross)),
+                        ),
+                        Expanded(
+                          child: _buildDetailItem(Icons.star_outline_rounded,
+                              'Target', formatAmount(widget.totalTarget)),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: _buildDetailItem(
+                            Icons.shopping_cart,
+                            'Qty',
+                            NumberFormat("#,###").format(widget
+                                .totalQty), // Format jumlah dengan pemisah ribuan
+                          ),
+                        ),
+                        Expanded(
+                          child: _buildDetailItem(Icons.network_check, 'Net',
+                              formatAmount(widget.totalNet)),
+                        ),
+                      ],
+                    ),
+                    _buildDetailItem(Icons.discount, 'Discount',
+                        formatAmount(widget.totalDiscount)),
                   ],
                 ),
               ),
@@ -263,7 +235,9 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 ElevatedButton.icon(
                   onPressed: () {
                     _downloadPDF(context);
@@ -279,11 +253,10 @@ class _DetailPageState extends State<DetailPage> {
                 ),
               ],
             ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 250),
-                  child: Divider(thickness: 2, color: Colors.grey),
-                ),
-
+            Padding(
+              padding: const EdgeInsets.only(right: 250),
+              child: Divider(thickness: 2, color: Colors.grey),
+            ),
             Expanded(
               child: Container(
                 margin: EdgeInsets.all(10),
@@ -330,20 +303,6 @@ class _DetailPageState extends State<DetailPage> {
                                     (index) {
                                   final item = state.response[index];
 
-                                  // Update totals
-                                  totalNet +=
-                                      double.tryParse(item.net ?? "0.00") ??
-                                          0.0;
-                                  totalTarget +=
-                                      double.tryParse(item.target ?? "0.00") ??
-                                          0.0;
-                                  totalGross +=
-                                      double.tryParse(item.gross ?? "0.00") ??
-                                          0.0;
-                                  totalDiscount += double.tryParse(
-                                          item.discount ?? "0.00") ??
-                                      0.0;
-
                                   return TableRow(
                                     children: [
                                       _tableCell('${item.toko ?? "-"}'),
@@ -355,7 +314,8 @@ class _DetailPageState extends State<DetailPage> {
                                           '${item.net != "0.00" ? formatAmount(double.tryParse(item.net ?? "0.00") ?? 0.00) : item.net}'),
                                       _tableCell(
                                           '${item.target != "0.00" ? formatAmount(double.tryParse(item.target ?? "0.00") ?? 0.00) : item.target}'),
-                                      _tableCell('${item.qty ?? "0"}'),
+                                      _tableCell(
+                                          '${item.qty != "0" ? double.tryParse(item.qty ?? "0.00") ?? 0.00 : item.qty}'),
                                       _tableCell(
                                           '${item.gross != "0.00" ? formatAmount(double.tryParse(item.gross ?? "0.00") ?? 0.00) : item.gross}'),
                                       _tableCell(
@@ -372,12 +332,16 @@ class _DetailPageState extends State<DetailPage> {
                                     _tableCell('Total', bold: true),
                                     _tableCell(''),
                                     _tableCell(''),
-                                    _tableCell('${formatAmount(totalNet)}'),
-                                    _tableCell('${formatAmount(totalTarget)}'),
-                                    _tableCell(''),
-                                    _tableCell('${formatAmount(totalGross)}'),
                                     _tableCell(
-                                        '${formatAmount(totalDiscount)}'),
+                                        '${formatAmount(widget.totalNet)}'),
+                                    _tableCell(
+                                        '${formatAmount(widget.totalTarget)}'),
+                                    _tableCell(
+                                        '${amountFormat.format(widget.totalQty)}'),
+                                    _tableCell(
+                                        '${formatAmount(widget.totalGross)}'),
+                                    _tableCell(
+                                        '${formatAmount(widget.totalDiscount)}'),
                                   ],
                                 ),
                               ],
@@ -392,35 +356,12 @@ class _DetailPageState extends State<DetailPage> {
                   },
                 ),
               ),
-=======
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Table(
-              border: TableBorder.all(),
-              columnWidths: {
-                0: FlexColumnWidth(1),
-                1: FlexColumnWidth(2),
-              },
-              children: [
-                _buildTableRow('Toko', item.toko ?? ''),
-                _buildTableRow('MD', item.md ?? ''),
-                _buildTableRow('Tanggal', item.tanggal ?? ''),
-                _buildTableRow('Net', item.net ?? ''),
-                _buildTableRow('Target', item.target ?? ''),
-              ],
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _downloadPDF(context), // Corrected line
-              child: Text('Download PDF'),
->>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
             ),
           ],
         ),
       ),
     );
   }
-<<<<<<< HEAD
 }
 
 String formatTanggal(String? tanggal) {
@@ -436,7 +377,8 @@ String formatTanggal(String? tanggal) {
 }
 
 String formatAmount(double amount) {
-  final format = NumberFormat("#,##0.00", "en_US");
+  final format =
+      NumberFormat.currency(locale: "id_ID", symbol: "Rp", decimalDigits: 2);
   return format.format(amount);
 }
 
@@ -478,21 +420,4 @@ Widget _buildDetailItem(IconData icon, String label, String? value) {
       ],
     ),
   );
-=======
-
-  TableRow _buildTableRow(String label, String value) {
-    return TableRow(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(value),
-        ),
-      ],
-    );
-  }
->>>>>>> ca9c5a6f5632931b67b809aa0513fce3d27c6e6a
 }

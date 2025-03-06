@@ -71,7 +71,7 @@ dependencies:
   firebase_core: ^2.16.0
   cloud_firestore: ^4.9.2
   stepper_list_view: ^0.0.1
-  flutter_windowmanager: any
+  flutter_windowmanager: 
   in_app_update: ^4.2.2
   sim_data_plus: ^0.1.4
   intl: ^0.18.0
