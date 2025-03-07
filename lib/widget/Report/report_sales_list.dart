@@ -208,7 +208,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                 });
               },
               child: Text(
-                'Notification',
+                'Info',
                 style: TextStyle(
                   color: isTab1Selected ? Colors.white : Colors.red,
                 ),
@@ -230,7 +230,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                 });
               },
               child: Text(
-                'Report Sales',
+                'Report ',
                 style: TextStyle(
                   color: isTab1Selected ? Colors.red : Colors.white,
                 ),
@@ -424,11 +424,22 @@ class _ReportSalesListState extends State<ReportSalesList>
                       return loadingSales();
                     }
 
+                    if (state is ReportFailure) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left:30),
+                        child: Text(
+                          "ID Anda hanya default store",
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      );
+                    }
+
                     if (state is getStoreSuccess) {
                       final storeData = state.data;
-                      if (state is ReportFailure) {
-                        SizedBox.shrink();
-                      }
+
                       return Container(
                         padding: EdgeInsets.only(right: 20, left: 20),
                         child: DropdownSearch<String>(
@@ -457,7 +468,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                             ),
                           ),
                           selectedItem:
-                              selectedStore.isNotEmpty ? selectedStore : null,
+                              selectedStore.isNotEmpty ? selectedStore : toko,
                           onChanged: (String? newValue) {
                             setState(() {
                               selectedStore = newValue!;
@@ -519,13 +530,18 @@ class _ReportSalesListState extends State<ReportSalesList>
                   backgroundColor: baseColors.primaryColor,
                 ),
                 onPressed: () async {
+                  log(selectedStore);
+                  log(toko.toString());
+
                   if (selectedDateRange != null) {
                     final reportBody = ReportSalesBody(
                       startDate: DateFormat('yyyy-MM-dd')
                           .format(selectedDateRange!.start),
                       endDate: DateFormat('yyyy-MM-dd')
                           .format(selectedDateRange!.end),
-                      storeCode: selectedStore,
+                      storeCode: selectedStore.isEmpty
+                          ? toko.toString()
+                          : selectedStore,
                     );
                     reportCubit.getSalesReport(token ?? '', reportBody);
                   } else {
@@ -568,7 +584,7 @@ class _ReportSalesListState extends State<ReportSalesList>
             if (state is ReportFailure) {
               return Center(
                 child: Text(
-                  "Terjadi kesalahan. Silakan coba lagi.",
+                  "Terjadi kesalahan",
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -748,7 +764,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                 ),
-                                            
+
                                                 // Padding(
                                                 //   padding: const EdgeInsets.only(left: 50),
                                                 //   child: Text(
@@ -759,7 +775,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                                                 //         .plusJakartaSans(
                                                 //       fontSize: 7,
                                                 //       fontWeight: FontWeight.w600,
-                                                  
+
                                                 //     ),
                                                 //     maxLines: 1,
                                                 //     overflow:
@@ -769,7 +785,8 @@ class _ReportSalesListState extends State<ReportSalesList>
                                               ],
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(left: 5),
+                                              padding: const EdgeInsets.only(
+                                                  left: 5),
                                               child: Text(
                                                 'Net     :  ${formatAmount(totalNet)}',
                                                 style:

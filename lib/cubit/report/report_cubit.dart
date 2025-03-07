@@ -99,7 +99,8 @@ void getSalesReport(String token, ReportSalesBody reportBody) async {
     if (value.isSuccess) {
       final responseData = value.dataResponse as SalesReportResponse;
       emit(ReportSalesSuccess(responseData.data));
-    } else {
+    } else {  
+        log("Error in getSalesReport:");
       emit(ReportFailure(message: value.dataResponse.toString()));
     }
   } catch (e, stackTrace) {
@@ -114,22 +115,25 @@ void getStore(String token, SalesDataStore reportBody) async {
     emit(ReportLoading());
 
     await repositories.getStore(token, reportBody).then((value) {
-
       final responseData = value.dataResponse as SalesReportStoreResponse;
-
       if (value.isSuccess) {
         var storeData = responseData.data;
 
         if ( storeData.isNotEmpty) {
           emit(getStoreSuccess(storeData)); 
         } else {
+        log("ke");
+
           emit(ReportFailure(
               message: "No stores available")); 
         }
       } else {
+        log("ke else");
         emit(ReportFailure(message: value.dataResponse ?? "Unknown error"));
       }
     }).catchError((e) {
+        log("ke catch");
+
       emit(ReportFailure(message: "An error occurred during the request"));
     });
   }

@@ -27,7 +27,7 @@ const String api_activity_clock_daily = 'api/v1/activity/clock_daily_activity';
 const String api_activity_update = 'api/v1/activity/updateDailyActivity';
 const String api_count_task = 'api/v1/activity/task/count-unread/';
 
-//SuratJalan
+//SuratJalan  
 const String api_tracking_scan = 'api/v1/tracking/scan-sj-tracking?no_sj=';
 const String api_tracking_update_storeline = 'api/v1/tracking/update-tracking/storeline';
 const String api_tracking_update_supplier = 'api/v1/tracking/update-tracking/supplier';
