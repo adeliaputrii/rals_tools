@@ -302,7 +302,7 @@ class _DetailPageState extends State<DetailPage> {
                                 ...List.generate(state.response.length,
                                     (index) {
                                   final item = state.response[index];
-
+                            log("item $item");
                                   return TableRow(
                                     children: [
                                       _tableCell('${item.toko ?? "-"}'),

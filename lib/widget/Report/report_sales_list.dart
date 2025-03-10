@@ -596,7 +596,6 @@ class _ReportSalesListState extends State<ReportSalesList>
 
             if (state is ReportSalesSuccess) {
               final filteredList = state.response;
-
               if (filteredList.isEmpty) {
                 return Center(
                   child: Text(
