@@ -37,7 +37,6 @@ class ReportSearchSuccess extends ReportState {
   List<Object?> get props => [response];
 }
 
-
 class getStoreSuccess extends ReportState {
   final List<SalesDataStoreResponse> data;
 
@@ -48,13 +47,32 @@ class getStoreSuccess extends ReportState {
 }
 
 class ReportSalesSuccess extends ReportState {
-  
   final List<SalesData> response;
-  
+
   const ReportSalesSuccess(this.response);
   @override
   List<Object?> get props => [response];
 }
+
+
+class ReportgetDynamicSuccess extends ReportState {
+  final List<ReportData> response;
+  const ReportgetDynamicSuccess(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
+
+class ReportgetDynamicHeaderSuccess extends ReportState {
+  final List<ReportDynamic> response;
+  const ReportgetDynamicHeaderSuccess(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
+
 
 class SearchReportSales extends ReportState {
   final String query;

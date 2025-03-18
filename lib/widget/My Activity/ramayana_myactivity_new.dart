@@ -372,7 +372,7 @@ class _RamayanaMyActivityState extends State<RamayanaMyActivity> {
             }
             if (state is MyActivityFailure) {
               loginCubit.createLog(baseParam.logInfoActivityInputSucc, state.message, urlApi);
-              popUpWidget.showPopUpError('Gagal Submit', state.message);
+              popUpWidget.showPopUpError('Gagal Submit', state.message );
               setState(() {
                 _loadingButton = false;
               });

@@ -54,6 +54,8 @@ const String api_report_insert_viewer = 'api/v1/report/insert_viewer';
 const String api_report_get_viewer = 'api/v1/report/get_viewer';
 const String api_report_sales = 'v1/news/sales-data';
 const String api_get_store = 'v1/news/get-store';
+const String api_get_report_dynamic='v1/report/report-dynamic';
+const String api_get_report_dynamic_header='v1/report/report-dynamic-header';
 
 //StockOpname
 

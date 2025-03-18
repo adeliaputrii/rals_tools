@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:equatable/equatable.dart';
@@ -11,6 +12,7 @@ import 'package:myactivity_project/data/model/login_response.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
 import 'package:myactivity_project/utils/app_shared_pref.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer';
 
 import '../../data/model/create_my_log_body.dart';
 import '../../data/model/login_body.dart';
@@ -61,7 +63,10 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void createLog(String logInfoScreen, String? logInfoDesc, String urlApi) async {
-    final userId = await SharedPref.getUserId();
+    debugPrint('CREATE LOG');
+    debugPrint("logInfoScreen: $logInfoDesc");
+    
+   final userId = await SharedPref.getUserId();
     final userToko = await SharedPref.getUserToko();
     final deviceId = await SharedPref.getDeviceId();
     final deviceName = await SharedPref.getDeviceName();

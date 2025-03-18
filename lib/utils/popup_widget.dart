@@ -24,7 +24,7 @@ class PopUpWidget {
         style: TextStyle(fontWeight: FontWeight.w900, fontSize: 17),
       ),
       width: 350,
-      backgroundType: BackgroundType.lighter,
+      barrierColor: Colors.white70,
       height: 100,
       description: Text(
         description,

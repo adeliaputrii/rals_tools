@@ -34,7 +34,7 @@ class _ReportSalesListState extends State<ReportSalesList>
   String? toko;
   String? username;
   bool isTab1Selected = true;
-
+  var selectStore = false;
   String? _chosenValue = 'All';
   UserData userData = UserData();
 
@@ -55,7 +55,6 @@ class _ReportSalesListState extends State<ReportSalesList>
     loginCubit = context.read<LoginCubit>();
     _debounceTimer?.cancel();
     refreshPage();
-    log(" cek Toko ${toko}");
   }
 
   List<SalesData> filterByMd(List<SalesData> list, String md) {
@@ -67,16 +66,16 @@ class _ReportSalesListState extends State<ReportSalesList>
         .toList();
   }
 
-  refreshPage() async {
+   refreshPage() async {
     toko = await SharedPref.getUserToko();
     token = await SharedPref.getToken();
     username = await SharedPref.getUserId();
+
     initDataReport();
     scrollListener();
     searchController.clear();
     searchMd.clear();
   }
-
   void initDataReport() {
     reportCubit.getListReportPagination(token ?? '', "", "", "", "");
 
@@ -84,6 +83,16 @@ class _ReportSalesListState extends State<ReportSalesList>
         baseParam.logInfoReportPage,
         baseParam.logInfoNavigateReportPage,
         basePath.api_report_list_pagination);
+  }
+
+  void initSalesReport() {
+    reportCubit.getStore(
+      token ?? '',
+      SalesDataStore(
+        idKorem: username,
+        storeCode: toko,
+      ),
+    );
   }
 
   void scrollListener() {
@@ -243,6 +252,8 @@ class _ReportSalesListState extends State<ReportSalesList>
   }
 
   Widget _buildMainContent() {
+    Future.delayed(Duration(seconds: 2));
+    initSalesReport();
     return Padding(
       padding: const EdgeInsets.only(top: 35),
       child: Column(
@@ -376,7 +387,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                     selectedValue = newValue!;
                   });
 
-                  if (newValue == 'Member') {
+                  if (newValue == 'Report Dynamic') {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) {
@@ -385,7 +396,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                     );
                   }
                 },
-                items: ['Sales Report', 'Member']
+                items: ['Sales Report', 'Report Dynamic']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -403,45 +414,20 @@ class _ReportSalesListState extends State<ReportSalesList>
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: EdgeInsets.only(right: 20, left: 20),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      reportCubit.getStore(
-                        token ?? '',
-                        SalesDataStore(
-                          idKorem: username,
-                          storeCode: toko,
-                        ),
-                      );
-                    },
-                    child: Text("Select Data Store"),
-                  ),
-                ),
+               
                 BlocBuilder<ReportCubit, ReportState>(
                   builder: (context, state) {
                     if (state is ReportInitial) {
                       return loadingSales();
                     }
 
-                    if (state is ReportFailure) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left:30),
-                        child: Text(
-                          "ID Anda hanya default store",
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      );
-                    }
+                  
 
                     if (state is getStoreSuccess) {
                       final storeData = state.data;
 
                       return Container(
-                        padding: EdgeInsets.only(right: 20, left: 20),
+                        padding: EdgeInsets.only(right: 40, left: 40),
                         child: DropdownSearch<String>(
                           popupProps: PopupProps.menu(
                             showSearchBox: true,
@@ -530,8 +516,6 @@ class _ReportSalesListState extends State<ReportSalesList>
                   backgroundColor: baseColors.primaryColor,
                 ),
                 onPressed: () async {
-                  log(selectedStore);
-                  log(toko.toString());
 
                   if (selectedDateRange != null) {
                     final reportBody = ReportSalesBody(
@@ -581,18 +565,6 @@ class _ReportSalesListState extends State<ReportSalesList>
               }
             }
 
-            if (state is ReportFailure) {
-              return Center(
-                child: Text(
-                  "Terjadi kesalahan",
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
-                  ),
-                ),
-              );
-            }
 
             if (state is ReportSalesSuccess) {
               final filteredList = state.response;

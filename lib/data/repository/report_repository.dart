@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:myactivity_project/base/base_paths.dart' as basePath;
+import 'package:myactivity_project/data/model/report_dynamic_body.dart';
 import 'package:myactivity_project/data/model/report_get_store_body.dart';
 import 'package:myactivity_project/data/model/report_sales_body.dart';
+import 'package:myactivity_project/data/model/response_report_dynamic.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
 
 import '../model/repositories_response.dart';
@@ -224,7 +226,76 @@ class ReportRepositories {
                 'Please check your connection..');
       }
     }
-    log("message get storee isSuccess: ${response.isSuccess}, statusCode: ${response.statusCode}, dataResponse: ${response.dataResponse}");
     return response;
   }
+
+  Future<RepositoriesResponse> getReportDynamic(
+      String token, ReportModel report_id) async {
+    final services = GetIt.I.get<ReportService>();
+    late RepositoriesResponse response;
+
+    print("cek body: ${report_id.toJson()}"); 
+
+    try {
+      final value = await services.getReportdynamic(
+          basePath.contentType, basePath.accept,report_id);
+
+      print("Response dari API: ${value.toJson()}"); 
+
+      response = RepositoriesResponse(
+          isSuccess: true, statusCode: 200, dataResponse: value);
+    } catch (e) {
+      print("ke TRY $e");
+
+      if (e is DioException) {
+        print("Error dari Dio: ${e.response?.data}");
+
+        response = RepositoriesResponse(
+            isSuccess: false,
+            statusCode: e.response?.statusCode ?? 500,
+            dataResponse: e.response?.data['message'].toString() ??
+                'Please check your connection..');
+      } else {
+        print("ke else tyr");
+
+        response = RepositoriesResponse(
+            isSuccess: false, statusCode: 500, dataResponse: e.toString());
+      }
+    }
+    log("message get isSuccess: ${response.isSuccess}, statusCode: ${response.statusCode}, dataResponse: ${response.dataResponse.toString()}");
+
+    return response;
+  }
+
+
+ Future<RepositoriesResponse> getReportDynamicHeader(
+      String token) async {
+    final services = GetIt.I.get<ReportService>();
+    late RepositoriesResponse response;
+    try {
+      final value = await services.getReportdynamicHeader(
+          basePath.contentType, basePath.accept);
+      response = RepositoriesResponse(
+          isSuccess: true, statusCode: 200, dataResponse: value);
+    } catch (e) {
+      print("ke TRY $e");
+      if (e is DioException) {
+        print("Error dari Dio: ${e.response?.data}");
+        response = RepositoriesResponse(
+            isSuccess: false,
+            statusCode: e.response?.statusCode ?? 500,
+            dataResponse: e.response?.data['message'].toString() ??
+                'Please check your connection..');
+      } else {
+        print("ke else tyr");
+        response = RepositoriesResponse(
+            isSuccess: false, statusCode: 500, dataResponse: e.toString());
+      }
+    }
+    log("message get isSuccess: ${response.isSuccess}, statusCode: ${response.statusCode}, dataResponse: ${response.dataResponse.toString()}");
+
+    return response;
+  }
+
+  
 }

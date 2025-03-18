@@ -45,25 +45,36 @@ class _DetailPageState extends State<DetailPage> {
   Future<void> _downloadPDF(BuildContext context) async {
     log('Downloading PDF...');
 
-    var status = await Permission.storage.request();
-    if (!status.isGranted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Izin penyimpanan ditolak!')),
-      );
-      return;
-    }
-
-    if (await Permission.manageExternalStorage.isDenied) {
-      var manageStatus = await Permission.manageExternalStorage.request();
-      if (!manageStatus.isGranted) {
+    if (Platform.isAndroid && await Permission.storage.isDenied) {
+      log('Meminta izin penyimpanan...');
+      var status = await Permission.storage.request();
+      if (!status.isGranted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Izin pengelolaan penyimpanan ditolak!')),
+          SnackBar(
+              content: Text(
+                  'Izin penyimpanan ditolak! Silakan aktifkan izin di Pengaturan.')),
         );
+        await openAppSettings();
         return;
       }
     }
 
-    log('Storage permission granted');
+    if (Platform.isAndroid && await Permission.manageExternalStorage.isDenied) {
+      log('Meminta izin pengelolaan penyimpanan...');
+      var manageStatus = await Permission.manageExternalStorage.request();
+      if (!manageStatus.isGranted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+                  'Izin pengelolaan penyimpanan ditolak! Silakan aktifkan izin di Pengaturan.')),
+        );
+        await openAppSettings();
+        return;
+      }
+    }
+
+    // Proses download bisa dilakukan di sini
+    log('Izin diberikan, mulai download PDF...');
 
     final pdf = pw.Document();
     pdf.addPage(
@@ -77,9 +88,9 @@ class _DetailPageState extends State<DetailPage> {
                   style: pw.TextStyle(
                       fontSize: 18, fontWeight: pw.FontWeight.bold)),
               pw.Divider(),
-              _buildPdfText('Toko', widget.item.toko),
+              _buildPdfText('Store', widget.item.toko),
               _buildPdfText('MD', widget.item.md),
-              _buildPdfText('Tanggal', widget.item.tanggal),
+              _buildPdfText('Date', widget.item.tanggal),
               _buildPdfText('Net', widget.item.net),
               _buildPdfText('Target', widget.item.target),
             ],
@@ -114,6 +125,25 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
+  Future<void> requestStoragePermission() async {
+    // Cek apakah izin sudah diberikan
+    if (await Permission.storage.isGranted &&
+        await Permission.manageExternalStorage.isGranted) {
+      print("Izin storage sudah diberikan");
+      return;
+    }
+
+    // Jika belum, baru minta izin
+    var status = await Permission.storage.request();
+    var manageStatus = await Permission.manageExternalStorage.request();
+
+    if (status.isGranted && manageStatus.isGranted) {
+      print("Izin storage diberikan");
+    } else {
+      print("Izin storage ditolak");
+    }
+  }
+
   pw.Widget _buildPdfText(String label, String? value) {
     return pw.Padding(
       padding: pw.EdgeInsets.symmetric(vertical: 4),
@@ -129,6 +159,7 @@ class _DetailPageState extends State<DetailPage> {
     popUpWidget = PopUpWidget(context);
     loginCubit = context.read<LoginCubit>();
     log("message apa ${widget.selectedDateRange}");
+    requestStoragePermission();
 
     // _debounceTimer?.cancel();
     // refreshPage();
@@ -173,14 +204,14 @@ class _DetailPageState extends State<DetailPage> {
                       children: [
                         Expanded(
                             child: _buildDetailItem(
-                                Icons.store, 'Toko', widget.item.toko)),
+                                Icons.store, 'Store', widget.item.toko)),
                         Expanded(
                           child: _buildDetailItem(
                             Icons.date_range,
-                            'Tanggal',
+                            'Date',
                             widget.selectedDateRange != null
                                 ? '${DateFormat('dd-MM-yyyy').format(widget.selectedDateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(widget.selectedDateRange!.end)}'
-                                : 'Pilih Tanggal',
+                                : 'Select Date',
                           ),
                         ),
                       ],
@@ -302,7 +333,7 @@ class _DetailPageState extends State<DetailPage> {
                                 ...List.generate(state.response.length,
                                     (index) {
                                   final item = state.response[index];
-                            log("item $item");
+                                  log("item $item");
                                   return TableRow(
                                     children: [
                                       _tableCell('${item.toko ?? "-"}'),

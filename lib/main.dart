@@ -39,23 +39,27 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting("id_ID", null);
 
+  // Ambil info aplikasi
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   app_name = packageInfo.appName;
   String packageName = packageInfo.packageName;
   registerAppServices(packageName);
   versi = packageInfo.version;
   String buildNumber = packageInfo.buildNumber;
+
   await NotificationPermissions.requestNotificationPermissions;
   await NotificationPermissions.getNotificationPermissionStatus();
-  await Permission.notification.isDenied.then((value) {
-    if (value) {
-      Permission.notification.request();
-    }
-  });
+
+  if (await Permission.notification.isDenied) {
+    await Permission.notification.request();
+  }
+  // Inisialisasi Firebase
   await Firebase.initializeApp();
   await FirebaseApiNew().initNotification();
-  
-  initPlatformState();
+
+  // Inisialisasi platform
+  await initPlatformState(); // Pastikan fungsi ini ada
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   UserData userData = UserData();
@@ -64,28 +68,43 @@ void main() async {
   var waktuLoginOffline = prefs.getString("waktuLoginOffline");
   final lastLogin = await SharedPref.getLastLogin();
   final deviceId = await SharedPref.getToken();
-  DateTime dateTime = DateTime.parse(lastLogin ?? '${formattedDate}');
-  final sevenDays = DateFormat('yyyy-MM-dd').format(dateTime.add(const Duration(days: 7)));
 
-  if (formattedDate == sevenDays || DateTime.now().isAfter(dateTime.add(const Duration(days: 7)))) {
-    await SharedPref.clearLastLogin();
-    await SharedPref.clearUserId();
+  // Cek tanggal terakhir login
+  if (lastLogin != null) {
+    DateTime dateTime = DateTime.parse(lastLogin);
+    final sevenDays = dateTime.add(const Duration(days: 7));
+    if (DateTime.now().isAfter(sevenDays)) {
+      await SharedPref.clearLastLogin();
+      await SharedPref.clearUserId();
+    }
   }
+
+  // Inisialisasi layanan notifikasi
   await NotificationService.initializeNotification();
+
   final appCubit = AppCubit();
+
+  // Atur orientasi layar
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]).then((value) => runApp(
-    // lastLogin == formattedDate ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
-    lastLogin != null ? appCubit.initCubit(HomeMainApp()) : appCubit.initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline))));
+  ]).then((_) {
+    runApp(
+      lastLogin != null
+          ? appCubit.initCubit(HomeMainApp())
+          : appCubit
+              .initCubit(SplashHomeMainApp(loginOffline: waktuLoginOffline)),
+    );
+  });
 }
 
 Future<void> registerAppServices(String packageName) async {
   final appUtil = AppUtils();
   appUtil.initNetwork();
   final appServices = AppServices(GetIt.I.get<Dio>());
-  final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_prod}' : '${basePath.base_url_prod}';
+  final url = packageName == baseParam.packageNameProd
+      ? '${basePath.base_url_prod}'
+      : '${basePath.base_url_prod}';
   await appServices.registerAppServices(url);
   // final url = packageName == baseParam.packageNameProd ? '${basePath.base_url_prod}' : '${basePath.base_url_dev}';
 }
@@ -101,6 +120,7 @@ Future<void> initPlatformState() async {
   }
   SharedPref.setDeviceName('${info.brand}');
 }
+
 class HomeMainApp extends StatelessWidget {
   const HomeMainApp({super.key});
   @override
@@ -118,7 +138,10 @@ class HomeMainApp extends StatelessWidget {
         ],
       ),
       navigatorKey: navigatorKey,
-      routes: {RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()), RamayanaLogin.route: ((context) => const RamayanaLogin())},
+      routes: {
+        RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()),
+        RamayanaLogin.route: ((context) => const RamayanaLogin())
+      },
       title: '${app_name}',
       debugShowCheckedModeBanner: false,
       home: Ramayana(),
@@ -134,21 +157,26 @@ class SplashHomeMainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     return MaterialApp(
-      builder: (context, child) => ResponsiveWrapper.builder(
-        child,
-        maxWidth: 1200,
-        minWidth: 480,
-        defaultScale: true,
-        breakpoints: [
-          ResponsiveBreakpoint.autoScale(600, name: PHONE),
-          ResponsiveBreakpoint.autoScale(800, name: TABLET),
-          ResponsiveBreakpoint.autoScale(1200, name: DESKTOP),
-        ],
-      ),
-      navigatorKey: navigatorKey,
-      title: '${app_name}',
-      debugShowCheckedModeBanner: false,
-      routes: {RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()), RamayanaLogin.route: ((context) => const RamayanaLogin())},
-      home: loginOffline == formattedDate ? RamayanaVoid(isOffline: true) : SplashScreenRamayana());
+        builder: (context, child) => ResponsiveWrapper.builder(
+              child,
+              maxWidth: 1200,
+              minWidth: 480,
+              defaultScale: true,
+              breakpoints: [
+                ResponsiveBreakpoint.autoScale(600, name: PHONE),
+                ResponsiveBreakpoint.autoScale(800, name: TABLET),
+                ResponsiveBreakpoint.autoScale(1200, name: DESKTOP),
+              ],
+            ),
+        navigatorKey: navigatorKey,
+        title: '${app_name}',
+        debugShowCheckedModeBanner: false,
+        routes: {
+          RamayanaMyListTask.route: ((context) => const RamayanaMyListTask()),
+          RamayanaLogin.route: ((context) => const RamayanaLogin())
+        },
+        home: loginOffline == formattedDate
+            ? RamayanaVoid(isOffline: true)
+            : SplashScreenRamayana());
   }
 }

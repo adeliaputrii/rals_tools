@@ -205,7 +205,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
       ),
       width: 350,
-      backgroundType: BackgroundType.lighter,
+      barrierColor: Colors.white70,
       height: 100,
       description: const Text(
         '${baseParam.pleaseCheck}',
@@ -225,7 +225,7 @@ class _RamayanaLogin extends State<RamayanaLogin> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
       ),
       width: 350,
-      backgroundType: BackgroundType.lighter,
+      barrierColor: Colors.white70,
       height: 100,
       description: const Text(
         '${baseParam.pleaseCheck}',
