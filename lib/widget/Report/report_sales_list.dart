@@ -282,8 +282,7 @@ class _ReportSalesListState extends State<ReportSalesList>
 
   Widget _buildTabBar() {
     return Container(
-      height: 80,
-      decoration: BoxDecoration(color: baseColors.primaryColor),
+height: 80,      decoration: BoxDecoration(color: baseColors.primaryColor),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -354,91 +353,88 @@ class _ReportSalesListState extends State<ReportSalesList>
   }
 
   Widget _buildTab1Content() {
-    return Container(
-      margin: EdgeInsets.only(top: 30),
-      child: BlocBuilder<ReportCubit, ReportState>(
-        builder: (context, state) {
-          if (state is ReportInitial) {
+    return BlocBuilder<ReportCubit, ReportState>(
+      builder: (context, state) {
+        if (state is ReportInitial) {
+          return loading();
+        }
+        if (state is ReportLoading) {
+          if (listDataPaging.isEmpty) {
             return loading();
+          } else {
+            return searchEmpty();
           }
-          if (state is ReportLoading) {
-            if (listDataPaging.isEmpty) {
-              return loading();
-            } else {
+        }
+
+        if (state is ReportPaginationSuccess) {
+          String? url = state.response.nextPageUrl;
+
+          if (url != null) {
+            Uri uri = Uri.parse(url);
+            Map<String, dynamic> queryParams = uri.queryParameters;
+            String cursorValue = queryParams['cursor'];
+            nextUrlCursor = cursorValue;
+          } else {
+            nextUrlCursor = null;
+            isLoaded = true;
+          }
+          if (state.response.data?.isNotEmpty ?? false) {
+            state.response.data?.forEach((element) {
+              bool headerExists = listDataPaging.any((existingElement) =>
+                  existingElement.header1 == element.header1);
+              if (!headerExists) {
+                listDataPaging.add(element);
+              }
+            });
+            if (listDataPaging.isNotEmpty) {
+              debugPrint('data length ${listDataPaging.length}');
               return searchEmpty();
-            }
-          }
-
-          if (state is ReportPaginationSuccess) {
-            String? url = state.response.nextPageUrl;
-
-            if (url != null) {
-              Uri uri = Uri.parse(url);
-              Map<String, dynamic> queryParams = uri.queryParameters;
-              String cursorValue = queryParams['cursor'];
-              nextUrlCursor = cursorValue;
             } else {
-              nextUrlCursor = null;
-              isLoaded = true;
-            }
-            if (state.response.data?.isNotEmpty ?? false) {
-              state.response.data?.forEach((element) {
-                bool headerExists = listDataPaging.any((existingElement) =>
-                    existingElement.header1 == element.header1);
-                if (!headerExists) {
-                  listDataPaging.add(element);
-                }
-              });
-              if (listDataPaging.isNotEmpty) {
-                debugPrint('data length ${listDataPaging.length}');
-                return searchEmpty();
-              } else {
-                return Center(
-                    child: AppWidget()
-                        .EmptyHandler(baseParam.emptyDataReportMessage));
-              }
+              return Center(
+                  child: AppWidget()
+                      .EmptyHandler(baseParam.emptyDataReportMessage));
             }
           }
+        }
 
-          if (state is ReportInsertViewerSuccess) {
-            listDataPaging.clear();
-            String? url = state.response.nextPageUrl;
-            if (url != null) {
-              isLoaded = false;
-              Uri uri = Uri.parse(url);
-              Map<String, dynamic> queryParams = uri.queryParameters;
-              String cursorValue = queryParams['cursor'];
-              nextUrlCursor = cursorValue;
+        if (state is ReportInsertViewerSuccess) {
+          listDataPaging.clear();
+          String? url = state.response.nextPageUrl;
+          if (url != null) {
+            isLoaded = false;
+            Uri uri = Uri.parse(url);
+            Map<String, dynamic> queryParams = uri.queryParameters;
+            String cursorValue = queryParams['cursor'];
+            nextUrlCursor = cursorValue;
+          } else {
+            nextUrlCursor = null;
+            isLoaded = true;
+          }
+          if (state.response.data?.isNotEmpty ?? false) {
+            state.response.data?.forEach((element) {
+              bool headerExists = listDataPaging.any((existingElement) =>
+                  existingElement.header1 == element.header1);
+              if (!headerExists) {
+                listDataPaging.add(element);
+              }
+            });
+            if (listDataPaging.isNotEmpty) {
+              return searchEmpty();
             } else {
-              nextUrlCursor = null;
-              isLoaded = true;
-            }
-            if (state.response.data?.isNotEmpty ?? false) {
-              state.response.data?.forEach((element) {
-                bool headerExists = listDataPaging.any((existingElement) =>
-                    existingElement.header1 == element.header1);
-                if (!headerExists) {
-                  listDataPaging.add(element);
-                }
-              });
-              if (listDataPaging.isNotEmpty) {
-                return searchEmpty();
-              } else {
-                return Center(
-                    child: AppWidget()
-                        .EmptyHandler(baseParam.emptyDataReportMessage));
-              }
+              return Center(
+                  child: AppWidget()
+                      .EmptyHandler(baseParam.emptyDataReportMessage));
             }
           }
+        }
 
-          if (state is ReportFailure) {
-            return AppWidget()
-                .ErrorHandler(baseParam.errorReportMessage, getListReport);
-          }
+        if (state is ReportFailure) {
+          return AppWidget()
+              .ErrorHandler(baseParam.errorReportMessage, getListReport);
+        }
 
-          return searchEmpty();
-        },
-      ),
+        return searchEmpty();
+      },
     );
   }
 
@@ -572,6 +568,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                     ? reportResponse.first.namaReport
                     : "Laporan Tidak Tersedia";
 
+                    
                 final String reportPriode = reportResponse.isNotEmpty
                     ? reportResponse.first.periode.toString()
                     : "Laporan Priode";
@@ -582,11 +579,6 @@ class _ReportSalesListState extends State<ReportSalesList>
                 } else {
                   print(
                       "valueReport memiliki data, jumlah: ${valueReport.length}");
-                }
-                print("Jumlah Kolom: ${_buildColumns(valueReport).length}");
-                for (var data in valueReport) {
-                  print("Data: ${data.toJson()}");
-                  print("Jumlah Cell di Row: ${_buildRow(data).cells.length}");
                 }
 
                 return Column(
@@ -646,14 +638,11 @@ class _ReportSalesListState extends State<ReportSalesList>
                         ],
                       ),
                     ),
-
-                    // 🔹 Periode Report dengan Google Fonts
                     Padding(
                       padding: EdgeInsets.only(left: 10),
                       child: Text(
                         "Peridoe $reportPriode",
                         style: GoogleFonts.openSans(
-                          // Font Open Sans
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                           color: Colors.blueAccent,
@@ -661,7 +650,6 @@ class _ReportSalesListState extends State<ReportSalesList>
                       ),
                     ),
                     const Divider(thickness: 2),
-                    // Gunakan Expanded agar tabel bisa menyesuaikan layar
                     Expanded(
                       child: SingleChildScrollView(
                         child: ConstrainedBox(
@@ -678,20 +666,9 @@ class _ReportSalesListState extends State<ReportSalesList>
                             dataRowMinHeight: 10,
                             headingRowColor: MaterialStateColor.resolveWith(
                                 (states) => Colors.red[100]!),
-                            columns: _buildColumns(valueReport).where((column) {
-                              String label =
-                                  (column.label as Text).data?.toLowerCase() ??
-                                      "";
-                              return label != "periode" && label != "line";
-                            }).toList(),
+                            columns: _buildColumns(valueReport),
                             rows: valueReport
-                                .where((data) {
-                                  int? lineNumber =
-                                      int.tryParse(data.line.toString());
-                                  return lineNumber == null ||
-                                      lineNumber < 1 ||
-                                      lineNumber > 40;
-                                })
+                                .where((data) => data.line != "1")
                                 .map((data) => _buildRow(data))
                                 .toList(),
                           ),
@@ -707,435 +684,6 @@ class _ReportSalesListState extends State<ReportSalesList>
         ),
       ],
     );
-
-    // Container(
-    //   margin: EdgeInsets.only(bottom: 10, top: 1),
-    //   color: baseColors.primaryColor,
-    //   width: 500,
-    //   height: 100,
-    //   child: Center(
-    //     child: Container(
-    //       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-    //       decoration: BoxDecoration(
-    //         color: Colors.white,
-    //         borderRadius: BorderRadius.circular(12),
-    //         border: Border.all(color: Colors.grey.shade300, width: 2),
-    //       ),
-    //       child: DropdownButton<String>(
-    //         value: selectedValue,
-    //         icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-    //         dropdownColor: Colors.white,
-    //         style: GoogleFonts.plusJakartaSans(
-    //           fontSize: 15,
-    //           fontWeight: FontWeight.bold,
-    //           color: Colors.black,
-    //         ),
-    //         onChanged: (String? newValue) {
-    //           setState(() {
-    //             selectedValue = newValue!;
-    //           });
-
-    //           if (newValue == 'Report Dynamic') {
-    //             Navigator.push(
-    //               context,
-    //               MaterialPageRoute(builder: (context) {
-    //                 return MemberReport();
-    //               }),
-    //             );
-    //           }
-    //         },
-    //         items: ['Select Report', 'Report Dynamic']
-    //             .map<DropdownMenuItem<String>>((String value) {
-    //           return DropdownMenuItem<String>(
-    //             value: value,
-    //             child: Text(value),
-    //           );
-    //         }).toList(),
-    //       ),
-    //     ),
-    //   ),
-    // ),
-    // Padding(
-    //   padding: const EdgeInsets.all(10),
-    //   child: Center(
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.start,
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-
-    //         BlocBuilder<ReportCubit, ReportState>(
-    //           builder: (context, state) {
-    //             if (state is ReportInitial) {
-    //               return loadingSales();
-    //             }
-
-    //             if (state is getStoreSuccess) {
-    //               final storeData = state.data;
-
-    //               return Container(
-    //                 padding: EdgeInsets.only(right: 40, left: 40),
-    //                 child: DropdownSearch<String>(
-    //                   popupProps: PopupProps.menu(
-    //                     showSearchBox: true,
-    //                     searchFieldProps: TextFieldProps(
-    //                       decoration: InputDecoration(
-    //                         hintText: "Cari Store...",
-    //                         border: OutlineInputBorder(),
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   items: storeData
-    //                       .map((store) => store.storeCode ?? "")
-    //                       .toList(),
-    //                   dropdownDecoratorProps: DropDownDecoratorProps(
-    //                     dropdownSearchDecoration: InputDecoration(
-    //                       labelText: 'Select Store',
-    //                       border: OutlineInputBorder(
-    //                         borderRadius: BorderRadius.circular(10.0),
-    //                         borderSide: BorderSide(
-    //                           color: Colors.grey,
-    //                           width: 0.5,
-    //                         ),
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   selectedItem:
-    //                       selectedStore.isNotEmpty ? selectedStore : toko,
-    //                   onChanged: (String? newValue) {
-    //                     setState(() {
-    //                       selectedStore = newValue!;
-    //                     });
-    //                   },
-    //                 ),
-    //               );
-    //             }
-
-    //             return SizedBox.shrink();
-    //           },
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // ),
-    // SizedBox(height: 10),
-    // Center(
-    //   child: Column(
-    //     mainAxisSize: MainAxisSize.min,
-    //     children: [
-    //       ElevatedButton(
-    //         style: ElevatedButton.styleFrom(
-    //           backgroundColor: baseColors.primaryColor,
-    //         ),
-    //         onPressed: () async {
-    //           final pickedRange = await showDateRangePicker(
-    //             context: context,
-    //             firstDate: DateTime(2000),
-    //             lastDate: DateTime(2100),
-    //             builder: (context, child) {
-    //               return Theme(
-    //                 data: Theme.of(context).copyWith(
-    //                   colorScheme: ColorScheme.light(
-    //                     primary: baseColors.primaryColor,
-    //                   ),
-    //                 ),
-    //                 child: child!,
-    //               );
-    //             },
-    //           );
-
-    //           if (pickedRange != null) {
-    //             setState(() {
-    //               selectedDateRange = pickedRange;
-    //             });
-    //           }
-    //         },
-    //         child: Text(
-    //           selectedDateRange != null
-    //               ? '${DateFormat('dd-MM-yyyy').format(selectedDateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(selectedDateRange!.end)}'
-    //               : 'Select Date Range',
-    //           style: GoogleFonts.plusJakartaSans(color: Colors.white),
-    //         ),
-    //       ),
-    //       SizedBox(height: 10),
-    //       ElevatedButton(
-    //         style: ElevatedButton.styleFrom(
-    //           backgroundColor: baseColors.primaryColor,
-    //         ),
-    //         onPressed: () async {
-
-    //           if (selectedDateRange != null) {
-    //             final reportBody = ReportSalesBody(
-    //               startDate: DateFormat('yyyy-MM-dd')
-    //                   .format(selectedDateRange!.start),
-    //               endDate: DateFormat('yyyy-MM-dd')
-    //                   .format(selectedDateRange!.end),
-    //               storeCode: selectedStore.isEmpty
-    //                   ? toko.toString()
-    //                   : selectedStore,
-    //             );
-    //             reportCubit.getSalesReport(token ?? '', reportBody);
-    //           } else {
-    //             popUpWidget
-    //                 .showToastMessage('Please select date range first');
-    //           }
-    //         },
-    //         child: Text(
-    //           'Generate Report',
-    //           style: GoogleFonts.plusJakartaSans(color: Colors.white),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // ),
-    // SizedBox(height: 24),
-    // BlocBuilder<ReportCubit, ReportState>(
-    //   builder: (context, state) {
-    //     if (state is ReportInitial) {
-    //       return loadingSales();
-    //     }
-
-    //     if (state is ReportLoading) {
-    //       if (listDataPaging.isEmpty) {
-    //         return Center(
-    //           child: Text(
-    //             "Tidak ada data untuk ditampilkan.",
-    //             style: GoogleFonts.plusJakartaSans(
-    //               fontSize: 16,
-    //               fontWeight: FontWeight.bold,
-    //               color: Colors.grey,
-    //             ),
-    //           ),
-    //         );
-    //       } else {
-    //         return loadingSales();
-    //       }
-    //     }
-
-    //     if (state is ReportSalesSuccess) {
-    //       final filteredList = state.response;
-    //       if (filteredList.isEmpty) {
-    //         return Center(
-    //           child: Text(
-    //             "Data tidak ditemukan.",
-    //             style: GoogleFonts.plusJakartaSans(
-    //               fontSize: 16,
-    //               fontWeight: FontWeight.bold,
-    //               color: Colors.grey,
-    //             ),
-    //           ),
-    //         );
-    //       }
-    //       Map<String, Map<String, double>> groupedData = {};
-
-    //       for (var item in filteredList) {
-    //         String dateKey = item.tanggal.toString();
-
-    //         double netValue =
-    //             double.tryParse(item.net?.toString() ?? "0.0") ?? 0.0;
-    //         double grossValue =
-    //             double.tryParse(item.gross?.toString() ?? "0.0") ?? 0.0;
-    //         double qtyValue =
-    //             double.tryParse(item.qty?.toString() ?? "0.0") ?? 0.0;
-    //         double targetValue =
-    //             double.tryParse(item.target?.toString() ?? "0.0") ?? 0.0;
-    //         double discountValue =
-    //             double.tryParse(item.discount?.toString() ?? "0.0") ?? 0.0;
-
-    //         groupedData.putIfAbsent(
-    //             dateKey,
-    //             () => {
-    //                   "net": 0.0,
-    //                   "gross": 0.0,
-    //                   "qty": 0.0,
-    //                   "target": 0.0,
-    //                   "discount": 0.0,
-    //                 });
-
-    //         groupedData[dateKey]!["net"] =
-    //             groupedData[dateKey]!["net"]! + netValue;
-    //         groupedData[dateKey]!["gross"] =
-    //             groupedData[dateKey]!["gross"]! + grossValue;
-    //         groupedData[dateKey]!["qty"] =
-    //             groupedData[dateKey]!["qty"]! + qtyValue;
-    //         groupedData[dateKey]!["target"] =
-    //             groupedData[dateKey]!["target"]! + targetValue;
-    //         groupedData[dateKey]!["discount"] =
-    //             groupedData[dateKey]!["discount"]! + discountValue;
-    //       }
-
-    //       double calculateTotal(List<SalesData> list, String key) {
-    //         return list.fold(0.0, (sum, item) {
-    //           switch (key) {
-    //             case "net":
-    //               return sum +
-    //                   (double.tryParse(item.net?.toString() ?? "0.0") ??
-    //                       0.0);
-    //             case "gross":
-    //               return sum +
-    //                   (double.tryParse(item.gross?.toString() ?? "0.0") ??
-    //                       0.0);
-    //             case "qty":
-    //               return sum +
-    //                   (double.tryParse(item.qty?.toString() ?? "0.0") ??
-    //                       0.0);
-    //             case "target":
-    //               return sum +
-    //                   (double.tryParse(item.target?.toString() ?? "0.0") ??
-    //                       0.0);
-    //             case "discount":
-    //               return sum +
-    //                   (double.tryParse(
-    //                           item.discount?.toString() ?? "0.0") ??
-    //                       0.0);
-    //             default:
-    //               return sum;
-    //           }
-    //         });
-    //       }
-
-    //       double totalNet = calculateTotal(filteredList, "net");
-    //       double totalGross = calculateTotal(filteredList, "gross");
-    //       double totalQty = calculateTotal(filteredList, "qty");
-    //       double totalTarget = calculateTotal(filteredList, "target");
-    //       double totalDiscount = calculateTotal(filteredList, "discount");
-
-    //       final item = filteredList.isNotEmpty ? filteredList[0] : null;
-
-    //       return Expanded(
-    //         child: Column(
-    //           children: [
-    //             Expanded(
-    //               child: SingleChildScrollView(
-    //                 child: Column(
-    //                   children: [
-    //                     InkWell(
-    //                       onTap: () {
-    //                         Navigator.push(
-    //                           context,
-    //                           MaterialPageRoute(
-    //                             builder: (context) => DetailPage(
-    //                               item: item!,
-    //                               totalGross: totalGross,
-    //                               totalNet: totalNet,
-    //                               totalDiscount: totalDiscount,
-    //                               totalQty: totalQty,
-    //                               totalTarget: totalTarget,
-    //                               selectedDateRange: selectedDateRange!,
-    //                             ),
-    //                           ),
-    //                         );
-    //                       },
-    //                       child: Container(
-    //                         margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-    //                         decoration: BoxDecoration(
-    //                           color: baseColor.cardReportColor,
-    //                           boxShadow: [
-    //                             BoxShadow(
-    //                               offset: Offset(2, 3),
-    //                               color: Colors.grey,
-    //                               blurRadius: 3,
-    //                             ),
-    //                           ],
-    //                           borderRadius: BorderRadius.circular(20),
-    //                         ),
-    //                         height: MediaQuery.of(context).size.height / 10,
-    //                         child: Padding(
-    //                           padding: const EdgeInsets.all(8.0),
-    //                           child: Row(
-    //                             children: [
-    //                               Container(
-    //                                 decoration: BoxDecoration(
-    //                                   color: baseColor.cardImageBackground,
-    //                                   borderRadius:
-    //                                       BorderRadius.circular(10),
-    //                                 ),
-    //                                 child: Image(
-    //                                   width: 40,
-    //                                   height: 40,
-    //                                   image: AssetImage(
-    //                                       baseAsset.icReportList),
-    //                                 ),
-    //                               ),
-    //                               SizedBox(width: 10),
-    //                               Expanded(
-    //                                 child: Column(
-    //                                   mainAxisAlignment:
-    //                                       MainAxisAlignment.spaceEvenly,
-    //                                   crossAxisAlignment:
-    //                                       CrossAxisAlignment.start,
-    //                                   children: [
-    //                                     Row(
-    //                                       children: [
-    //                                         Text(
-    //                                           'Gross : ${formatAmount(totalGross)}',
-    //                                           style: GoogleFonts
-    //                                               .plusJakartaSans(
-    //                                             fontSize: 15,
-    //                                             fontWeight: FontWeight.w900,
-    //                                             color:
-    //                                                 baseColor.grayPrimary,
-    //                                             wordSpacing: 2,
-    //                                           ),
-    //                                           maxLines: 1,
-    //                                           overflow:
-    //                                               TextOverflow.ellipsis,
-    //                                         ),
-
-    //                                         // Padding(
-    //                                         //   padding: const EdgeInsets.only(left: 50),
-    //                                         //   child: Text(
-    //                                         //     selectedDateRange != null
-    //                                         //         ? '${DateFormat('dd-MM-yyyy').format(selectedDateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(selectedDateRange!.end)}'
-    //                                         //         : 'Pilih Tanggal',
-    //                                         //     style: GoogleFonts
-    //                                         //         .plusJakartaSans(
-    //                                         //       fontSize: 7,
-    //                                         //       fontWeight: FontWeight.w600,
-
-    //                                         //     ),
-    //                                         //     maxLines: 1,
-    //                                         //     overflow:
-    //                                         //         TextOverflow.ellipsis,
-    //                                         //   ),
-    //                                         // ),
-    //                                       ],
-    //                                     ),
-    //                                     Padding(
-    //                                       padding: const EdgeInsets.only(
-    //                                           left: 5),
-    //                                       child: Text(
-    //                                         'Net     :  ${formatAmount(totalNet)}',
-    //                                         style:
-    //                                             GoogleFonts.plusJakartaSans(
-    //                                           fontSize: 15,
-    //                                           fontWeight: FontWeight.w900,
-    //                                           color: baseColor.grayPrimary,
-    //                                           wordSpacing: 2,
-    //                                         ),
-    //                                         maxLines: 1,
-    //                                         overflow: TextOverflow.ellipsis,
-    //                                       ),
-    //                                     ),
-    //                                   ],
-    //                                 ),
-    //                               ),
-    //                             ],
-    //                           ),
-    //                         ),
-    //                       ),
-    //                     )
-    //                   ],
-    //                 ),
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       );
-    //     }
-
-    //     return Container();
-    //   },
-    // ),
   }
 
   List<DataColumn> _buildColumns(List<ReportData> reports) {
@@ -1144,10 +692,7 @@ class _ReportSalesListState extends State<ReportSalesList>
     var firstData = reports.first;
     int jumlahKolom = int.tryParse(firstData.jumlahKolom) ?? 0;
 
-    List<DataColumn> columns = [
-      DataColumn(label: Text("Periode", style: _headerStyle())),
-      DataColumn(label: Text("Line", style: _headerStyle())),
-    ];
+    List<DataColumn> columns = [];
 
     for (int i = 1; i <= jumlahKolom; i++) {
       String? columnName = firstData.toJson()["c$i"];
@@ -1175,52 +720,44 @@ class _ReportSalesListState extends State<ReportSalesList>
       }
     }
 
-    List<DataCell> cells = [];
-
-    // Kolom Periode
-    cells.add(DataCell(Text(
-      data.c1 ?? "-",
-      style: TextStyle(
-        fontSize: 12,
-        fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
-        backgroundColor: isTotalRow
-            ? Colors.blueAccent.withOpacity(0.3)
-            : Colors.transparent,
-      ),
-    )));
-
-    // Kolom Line
-    cells.add(DataCell(Text(
-      data.c2 ?? "-",
-      style: TextStyle(
-        fontSize: 12,
-        fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
-        backgroundColor: isTotalRow
-            ? Colors.blueAccent.withOpacity(0.3)
-            : Colors.transparent,
-      ),
-    )));
-
-    // Kolom C3 hingga Cn
-    for (int i = 3; i <= jumlahKolom; i++) {
-      String columnKey = "c$i";
-      String? columnValue = jsonData.containsKey(columnKey)
-          ? jsonData[columnKey] as String?
-          : null;
-
-      cells.add(DataCell(Text(
-        formatNumber(columnValue),
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
-          backgroundColor: isTotalRow
-              ? Colors.blueAccent.withOpacity(0.3)
-              : Colors.transparent,
+    return DataRow(
+      cells: [
+        // Kolom C1
+        DataCell(
+          Text(
+            data.c1 ?? "",
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
+              backgroundColor: isTotalRow
+                  ? Colors.blueAccent.withOpacity(0.3)
+                  : Colors.transparent,
+            ),
+          ),
         ),
-      )));
-    }
 
-    return DataRow(cells: cells);
+        // Kolom C2 hingga Cn
+        ...List.generate(jumlahKolom - 1, (index) {
+          String columnKey = "c${index + 2}";
+          String? columnValue = jsonData.containsKey(columnKey)
+              ? jsonData[columnKey] as String?
+              : null;
+
+          return DataCell(
+            Text(
+              formatNumber(columnValue),
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
+                backgroundColor: isTotalRow
+                    ? Colors.blueAccent.withOpacity(0.3)
+                    : Colors.transparent,
+              ),
+            ),
+          );
+        }),
+      ],
+    );
   }
 
   String extractNumbers(String? value) {
