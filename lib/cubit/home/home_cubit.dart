@@ -35,7 +35,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   void getNewsList(String token) async {
     emit(HomeLoading());
-    await repositories.getNewsList(token).then((value) {
+      await repositories.getNewsList(token).then((value) {
       if (value != null) {
         if (value.isSuccess && value.dataResponse is NewsListResponse) {
           final res = value.dataResponse as NewsListResponse;

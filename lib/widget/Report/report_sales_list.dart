@@ -254,7 +254,7 @@ class _ReportSalesListState extends State<ReportSalesList>
           ),
           toolbarHeight: 75,
           centerTitle: true,
-          title: Text('Report',
+          title: Text('',
               style: GoogleFonts.plusJakartaSans(
                   fontSize: 23, color: Colors.white)),
           backgroundColor: baseColors.primaryColor,
@@ -282,6 +282,7 @@ class _ReportSalesListState extends State<ReportSalesList>
 
   Widget _buildTabBar() {
     return Container(
+      height: 80,
       decoration: BoxDecoration(color: baseColors.primaryColor),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -308,6 +309,7 @@ class _ReportSalesListState extends State<ReportSalesList>
             ),
           ),
           SizedBox(width: 8),
+
           Container(
             width: 120,
             height: 40,
@@ -318,14 +320,11 @@ class _ReportSalesListState extends State<ReportSalesList>
             child: TextButton(
               onPressed: () async {
                 final listAccess = await SharedPref.getUserAccess() ?? '';
-                if (listAccess.contains(baseParam.reportCek)) {
-                  setState(() {
-                    initReportDyanmic();
-                    isTab1Selected = false;
-                  });
-                } else {
-                  showRestrictMessenger(context);
-                }
+
+                setState(() {
+                  initReportDyanmic();
+                  isTab1Selected = false;
+                });
               },
               child: Text(
                 'Report ',
@@ -335,6 +334,7 @@ class _ReportSalesListState extends State<ReportSalesList>
               ),
             ),
           ),
+          
         ],
       ),
     );
@@ -356,88 +356,90 @@ class _ReportSalesListState extends State<ReportSalesList>
   }
 
   Widget _buildTab1Content() {
-    return BlocBuilder<ReportCubit, ReportState>(
-      builder: (context, state) {
-        if (state is ReportInitial) {
-          return loading();
-        }
-        if (state is ReportLoading) {
-          if (listDataPaging.isEmpty) {
+    return Container(margin: EdgeInsets.only(top: 30),
+      child: BlocBuilder<ReportCubit, ReportState>(
+        builder: (context, state) {
+          if (state is ReportInitial) {
             return loading();
-          } else {
-            return searchEmpty();
           }
-        }
-
-        if (state is ReportPaginationSuccess) {
-          String? url = state.response.nextPageUrl;
-
-          if (url != null) {
-            Uri uri = Uri.parse(url);
-            Map<String, dynamic> queryParams = uri.queryParameters;
-            String cursorValue = queryParams['cursor'];
-            nextUrlCursor = cursorValue;
-          } else {
-            nextUrlCursor = null;
-            isLoaded = true;
-          }
-          if (state.response.data?.isNotEmpty ?? false) {
-            state.response.data?.forEach((element) {
-              bool headerExists = listDataPaging.any((existingElement) =>
-                  existingElement.header1 == element.header1);
-              if (!headerExists) {
-                listDataPaging.add(element);
-              }
-            });
-            if (listDataPaging.isNotEmpty) {
-              debugPrint('data length ${listDataPaging.length}');
-              return searchEmpty();
+          if (state is ReportLoading) {
+            if (listDataPaging.isEmpty) {
+              return loading();
             } else {
-              return Center(
-                  child: AppWidget()
-                      .EmptyHandler(baseParam.emptyDataReportMessage));
+              return searchEmpty();
             }
           }
-        }
-
-        if (state is ReportInsertViewerSuccess) {
-          listDataPaging.clear();
-          String? url = state.response.nextPageUrl;
-          if (url != null) {
-            isLoaded = false;
-            Uri uri = Uri.parse(url);
-            Map<String, dynamic> queryParams = uri.queryParameters;
-            String cursorValue = queryParams['cursor'];
-            nextUrlCursor = cursorValue;
-          } else {
-            nextUrlCursor = null;
-            isLoaded = true;
-          }
-          if (state.response.data?.isNotEmpty ?? false) {
-            state.response.data?.forEach((element) {
-              bool headerExists = listDataPaging.any((existingElement) =>
-                  existingElement.header1 == element.header1);
-              if (!headerExists) {
-                listDataPaging.add(element);
-              }
-            });
-            if (listDataPaging.isNotEmpty) {
-              return searchEmpty();
+      
+          if (state is ReportPaginationSuccess) {
+            String? url = state.response.nextPageUrl;
+      
+            if (url != null) {
+              Uri uri = Uri.parse(url);
+              Map<String, dynamic> queryParams = uri.queryParameters;
+              String cursorValue = queryParams['cursor'];
+              nextUrlCursor = cursorValue;
             } else {
-              return Center(
-                  child: AppWidget()
-                      .EmptyHandler(baseParam.emptyDataReportMessage));
+              nextUrlCursor = null;
+              isLoaded = true;
+            }
+            if (state.response.data?.isNotEmpty ?? false) {
+              state.response.data?.forEach((element) {
+                bool headerExists = listDataPaging.any((existingElement) =>
+                    existingElement.header1 == element.header1);
+                if (!headerExists) {
+                  listDataPaging.add(element);
+                }
+              });
+              if (listDataPaging.isNotEmpty) {
+                debugPrint('data length ${listDataPaging.length}');
+                return searchEmpty();
+              } else {
+                return Center(
+                    child: AppWidget()
+                        .EmptyHandler(baseParam.emptyDataReportMessage));
+              }
             }
           }
-        }
-
-        if (state is ReportFailure) {
-          return AppWidget()
-              .ErrorHandler(baseParam.errorReportMessage, getListReport);
-        }
-
-        return searchEmpty();
-      },
+      
+          if (state is ReportInsertViewerSuccess) {
+            listDataPaging.clear();
+            String? url = state.response.nextPageUrl;
+            if (url != null) {
+              isLoaded = false;
+              Uri uri = Uri.parse(url);
+              Map<String, dynamic> queryParams = uri.queryParameters;
+              String cursorValue = queryParams['cursor'];
+              nextUrlCursor = cursorValue;
+            } else {
+              nextUrlCursor = null;
+              isLoaded = true;
+            }
+            if (state.response.data?.isNotEmpty ?? false) {
+              state.response.data?.forEach((element) {
+                bool headerExists = listDataPaging.any((existingElement) =>
+                    existingElement.header1 == element.header1);
+                if (!headerExists) {
+                  listDataPaging.add(element);
+                }
+              });
+              if (listDataPaging.isNotEmpty) {
+                return searchEmpty();
+              } else {
+                return Center(
+                    child: AppWidget()
+                        .EmptyHandler(baseParam.emptyDataReportMessage));
+              }
+            }
+          }
+      
+          if (state is ReportFailure) {
+            return AppWidget()
+                .ErrorHandler(baseParam.errorReportMessage, getListReport);
+          }
+      
+          return searchEmpty();
+        },
+      ),
     );
   }
 
@@ -445,8 +447,8 @@ class _ReportSalesListState extends State<ReportSalesList>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          padding: EdgeInsets.only(right: 30, left: 30, top: 20),
+        Container(margin: EdgeInsets.only(top: 50),
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           child: DropdownButtonFormField<String>(
             value:
                 reportList.any((report) => report.reportId == selectedReportId)
@@ -454,8 +456,34 @@ class _ReportSalesListState extends State<ReportSalesList>
                     : null,
             decoration: InputDecoration(
               labelText: "Selected Report",
-              border: OutlineInputBorder(),
+              labelStyle: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold, // 🔹 Label lebih tebal
+                color: Colors.blueAccent, // 🔹 Warna lebih menarik
+              ),
+              border: OutlineInputBorder(
+                borderRadius:
+                    BorderRadius.circular(12), // 🔹 Border lebih smooth
+                borderSide: BorderSide(
+                    color: Colors.blueAccent, width: 2), // 🔹 Border tebal
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                    color: Colors.blue,
+                    width: 3), // 🔹 Warna lebih mencolok saat fokus
+              ),
+              contentPadding: EdgeInsets.symmetric(
+                  horizontal: 16, vertical: 18), // 🔹 Padding lebih besar
             ),
+            dropdownColor: Colors.white,
+            icon: Icon(Icons.arrow_drop_down,
+                color: Colors.blueAccent, size: 28), // 🔹 Ikon lebih besar
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.black), // 🔹 Teks lebih tebal
+
             items: reportList
                 .fold<Map<String, ReportDynamic>>({}, (map, report) {
                   map[report.namaReport] = report;
@@ -464,9 +492,16 @@ class _ReportSalesListState extends State<ReportSalesList>
                 .values
                 .map((report) => DropdownMenuItem(
                       value: report.reportId,
-                      child: Text(report.namaReport),
+                      child: Text(
+                        report.namaReport,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight:
+                                FontWeight.bold), // 🔹 Teks pilihan lebih tebal
+                      ),
                     ))
                 .toList(),
+
             onChanged: (newValue) {
               setState(() {
                 selectedReportId = newValue;
@@ -537,6 +572,10 @@ class _ReportSalesListState extends State<ReportSalesList>
                     ? reportResponse.first.namaReport
                     : "Laporan Tidak Tersedia";
 
+                final String reportPriode = reportResponse.isNotEmpty
+                    ? reportResponse.first.periode.toString()
+                    : "Laporan Priode";
+
                 if (valueReport.isEmpty) {
                   print(
                       "valueReport kosong, tidak ada data untuk ditampilkan.");
@@ -544,81 +583,117 @@ class _ReportSalesListState extends State<ReportSalesList>
                   print(
                       "valueReport memiliki data, jumlah: ${valueReport.length}");
                 }
+                print("Jumlah Kolom: ${_buildColumns(valueReport).length}");
+                for (var data in valueReport) {
+                  print("Data: ${data.toJson()}");
+                  print("Jumlah Cell di Row: ${_buildRow(data).cells.length}");
+                }
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 20, left: 10),
-                          child: Text(
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
                             reportTitle,
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blueAccent),
+                            style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent,
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 20, right: 10),
-                          child: ElevatedButton.icon(
-                              icon: Icon(Icons.picture_as_pdf,
-                                  color: Colors.white),
-                              label: Text(
-                                "Download PDF",
-                                style: TextStyle(color: Colors.yellow),
+                      
+                          // 🔹 Tombol Download PDF
+                          ElevatedButton.icon(
+                            icon:
+                                Icon(Icons.picture_as_pdf, color: Colors.white),
+                            label: Text(
+                              "Download PDF",
+                              style: GoogleFonts.roboto(
+                                // Font Roboto
+                                color: Colors.yellow,
+                                fontWeight: FontWeight.bold,
                               ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: baseColor.primaryColor,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 8),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: baseColor.primaryColor,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                              onPressed: () {
-                                log(" pdf");
-                                if (selectedReportId != null) {
-                                  reportCubit.fetchAndSavePdf(
-                                      selectedReportId!, token.toString());
-                                       ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                            "Tunggu Sebentar")),
-                                  );
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                            "Pilih report terlebih dahulu")),
-                                  );
-                                }
-                              } // Fungsi untuk generate PDF
+                            ),
+                            onPressed: () {
+                              log("Download PDF");
+                              if (selectedReportId != null) {
+                                reportCubit.fetchAndSavePdf(
+                                    selectedReportId!, token.toString());
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Tunggu Sebentar...")),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          "Pilih report terlebih dahulu!")),
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
 
-                              ),
+                    // 🔹 Periode Report dengan Google Fonts
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(
+                        "Peridoe $reportPriode",
+                        style: GoogleFonts.openSans(
+                          // Font Open Sans
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueAccent,
                         ),
-                      ],
+                      ),
                     ),
                     const Divider(thickness: 2),
+                    // Gunakan Expanded agar tabel bisa menyesuaikan layar
                     Expanded(
-                      child: Card(
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8)),
-                        child: SingleChildScrollView(
-                          child: FittedBox(
-                            alignment: Alignment.topLeft,
-                            child: DataTable(
-                              columnSpacing: 10,
-                              border: TableBorder.all(
-                                  width: 1.5, color: Colors.grey),
-                              headingRowHeight: 35,
-                              dataRowMinHeight: 30,
-                              columns: _buildColumns(valueReport),
-                              rows: valueReport
-                                  .where((data) => data.line != "1")
-                                  .map((data) => _buildRow(data))
-                                  .toList(),
-                            ),
+                      child: SingleChildScrollView(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minWidth: MediaQuery.of(context)
+                                .size
+                                .width, // Sesuaikan lebar layar
+                          ),
+                          child: DataTable(
+                            columnSpacing: 15,
+                            border:
+                                TableBorder.all(width: 1.5, color: Colors.grey),
+                            headingRowHeight: 35,
+                            dataRowMinHeight: 10,
+                            headingRowColor: MaterialStateColor.resolveWith(
+                                (states) => Colors.red[100]!),
+                            columns: _buildColumns(valueReport).where((column) {
+                              String label =
+                                  (column.label as Text).data?.toLowerCase() ??
+                                      "";
+                              return label != "periode" && label != "line";
+                            }).toList(),
+                            rows: valueReport
+                                .where((data) {
+                                  int? lineNumber =
+                                      int.tryParse(data.line.toString());
+                                  return lineNumber == null ||
+                                      lineNumber < 1 ||
+                                      lineNumber > 40;
+                                })
+                                .map((data) => _buildRow(data))
+                                .toList(),
                           ),
                         ),
                       ),
@@ -1085,6 +1160,25 @@ class _ReportSalesListState extends State<ReportSalesList>
     return columns;
   }
 
+  DataRow _buildRowWithoutLine(ReportData data) {
+    return DataRow(cells: [
+      DataCell(Text(data.namaReport)),
+      DataCell(Text(data.dateCreate)),
+      DataCell(Text(data.c1.toString())),
+      DataCell(Text(data.c2.toString())),
+      DataCell(Text(data.c3.toString())),
+      DataCell(Text(data.c4.toString())),
+      DataCell(Text(data.c5.toString())),
+      DataCell(Text(data.c6.toString())),
+      DataCell(Text(data.c7.toString())),
+      DataCell(Text(data.c8.toString())),
+      DataCell(Text(data.c9.toString())),
+      DataCell(Text(data.c10.toString())),
+
+      // ✅ Jangan tambahkan `DataCell(Text(data.line))`
+    ]);
+  }
+
   DataRow _buildRow(ReportData data) {
     int jumlahKolom = int.tryParse(data.jumlahKolom) ?? 0;
     log("Jumlah Kolom: $jumlahKolom");
@@ -1102,57 +1196,51 @@ class _ReportSalesListState extends State<ReportSalesList>
       }
     }
 
-    return DataRow(
-      cells: [
-        DataCell(Text(data.reportId ?? "-",
-            style: TextStyle(
-                fontSize: 12,
-                fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal))),
-        DataCell(Text(data.periode ?? "-",
-            style: TextStyle(
-                fontSize: 12,
-                fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal))),
-        DataCell(Text(data.line ?? "-",
-            style: TextStyle(
-                fontSize: 12,
-                fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal))),
+    // List untuk menyimpan DataCell (tanpa periode & line)
+    List<DataCell> cells = [];
 
-        // Kolom C1
-        DataCell(
-          Text(
-            data.c1 ?? "",
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
-              backgroundColor: isTotalRow
-                  ? Colors.blueAccent.withOpacity(0.3)
-                  : Colors.transparent,
-            ),
+    // Tambahkan hanya reportId
+    cells.add(DataCell(Text(data.reportId ?? "-",
+        style: TextStyle(
+            fontSize: 12,
+            fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal))));
+
+    // Kolom C1
+    cells.add(DataCell(
+      Text(
+        data.c1 ?? "",
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
+          backgroundColor: isTotalRow
+              ? Colors.blueAccent.withOpacity(0.3)
+              : Colors.transparent,
+        ),
+      ),
+    ));
+
+    // Kolom C2 hingga Cn
+    for (int i = 2; i <= jumlahKolom; i++) {
+      String columnKey = "c$i";
+      String? columnValue = jsonData.containsKey(columnKey)
+          ? jsonData[columnKey] as String?
+          : null;
+
+      cells.add(DataCell(
+        Text(
+          formatNumber(columnValue),
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
+            backgroundColor: isTotalRow
+                ? Colors.blueAccent.withOpacity(0.3)
+                : Colors.transparent,
           ),
         ),
+      ));
+    }
 
-        // Kolom C2 hingga Cn
-        ...List.generate(jumlahKolom - 1, (index) {
-          String columnKey = "c${index + 2}";
-          String? columnValue = jsonData.containsKey(columnKey)
-              ? jsonData[columnKey] as String?
-              : null;
-
-          return DataCell(
-            Text(
-              formatNumber(columnValue),
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
-                backgroundColor: isTotalRow
-                    ? Colors.blueAccent.withOpacity(0.3)
-                    : Colors.transparent,
-              ),
-            ),
-          );
-        }),
-      ],
-    );
+    return DataRow(cells: cells);
   }
 
   String extractNumbers(String? value) {
@@ -1341,7 +1429,6 @@ class _ReportSalesListState extends State<ReportSalesList>
   }
 
   void showRestrictMessenger(BuildContext context) {
-    PopUpWidget(context)
-        .showPopUpWarning('Anda tidak mempunyai akses', 'Ok');
+    PopUpWidget(context).showPopUpWarning('Anda tidak mempunyai akses', 'Ok');
   }
 }
