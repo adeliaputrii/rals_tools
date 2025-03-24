@@ -22,15 +22,18 @@ const String api_membercard_customer = "api/v1/membercards/tbl_customer";
 const String api_get_task_user = 'api/v1/activity/task/get-task';
 const String api_activity_list_project = 'api/v1/activity/list-project';
 const String api_activity_task_by_id = 'api/v1/activity/list-task?project_id=';
-const String api_activity_create_daily = 'api/v1/activity/create_daily_activity';
+const String api_activity_create_daily =
+    'api/v1/activity/create_daily_activity';
 const String api_activity_clock_daily = 'api/v1/activity/clock_daily_activity';
 const String api_activity_update = 'api/v1/activity/updateDailyActivity';
 const String api_count_task = 'api/v1/activity/task/count-unread/';
 
-//SuratJalan  
+//SuratJalan
 const String api_tracking_scan = 'api/v1/tracking/scan-sj-tracking?no_sj=';
-const String api_tracking_update_storeline = 'api/v1/tracking/update-tracking/storeline';
-const String api_tracking_update_supplier = 'api/v1/tracking/update-tracking/supplier';
+const String api_tracking_update_storeline =
+    'api/v1/tracking/update-tracking/storeline';
+const String api_tracking_update_supplier =
+    'api/v1/tracking/update-tracking/supplier';
 const String api_tracking_update_tracking = 'api/v1/tracking/update-tracking';
 const String api_tracking_sj = 'api/v1/tracking/track-sj?no_sj=';
 
@@ -38,11 +41,16 @@ const String api_comcheck_approve = 'activity/updateApproveCommcheck';
 
 //CompanyCard
 const String api_get_company_card = 'api/v1/companycard/tbl_companyCard';
-const String api_get_company_card_detail = 'api/v1/companycard/detail_companyCard';
-const String api_get_company_card_history = 'api/v1/companycard/history_companyCard';
-const String api_get_company_card_history_year = 'api/v1/companycard/history_companyCardYY';
-const String api_get_company_card_history_month = 'api/v1/companycard/history_companyCardMM';
-const String api_get_company_card_history_day = 'api/v1/companycard/history_companyCardDD';
+const String api_get_company_card_detail =
+    'api/v1/companycard/detail_companyCard';
+const String api_get_company_card_history =
+    'api/v1/companycard/history_companyCard';
+const String api_get_company_card_history_year =
+    'api/v1/companycard/history_companyCardYY';
+const String api_get_company_card_history_month =
+    'api/v1/companycard/history_companyCardMM';
+const String api_get_company_card_history_day =
+    'api/v1/companycard/history_companyCardDD';
 
 //News
 const String api_get_news_list = 'api/v1/news/get-active-news';
@@ -54,8 +62,9 @@ const String api_report_insert_viewer = 'api/v1/report/insert_viewer';
 const String api_report_get_viewer = 'api/v1/report/get_viewer';
 const String api_report_sales = 'v1/news/sales-data';
 const String api_get_store = 'v1/news/get-store';
-const String api_get_report_dynamic='v1/report/report-dynamic';
-const String api_get_report_dynamic_header='v1/report/report-dynamic-header';
+const String api_get_report_dynamic = 'v1/report/report-dynamic';
+const String api_get_report_dynamic_header = 'v1/report/report-dynamic-header';
+const String api_get_report_to_pdf = 'v1/report/export-pdf';
 
 //StockOpname
 
@@ -68,4 +77,4 @@ const String api_get_type_doc = 'api/v1/lspb/check_lspb-golddn?scan_dokumen=';
 const String api_get_view_lspb = 'api/v1/lspb/check_lspb-lspbreq?scan_dokumen=';
 
 //testing
-const String api_testing ='v1/440f1626-065f-4627-8a85-6b943fc41874';
+const String api_testing = 'v1/440f1626-065f-4627-8a85-6b943fc41874';

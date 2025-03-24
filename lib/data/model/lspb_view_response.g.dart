@@ -9,7 +9,7 @@ part of 'lspb_view_response.dart';
 LspbViewRequestResponse _$LspbViewRequestResponseFromJson(
         Map<String, dynamic> json) =>
     LspbViewRequestResponse(
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       message: json['message'] as String?,
       data: (json['data'] as List<dynamic>?)
           ?.map((e) => Data.fromJson(e as Map<String, dynamic>))

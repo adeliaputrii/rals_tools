@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +16,12 @@ import 'package:myactivity_project/base/base_params.dart' as baseParam;
 import 'package:myactivity_project/base/base_paths.dart' as basePath;
 import 'package:myactivity_project/data/model/report_get_store_body.dart';
 import 'package:myactivity_project/data/model/report_get_store_response.dart';
-import 'package:myactivity_project/data/model/report_sales_body.dart';
-import 'package:myactivity_project/data/model/report_sales_response.dart';
+import 'package:myactivity_project/data/model/response_report_dynamic.dart';
+import 'package:myactivity_project/data/model/response_report_dynamic_header.dart';
 import 'package:myactivity_project/service/SP_service/SP_service.dart';
 import 'package:myactivity_project/utils/app_navigator.dart';
 import 'package:myactivity_project/utils/app_shared_pref.dart';
 import 'package:myactivity_project/utils/app_widgets.dart';
-import 'package:myactivity_project/widget/Report/report_summry_detail_sales.dart';
 import 'package:myactivity_project/widget/import.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -35,7 +33,6 @@ import '../../data/model/report_list_pagination_response.dart' as PagingResponse
 import '../../data/model/report_list_response.dart';
 import '../../data/model/report_webview_model.dart';
 import '../../utils/popup_widget.dart';
-import 'report_member.dart';
 
 part 'report_sales_card.dart';
 part 'report_sales_detail.dart';
@@ -43,3 +40,4 @@ part 'report_sales_detail_pager.dart';
 part 'report_sales_list.dart';
 part 'report_sales_search.dart';
 part 'report_webview.dart';
+

@@ -9,7 +9,7 @@ part of 'stock_opname_submit_reponse.dart';
 StockOpnameSubmitResponse _$StockOpnameSubmitResponseFromJson(
         Map<String, dynamic> json) =>
     StockOpnameSubmitResponse(
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       message: json['message'] as String?,
     );
 

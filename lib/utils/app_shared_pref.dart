@@ -1,5 +1,7 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer';
+
 import 'package:myactivity_project/base/base_prefs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPref {
   const SharedPref._();
@@ -24,6 +26,12 @@ class SharedPref {
     await prefs.setString(key_user_toko, userToko);
   }
 
+  static Future<void> setUserRole(String userRole) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString(key_user_role, userRole);
+  }
+
   static Future<void> setDeviceId(String deviceId) async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -42,7 +50,7 @@ class SharedPref {
     await prefs.setString(key_submit, deviceName);
   }
 
-    static Future<void> setMember(String member) async {
+  static Future<void> setMember(String member) async {
     final prefs = await SharedPreferences.getInstance();
 
     await prefs.setString(key_member, member);
@@ -66,13 +74,25 @@ class SharedPref {
     return prefs.getString(key_token);
   }
 
+  static Future<String?> getRoleNew() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? role = prefs.getString('role');
+
+    log("Cek role: $role");
+
+    return prefs.getString(key_user_role);
+  }
+
+
+
+
   static Future<String?> getSubmit() async {
     final prefs = await SharedPreferences.getInstance();
 
     return prefs.getString(key_submit);
   }
 
-    static Future<String?> getMember() async {
+  static Future<String?> getMember() async {
     final prefs = await SharedPreferences.getInstance();
 
     return prefs.getString(key_member);
@@ -103,7 +123,7 @@ class SharedPref {
 
   static Future<String?> getUserToko() async {
     final prefs = await SharedPreferences.getInstance();
-
+    log("cek toko ${prefs}");
     return prefs.getString(key_user_toko);
   }
 
@@ -133,13 +153,12 @@ class SharedPref {
 
   static Future<String?> getRole() async {
     final prefs = await SharedPreferences.getInstance();
-
+    log("cek role ${prefs}");
     return prefs.getString('role');
   }
 
   static Future<String?> getUserAccess() async {
     final prefs = await SharedPreferences.getInstance();
-
     return prefs.getString(key_list_access);
   }
 
@@ -158,4 +177,3 @@ class SharedPref {
     await prefs.remove(key_user_id);
   }
 }
-

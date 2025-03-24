@@ -9,7 +9,7 @@ part of 'response_report_dynamic_header.dart';
 ResponseReportDynamic _$ResponseReportDynamicFromJson(
         Map<String, dynamic> json) =>
     ResponseReportDynamic(
-      status: json['status'] as int,
+      status: (json['status'] as num).toInt(),
       message: json['message'] as String,
       data: (json['data'] as List<dynamic>)
           .map((e) => ReportDynamic.fromJson(e as Map<String, dynamic>))

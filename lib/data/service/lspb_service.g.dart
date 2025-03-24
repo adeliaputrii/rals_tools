@@ -6,17 +6,20 @@ part of 'lspb_service.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
 class _LspbService implements LspbService {
   _LspbService(
     this._dio, {
     this.baseUrl,
+    this.errorLogger,
   });
 
   final Dio _dio;
 
   String? baseUrl;
+
+  final ParseErrorLogger? errorLogger;
 
   @override
   Future<LspbFormResponse> postFormLspb(
@@ -25,7 +28,7 @@ class _LspbService implements LspbService {
     String token,
     LspbFormBody body,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'Content-Type': contentType,
@@ -35,26 +38,32 @@ class _LspbService implements LspbService {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<LspbFormResponse>(Options(
+    final _options = _setStreamType<LspbFormResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
       contentType: contentType,
     )
-            .compose(
-              _dio.options,
-              'api/v1/lspb/posted-lspb_myareq',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = LspbFormResponse.fromJson(_result.data!);
-    return value;
+        .compose(
+          _dio.options,
+          'api/v1/lspb/posted-lspb_myareq',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late LspbFormResponse _value;
+    try {
+      _value = LspbFormResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -66,7 +75,7 @@ class _LspbService implements LspbService {
     String user,
     String store,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'Content-Type': contentType,
@@ -74,27 +83,33 @@ class _LspbService implements LspbService {
       r'Authorization': token,
     };
     _headers.removeWhere((k, v) => v == null);
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<LspbViewRequestResponse>(Options(
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<LspbViewRequestResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
       contentType: contentType,
     )
-            .compose(
-              _dio.options,
-              'api/v1/lspb/check_lspb-lspbreq?scan_dokumen=${scan_dokumen}&user=${user}&store=${store}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = LspbViewRequestResponse.fromJson(_result.data!);
-    return value;
+        .compose(
+          _dio.options,
+          'api/v1/lspb/check_lspb-lspbreq?scan_dokumen=${scan_dokumen}&user=${user}&store=${store}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late LspbViewRequestResponse _value;
+    try {
+      _value = LspbViewRequestResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -105,7 +120,7 @@ class _LspbService implements LspbService {
     String scan_dokumen,
     String user,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'Content-Type': contentType,
@@ -113,27 +128,33 @@ class _LspbService implements LspbService {
       r'Authorization': token,
     };
     _headers.removeWhere((k, v) => v == null);
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<LspbTypeDocResponse>(Options(
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<LspbTypeDocResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
       contentType: contentType,
     )
-            .compose(
-              _dio.options,
-              'api/v1/lspb/check_lspb-golddn?scan_dokumen=${scan_dokumen}&user=${user}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = LspbTypeDocResponse.fromJson(_result.data!);
-    return value;
+        .compose(
+          _dio.options,
+          'api/v1/lspb/check_lspb-golddn?scan_dokumen=${scan_dokumen}&user=${user}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late LspbTypeDocResponse _value;
+    try {
+      _value = LspbTypeDocResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

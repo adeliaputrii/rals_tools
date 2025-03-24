@@ -8,6 +8,7 @@ import 'package:myactivity_project/data/model/report_sales_body.dart';
 import 'package:myactivity_project/data/model/report_sales_response.dart';
 import 'package:myactivity_project/data/model/response_report_dynamic.dart';
 import 'package:myactivity_project/data/model/response_report_dynamic_header.dart';
+import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
 
 import '../model/report_list_response.dart';
@@ -69,10 +70,11 @@ abstract class ReportService {
       @Header("Accept") String accept,
       @Body() ReportModel reportBody);
 
-      
   @GET('${basePath.api_get_report_dynamic_header}')
   Future<ResponseReportDynamic> getReportdynamicHeader(
-      @Header("Content-Type") String contentType,
-      @Header("Accept") String accept,
-     );
+    @Header("Content-Type") String contentType,
+    @Header("Accept") String accept,
+  );
+
+
 }

@@ -1,17 +1,11 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:myactivity_project/data/model/data_member_card_response.dart';
 import 'package:myactivity_project/data/model/get_task_response.dart';
 import 'package:myactivity_project/data/model/myactivity_count_task.dart';
 import 'package:myactivity_project/data/repository/home_respository.dart';
-import 'package:myactivity_project/utils/app_shared_pref.dart';
 
-import '../../data/model/data_member_card_body.dart';
 import '../../data/model/news_list_response.dart';
-import '../../utils/logging.dart';
 
 part 'home_state.dart';
 

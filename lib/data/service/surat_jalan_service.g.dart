@@ -6,17 +6,20 @@ part of 'surat_jalan_service.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
 class _SuratJalanService implements SuratJalanService {
   _SuratJalanService(
     this._dio, {
     this.baseUrl,
+    this.errorLogger,
   });
 
   final Dio _dio;
 
   String? baseUrl;
+
+  final ParseErrorLogger? errorLogger;
 
   @override
   Future<SuratJalanResponse> getScanTracking(
@@ -25,7 +28,7 @@ class _SuratJalanService implements SuratJalanService {
     String token,
     String noSJ,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'Content-Type': contentType,
@@ -33,27 +36,33 @@ class _SuratJalanService implements SuratJalanService {
       r'Authorization': token,
     };
     _headers.removeWhere((k, v) => v == null);
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<SuratJalanResponse>(Options(
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<SuratJalanResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
       contentType: contentType,
     )
-            .compose(
-              _dio.options,
-              'api/v1/tracking/scan-sj-tracking?no_sj=${noSJ}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = SuratJalanResponse.fromJson(_result.data!);
-    return value;
+        .compose(
+          _dio.options,
+          'api/v1/tracking/scan-sj-tracking?no_sj=${noSJ}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SuratJalanResponse _value;
+    try {
+      _value = SuratJalanResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -63,7 +72,7 @@ class _SuratJalanService implements SuratJalanService {
     String token,
     TrackingSJBody body,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'Content-Type': contentType,
@@ -73,26 +82,32 @@ class _SuratJalanService implements SuratJalanService {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<ScanSJResponse>(Options(
+    final _options = _setStreamType<ScanSJResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
       contentType: contentType,
     )
-            .compose(
-              _dio.options,
-              'api/v1/tracking/update-tracking/storeline',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = ScanSJResponse.fromJson(_result.data!);
-    return value;
+        .compose(
+          _dio.options,
+          'api/v1/tracking/update-tracking/storeline',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ScanSJResponse _value;
+    try {
+      _value = ScanSJResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -102,7 +117,7 @@ class _SuratJalanService implements SuratJalanService {
     String token,
     TrackingSJBody body,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'Content-Type': contentType,
@@ -112,26 +127,32 @@ class _SuratJalanService implements SuratJalanService {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<ScanSJResponse>(Options(
+    final _options = _setStreamType<ScanSJResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
       contentType: contentType,
     )
-            .compose(
-              _dio.options,
-              'api/v1/tracking/update-tracking/supplier',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = ScanSJResponse.fromJson(_result.data!);
-    return value;
+        .compose(
+          _dio.options,
+          'api/v1/tracking/update-tracking/supplier',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ScanSJResponse _value;
+    try {
+      _value = ScanSJResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -141,7 +162,7 @@ class _SuratJalanService implements SuratJalanService {
     String token,
     TrackingSJBody body,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'Content-Type': contentType,
@@ -151,26 +172,32 @@ class _SuratJalanService implements SuratJalanService {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<ScanSJResponse>(Options(
+    final _options = _setStreamType<ScanSJResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
       contentType: contentType,
     )
-            .compose(
-              _dio.options,
-              'api/v1/tracking/update-tracking',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = ScanSJResponse.fromJson(_result.data!);
-    return value;
+        .compose(
+          _dio.options,
+          'api/v1/tracking/update-tracking',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ScanSJResponse _value;
+    try {
+      _value = ScanSJResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -180,7 +207,7 @@ class _SuratJalanService implements SuratJalanService {
     String token,
     String noSJ,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'Content-Type': contentType,
@@ -188,27 +215,33 @@ class _SuratJalanService implements SuratJalanService {
       r'Authorization': token,
     };
     _headers.removeWhere((k, v) => v == null);
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<TrackingSJResponse>(Options(
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<TrackingSJResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
       contentType: contentType,
     )
-            .compose(
-              _dio.options,
-              'api/v1/tracking/track-sj?no_sj=${noSJ}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = TrackingSJResponse.fromJson(_result.data!);
-    return value;
+        .compose(
+          _dio.options,
+          'api/v1/tracking/track-sj?no_sj=${noSJ}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late TrackingSJResponse _value;
+    try {
+      _value = TrackingSJResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

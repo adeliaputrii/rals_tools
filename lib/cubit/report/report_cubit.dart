@@ -1,7 +1,8 @@
 import 'dart:async';
-
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myactivity_project/data/model/data_customer_response.dart';
@@ -14,6 +15,8 @@ import 'package:myactivity_project/data/model/report_sales_response.dart';
 import 'package:myactivity_project/data/model/response_report_dynamic.dart';
 import 'package:myactivity_project/data/model/response_report_dynamic_header.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../data/model/report_list_pagination_response.dart';
 import '../../data/repository/report_repository.dart';
@@ -153,11 +156,10 @@ class ReportCubit extends Cubit<ReportState> {
     log("Cubitt Header dipanggil...");
 
     final result = await repositories.getReportDynamicHeader(token);
-    log("Response diterima: ${result.dataResponse.runtimeType}"); // Cek tipe datanya
+    log("Response diterima: ${result.dataResponse.runtimeType}");
 
     if (result.isSuccess && result.dataResponse is ResponseReportDynamic) {
       final responseData = result.dataResponse as ResponseReportDynamic;
-      log("Response Data: ${responseData.data}");
 
       emit(ReportgetDynamicHeaderSuccess(responseData.data));
       log("kesini succses");
@@ -168,4 +170,49 @@ class ReportCubit extends Cubit<ReportState> {
               "Tipe data tidak sesuai: ${result.dataResponse.runtimeType}"));
     }
   }
+
+
+
+  Future<void> fetchAndSavePdf(String reportId, String token) async {
+    try {
+      String url = "https://dev-android-api.ramayana.co.id:8305/api/export-pdf";
+      log("🔹 [LOG] URL: $url");
+
+      Dio dio = Dio();
+
+      Map<String, dynamic> requestData = {"reportId": reportId};
+
+    
+      Response response = await dio.post(
+        url,
+        data: requestData,
+        options: Options(
+          headers: {
+            "Accept": "application/pdf",
+            "Authorization": "Bearer $token",
+          },
+          responseType: ResponseType.bytes, // Pastikan menerima byte array
+        ),
+      );
+
+
+      // Cek apakah responsenya HTML atau PDF
+      String? contentType = response.headers["content-type"]?.first;
+
+      if (contentType != null && contentType.contains("application/pdf")) {
+        Directory tempDir = await getTemporaryDirectory();
+        String filePath = "${tempDir.path}/report_$reportId.pdf";
+        File file = File(filePath);
+        await file.writeAsBytes(response.data);
+              await OpenFilex.open(filePath);
+
+      } else {
+        log("❌ Server mengembalikan data bukan PDF! Mungkin token salah?");
+        log("🔹 [LOG] Response Data: ${String.fromCharCodes(response.data)}");
+      }
+    } catch (e) {
+      log("❌ Error: $e");
+    }
+}
+
 }

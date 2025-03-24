@@ -300,6 +300,8 @@ class _RamayanaLogin extends State<RamayanaLogin> {
               state.response.data?.username7.toString() ?? 'unknown');
           SharedPref.setUserToko(
               state.response.data?.toko.toString() ?? 'unknown');
+               SharedPref.setUserToko(
+              state.response.data?.roleId.toString() ?? 'unknown');
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => Ramayana()));
           loginCubit.createLog(baseParam.logInfoLoginPage,

@@ -13,7 +13,7 @@ ReportListPaginationResponse _$ReportListPaginationResponseFromJson(
           ?.map((e) => Data.fromJson(e as Map<String, dynamic>))
           .toList(),
       path: json['path'] as String?,
-      perPage: json['per_page'] as int?,
+      perPage: (json['per_page'] as num?)?.toInt(),
       nextPageUrl: json['next_page_url'] as String?,
       prevPageUrl: json['prev_page_url'] as String?,
     );

@@ -8,7 +8,7 @@ part of 'lspb_type_doc_response.dart';
 
 LspbTypeDocResponse _$LspbTypeDocResponseFromJson(Map<String, dynamic> json) =>
     LspbTypeDocResponse(
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       message: json['message'] as String?,
       data: json['data'] == null
           ? null

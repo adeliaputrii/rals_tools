@@ -7,7 +7,7 @@ part of 'myactivity_count_task.dart';
 // **************************************************************************
 
 CountTask _$CountTaskFromJson(Map<String, dynamic> json) => CountTask(
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       message: json['message'] as String?,
       data: json['data'] == null
           ? null

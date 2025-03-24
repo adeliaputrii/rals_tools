@@ -47,11 +47,13 @@ class Data {
   String? toko;
   String? imei;
   String? md;
+  int? roleId;
   String? aksesMenu;
   String? listMenu;
 
   Data(
       {this.userId,
+      this.roleId,
       this.name,
       this.username,
       this.username7,
@@ -67,6 +69,7 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
+    roleId = json['role_id'];
     name = json['name'];
     username = json['username'];
     username7 = json['username7'];
@@ -84,6 +87,7 @@ class Data {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['user_id'] = this.userId;
+    data['role_id'] = this.roleId;
     data['name'] = this.name;
     data['username'] = this.username;
     data['username7'] = this.username7;

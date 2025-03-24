@@ -8,7 +8,7 @@ part of 'lspb_form_response.dart';
 
 LspbFormResponse _$LspbFormResponseFromJson(Map<String, dynamic> json) =>
     LspbFormResponse(
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       message: json['message'],
     );
 

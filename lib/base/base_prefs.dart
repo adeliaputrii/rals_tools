@@ -1,5 +1,6 @@
 const String key_user_id = "user_id";
 const String key_user_toko = "user_toko";
+const String key_user_role = "user_role";
 const String key_token = "user_token";
 const String key_device_id = "user_device_id";
 const String key_device_name = "user_device_name";

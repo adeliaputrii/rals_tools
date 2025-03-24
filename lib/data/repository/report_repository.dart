@@ -7,7 +7,6 @@ import 'package:myactivity_project/base/base_paths.dart' as basePath;
 import 'package:myactivity_project/data/model/report_dynamic_body.dart';
 import 'package:myactivity_project/data/model/report_get_store_body.dart';
 import 'package:myactivity_project/data/model/report_sales_body.dart';
-import 'package:myactivity_project/data/model/response_report_dynamic.dart';
 import 'package:myactivity_project/tools/settingsralstools.dart';
 
 import '../model/repositories_response.dart';
@@ -296,6 +295,8 @@ class ReportRepositories {
 
     return response;
   }
+
+
 
   
 }
