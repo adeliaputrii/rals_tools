@@ -309,7 +309,6 @@ class _ReportSalesListState extends State<ReportSalesList>
             ),
           ),
           SizedBox(width: 8),
-
           Container(
             width: 120,
             height: 40,
@@ -334,7 +333,6 @@ class _ReportSalesListState extends State<ReportSalesList>
               ),
             ),
           ),
-          
         ],
       ),
     );
@@ -356,7 +354,8 @@ class _ReportSalesListState extends State<ReportSalesList>
   }
 
   Widget _buildTab1Content() {
-    return Container(margin: EdgeInsets.only(top: 30),
+    return Container(
+      margin: EdgeInsets.only(top: 30),
       child: BlocBuilder<ReportCubit, ReportState>(
         builder: (context, state) {
           if (state is ReportInitial) {
@@ -369,10 +368,10 @@ class _ReportSalesListState extends State<ReportSalesList>
               return searchEmpty();
             }
           }
-      
+
           if (state is ReportPaginationSuccess) {
             String? url = state.response.nextPageUrl;
-      
+
             if (url != null) {
               Uri uri = Uri.parse(url);
               Map<String, dynamic> queryParams = uri.queryParameters;
@@ -400,7 +399,7 @@ class _ReportSalesListState extends State<ReportSalesList>
               }
             }
           }
-      
+
           if (state is ReportInsertViewerSuccess) {
             listDataPaging.clear();
             String? url = state.response.nextPageUrl;
@@ -431,12 +430,12 @@ class _ReportSalesListState extends State<ReportSalesList>
               }
             }
           }
-      
+
           if (state is ReportFailure) {
             return AppWidget()
                 .ErrorHandler(baseParam.errorReportMessage, getListReport);
           }
-      
+
           return searchEmpty();
         },
       ),
@@ -447,7 +446,8 @@ class _ReportSalesListState extends State<ReportSalesList>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(margin: EdgeInsets.only(top: 50),
+        Container(
+          margin: EdgeInsets.only(top: 50),
           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           child: DropdownButtonFormField<String>(
             value:
@@ -605,7 +605,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                               color: Colors.blueAccent,
                             ),
                           ),
-                      
+
                           // 🔹 Tombol Download PDF
                           ElevatedButton.icon(
                             icon:
@@ -1145,7 +1145,6 @@ class _ReportSalesListState extends State<ReportSalesList>
     int jumlahKolom = int.tryParse(firstData.jumlahKolom) ?? 0;
 
     List<DataColumn> columns = [
-      DataColumn(label: Text("ID", style: _headerStyle())),
       DataColumn(label: Text("Periode", style: _headerStyle())),
       DataColumn(label: Text("Line", style: _headerStyle())),
     ];
@@ -1160,30 +1159,10 @@ class _ReportSalesListState extends State<ReportSalesList>
     return columns;
   }
 
-  DataRow _buildRowWithoutLine(ReportData data) {
-    return DataRow(cells: [
-      DataCell(Text(data.namaReport)),
-      DataCell(Text(data.dateCreate)),
-      DataCell(Text(data.c1.toString())),
-      DataCell(Text(data.c2.toString())),
-      DataCell(Text(data.c3.toString())),
-      DataCell(Text(data.c4.toString())),
-      DataCell(Text(data.c5.toString())),
-      DataCell(Text(data.c6.toString())),
-      DataCell(Text(data.c7.toString())),
-      DataCell(Text(data.c8.toString())),
-      DataCell(Text(data.c9.toString())),
-      DataCell(Text(data.c10.toString())),
-
-      // ✅ Jangan tambahkan `DataCell(Text(data.line))`
-    ]);
-  }
-
   DataRow _buildRow(ReportData data) {
     int jumlahKolom = int.tryParse(data.jumlahKolom) ?? 0;
     log("Jumlah Kolom: $jumlahKolom");
 
-    // Cek apakah ada kata "TOTAL" di salah satu kolom (c1, c2, ..., cn)
     bool isTotalRow = false;
     Map<String, dynamic> jsonData = data.toJson();
 
@@ -1196,19 +1175,41 @@ class _ReportSalesListState extends State<ReportSalesList>
       }
     }
 
-    // List untuk menyimpan DataCell (tanpa periode & line)
     List<DataCell> cells = [];
 
-    // Tambahkan hanya reportId
-    cells.add(DataCell(Text(data.reportId ?? "-",
-        style: TextStyle(
-            fontSize: 12,
-            fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal))));
+    // Kolom Periode
+    cells.add(DataCell(Text(
+      data.c1 ?? "-",
+      style: TextStyle(
+        fontSize: 12,
+        fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
+        backgroundColor: isTotalRow
+            ? Colors.blueAccent.withOpacity(0.3)
+            : Colors.transparent,
+      ),
+    )));
 
-    // Kolom C1
-    cells.add(DataCell(
-      Text(
-        data.c1 ?? "",
+    // Kolom Line
+    cells.add(DataCell(Text(
+      data.c2 ?? "-",
+      style: TextStyle(
+        fontSize: 12,
+        fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
+        backgroundColor: isTotalRow
+            ? Colors.blueAccent.withOpacity(0.3)
+            : Colors.transparent,
+      ),
+    )));
+
+    // Kolom C3 hingga Cn
+    for (int i = 3; i <= jumlahKolom; i++) {
+      String columnKey = "c$i";
+      String? columnValue = jsonData.containsKey(columnKey)
+          ? jsonData[columnKey] as String?
+          : null;
+
+      cells.add(DataCell(Text(
+        formatNumber(columnValue),
         style: TextStyle(
           fontSize: 12,
           fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
@@ -1216,28 +1217,7 @@ class _ReportSalesListState extends State<ReportSalesList>
               ? Colors.blueAccent.withOpacity(0.3)
               : Colors.transparent,
         ),
-      ),
-    ));
-
-    // Kolom C2 hingga Cn
-    for (int i = 2; i <= jumlahKolom; i++) {
-      String columnKey = "c$i";
-      String? columnValue = jsonData.containsKey(columnKey)
-          ? jsonData[columnKey] as String?
-          : null;
-
-      cells.add(DataCell(
-        Text(
-          formatNumber(columnValue),
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
-            backgroundColor: isTotalRow
-                ? Colors.blueAccent.withOpacity(0.3)
-                : Colors.transparent,
-          ),
-        ),
-      ));
+      )));
     }
 
     return DataRow(cells: cells);
