@@ -263,14 +263,7 @@ class _ReportSalesListState extends State<ReportSalesList>
           width: MediaQuery.of(context).size.width,
           child: Stack(
             children: [
-              Container(
-                child: Image.asset(
-                  'assets/reportBackground.png',
-                  fit: BoxFit.cover,
-                  width: MediaQuery.of(context).size.width,
-                  alignment: Alignment.center,
-                ),
-              ),
+            
               _buildTabBar(),
               _buildMainContent(),
             ],
@@ -353,88 +346,90 @@ height: 80,      decoration: BoxDecoration(color: baseColors.primaryColor),
   }
 
   Widget _buildTab1Content() {
-    return BlocBuilder<ReportCubit, ReportState>(
-      builder: (context, state) {
-        if (state is ReportInitial) {
-          return loading();
-        }
-        if (state is ReportLoading) {
-          if (listDataPaging.isEmpty) {
+    return Container(margin: EdgeInsets.only(top: 30),
+      child: BlocBuilder<ReportCubit, ReportState>(
+        builder: (context, state) {
+          if (state is ReportInitial) {
             return loading();
-          } else {
-            return searchEmpty();
           }
-        }
-
-        if (state is ReportPaginationSuccess) {
-          String? url = state.response.nextPageUrl;
-
-          if (url != null) {
-            Uri uri = Uri.parse(url);
-            Map<String, dynamic> queryParams = uri.queryParameters;
-            String cursorValue = queryParams['cursor'];
-            nextUrlCursor = cursorValue;
-          } else {
-            nextUrlCursor = null;
-            isLoaded = true;
-          }
-          if (state.response.data?.isNotEmpty ?? false) {
-            state.response.data?.forEach((element) {
-              bool headerExists = listDataPaging.any((existingElement) =>
-                  existingElement.header1 == element.header1);
-              if (!headerExists) {
-                listDataPaging.add(element);
-              }
-            });
-            if (listDataPaging.isNotEmpty) {
-              debugPrint('data length ${listDataPaging.length}');
-              return searchEmpty();
+          if (state is ReportLoading) {
+            if (listDataPaging.isEmpty) {
+              return loading();
             } else {
-              return Center(
-                  child: AppWidget()
-                      .EmptyHandler(baseParam.emptyDataReportMessage));
+              return searchEmpty();
             }
           }
-        }
-
-        if (state is ReportInsertViewerSuccess) {
-          listDataPaging.clear();
-          String? url = state.response.nextPageUrl;
-          if (url != null) {
-            isLoaded = false;
-            Uri uri = Uri.parse(url);
-            Map<String, dynamic> queryParams = uri.queryParameters;
-            String cursorValue = queryParams['cursor'];
-            nextUrlCursor = cursorValue;
-          } else {
-            nextUrlCursor = null;
-            isLoaded = true;
-          }
-          if (state.response.data?.isNotEmpty ?? false) {
-            state.response.data?.forEach((element) {
-              bool headerExists = listDataPaging.any((existingElement) =>
-                  existingElement.header1 == element.header1);
-              if (!headerExists) {
-                listDataPaging.add(element);
-              }
-            });
-            if (listDataPaging.isNotEmpty) {
-              return searchEmpty();
+      
+          if (state is ReportPaginationSuccess) {
+            String? url = state.response.nextPageUrl;
+      
+            if (url != null) {
+              Uri uri = Uri.parse(url);
+              Map<String, dynamic> queryParams = uri.queryParameters;
+              String cursorValue = queryParams['cursor'];
+              nextUrlCursor = cursorValue;
             } else {
-              return Center(
-                  child: AppWidget()
-                      .EmptyHandler(baseParam.emptyDataReportMessage));
+              nextUrlCursor = null;
+              isLoaded = true;
+            }
+            if (state.response.data?.isNotEmpty ?? false) {
+              state.response.data?.forEach((element) {
+                bool headerExists = listDataPaging.any((existingElement) =>
+                    existingElement.header1 == element.header1);
+                if (!headerExists) {
+                  listDataPaging.add(element);
+                }
+              });
+              if (listDataPaging.isNotEmpty) {
+                debugPrint('data length ${listDataPaging.length}');
+                return searchEmpty();
+              } else {
+                return Center(
+                    child: AppWidget()
+                        .EmptyHandler(baseParam.emptyDataReportMessage));
+              }
             }
           }
-        }
-
-        if (state is ReportFailure) {
-          return AppWidget()
-              .ErrorHandler(baseParam.errorReportMessage, getListReport);
-        }
-
-        return searchEmpty();
-      },
+      
+          if (state is ReportInsertViewerSuccess) {
+            listDataPaging.clear();
+            String? url = state.response.nextPageUrl;
+            if (url != null) {
+              isLoaded = false;
+              Uri uri = Uri.parse(url);
+              Map<String, dynamic> queryParams = uri.queryParameters;
+              String cursorValue = queryParams['cursor'];
+              nextUrlCursor = cursorValue;
+            } else {
+              nextUrlCursor = null;
+              isLoaded = true;
+            }
+            if (state.response.data?.isNotEmpty ?? false) {
+              state.response.data?.forEach((element) {
+                bool headerExists = listDataPaging.any((existingElement) =>
+                    existingElement.header1 == element.header1);
+                if (!headerExists) {
+                  listDataPaging.add(element);
+                }
+              });
+              if (listDataPaging.isNotEmpty) {
+                return searchEmpty();
+              } else {
+                return Center(
+                    child: AppWidget()
+                        .EmptyHandler(baseParam.emptyDataReportMessage));
+              }
+            }
+          }
+      
+          if (state is ReportFailure) {
+            return AppWidget()
+                .ErrorHandler(baseParam.errorReportMessage, getListReport);
+          }
+      
+          return searchEmpty();
+        },
+      ),
     );
   }
 
