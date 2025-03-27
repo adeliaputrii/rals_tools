@@ -40,8 +40,8 @@ class _ReportSalesListState extends State<ReportSalesList>
   String? _chosenValue = 'All';
   UserData userData = UserData();
   String? inputReportId = "";
-  String? selectedReportId; // Menyimpan ID report yang dipilih
-  List<ReportDynamic> reportList = []; // List laporan untuk dropdown
+  String? selectedReportId;
+  List<ReportDynamic> reportList = [];
   int progressBar = 0;
   final scrollController = ScrollController();
   Timer? _debounceTimer;
@@ -159,72 +159,6 @@ class _ReportSalesListState extends State<ReportSalesList>
     super.dispose();
   }
 
-  // Future<void> generatePdf(List<ReportData> valueReport) async {
-  //   final pdf = pw.Document();
-
-  //   try {
-  //     // Load custom font
-  //     final ByteData data = await rootBundle.load("assets/fonts/Noto_Sans.ttf");
-  //     final pw.Font font = pw.Font.ttf(data);
-  //     pdf.addPage(
-  //       pw.Page(
-  //         pageFormat: PdfPageFormat.a4,
-  //         build: (pw.Context context) {
-  //           return pw.Column(
-  //             crossAxisAlignment: pw.CrossAxisAlignment.start,
-  //             children: [
-  //               pw.Text(
-  //                 "Laporan Data",
-  //                 style: pw.TextStyle(font: font, fontSize: 20),
-  //               ),
-  //               pw.SizedBox(height: 10),
-  //               valueReport.isNotEmpty
-  //                   ? pw.Table.fromTextArray(
-  //                       headers: [
-  //                         "ID",
-  //                         "Periode",
-  //                         "Line",
-  //                         "C1",
-  //                         "C2",
-  //                         "C3",
-  //                         "C4",
-  //                         "C5"
-  //                       ],
-  //                       data: valueReport
-  //                           .map((data) => [
-  //                                 data.reportId ?? "-",
-  //                                 data.periode ?? "-",
-  //                                 data.line ?? "-",
-  //                                 data.c1 ?? "-",
-  //                                 data.c2 ?? "-",
-  //                                 data.c3 ?? "-",
-  //                                 data.c4 ?? "-",
-  //                                 data.c5 ?? "-",
-  //                               ])
-  //                           .toList(),
-  //                       border: pw.TableBorder.all(width: 1),
-  //                       cellAlignment: pw.Alignment.centerLeft,
-  //                       headerStyle: pw.TextStyle(font: font, fontSize: 14),
-  //                       cellStyle: pw.TextStyle(font: font, fontSize: 12),
-  //                     )
-  //                   : pw.Text("Tidak ada data.",
-  //                       style: pw.TextStyle(font: font, fontSize: 14)),
-  //             ],
-  //           );
-  //         },
-  //       ),
-  //     );
-
-  //     // Simpan file PDF ke storage sementara
-  //     final output = await getTemporaryDirectory();
-  //     final file = File("${output.path}/laporan.pdf");
-  //     await file.writeAsBytes(await pdf.save());
-  //     // Buka file PDF setelah dibuat
-  //     OpenFile.open(file.path);
-  //   } catch (e) {
-  //     print("Error saat membuat PDF: $e");
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -262,16 +196,9 @@ class _ReportSalesListState extends State<ReportSalesList>
         body: Container(
           width: MediaQuery.of(context).size.width,
           child: Stack(
+            
             children: [
-              Container(
-                child: Image.asset(
-                  'assets/reportBackground.png',
-                  fit: BoxFit.cover,
-                  width: MediaQuery.of(context).size.width,
-                  alignment: Alignment.center,
-                ),
-              ),
-              _buildTabBar(),
+              Positioned(top: -40, bottom: 800, right: 0 , left: 0,  child: _buildTabBar()),
               _buildMainContent(),
             ],
           ),
@@ -282,7 +209,8 @@ class _ReportSalesListState extends State<ReportSalesList>
 
   Widget _buildTabBar() {
     return Container(
-height: 80,      decoration: BoxDecoration(color: baseColors.primaryColor),
+      height: 80,
+      decoration: BoxDecoration(color: baseColors.primaryColor),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -317,8 +245,6 @@ height: 80,      decoration: BoxDecoration(color: baseColors.primaryColor),
             ),
             child: TextButton(
               onPressed: () async {
-                final listAccess = await SharedPref.getUserAccess() ?? '';
-
                 setState(() {
                   initReportDyanmic();
                   isTab1Selected = false;
@@ -353,88 +279,91 @@ height: 80,      decoration: BoxDecoration(color: baseColors.primaryColor),
   }
 
   Widget _buildTab1Content() {
-    return BlocBuilder<ReportCubit, ReportState>(
-      builder: (context, state) {
-        if (state is ReportInitial) {
-          return loading();
-        }
-        if (state is ReportLoading) {
-          if (listDataPaging.isEmpty) {
+    return Container(
+      margin: EdgeInsets.only(top: 30),
+      child: BlocBuilder<ReportCubit, ReportState>(
+        builder: (context, state) {
+          if (state is ReportInitial) {
             return loading();
-          } else {
-            return searchEmpty();
           }
-        }
-
-        if (state is ReportPaginationSuccess) {
-          String? url = state.response.nextPageUrl;
-
-          if (url != null) {
-            Uri uri = Uri.parse(url);
-            Map<String, dynamic> queryParams = uri.queryParameters;
-            String cursorValue = queryParams['cursor'];
-            nextUrlCursor = cursorValue;
-          } else {
-            nextUrlCursor = null;
-            isLoaded = true;
-          }
-          if (state.response.data?.isNotEmpty ?? false) {
-            state.response.data?.forEach((element) {
-              bool headerExists = listDataPaging.any((existingElement) =>
-                  existingElement.header1 == element.header1);
-              if (!headerExists) {
-                listDataPaging.add(element);
-              }
-            });
-            if (listDataPaging.isNotEmpty) {
-              debugPrint('data length ${listDataPaging.length}');
-              return searchEmpty();
+          if (state is ReportLoading) {
+            if (listDataPaging.isEmpty) {
+              return loading();
             } else {
-              return Center(
-                  child: AppWidget()
-                      .EmptyHandler(baseParam.emptyDataReportMessage));
+              return searchEmpty();
             }
           }
-        }
 
-        if (state is ReportInsertViewerSuccess) {
-          listDataPaging.clear();
-          String? url = state.response.nextPageUrl;
-          if (url != null) {
-            isLoaded = false;
-            Uri uri = Uri.parse(url);
-            Map<String, dynamic> queryParams = uri.queryParameters;
-            String cursorValue = queryParams['cursor'];
-            nextUrlCursor = cursorValue;
-          } else {
-            nextUrlCursor = null;
-            isLoaded = true;
-          }
-          if (state.response.data?.isNotEmpty ?? false) {
-            state.response.data?.forEach((element) {
-              bool headerExists = listDataPaging.any((existingElement) =>
-                  existingElement.header1 == element.header1);
-              if (!headerExists) {
-                listDataPaging.add(element);
-              }
-            });
-            if (listDataPaging.isNotEmpty) {
-              return searchEmpty();
+          if (state is ReportPaginationSuccess) {
+            String? url = state.response.nextPageUrl;
+
+            if (url != null) {
+              Uri uri = Uri.parse(url);
+              Map<String, dynamic> queryParams = uri.queryParameters;
+              String cursorValue = queryParams['cursor'];
+              nextUrlCursor = cursorValue;
             } else {
-              return Center(
-                  child: AppWidget()
-                      .EmptyHandler(baseParam.emptyDataReportMessage));
+              nextUrlCursor = null;
+              isLoaded = true;
+            }
+            if (state.response.data?.isNotEmpty ?? false) {
+              state.response.data?.forEach((element) {
+                bool headerExists = listDataPaging.any((existingElement) =>
+                    existingElement.header1 == element.header1);
+                if (!headerExists) {
+                  listDataPaging.add(element);
+                }
+              });
+              if (listDataPaging.isNotEmpty) {
+                debugPrint('data length ${listDataPaging.length}');
+                return searchEmpty();
+              } else {
+                return Center(
+                    child: AppWidget()
+                        .EmptyHandler(baseParam.emptyDataReportMessage));
+              }
             }
           }
-        }
 
-        if (state is ReportFailure) {
-          return AppWidget()
-              .ErrorHandler(baseParam.errorReportMessage, getListReport);
-        }
+          if (state is ReportInsertViewerSuccess) {
+            listDataPaging.clear();
+            String? url = state.response.nextPageUrl;
+            if (url != null) {
+              isLoaded = false;
+              Uri uri = Uri.parse(url);
+              Map<String, dynamic> queryParams = uri.queryParameters;
+              String cursorValue = queryParams['cursor'];
+              nextUrlCursor = cursorValue;
+            } else {
+              nextUrlCursor = null;
+              isLoaded = true;
+            }
+            if (state.response.data?.isNotEmpty ?? false) {
+              state.response.data?.forEach((element) {
+                bool headerExists = listDataPaging.any((existingElement) =>
+                    existingElement.header1 == element.header1);
+                if (!headerExists) {
+                  listDataPaging.add(element);
+                }
+              });
+              if (listDataPaging.isNotEmpty) {
+                return searchEmpty();
+              } else {
+                return Center(
+                    child: AppWidget()
+                        .EmptyHandler(baseParam.emptyDataReportMessage));
+              }
+            }
+          }
 
-        return searchEmpty();
-      },
+          if (state is ReportFailure) {
+            return AppWidget()
+                .ErrorHandler(baseParam.errorReportMessage, getListReport);
+          }
+
+          return searchEmpty();
+        },
+      ),
     );
   }
 
@@ -442,79 +371,85 @@ height: 80,      decoration: BoxDecoration(color: baseColors.primaryColor),
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
+    Container(
           margin: EdgeInsets.only(top: 50),
           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-          child: DropdownButtonFormField<String>(
-            value:
-                reportList.any((report) => report.reportId == selectedReportId)
+          child: FutureBuilder<String?>(
+            future: SharedPref.getUserAccess(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              if (!snapshot.hasData || snapshot.data == null) {
+                return Center(child: Text("Gagal mendapatkan akses laporan"));
+              }
+
+              final userAccess = snapshot.data ?? '';
+              final accessList = userAccess.split('|');
+
+              final allowedReportNames = _getAllowedReportIds(accessList);
+
+              final filteredReports = reportList
+                  .where((report) =>
+                      allowedReportNames.contains(report.namaReport))
+                  .toList();
+
+              final seenReportNames = <String>{};
+              final uniqueReports = filteredReports.where((report) {
+                final normalizedName =
+                    report.namaReport.replaceAll(' ', '').toLowerCase();
+                return seenReportNames
+                    .add(normalizedName);
+              }).toList();
+
+              return DropdownButtonFormField<String>(
+                value: uniqueReports
+                        .any((report) => report.namaReport == selectedReportId)
                     ? selectedReportId
                     : null,
-            decoration: InputDecoration(
-              labelText: "Selected Report",
-              labelStyle: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold, // 🔹 Label lebih tebal
-                color: Colors.blueAccent, // 🔹 Warna lebih menarik
-              ),
-              border: OutlineInputBorder(
-                borderRadius:
-                    BorderRadius.circular(12), // 🔹 Border lebih smooth
-                borderSide: BorderSide(
-                    color: Colors.blueAccent, width: 2), // 🔹 Border tebal
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                    color: Colors.blue,
-                    width: 3), // 🔹 Warna lebih mencolok saat fokus
-              ),
-              contentPadding: EdgeInsets.symmetric(
-                  horizontal: 16, vertical: 18), // 🔹 Padding lebih besar
-            ),
-            dropdownColor: Colors.white,
-            icon: Icon(Icons.arrow_drop_down,
-                color: Colors.blueAccent, size: 28), // 🔹 Ikon lebih besar
-            style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Colors.black), // 🔹 Teks lebih tebal
+                decoration: InputDecoration(
+                  labelText: "Selected Report",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.blueAccent, width: 2),
+                  ),
+                ),
+                items: uniqueReports
+                    .map((report) => DropdownMenuItem(
+                          value: report
+                              .reportId, 
+                          child: Text(
+                            report.namaReport,
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold),
+                          ),
+                        ))
+                    .toList(),
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedReportId = newValue;
+                  });
 
-            items: reportList
-                .fold<Map<String, ReportDynamic>>({}, (map, report) {
-                  map[report.namaReport] = report;
-                  return map;
-                })
-                .values
-                .map((report) => DropdownMenuItem(
-                      value: report.reportId,
-                      child: Text(
-                        report.namaReport,
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight:
-                                FontWeight.bold), // 🔹 Teks pilihan lebih tebal
-                      ),
-                    ))
-                .toList(),
-
-            onChanged: (newValue) {
-              setState(() {
-                selectedReportId = newValue;
-              });
-
-              if (token != null) {
-                reportCubit.getReportdynamic(token!, selectedReportId!);
-                log("Mengambil data report dengan ID: $selectedReportId");
-              }
+                  if (token != null) {
+                    reportCubit.getReportdynamic(token!, selectedReportId!);
+                    log("Mengambil data report dengan nama: $selectedReportId");
+                  }
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Silakan pilih report terlebih dahulu';
+                  }
+                  return null;
+                },
+              );
             },
           ),
         ),
+
         BlocListener<ReportCubit, ReportState>(
           listener: (context, state) {
             if (state is ReportgetDynamicHeaderSuccess) {
-              log("sukses menerima data dari state");
-
               if (mounted) {
                 setState(() {
                   reportList = state.response;
@@ -568,7 +503,6 @@ height: 80,      decoration: BoxDecoration(color: baseColors.primaryColor),
                     ? reportResponse.first.namaReport
                     : "Laporan Tidak Tersedia";
 
-                    
                 final String reportPriode = reportResponse.isNotEmpty
                     ? reportResponse.first.periode.toString()
                     : "Laporan Priode";
@@ -591,14 +525,13 @@ height: 80,      decoration: BoxDecoration(color: baseColors.primaryColor),
                         children: [
                           Text(
                             reportTitle,
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.roboto(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Colors.blueAccent,
                             ),
                           ),
 
-                          // 🔹 Tombol Download PDF
                           ElevatedButton.icon(
                             icon:
                                 Icon(Icons.picture_as_pdf, color: Colors.white),
@@ -642,7 +575,7 @@ height: 80,      decoration: BoxDecoration(color: baseColors.primaryColor),
                       padding: EdgeInsets.only(left: 10),
                       child: Text(
                         "Peridoe $reportPriode",
-                        style: GoogleFonts.openSans(
+                        style: GoogleFonts.roboto(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                           color: Colors.blueAccent,
@@ -685,6 +618,35 @@ height: 80,      decoration: BoxDecoration(color: baseColors.primaryColor),
       ],
     );
   }
+
+ List<String> _getAllowedReportIds(List<String> accessList) {
+    log("Access List (Original): $accessList");
+
+    final normalizedAccessList = accessList
+        .map((e) => (e.startsWith("report.")
+                ? e
+                : "report.$e") 
+            .replaceAll(' ', '') 
+            .toLowerCase())
+        .toSet();
+
+    log("Normalized Access List: $normalizedAccessList");
+
+    final allowedIds = reportList
+        .where((report) {
+          final normalizedNamaReport =
+              "report." + report.namaReport.replaceAll(' ', '').toLowerCase();
+          return normalizedAccessList.contains(normalizedNamaReport);
+        })
+        .map((report) => report.namaReport) 
+        .toSet()
+        .toList();
+
+    log("Allowed Report IDs (Unique): $allowedIds");
+
+    return allowedIds;
+  }
+
 
   List<DataColumn> _buildColumns(List<ReportData> reports) {
     if (reports.isEmpty) return [];
