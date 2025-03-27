@@ -159,7 +159,6 @@ class _ReportSalesListState extends State<ReportSalesList>
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -196,9 +195,13 @@ class _ReportSalesListState extends State<ReportSalesList>
         body: Container(
           width: MediaQuery.of(context).size.width,
           child: Stack(
-            
             children: [
-              Positioned(top: -40, bottom: 800, right: 0 , left: 0,  child: _buildTabBar()),
+              Positioned(
+                  top: -40,
+                  bottom: 800,
+                  right: 0,
+                  left: 0,
+                  child: _buildTabBar()),
               _buildMainContent(),
             ],
           ),
@@ -371,7 +374,7 @@ class _ReportSalesListState extends State<ReportSalesList>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-    Container(
+        Container(
           margin: EdgeInsets.only(top: 50),
           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           child: FutureBuilder<String?>(
@@ -399,8 +402,7 @@ class _ReportSalesListState extends State<ReportSalesList>
               final uniqueReports = filteredReports.where((report) {
                 final normalizedName =
                     report.namaReport.replaceAll(' ', '').toLowerCase();
-                return seenReportNames
-                    .add(normalizedName);
+                return seenReportNames.add(normalizedName);
               }).toList();
 
               return DropdownButtonFormField<String>(
@@ -417,8 +419,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                 ),
                 items: uniqueReports
                     .map((report) => DropdownMenuItem(
-                          value: report
-                              .reportId, 
+                          value: report.reportId,
                           child: Text(
                             report.namaReport,
                             style: TextStyle(
@@ -446,7 +447,6 @@ class _ReportSalesListState extends State<ReportSalesList>
             },
           ),
         ),
-
         BlocListener<ReportCubit, ReportState>(
           listener: (context, state) {
             if (state is ReportgetDynamicHeaderSuccess) {
@@ -520,90 +520,108 @@ class _ReportSalesListState extends State<ReportSalesList>
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            reportTitle,
-                            style: GoogleFonts.roboto(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blueAccent,
-                            ),
-                          ),
+                      child: Container(
+                        padding: EdgeInsets.all(12), // Tambahkan padding
 
-                          ElevatedButton.icon(
-                            icon:
-                                Icon(Icons.picture_as_pdf, color: Colors.white),
-                            label: Text(
-                              "Download PDF",
-                              style: GoogleFonts.roboto(
-                                // Font Roboto
-                                color: Colors.yellow,
-                                fontWeight: FontWeight.bold,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                reportTitle
+                                    .toUpperCase(), // Huruf Kapital Biar Keren
+                                style: GoogleFonts.roboto(
+                                  fontSize: 20, // Ukuran lebih besar
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.brown, // Warna kontras
+                                  letterSpacing: 1.5,
+                                ),
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: baseColor.primaryColor,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                            SizedBox(width: 10), // Jarak sebelum tombol
+                            ElevatedButton.icon(
+                              icon: Icon(Icons.picture_as_pdf,
+                                  color: Colors.white),
+                              label: Text(
+                                "Download PDF",
+                                style: GoogleFonts.roboto(
+                                  color: Colors.yellow,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.redAccent,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              onPressed: () {
+                                log("Download PDF");
+                                if (selectedReportId != null) {
+                                  reportCubit.fetchAndSavePdf(
+                                      selectedReportId!, token.toString());
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text("Tunggu Sebentar...")),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            "Pilih report terlebih dahulu!")),
+                                  );
+                                }
+                              },
                             ),
-                            onPressed: () {
-                              log("Download PDF");
-                              if (selectedReportId != null) {
-                                reportCubit.fetchAndSavePdf(
-                                    selectedReportId!, token.toString());
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Tunggu Sebentar...")),
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text(
-                                          "Pilih report terlebih dahulu!")),
-                                );
-                              }
-                            },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 10),
                       child: Text(
-                        "Peridoe $reportPriode",
+                        "Periode $reportPriode",
                         style: GoogleFonts.roboto(
-                          fontSize: 12,
+                          fontSize: 14, // Sedikit diperbesar
                           fontWeight: FontWeight.bold,
-                          color: Colors.blueAccent,
+                          color: Colors.black54,
                         ),
                       ),
                     ),
                     const Divider(thickness: 2),
                     Expanded(
                       child: SingleChildScrollView(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minWidth: MediaQuery.of(context)
-                                .size
-                                .width, // Sesuaikan lebar layar
-                          ),
-                          child: DataTable(
-                            columnSpacing: 15,
-                            border:
-                                TableBorder.all(width: 1.5, color: Colors.grey),
-                            headingRowHeight: 35,
-                            dataRowMinHeight: 10,
-                            headingRowColor: MaterialStateColor.resolveWith(
-                                (states) => Colors.red[100]!),
-                            columns: _buildColumns(valueReport),
-                            rows: valueReport
-                                .where((data) => data.line != "1")
-                                .map((data) => _buildRow(data))
-                                .toList(),
+                        scrollDirection: Axis
+                            .horizontal, // Scroll ke kanan jika tabel panjang
+                        child: SingleChildScrollView(
+                          scrollDirection:
+                              Axis.vertical, // Scroll ke bawah jika banyak data
+                          physics:
+                              BouncingScrollPhysics(), // Efek scroll lebih smooth
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minWidth: MediaQuery.of(context)
+                                  .size
+                                  .width, // Lebar tabel minimal sesuai layar
+                            ),
+                            child: DataTable(
+                              columnSpacing: 15,
+                              border: TableBorder.all(
+                                  width: 1.5, color: Colors.grey),
+                              headingRowHeight: 35,
+                              dataRowMinHeight: 10,
+                              headingRowColor: MaterialStateColor.resolveWith(
+                                  (states) => Colors.red[100]!),
+                              columns: _buildColumns(valueReport),
+                              rows: valueReport
+                                  .where((data) => data.line != "1")
+                                  .map((data) => _buildRow(data))
+                                  .toList(),
+                            ),
                           ),
                         ),
                       ),
@@ -619,14 +637,12 @@ class _ReportSalesListState extends State<ReportSalesList>
     );
   }
 
- List<String> _getAllowedReportIds(List<String> accessList) {
+  List<String> _getAllowedReportIds(List<String> accessList) {
     log("Access List (Original): $accessList");
 
     final normalizedAccessList = accessList
-        .map((e) => (e.startsWith("report.")
-                ? e
-                : "report.$e") 
-            .replaceAll(' ', '') 
+        .map((e) => (e.startsWith("report.") ? e : "report.$e")
+            .replaceAll(' ', '')
             .toLowerCase())
         .toSet();
 
@@ -638,7 +654,7 @@ class _ReportSalesListState extends State<ReportSalesList>
               "report." + report.namaReport.replaceAll(' ', '').toLowerCase();
           return normalizedAccessList.contains(normalizedNamaReport);
         })
-        .map((report) => report.namaReport) 
+        .map((report) => report.namaReport)
         .toSet()
         .toList();
 
@@ -646,7 +662,6 @@ class _ReportSalesListState extends State<ReportSalesList>
 
     return allowedIds;
   }
-
 
   List<DataColumn> _buildColumns(List<ReportData> reports) {
     if (reports.isEmpty) return [];
@@ -701,9 +716,10 @@ class _ReportSalesListState extends State<ReportSalesList>
         // Kolom C2 hingga Cn
         ...List.generate(jumlahKolom - 1, (index) {
           String columnKey = "c${index + 2}";
+
           String? columnValue = jsonData.containsKey(columnKey)
               ? jsonData[columnKey] as String?
-              : null;
+              : '-';
 
           return DataCell(
             Text(
@@ -722,25 +738,24 @@ class _ReportSalesListState extends State<ReportSalesList>
     );
   }
 
-  String extractNumbers(String? value) {
-    if (value == null || value.isEmpty) return "-";
-    String cleaned = value.replaceAll(RegExp(r'[^0-9]'), '');
-    return cleaned.isEmpty ? "-" : cleaned;
-  }
-
   String formatNumber(String? value) {
-    String cleanedValue = extractNumbers(value);
+    if (value == null || value.isEmpty) return "-";
+
+    // Ambil hanya angka dalam string
+    String cleanedValue = value.replaceAll(RegExp(r'[^1-9]'), '');
+
+    if (cleanedValue.isEmpty)
+      return value;
 
     int? number = int.tryParse(cleanedValue);
     if (number != null) {
-      String formattedNumber = formatter.format(number);
-      return formattedNumber;
+      return formatter.format(number); 
     }
 
-    return value ?? "-";
+    return value;
   }
 
-  TextStyle _headerStyle() {
+  _headerStyle() {
     return TextStyle(
       fontSize: 13,
       fontWeight: FontWeight.bold,
