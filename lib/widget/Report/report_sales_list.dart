@@ -196,12 +196,7 @@ class _ReportSalesListState extends State<ReportSalesList>
           width: MediaQuery.of(context).size.width,
           child: Stack(
             children: [
-              Positioned(
-                  top: -40,
-                  bottom: 800,
-                  right: 0,
-                  left: 0,
-                  child: _buildTabBar()),
+              Positioned(top: -10, right: 0, left: 0, child: _buildTabBar()),
               _buildMainContent(),
             ],
           ),
@@ -547,7 +542,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                               label: Text(
                                 "Download PDF",
                                 style: GoogleFonts.roboto(
-                                  color: Colors.yellow,
+                                  color: Colors.yellowAccent,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -608,19 +603,22 @@ class _ReportSalesListState extends State<ReportSalesList>
                                   .size
                                   .width, // Lebar tabel minimal sesuai layar
                             ),
-                            child: DataTable(
-                              columnSpacing: 15,
-                              border: TableBorder.all(
-                                  width: 1.5, color: Colors.grey),
-                              headingRowHeight: 35,
-                              dataRowMinHeight: 10,
-                              headingRowColor: MaterialStateColor.resolveWith(
-                                  (states) => Colors.red[100]!),
-                              columns: _buildColumns(valueReport),
-                              rows: valueReport
-                                  .where((data) => data.line != "1")
-                                  .map((data) => _buildRow(data))
-                                  .toList(),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: DataTable(
+                                columnSpacing: 15,
+                                border: TableBorder.all(
+                                    width: 1.5, color: Colors.grey),
+                                headingRowHeight: 35,
+                                dataRowMinHeight: 10,
+                                headingRowColor: MaterialStateColor.resolveWith(
+                                    (states) => Colors.red[100]!),
+                                columns: _buildColumns(valueReport),
+                                rows: valueReport
+                                    .where((data) => data.line != "1")
+                                    .map((data) => _buildRow(data))
+                                    .toList(),
+                              ),
                             ),
                           ),
                         ),
@@ -665,7 +663,6 @@ class _ReportSalesListState extends State<ReportSalesList>
 
   List<DataColumn> _buildColumns(List<ReportData> reports) {
     if (reports.isEmpty) return [];
-
     var firstData = reports.first;
     int jumlahKolom = int.tryParse(firstData.jumlahKolom) ?? 0;
 
@@ -684,7 +681,6 @@ class _ReportSalesListState extends State<ReportSalesList>
   DataRow _buildRow(ReportData data) {
     int jumlahKolom = int.tryParse(data.jumlahKolom) ?? 0;
     log("Jumlah Kolom: $jumlahKolom");
-
     bool isTotalRow = false;
     Map<String, dynamic> jsonData = data.toJson();
 
@@ -716,10 +712,9 @@ class _ReportSalesListState extends State<ReportSalesList>
         // Kolom C2 hingga Cn
         ...List.generate(jumlahKolom - 1, (index) {
           String columnKey = "c${index + 2}";
-
           String? columnValue = jsonData.containsKey(columnKey)
-              ? jsonData[columnKey] as String?
-              : '-';
+              ? jsonData[columnKey]
+              :'-';
 
           return DataCell(
             Text(
@@ -744,12 +739,11 @@ class _ReportSalesListState extends State<ReportSalesList>
     // Ambil hanya angka dalam string
     String cleanedValue = value.replaceAll(RegExp(r'[^1-9]'), '');
 
-    if (cleanedValue.isEmpty)
-      return value;
+    if (cleanedValue.isEmpty) return value;
 
     int? number = int.tryParse(cleanedValue);
     if (number != null) {
-      return formatter.format(number); 
+      return formatter.format(number);
     }
 
     return value;
