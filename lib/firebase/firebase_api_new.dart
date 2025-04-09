@@ -22,14 +22,17 @@ class FirebaseApiNew {
     debugPrint('test fcm');
     debugPrint(CheckUser.checkSession().toString());
     if (await CheckUser.checkSession()) {
-      navigatorKey.currentState?.pushNamed(RamayanaMyListTask.route, arguments: message);
+      navigatorKey.currentState
+          ?.pushNamed(RamayanaMyListTask.route, arguments: message);
     } else {
-      navigatorKey.currentState?.pushNamed(RamayanaLogin.route, arguments: message);
+      navigatorKey.currentState
+          ?.pushNamed(RamayanaLogin.route, arguments: message);
     }
   }
 
   Future initPushNotifications() async {
-    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
       sound: true,
@@ -44,7 +47,8 @@ class FirebaseApiNew {
     await _firebaseMessaging.requestPermission();
     final fcmToken = await _firebaseMessaging.getToken();
     print('Token ${fcmToken}');
-    var tokenFirebase = prefs.setString('firebaseToken', fcmToken == null ? '' : fcmToken);
+    var tokenFirebase =
+        prefs.setString('firebaseToken', fcmToken == null ? '' : fcmToken);
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
     initPushNotifications();
   }

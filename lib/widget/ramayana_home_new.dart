@@ -426,7 +426,8 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                       await _checkInternetConnection();
                     },
                     child: Container(
-                      color: Color.fromARGB(255, 235, 235, 235),
+                      color:
+                          Color.fromARGB(255, 235, 235, 235), //background grey
                       child: Column(
                         children: [
                           Stack(
@@ -435,6 +436,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                               Container(
                                 color: Colors.blue,
                               ),
+                              //background color container
                               ClipPath(
                                 clipper: BottomClipper(),
                                 child: Container(
@@ -646,68 +648,90 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
                                         child: Column(
                                           children: [
                                             Container(
-                                              height: 50,
-                                              child: Container(
-                                                margin: EdgeInsets.only(
-                                                    left: 20,
-                                                    right: 20,
-                                                    top: 0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      'Informasi Update Ramayana',
-                                                      style: GoogleFonts
-                                                          .plusJakartaSans(
-                                                              textStyle: TextStyle(
-                                                                  fontSize: 20,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500)),
-                                                    ),
-                                                    Container(
-                                                        // height: 40,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        90)),
-                                                        margin: EdgeInsets.only(
-                                                            right: 10),
-                                                        child: ElevatedButton(
-                                                            style: ButtonStyle(
-                                                                backgroundColor:
-                                                                    MaterialStateProperty.all<
-                                                                            Color>(
-                                                                        baseColors
-                                                                            .primaryColor)),
-                                                            onPressed:
-                                                                () async {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 10,
+                                                    horizontal:
+                                                        10), // biar gak mentok
+                                                width: double.infinity,
+                                                color: Color.fromARGB(
+                                                    255,
+                                                    235,
+                                                    235,
+                                                    235), // jika ingin kasih warna juga di sini
+                                                //Section Update Berita
+                                                child: LayoutBuilder(
+                                                  builder:
+                                                      (context, constraints) {
+                                                    return Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Text(
+                                                            'Informasi Update Ramayana',
+                                                            style: GoogleFonts
+                                                                .plusJakartaSans(
+                                                              textStyle:
+                                                                  TextStyle(
+                                                                fontSize: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width *
+                                                                    0.045,
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                            softWrap: true,
+                                                            maxLines:
+                                                                2, // atau lebih dari 2 jika mau
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .visible,
+                                                          ),
+                                                        ),
+                                                        ElevatedButton(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            backgroundColor:
+                                                                baseColors
+                                                                    .primaryColor,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          90),
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
                                                                     builder:
                                                                         (context) =>
-                                                                            RamayanaInformasi(),
-                                                                  ));
-                                                            },
-                                                            child: Text(
-                                                              'Arsip Berita',
-                                                              style: GoogleFonts
-                                                                  .plusJakartaSans(
-                                                                      fontSize:
-                                                                          15,
-                                                                      color: Colors
-                                                                          .white),
-                                                            )))
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
+                                                                            RamayanaInformasi()));
+                                                          },
+                                                          child: Text(
+                                                            'Arsip Berita',
+                                                            style: GoogleFonts
+                                                                .plusJakartaSans(
+                                                              fontSize: constraints
+                                                                      .maxWidth *
+                                                                  0.035,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                )),
                                             urlPhoto.isEmpty
                                                 ? SizedBox()
                                                 : CarouselSlider(

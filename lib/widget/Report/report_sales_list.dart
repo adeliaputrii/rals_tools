@@ -412,16 +412,19 @@ class _ReportSalesListState extends State<ReportSalesList>
                     borderSide: BorderSide(color: Colors.blueAccent, width: 2),
                   ),
                 ),
-                items: uniqueReports
-                    .map((report) => DropdownMenuItem(
-                          value: report.reportId,
-                          child: Text(
-                            report.namaReport,
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
-                          ),
-                        ))
-                    .toList(),
+                items: uniqueReports.map((report) {
+                  return DropdownMenuItem(
+                    value: report.reportId,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        report.namaReport,
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  );
+                }).toList(),
                 onChanged: (newValue) {
                   setState(() {
                     selectedReportId = newValue;
@@ -712,9 +715,8 @@ class _ReportSalesListState extends State<ReportSalesList>
         // Kolom C2 hingga Cn
         ...List.generate(jumlahKolom - 1, (index) {
           String columnKey = "c${index + 2}";
-          String? columnValue = jsonData.containsKey(columnKey)
-              ? jsonData[columnKey]
-              :'-';
+          String? columnValue =
+              jsonData.containsKey(columnKey) ? jsonData[columnKey] : '-';
 
           return DataCell(
             Text(

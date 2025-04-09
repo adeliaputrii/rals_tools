@@ -55,7 +55,7 @@ void main() async {
   }
   // Inisialisasi Firebase
   await Firebase.initializeApp();
-  await FirebaseApiNew().initNotification();
+  // await FirebaseApiNew().initNotification();
 
   // Inisialisasi platform
   await initPlatformState(); // Pastikan fungsi ini ada

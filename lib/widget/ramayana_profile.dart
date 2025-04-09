@@ -306,7 +306,7 @@ class _ProfileeState extends State<Profilee> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Container(
-                            height: 80,
+                            height: 100,
                             margin: EdgeInsets.only(bottom: 20),
                             decoration: BoxDecoration(
                                 color: Colors.grey[200],
@@ -364,7 +364,7 @@ class _ProfileeState extends State<Profilee> {
                             ),
                           ),
                           Container(
-                            height: 80,
+                            height: 100,
                             margin: EdgeInsets.only(bottom: 20),
                             decoration: BoxDecoration(
                                 color: Colors.grey[200],
@@ -420,7 +420,7 @@ class _ProfileeState extends State<Profilee> {
                             ),
                           ),
                           Container(
-                            height: 80,
+                            height: 100,
                             margin: EdgeInsets.only(bottom: 20),
                             decoration: BoxDecoration(
                                 color: Colors.grey[200],
@@ -478,7 +478,7 @@ class _ProfileeState extends State<Profilee> {
                             ),
                           ),
                           Container(
-                            height: 80,
+                            height: 100,
                             margin: EdgeInsets.only(bottom: 20),
                             decoration: BoxDecoration(
                                 color: Colors.grey[200],
@@ -536,7 +536,7 @@ class _ProfileeState extends State<Profilee> {
                             ),
                           ),
                           Container(
-                            height: 80,
+                            height: 100,
                             margin: EdgeInsets.only(bottom: 30),
                             decoration: BoxDecoration(
                                 color: Colors.grey[200],
