@@ -591,7 +591,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                     Expanded(
                       child: SingleChildScrollView(
                         scrollDirection: Axis
-                            .horizontal, // Scroll ke kanan jika tabel panjang
+                            .horizontal, 
                         child: SingleChildScrollView(
                           scrollDirection:
                               Axis.vertical, // Scroll ke bawah jika banyak data
@@ -740,8 +740,7 @@ class _ReportSalesListState extends State<ReportSalesList>
   String formatNumber(String? value) {
     if (value == null || value.isEmpty) return "-";
 
-    // Ambil hanya angka dalam string
-    String cleanedValue = value.replaceAll(RegExp(r'[^1-9]'), '');
+    String cleanedValue = value.replaceAll(RegExp(r'[^19]'), '');
 
     if (cleanedValue.isEmpty) return value;
 
