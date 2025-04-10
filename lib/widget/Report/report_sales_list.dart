@@ -590,8 +590,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                     const Divider(thickness: 2),
                     Expanded(
                       child: SingleChildScrollView(
-                        scrollDirection: Axis
-                            .horizontal, 
+                        scrollDirection: Axis.horizontal,
                         child: SingleChildScrollView(
                           scrollDirection:
                               Axis.vertical, // Scroll ke bawah jika banyak data
@@ -614,7 +613,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                                 headingRowColor: MaterialStateColor.resolveWith(
                                     (states) => Colors.red[100]!),
                                 columns: _buildColumns(valueReport),
-                              rows: valueReport
+                                rows: valueReport
                                     .where((data) =>
                                         data.line !=
                                         "1") // Hanya tampilkan yang bukan line == "1"
@@ -737,19 +736,23 @@ class _ReportSalesListState extends State<ReportSalesList>
     );
   }
 
-  String formatNumber(String? value) {
+ String formatNumber(String? value) {
     if (value == null || value.isEmpty) return "-";
 
-    String cleanedValue = value.replaceAll(RegExp(r'[^19]'), '');
+    return value.replaceAllMapped(RegExp(r'\d+'), (match) {
+      String original = match.group(0)!;
 
-    if (cleanedValue.isEmpty) return value;
+      if (original.startsWith('0') && original.length > 1) {
+        return original; // biarkan tetap 004
+      }
 
-    int? number = int.tryParse(cleanedValue);
-    if (number != null) {
-      return formatter.format(number);
-    }
+      int? number = int.tryParse(original);
+      if (number != null) {
+        return formatter.format(number);
+      }
 
-    return value;
+      return original;
+    });
   }
 
   _headerStyle() {
