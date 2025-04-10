@@ -594,7 +594,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                     Expanded(
                       child: SingleChildScrollView(
                         scrollDirection: Axis
-                            .horizontal, // Scroll ke kanan jika tabel panjang
+                            .horizontal, 
                         child: SingleChildScrollView(
                           scrollDirection:
                               Axis.vertical, // Scroll ke bawah jika banyak data
@@ -617,8 +617,10 @@ class _ReportSalesListState extends State<ReportSalesList>
                                 headingRowColor: MaterialStateColor.resolveWith(
                                     (states) => Colors.red[100]!),
                                 columns: _buildColumns(valueReport),
-                                rows: valueReport
-                                    .where((data) => data.line != "1")
+                              rows: valueReport
+                                    .where((data) =>
+                                        data.line !=
+                                        "1") // Hanya tampilkan yang bukan line == "1"
                                     .map((data) => _buildRow(data))
                                     .toList(),
                               ),
@@ -640,13 +642,11 @@ class _ReportSalesListState extends State<ReportSalesList>
 
   List<String> _getAllowedReportIds(List<String> accessList) {
     log("Access List (Original): $accessList");
-
     final normalizedAccessList = accessList
         .map((e) => (e.startsWith("report.") ? e : "report.$e")
             .replaceAll(' ', '')
             .toLowerCase())
         .toSet();
-
     log("Normalized Access List: $normalizedAccessList");
 
     final allowedIds = reportList
@@ -666,13 +666,18 @@ class _ReportSalesListState extends State<ReportSalesList>
 
   List<DataColumn> _buildColumns(List<ReportData> reports) {
     if (reports.isEmpty) return [];
-    var firstData = reports.first;
-    int jumlahKolom = int.tryParse(firstData.jumlahKolom) ?? 0;
 
+    // Cari data dengan line == "1"
+    final headerData = reports.firstWhere(
+      (data) => data.line == "1",
+      orElse: () => reports.first, // fallback kalau tidak ada yang line == "1"
+    );
+
+    int jumlahKolom = int.tryParse(headerData.jumlahKolom) ?? 0;
     List<DataColumn> columns = [];
 
     for (int i = 1; i <= jumlahKolom; i++) {
-      String? columnName = firstData.toJson()["c$i"];
+      String? columnName = headerData.toJson()["c$i"];
       columns.add(DataColumn(
         label: Text(columnName ?? "-", style: _headerStyle()),
       ));
@@ -738,8 +743,7 @@ class _ReportSalesListState extends State<ReportSalesList>
   String formatNumber(String? value) {
     if (value == null || value.isEmpty) return "-";
 
-    // Ambil hanya angka dalam string
-    String cleanedValue = value.replaceAll(RegExp(r'[^1-9]'), '');
+    String cleanedValue = value.replaceAll(RegExp(r'[^19]'), '');
 
     if (cleanedValue.isEmpty) return value;
 
