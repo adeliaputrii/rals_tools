@@ -64,7 +64,7 @@ const String api_report_sales = 'v1/news/sales-data';
 const String api_get_store = 'v1/news/get-store';
 const String api_get_report_dynamic = 'v1/report/report-dynamic';
 const String api_get_report_dynamic_header = 'v1/report/report-dynamic-header';
-const String api_get_report_to_pdf = 'v1/report/export-pdf';
+const String api_get_report_to_pdf = 'v1/mkv/export-pdf';
 
 //StockOpname
 
