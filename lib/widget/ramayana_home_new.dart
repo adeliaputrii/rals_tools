@@ -85,6 +85,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
     _unsecureScreen();
     _checkInternetConnection();
     homeCubit.getNewsList(token!);
+    menuAccess(context);
   }
 
   refreshPage() async {
@@ -106,8 +107,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
   }
 
   _unsecureScreen() async {
-    await FlutterWindowManager.clearFlags(FlutterWindowManager
-        .FLAG_SECURE); // Mengaktifkan kembali tangkapan layar
+    await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE); 
   }
 
   fetchDataJumlahTask() async {
@@ -154,6 +154,7 @@ class _RamayanaState extends State<Ramayana> with WidgetsBindingObserver {
 
   void menuAccess(BuildContext context) async {
     final listAccess = await SharedPref.getUserAccess() ?? '';
+    debugPrint('listAccess $listAccess');
     if (listAccess.contains(baseParam.menuKeyMyListTask)) {
       mylisttask = true;
     } else {}

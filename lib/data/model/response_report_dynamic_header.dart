@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'response_report_dynamic_header.g.dart';
@@ -66,4 +65,19 @@ class ReportDynamic {
       _$ReportDynamicFromJson(json);
 
   Map<String, dynamic> toJson() => _$ReportDynamicToJson(this);
+
+  @override
+  String toString() {
+    return 'ReportDynamic('
+        'reportId: $reportId, '
+        'jmlKolom: $jmlKolom, '
+        'statusProcess: $statusProcess, '
+        'userCreate: $userCreate, '
+        'dateCreate: $dateCreate, '
+        'userModify: $userModify, '
+        'dateModify: $dateModify, '
+        'lastUpdate: $lastUpdate, '
+        'namaReport: $namaReport'
+        ')';
+  }
 }

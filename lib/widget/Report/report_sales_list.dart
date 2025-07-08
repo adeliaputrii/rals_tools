@@ -21,9 +21,8 @@ class _ReportSalesListState extends State<ReportSalesList>
   bool isLoaded = false;
   bool isLoading = true;
   bool isSearch = false;
-
-  late ReportCubit reportCubit;
   late LoginCubit loginCubit;
+  late ReportCubit reportCubit;
   late PopUpWidget popUpWidget;
   final NumberFormat formatter = NumberFormat("#,###", "id_ID");
 
@@ -35,6 +34,7 @@ class _ReportSalesListState extends State<ReportSalesList>
   String? toko;
   String? username;
   String? role;
+
   bool isTab1Selected = true;
   var selectStore = false;
   String? _chosenValue = 'All';
@@ -66,7 +66,6 @@ class _ReportSalesListState extends State<ReportSalesList>
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     Set<String> keys = prefs.getKeys();
-    log("Semua data SharedPreferences:");
 
     for (String key in keys) {
       log("$key: ${prefs.get(key)}");
@@ -78,11 +77,14 @@ class _ReportSalesListState extends State<ReportSalesList>
     token = await SharedPref.getToken();
     username = await SharedPref.getUserId();
     role = await SharedPref.getRoleNew();
+  
     initDataReport();
     scrollListener();
     initReportDyanmic();
     searchController.clear();
     searchMd.clear();
+
+    
   }
 
   void initDataReport() {
@@ -373,7 +375,7 @@ class _ReportSalesListState extends State<ReportSalesList>
           margin: EdgeInsets.only(top: 50),
           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           child: FutureBuilder<String?>(
-            future: SharedPref.getUserAccess(),
+            future: SharedPref.getUserAccess(), // ,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -385,7 +387,7 @@ class _ReportSalesListState extends State<ReportSalesList>
 
               final userAccess = snapshot.data ?? '';
               final accessList = userAccess.split('|');
-
+              log("nilai akses $accessList");
               final allowedReportNames = _getAllowedReportIds(accessList);
 
               final filteredReports = reportList
@@ -494,6 +496,9 @@ class _ReportSalesListState extends State<ReportSalesList>
               } else if (state is ReportgetDynamicSuccess) {
                 final reportResponse = state.response;
                 final List<ReportData> valueReport = reportResponse;
+                final sortedReports =
+                    _sortReports(valueReport, columnIndex: 1, ascending: true);
+
                 final String reportTitle = reportResponse.isNotEmpty
                     ? reportResponse.first.namaReport
                     : "Laporan Tidak Tersedia";
@@ -516,26 +521,24 @@ class _ReportSalesListState extends State<ReportSalesList>
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                        padding: EdgeInsets.all(12), // Tambahkan padding
-
+                        padding: EdgeInsets.all(12),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
                               child: Text(
-                                reportTitle
-                                    .toUpperCase(), // Huruf Kapital Biar Keren
+                                reportTitle.toUpperCase(),
                                 style: GoogleFonts.roboto(
-                                  fontSize: 20, // Ukuran lebih besar
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.brown, // Warna kontras
+                                  color: Colors.brown,
                                   letterSpacing: 1.5,
                                 ),
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            SizedBox(width: 10), // Jarak sebelum tombol
+                            SizedBox(width: 10),
                             ElevatedButton.icon(
                               icon: Icon(Icons.picture_as_pdf,
                                   color: Colors.white),
@@ -581,7 +584,7 @@ class _ReportSalesListState extends State<ReportSalesList>
                       child: Text(
                         "Periode $reportPriode",
                         style: GoogleFonts.roboto(
-                          fontSize: 14, // Sedikit diperbesar
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Colors.black54,
                         ),
@@ -592,15 +595,11 @@ class _ReportSalesListState extends State<ReportSalesList>
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: SingleChildScrollView(
-                          scrollDirection:
-                              Axis.vertical, // Scroll ke bawah jika banyak data
-                          physics:
-                              BouncingScrollPhysics(), // Efek scroll lebih smooth
+                          scrollDirection: Axis.vertical,
+                          physics: BouncingScrollPhysics(),
                           child: ConstrainedBox(
                             constraints: BoxConstraints(
-                              minWidth: MediaQuery.of(context)
-                                  .size
-                                  .width, // Lebar tabel minimal sesuai layar
+                              minWidth: MediaQuery.of(context).size.width,
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -613,10 +612,8 @@ class _ReportSalesListState extends State<ReportSalesList>
                                 headingRowColor: MaterialStateColor.resolveWith(
                                     (states) => Colors.red[100]!),
                                 columns: _buildColumns(valueReport),
-                                rows: valueReport
-                                    .where((data) =>
-                                        data.line !=
-                                        "1") // Hanya tampilkan yang bukan line == "1"
+                                rows: sortedReports
+                                    .where((data) => data.line != "1")
                                     .map((data) => _buildRow(data))
                                     .toList(),
                               ),
@@ -637,13 +634,11 @@ class _ReportSalesListState extends State<ReportSalesList>
   }
 
   List<String> _getAllowedReportIds(List<String> accessList) {
-    log("Access List (Original): $accessList");
     final normalizedAccessList = accessList
         .map((e) => (e.startsWith("report.") ? e : "report.$e")
             .replaceAll(' ', '')
             .toLowerCase())
         .toSet();
-    log("Normalized Access List: $normalizedAccessList");
 
     final allowedIds = reportList
         .where((report) {
@@ -654,8 +649,9 @@ class _ReportSalesListState extends State<ReportSalesList>
         .map((report) => report.namaReport)
         .toSet()
         .toList();
+    allowedIds.sort((a, b) => b.compareTo(a));
 
-    log("Allowed Report IDs (Unique): $allowedIds");
+    log("Allowed Report IDs (Unique & Sorted): $allowedIds");
 
     return allowedIds;
   }
@@ -680,6 +676,29 @@ class _ReportSalesListState extends State<ReportSalesList>
     }
 
     return columns;
+  }
+
+  List<ReportData> _sortReports(
+    List<ReportData> reports, {
+    int columnIndex = 1,
+    bool ascending = true,
+  }) {
+    final sorted = [...reports];
+    sorted.sort((a, b) {
+      final aValue = (a.toJson()["c$columnIndex"] ?? '').toString();
+      final bValue = (b.toJson()["c$columnIndex"] ?? '').toString();
+
+      // Cek apakah mengandung "TOTAL"
+      final aIsTotal = aValue.toUpperCase().contains("TOTAL");
+      final bIsTotal = bValue.toUpperCase().contains("TOTAL");
+
+      if (aIsTotal && !bIsTotal) return -1; // a di atas
+      if (!aIsTotal && bIsTotal) return 1; // b di atas
+
+      // Kalau dua-duanya total atau bukan, lanjut sort biasa
+      return ascending ? aValue.compareTo(bValue) : bValue.compareTo(aValue);
+    });
+    return sorted;
   }
 
   DataRow _buildRow(ReportData data) {
@@ -716,18 +735,26 @@ class _ReportSalesListState extends State<ReportSalesList>
         // Kolom C2 hingga Cn
         ...List.generate(jumlahKolom - 1, (index) {
           String columnKey = "c${index + 2}";
-          String? columnValue =
-              jsonData.containsKey(columnKey) ? jsonData[columnKey] : '-';
-
+          String? columnValue = jsonData[columnKey] ?? '-';
+          log("Column Key: $columnKey, Column Value: $columnValue");
+          bool isNumeric = columnValue != null &&
+              num.tryParse(
+                      columnValue.replaceAll(',', '').replaceAll('.', '')) !=
+                  null;
+          log("Is Numeric: $isNumeric");
           return DataCell(
-            Text(
-              formatNumber(columnValue),
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
-                backgroundColor: isTotalRow
-                    ? Colors.blueAccent.withOpacity(0.3)
-                    : Colors.transparent,
+            Align(
+              alignment:
+                  isNumeric ? Alignment.centerRight : Alignment.centerLeft,
+              child: Text(
+                formatNumber(columnValue),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: isTotalRow ? FontWeight.bold : FontWeight.normal,
+                  backgroundColor: isTotalRow
+                      ? Colors.blueAccent.withOpacity(0.3)
+                      : Colors.transparent,
+                ),
               ),
             ),
           );
@@ -736,7 +763,7 @@ class _ReportSalesListState extends State<ReportSalesList>
     );
   }
 
- String formatNumber(String? value) {
+  String formatNumber(String? value) {
     if (value == null || value.isEmpty) return "-";
 
     return value.replaceAllMapped(RegExp(r'\d+'), (match) {

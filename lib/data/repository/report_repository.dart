@@ -19,6 +19,7 @@ class ReportRepositories {
     late RepositoriesResponse response;
 
     try {
+      
       await services
           .getListReport(basePath.contentType, basePath.accept, token)
           .then((value) {
@@ -277,7 +278,6 @@ class ReportRepositories {
       response = RepositoriesResponse(
           isSuccess: true, statusCode: 200, dataResponse: value);
     } catch (e) {
-      print("ke TRY $e");
       if (e is DioException) {
         print("Error dari Dio: ${e.response?.data}");
         response = RepositoriesResponse(
